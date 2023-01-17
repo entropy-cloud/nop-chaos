@@ -1,0 +1,1 @@
+在后端Java模块中使用的工具函数。由nop-js模块使用GraalVM JavaScript引擎来执行。

@@ -1,0 +1,1 @@
+export {alert,confirm,toast} from 'amis'

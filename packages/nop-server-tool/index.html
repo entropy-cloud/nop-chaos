@@ -1,0 +1,57 @@
+<html>
+	<script type="module" src="dist/nop-server-tool.mjs"></script>
+	<script type="module">
+		import {rollupTransform} from "./dist/nop-server-tool.mjs";
+
+		self.jsLibLoader = function(id){
+				if(id == '/localhost/my/parts/sub.lib.js'){
+					return `
+						import './other.lib.js'
+						export function myAction(){
+							alert('x')
+						}
+						`
+				}else if(id == '/localhost/my/parts/other.lib.js'){
+					return 'window.myVar = 1'
+				}else{
+					throw new Error("unknown js:"+id)
+				}
+			}
+	
+
+		const code = `
+			import { ajaxFetch} from '@nop/utils'
+
+			import {myAction} from './parts/sub.lib.js'
+
+			import { ajaxRequest} from '@nop/utils'
+
+			import {otherAction} from '/api/other.lib.js'
+
+			export function testAction(options, page){
+			    page.env.alert("xx");
+			    myAction(options,page)
+
+			     ajaxFetch(options,page)
+			     ajaxRequest(options,page)
+				 otherAction()
+
+
+			    return Promise.resolve({
+			        status: 200 ,
+			        data: {
+			            status: 0
+			        }
+			    })
+			}
+		 `;
+
+		let result = await rollupTransform("/localhost/my/a.lib.js",code);
+		console.log(result)
+	
+        // result = await babelTransform("/localhost/a.mjs",code);
+		//alert(result);
+
+	</script>
+
+</html>

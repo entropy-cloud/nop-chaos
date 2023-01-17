@@ -1,0 +1,51 @@
+{
+  "type": "page",
+  "body": {
+    "type": "form",
+    "title": null,
+    "actions": [
+      {
+        "label": "Cancel",
+        "type": "action",
+        "actionType": "ajax",
+        "level": "default",
+        "api": "@cancel"
+      },
+      {
+        "label": "Apply",
+        "type": "action",
+        "actionType": "ajax",
+        "level": "success",
+        "api": "@change"
+      },
+      {
+        "label":"Yaml/JSON",
+        "type":"action",
+        "actionType":"ajax",
+        "level":"primary",
+        "api": "@invoke:toggleYaml"
+      },
+      {
+        "label": "Submit",
+        "type": "action",
+        "actionType": "ajax",
+        "level": "primary",
+        "api": "@ok"
+      }
+    ],
+    "body": [
+      {
+        "type": "editor",
+        "name": "schema",
+        "placeholder": "{}",
+        "visibleOn":"this.lang !='yaml'"
+      },
+      {
+        "type": "yaml-editor",
+        "name":"schema",
+        "placeholder":{},
+        "visibleOn":"this.lang == 'yaml'"
+      }
+    ]
+  }
+}

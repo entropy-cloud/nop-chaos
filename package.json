@@ -1,0 +1,36 @@
+{
+  "name": "nop-chaos",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@7.1.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "description": "Nop Platform Frontend",
+  "scripts": {
+    "all": "pnpm -r all",
+    "dev": "pnpm -F nop-site dev",
+    "build": "pnpm -r build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "preview": "pnpm -F nop-site preview",
+    "test": "pnpm -r test",
+    "clean": "pnpm -r clean",
+    "clean:all": "pnpm --package=rimraf -s dlx rimraf pnpm-lock.yaml **/dist **/node_modules",
+    "reinstall": "pnpm clean:all && pnpm i",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.27.0",
+    "eslint": "^8.31.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "typescript": "^4.9.4",
+    "vite": "^4.0"
+  },
+  "//": "use bin-wrapper-china to install gifslice package when network issue occurs",
+  "pnpm": {
+    "overrides": {
+      "bin-wrapper": "npm:bin-wrapper-china"
+    }
+  }
+}

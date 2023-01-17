@@ -1,0 +1,15 @@
+.nop-amis-editor , #root{
+  height:100% !important;
+}
+.nop-amis-editor-body{
+  height:calc(100% - 60px) !important;
+}
+.nop-amis-editor-header{
+  padding:10px;
+  padding-bottom:0px;
+  border-bottom:1px solid #ddd;
+}
+.page-name{
+  font-size:20px;
+  font-weight:bold;
+}

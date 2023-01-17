@@ -1,0 +1,587 @@
+{
+    "status": 0,
+    "msg": "",
+    "data": {
+        "pages": [
+            {
+                "label": "Home",
+                "url": "/",
+                "redirect": "/index"
+            },
+            {
+                "label": "示例",
+                "children": [
+                    {
+                        "label": "页面",
+                        "url": "index",
+                        "icon": "fa fa-th",
+                        "schemaApi": "get:/amis-admin-vue/pages/start.json",
+                        "children": [
+                            {
+                                "label": "简单页面",
+                                "url": "/index",
+                                "schemaApi": "get:/amis-admin-vue/pages/start.json"
+                            },
+                            {
+                                "label": "初始化报错",
+                                "url": "pages/error",
+                                "schemaApi": "get:/amis-admin-vue/pages/error.json"
+                            },
+                            {
+                                "label": "表单页面",
+                                "url": "pages/form",
+                                "schemaApi": "get:/amis-admin-vue/pages/form.json"
+                            }
+                        ]
+                    },
+                    {
+                        "label": "表单",
+                        "url": "form",
+                        "icon": "fa fa-list-alt",
+                        "children": [
+                            {
+                                "label": "所有模式展示",
+                                "url": "/form/mode",
+                                "schemaApi": "get:/amis-admin-vue/pages/mode.json"
+                            },
+                            {
+                                "label": "所有类型汇总",
+                                "url": "/form/full",
+                                "schemaApi": "get:/amis-admin-vue/pages/full.json"
+                            },
+                            {
+                                "label": "静态展示",
+                                "url": "/form/static",
+                                "schemaApi": "get:/amis-admin-vue/pages/static.json"
+                            },
+                            {
+                                "label": "输入提示",
+                                "url": "/pages/hint",
+                                "schemaApi": "get:/amis-admin-vue/pages/hint.json"
+                            },
+                            {
+                                "label": "Fieldset",
+                                "url": "/pages/fieldset",
+                                "schemaApi": "get:/amis-admin-vue/pages/fieldset.json"
+                            },
+                            {
+                                "label": "Tabs",
+                                "url": "/pages/tabs",
+                                "schemaApi": "get:/amis-admin-vue/pages/tabs.json"
+                            },
+                            {
+                                "label": "FieldSet Taabs组合",
+                                "url": "/pages/fields-tabs",
+                                "schemaApi": "get:/amis-admin-vue/pages/fields-tabs.json"
+                            },
+                            {
+                                "label": "动态数据",
+                                "url": "/pages/fremote",
+                                "schemaApi": "get:/amis-admin-vue/pages/remote.json"
+                            },
+                            {
+                                "label": "显隐状态联动",
+                                "url": "/pages/reaction",
+                                "schemaApi": "get:/amis-admin-vue/pages/reaction.json"
+                            },
+                            {
+                                "label": "表单验证",
+                                "url": "/pages/validation",
+                                "schemaApi": "get:/amis-admin-vue/pages/validation.json"
+                            },
+                            {
+                                "label": "组合类型",
+                                "url": "/pages/combo",
+                                "schemaApi": "get:/amis-admin-vue/pages/combo.json"
+                            },
+                            {
+                                "label": "穿梭器",
+                                "url": "/pages/transfer",
+                                "schemaApi": "get:/amis-admin-vue/pages/transfer.json"
+                            },
+                            {
+                                "label": "多功能选择器",
+                                "url": "/pages/picker",
+                                "schemaApi": "get:/amis-admin-vue/pages/picker.json"
+                            },
+                            {
+                                "label": "子表单",
+                                "url": "/pages/sub-form",
+                                "schemaApi": "get:/amis-admin-vue/pages/sub-form.json"
+                            },
+                            {
+                                "label": "富文本",
+                                "url": "/pages/rich-text",
+                                "schemaApi": "get:/amis-admin-vue/pages/rich-text.json"
+                            },
+                            {
+                                "label": "代码编辑器",
+                                "url": "/pages/ide",
+                                "schemaApi": "get:/amis-admin-vue/pages/ide.json"
+                            },
+                            {
+                                "label": "自定义组件",
+                                "url": "/pages/custom",
+                                "schemaApi": "get:/amis-admin-vue/pages/custom.json"
+                            },
+                            {
+                                "label": "表格编辑",
+                                "url": "/pages/table",
+                                "schemaApi": "get:/amis-admin-vue/pages/table.json"
+                            },
+                            {
+                                "label": "公式示例",
+                                "url": "/pages/formula",
+                                "schemaApi": "get:/amis-admin-vue/pages/formula.json"
+                            },
+                            {
+                                "label": "条件组合",
+                                "url": "/pages/condition-builder",
+                                "schemaApi": "get:/amis-admin-vue/pages/condition-builder.json"
+                            },
+                            {
+                                "label": "引用",
+                                "url": "/pages/definitions",
+                                "schemaApi": "get:/amis-admin-vue/pages/definitions.json"
+                            },
+                            {
+                                "label": "样式编辑",
+                                "url": "/pages/style-builder",
+                                "schemaApi": "get:/amis-admin-vue/pages/style-builder.json"
+                            },
+                            {
+                                "label": "锚点导航",
+                                "url": "/pages/anchor-nav",
+                                "schemaApi": "get:/amis-admin-vue/pages/anchor-nav.json"
+                            }
+                        ]
+                    },
+                    {
+                        "label": "增删改查",
+                        "url": "crud",
+                        "icon": "fa fa-table",
+                        "children": [
+                            {
+                                "label": "表格模式",
+                                "url": "/crud/table",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-table.json"
+                            },
+                            {
+                                "label": "表格高度自适应",
+                                "url": "/crud/auto-fill",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-auto-fill.json"
+                            },
+                            {
+                                "label": "卡片模式",
+                                "url": "/crud/grid",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-grid.json"
+                            },
+                            {
+                                "label": "列表模式",
+                                "url": "/crud/list",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-list.json"
+                            },
+                            {
+                                "label": "加载更多模式",
+                                "url": "/crud/load-more",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-load-more.json"
+                            },
+                            {
+                                "label": "操作交互显示",
+                                "url": "/crud/item-actions",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-item-actions.json"
+                            },
+                            {
+                                "label": "列表型汇总",
+                                "url": "/crud/columns",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-columns.json"
+                            },
+                            {
+                                "label": "可折叠",
+                                "url": "/crud/footable",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-footable.json"
+                            },
+                            {
+                                "label": "嵌套",
+                                "url": "/crud/nested",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-nested.json"
+                            },
+                            {
+                                "label": "合并单元格",
+                                "url": "/crud/merge-cell",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-merge-cell.json"
+                            },
+                            {
+                                "label": "表头分组",
+                                "url": "/crud/header-group",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-header-group.json"
+                            },
+                            {
+                                "label": "表头隐藏",
+                                "url": "/crud/header-hide",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-header-hide.json"
+                            },
+                            {
+                                "label": "带边栏（用tree）",
+                                "url": "/crud/aside",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-aside.json"
+                            },
+                            {
+                                "label": "带边栏（用Nav）",
+                                "url": "/crud/aside2",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-aside2.json"
+                            },
+                            {
+                                "label": "固定表头/列",
+                                "url": "/crud/fixed",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-fixed.json"
+                            },
+                            {
+                                "label": "键盘操作编辑",
+                                "url": "/crud/keyboards",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-keyboards.json"
+                            },
+                            {
+                                "label": "操作并下一个",
+                                "url": "/crud/jump-next",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-jump-next.json"
+                            },
+                            {
+                                "label": "列展示详情",
+                                "url": "/crud/popover",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-popover.json"
+                            },
+                            {
+                                "label": "一次性加载",
+                                "url": "/crud/load-once",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-load-once.json"
+                            },
+                            {
+                                "label": "点击联动",
+                                "url": "/crud/item-action",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-item-action.json"
+                            },
+                            {
+                                "label": "导出Excel/CSV",
+                                "url": "/crud/export-excel-csv",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-export-excel-csv.json"
+                            },
+                            {
+                                "label": "动态列",
+                                "url": "/crud/dynamic",
+                                "schemaApi": "get:/amis-admin-vue/pages/crud-dynamic.json"
+                            }
+                        ]
+                    },
+                    {
+                        "label": "弹框",
+                        "url": "/dialog",
+                        "icon": "fa fa-bomb",
+                        "children": [
+                            {
+                                "label": "对话框",
+                                "url": "/dialog/simple",
+                                "schemaApi": "get:/amis-admin-vue/pages/dialog-simple.json"
+                            },
+                            {
+                                "label": "侧边弹出",
+                                "url": "/dialog/drawer",
+                                "schemaApi": "get:/amis-admin-vue/pages/dialog-drawer.json"
+                            }
+                        ]
+                    },
+                    {
+                        "label": "选项卡",
+                        "url": "/tabs",
+                        "icon": "fa fa-clone",
+                        "children": [
+                            {
+                                "label": "选项卡",
+                                "url": "/tabs/normal",
+                                "schemaApi": "get:/amis-admin-vue/pages/tabs-normal.json"
+                            },
+                            {
+                                "label": "表单中选项卡分组",
+                                "url": "/tabs/form",
+                                "schemaApi": "get:/amis-admin-vue/pages/tabs-form.json"
+                            },
+                            {
+                                "label": "动态选项卡",
+                                "url": "/tabs/dynamic",
+                                "schemaApi": "get:/amis-admin-vue/pages/tabs-dynamic.json"
+                            },
+                            {
+                                "label": "选项卡页面1",
+                                "url": "/tabs/tab1",
+                                "schemaApi": "get:/amis-admin-vue/pages/tabs-tab1.json"
+                            },
+                            {
+                                "label": "选项卡页面2",
+                                "url": "/tabs/tab2",
+                                "schemaApi": "get:/amis-admin-vue/pages/tabs-tab2.json"
+                            },
+                            {
+                                "label": "选项卡页面3",
+                                "url": "/tabs/tab3",
+                                "schemaApi": "get:/amis-admin-vue/pages/tabs-tab3.json"
+                            }
+                        ]
+                    },
+                    {
+                        "label": "联动",
+                        "url": "/linkpage",
+                        "icon": "fa fa-bolt",
+                        "children": [
+                            {
+                                "label": "地址栏变化自动更新",
+                                "url": "/linkpage/page",
+                                "schemaApi": "get:/amis-admin-vue/pages/linkpage-page.json"
+                            },
+                            {
+                                "label": "选项联动",
+                                "url": "/linkpage/options-local",
+                                "schemaApi": "get:/amis-admin-vue/pages/linkpage-options-local.json"
+                            },
+                            {
+                                "label": "选项远程联动",
+                                "url": "/linkpage/options",
+                                "schemaApi": "get:/amis-admin-vue/pages/linkpage-options.json"
+                            },
+                            {
+                                "label": "表单和表单联动",
+                                "url": "/linkpage/form",
+                                "schemaApi": "get:/amis-admin-vue/pages/linkpage-form.json"
+                            },
+                            {
+                                "label": "表单提交后显示结果",
+                                "url": "/linkpage/form-submit",
+                                "schemaApi": "get:/amis-admin-vue/pages/linkpage-form-submit.json"
+                            },
+                            {
+                                "label": "表单自动更新",
+                                "url": "/linkpage/form2",
+                                "schemaApi": "get:/amis-admin-vue/pages/linkpage-form2.json"
+                            },
+                            {
+                                "label": "表单和列表联动",
+                                "url": "/linkpage/crud",
+                                "schemaApi": "get:/amis-admin-vue/pages/linkpage-crud.json"
+                            }
+                        ]
+                    },
+                    {
+                        "label": "事件动作机制",
+                        "url": "/event-action",
+                        "icon": "fa fa-bullhorn",
+                        "children": [
+                            {
+                                "label": "地址栏变化自动更新",
+                                "url": "/event-action/common",
+                                "schemaApi": "get:/amis-admin-vue/pages/event-action-common.json"
+                            },
+                            {
+                                "label": "广播(自定义事件)",
+                                "url": "/event-action/broadcat",
+                                "schemaApi": "get:/amis-admin-vue/pages/event-action-broadcat.json"
+                            },
+                            {
+                                "label": "执行其他组件动作",
+                                "url": "/event",
+                                "children": [
+                                    {
+                                        "label": "按钮类组件",
+                                        "url": "/event/button",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-button.json"
+                                    },
+                                    {
+                                        "label": "输入类组件",
+                                        "url": "/event/input",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-input.json"
+                                    },
+                                    {
+                                        "label": "上传类组件",
+                                        "url": "/event/select",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-select.json"
+                                    },
+                                    {
+                                        "label": "下拉选择类",
+                                        "url": "/event/input",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-input.json"
+                                    },
+                                    {
+                                        "label": "时间类组件",
+                                        "url": "/event/date",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-date.json"
+                                    },
+                                    {
+                                        "label": "开关组件",
+                                        "url": "/event/switch",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-switch.json"
+                                    },
+                                    {
+                                        "label": "选项卡组件",
+                                        "url": "/event/tabs",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-tabs.json"
+                                    },
+                                    {
+                                        "label": "评分组件",
+                                        "url": "/event/input-rating",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-input-rating.json"
+                                    },
+                                    {
+                                        "label": "excel",
+                                        "url": "/event/excel",
+                                        "schemaApi": "get:/amis-admin-vue/pages/even-excel.json"
+                                    },
+                                    {
+                                        "label": "向导组件",
+                                        "url": "/event/wizard",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-wizard.json"
+                                    },
+                                    {
+                                        "label": "树形选择框",
+                                        "url": "/event/input-tree",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-input-tree.json"
+                                    },
+                                    {
+                                        "label": "树形选择器",
+                                        "url": "/event/tree-select",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-tree-select.json"
+                                    },
+                                    {
+                                        "label": "form表单",
+                                        "url": "/event/form",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-form.json"
+                                    },
+                                    {
+                                        "label": "穿梭框类组件",
+                                        "url": "/event/transfer",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-transfer.json"
+                                    },
+                                    {
+                                        "label": "Service组件",
+                                        "url": "/event/service",
+                                        "schemaApi": "get:/amis-admin-vue/pages/event-service.json"
+                                    }
+                                ]
+                            },
+                            {
+                                "label": "自定义JS",
+                                "url": "/event-action/custom",
+                                "schemaApi": "get:/amis-admin-vue/pages/event-action-custom.json"
+                            },
+                            {
+                                "label": "执行逻辑编排动作",
+                                "url": "/event-action/logic",
+                                "schemaApi": "get:/amis-admin-vue/pages/event-action-logic.json"
+                            },
+                            {
+                                "label": "事件/动作干预",
+                                "url": "/event-action/stop",
+                                "schemaApi": "get:/amis-admin-vue/pages/event-action-stop.json"
+                            },
+                            {
+                                "label": "表单和列表联动",
+                                "url": "/event-action/dataflow",
+                                "schemaApi": "get:/amis-admin-vue/pages/event-action-dataflow.json"
+                            }
+                        ]
+                    },
+                    {
+                        "label": "动态加载",
+                        "url": "/services",
+                        "icon": "fa fa-magic",
+                        "children": [
+                            {
+                                "label": "动态加载数据",
+                                "url": "/services/data",
+                                "schemaApi": "get:/amis-admin-vue/pages/services-data.json"
+                            },
+                            {
+                                "label": "动态加载页面",
+                                "url": "/services/schema",
+                                "schemaApi": "get:/amis-admin-vue/pages/services-schema.json"
+                            },
+                            {
+                                "label": "动态加载部分表单",
+                                "url": "/services/form",
+                                "schemaApi": "get:/amis-admin-vue/pages/services-form.json"
+                            }
+                        ]
+                    },
+                    {
+                        "label": "主题编辑器",
+                        "url": "/theme",
+                        "icon": "fa fa-glasses",
+                        "schemaApi": "get:/amis-admin-vue/pages/theme-theme.json"
+                    },
+                    {
+                        "label": "向导",
+                        "icon": "fa fa-desktop",
+                        "schemaApi": "get:/amis-admin-vue/pages/wizard-wizard.json"
+                    },
+                    {
+                        "label": "排版",
+                        "url": "/horizontal",
+                        "icon": "fa fa-columns",
+                        "schemaApi": "get:/amis-admin-vue/pages/horizontal-horizontal.json"
+                    },
+                    {
+                        "label": "图表",
+                        "url": "/chart",
+                        "icon": "fa fa-bar-chart",
+                        "schemaApi": "get:/amis-admin-vue/pages/chart-chart.json"
+                    },
+                    {
+                        "label": "ECharts编辑器",
+                        "url": "/echarts",
+                        "icon": "fa fa-bar-chart",
+                        "schemaApi": "get:/amis-admin-vue/pages/echarts-echarts.json"
+                    },
+                    {
+                        "label": "轮播图",
+                        "url": "/carousel",
+                        "icon": "fa fa-pause",
+                        "schemaApi": "get:/amis-admin-vue/pages/carousel-carousel.json"
+                    },
+                    {
+                        "label": "音频",
+                        "url": "/audio",
+                        "icon": "fa fa-volume-up",
+                        "schemaApi": "get:/amis-admin-vue/pages/audio-audio.json"
+                    },
+                    {
+                        "label": "视频",
+                        "url": "/video",
+                        "icon": "fa fa-video-camera",
+                        "schemaApi": "get:/amis-admin-vue/pages/video-video.json"
+                    },
+                    {
+                        "label": "异步任务",
+                        "url": "/task",
+                        "icon": "fa fa-tasks",
+                        "schemaApi": "get:/amis-admin-vue/pages/task-task.json"
+                    },
+                    {
+                        "label": "IFrame",
+                        "url": "/iframe",
+                        "icon": "fa fa-cloud",
+                        "schemaApi": "get:/amis-admin-vue/pages/iframe-iframe.json"
+                    },
+                    {
+                        "label": "SDK",
+                        "url": "/sdk",
+                        "icon": "fa fa-rocket",
+                        "schemaApi": "get:/amis-admin-vue/pages/sdk-sdk.json"
+                    },
+                    {
+                        "label": "App多页应用",
+                        "url": "/audio",
+                        "icon": "fa fa-cubes",
+                        "schemaApi": "get:/amis-admin-vue/pages/audio-audio.json"
+                    }
+                ]
+            }
+        ]
+    }
+}

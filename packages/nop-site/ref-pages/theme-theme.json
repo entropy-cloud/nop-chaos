@@ -1,0 +1,1596 @@
+{
+    "type": "form",
+    "title": "这是一个基于 amis 搭建较为复杂界面的例子，部分功能使用代码开发，请参考源码",
+    "submitText": "",
+    "persistData": "amis-theme-editor",
+    "actions": [],
+    "onEvent": {
+        "inited": {
+            "actions": [
+                {
+                    "actionType": "custom"
+                }
+            ]
+        }
+    },
+    "body": [
+        {
+            "type": "grid",
+            "label": false,
+            "columns": [
+                {
+                    "md": 4,
+                    "body": [
+                        {
+                            "type": "tabs",
+                            "tabs": [
+                                {
+                                    "title": "基础设置",
+                                    "body": [
+                                        {
+                                            "type": "tpl",
+                                            "tpl": "变量设置",
+                                            "label": false
+                                        },
+                                        {
+                                            "type": "tabs",
+                                            "mode": "vertical",
+                                            "subFormMode": "normal",
+                                            "tabs": [
+                                                {
+                                                    "title": "颜色",
+                                                    "body": [
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "文字颜色",
+                                                                    "name": "config.theme._vars[\"--text-color\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#666",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "rgba(0, 0, 0, 0.85)",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "文字置灰时的颜色",
+                                                                    "name": "config.theme._vars[\"--text--muted-color\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#a6a6a6",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "rgba(64, 64, 64, 0.85)",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "标题文字颜色",
+                                                                    "name": "config.theme._vars[\"--text--loud-color\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#4d4d4d",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "rgba(0, 0, 0, 0.85)",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "按钮文字颜色",
+                                                                    "name": "config.theme._vars[\"--button-color\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#fff",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#fff",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "最浅色",
+                                                                    "name": "config.theme._vars[\"--light\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#eaf6fe",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#d9d9d9",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "最深色",
+                                                                    "name": "config.theme._vars[\"--dark\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#343a40",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#343a40",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "全局背景色",
+                                                                    "name": "config.theme._vars[\"--body-bg\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#eaf6fe",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#d9d9d9",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "常用背景色",
+                                                                    "name": "config.theme._vars[\"--background\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#fff",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#fff",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "主颜色",
+                                                                    "name": "config.theme._vars[\"--primary\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#108cee",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#1890ff",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "主颜色鼠标放上去的颜色",
+                                                                    "name": "config.theme._vars[\"--primary-onHover\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#0e77ca",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#007df1",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "主颜色激活时的颜色",
+                                                                    "name": "config.theme._vars[\"--primary-onActive\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#0d70be",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#0076e4",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "次颜色",
+                                                                    "name": "config.theme._vars[\"--secondary\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#6c757d",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#6c757d",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "次颜色鼠标放上去的颜色",
+                                                                    "name": "config.theme._vars[\"--secondary-onHover\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#5a6268",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#5a6268",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "次颜色激活时的颜色",
+                                                                    "name": "config.theme._vars[\"--secondary-onActive\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#545b62",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#545b62",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "成功时的颜色",
+                                                                    "name": "config.theme._vars[\"--success\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#5fb333",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#52c41a",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "成功时在鼠标移上去后的颜色",
+                                                                    "name": "config.theme._vars[\"--success-onHover\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#4f952b",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#44a216",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "成功时激活的颜色",
+                                                                    "name": "config.theme._vars[\"--success-onActive\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#4a8b28",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#3f9714",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "信息的颜色",
+                                                                    "name": "config.theme._vars[\"--info\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#108cee",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#1890ff",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "信息在鼠标移上去后的颜色",
+                                                                    "name": "config.theme._vars[\"--info-onHover\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#0e77ca",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#007df1",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "信息在激活时的颜色",
+                                                                    "name": "config.theme._vars[\"--info-onActive\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#0d70be",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#0076e4",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "警告的颜色",
+                                                                    "name": "config.theme._vars[\"--warning\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#f39000",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#faad14",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "警告在鼠标移上去后的颜色",
+                                                                    "name": "config.theme._vars[\"--warning-onHover\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#cd7900",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#e39905",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "警告在鼠标移上去后的颜色",
+                                                                    "name": "config.theme._vars[\"--warning-onActive\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#c07200",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#d69005",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "错误的颜色",
+                                                                    "name": "config.theme._vars[\"--danger\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#ea2e2e",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#ff4d4f",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "错误在鼠标移上去后的颜色",
+                                                                    "name": "config.theme._vars[\"--danger-onHover\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#dc1616",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#ff2729",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "group",
+                                                            "controls": [
+                                                                {
+                                                                    "type": "input-color",
+                                                                    "label": "错误在激活时的颜色",
+                                                                    "name": "config.theme._vars[\"--danger-onActive\"]"
+                                                                },
+                                                                {
+                                                                    "label": "云舍默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#d01515",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"cxd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                },
+                                                                {
+                                                                    "label": "AntD 默认值",
+                                                                    "type": "static-color",
+                                                                    "value": "#ff1a1d",
+                                                                    "visibleOn": "data.config.theme.baseTheme === \"antd\"",
+                                                                    "inputClassName": "text-xs"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "title": "字体",
+                                                    "body": [
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "基础字体",
+                                                            "name": "config.theme._vars[\"--fontFamilyBase\"]",
+                                                            "placeholder": "-apple-system, BlinkMacSystemFont, 'SF Pro SC', 'SF Pro Text', 'Helvetica Neue', Helvetica, 'PingFang SC', 'Segoe UI', Roboto, 'Hiragino Sans GB', 'Arial', 'microsoft yahei ui', 'Microsoft YaHei',SimSun, sans-serif"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "等宽字体",
+                                                            "name": "config.theme._vars[\"--fontFamilyMonospace\"]",
+                                                            "placeholder": "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "基础字体大小",
+                                                            "name": "config.theme._vars[\"--fontSizeBase\"]",
+                                                            "placeholder": "14px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "最小字体大小",
+                                                            "name": "config.theme._vars[\"--fontSizeXs\"]",
+                                                            "placeholder": "11px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "小字体大小",
+                                                            "name": "config.theme._vars[\"--fontSizeSm\"]",
+                                                            "placeholder": "12px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "中型字体大小",
+                                                            "name": "config.theme._vars[\"--fontSizeMd\"]",
+                                                            "placeholder": "14px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "大字体大小",
+                                                            "name": "config.theme._vars[\"--fontSizeLg\"]",
+                                                            "placeholder": "16px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "超大字体大小",
+                                                            "name": "config.theme._vars[\"--fontSizeXl\"]",
+                                                            "placeholder": "20px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "行高",
+                                                            "name": "config.theme._vars[\"--lineHeightBase\"]",
+                                                            "placeholder": "1.5"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "title": "间距",
+                                                    "body": [
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "基础间距",
+                                                            "name": "config.theme._vars[\"--gap-base\"]",
+                                                            "placeholder": "12px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "最小间距",
+                                                            "name": "config.theme._vars[\"--gap-xs\"]",
+                                                            "placeholder": "4px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "小间距",
+                                                            "name": "config.theme._vars[\"--gap-sm\"]",
+                                                            "placeholder": "8px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "中间距",
+                                                            "name": "config.theme._vars[\"--gap-md\"]",
+                                                            "placeholder": "16px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "小间距",
+                                                            "name": "config.theme._vars[\"--gap-lg\"]",
+                                                            "placeholder": "20px"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "小间距",
+                                                            "name": "config.theme._vars[\"--gap-xl\"]",
+                                                            "placeholder": "24px"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "title": "边框",
+                                                    "body": [
+                                                        {
+                                                            "type": "input-color",
+                                                            "label": "边框颜色",
+                                                            "name": "config.theme._vars[\"--buttonColor\"]"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "边框圆角大小",
+                                                            "placeholder": "2px",
+                                                            "name": "config.theme._vars[\"--borderRadius\"]"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "title": "链接",
+                                                    "body": [
+                                                        {
+                                                            "type": "input-color",
+                                                            "label": "链接颜色",
+                                                            "name": "config.theme._vars[\"--link-color\"]"
+                                                        },
+                                                        {
+                                                            "type": "input-color",
+                                                            "label": "链接在鼠标移上去的颜色",
+                                                            "name": "config.theme._vars[\"--link-onHover-color\"]"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "链接下划线",
+                                                            "placeholder": "none",
+                                                            "name": "config.theme._vars[\"--link-decoration\"]"
+                                                        },
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "链接在鼠标移上去后端下划线",
+                                                            "placeholder": "none",
+                                                            "name": "config.theme._vars[\"--link-onHover-decoration\"]"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "title": "动画",
+                                                    "body": [
+                                                        {
+                                                            "type": "input-text",
+                                                            "label": "动画时长",
+                                                            "placeholder": "2s",
+                                                            "name": "config.theme._vars[\"--animation-duration\"]"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "title": "其它变量",
+                                                    "body": [
+                                                        {
+                                                            "type": "combo",
+                                                            "multiple": true,
+                                                            "name": "config.theme._otherVars",
+                                                            "body": [
+                                                                {
+                                                                    "type": "input-text",
+                                                                    "placeholder": "变量名",
+                                                                    "required": true,
+                                                                    "name": "key"
+                                                                },
+                                                                {
+                                                                    "type": "input-text",
+                                                                    "placeholder": "变量值",
+                                                                    "required": true,
+                                                                    "name": "value"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "title": "自定义 CSS",
+                                    "body": [
+                                        {
+                                            "label": false,
+                                            "type": "editor",
+                                            "name": "config.theme.style",
+                                            "size": "lg",
+                                            "options": {
+                                                "lineNumbers": "off"
+                                            },
+                                            "language": "css"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "title": "查看设置的变量",
+                                    "body": [
+                                        {
+                                            "type": "static-tpl"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "md": 8,
+                    "type": "container",
+                    "columnClassName": "b-l",
+                    "body": [
+                        {
+                            "type": "tabs",
+                            "tabs": [
+                                {
+                                    "title": "表单预览",
+                                    "tab": {
+                                        "type": "form",
+                                        "title": "表单项",
+                                        "mode": "horizontal",
+                                        "wrapWithPanel": false,
+                                        "autoFocus": true,
+                                        "body": [
+                                            {
+                                                "type": "group",
+                                                "body": [
+                                                    {
+                                                        "type": "input-text",
+                                                        "name": "var1",
+                                                        "label": "输入框"
+                                                    },
+                                                    {
+                                                        "type": "input-number",
+                                                        "name": "number",
+                                                        "label": "数字",
+                                                        "placeholder": "",
+                                                        "inline": true,
+                                                        "value": 5,
+                                                        "min": 1,
+                                                        "max": 10
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "group",
+                                                "body": [
+                                                    {
+                                                        "type": "input-tag",
+                                                        "name": "tag",
+                                                        "label": "标签",
+                                                        "placeholder": "",
+                                                        "clearable": true,
+                                                        "options": [
+                                                            {
+                                                                "label": "诸葛亮",
+                                                                "value": "zhugeliang"
+                                                            },
+                                                            {
+                                                                "label": "曹操",
+                                                                "value": "caocao"
+                                                            },
+                                                            {
+                                                                "label": "钟无艳",
+                                                                "value": "zhongwuyan"
+                                                            },
+                                                            {
+                                                                "label": "野核",
+                                                                "children": [
+                                                                    {
+                                                                        "label": "李白",
+                                                                        "value": "libai"
+                                                                    },
+                                                                    {
+                                                                        "label": "韩信",
+                                                                        "value": "hanxin"
+                                                                    },
+                                                                    {
+                                                                        "label": "云中君",
+                                                                        "value": "yunzhongjun"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "input-text",
+                                                        "disabled": true,
+                                                        "name": "disabled",
+                                                        "label": "禁用状态",
+                                                        "placeholder": "这里禁止输入内容"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "group",
+                                                "body": [
+                                                    {
+                                                        "type": "input-text",
+                                                        "name": "text-sug",
+                                                        "label": "文本提示",
+                                                        "options": [
+                                                            "lixiaolong",
+                                                            "zhouxingxing",
+                                                            "yipingpei",
+                                                            "liyuanfang"
+                                                        ],
+                                                        "addOn": {
+                                                            "type": "input-text",
+                                                            "label": "$"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "input-text",
+                                                        "name": "text-sug-multiple",
+                                                        "label": "文本提示多选",
+                                                        "multiple": true,
+                                                        "options": [
+                                                            "lixiaolong",
+                                                            "zhouxingxing",
+                                                            "yipingpei",
+                                                            "liyuanfang"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "button-toolbar",
+                                                "label": "按钮",
+                                                "buttons": [
+                                                    {
+                                                        "type": "action",
+                                                        "label": "默认"
+                                                    },
+                                                    {
+                                                        "type": "action",
+                                                        "label": "信息",
+                                                        "level": "info"
+                                                    },
+                                                    {
+                                                        "type": "action",
+                                                        "label": "主要",
+                                                        "level": "primary"
+                                                    },
+                                                    {
+                                                        "type": "action",
+                                                        "label": "次要",
+                                                        "level": "secondary"
+                                                    },
+                                                    {
+                                                        "type": "action",
+                                                        "label": "成功",
+                                                        "level": "success"
+                                                    },
+                                                    {
+                                                        "type": "action",
+                                                        "label": "警告",
+                                                        "level": "warning"
+                                                    },
+                                                    {
+                                                        "type": "action",
+                                                        "label": "危险",
+                                                        "level": "danger"
+                                                    },
+                                                    {
+                                                        "type": "action",
+                                                        "label": "浅色",
+                                                        "level": "light"
+                                                    },
+                                                    {
+                                                        "type": "action",
+                                                        "label": "深色",
+                                                        "level": "dark"
+                                                    },
+                                                    {
+                                                        "type": "action",
+                                                        "label": "链接",
+                                                        "level": "link"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "group",
+                                                "body": [
+                                                    {
+                                                        "type": "radios",
+                                                        "name": "radios",
+                                                        "label": "单选",
+                                                        "value": 3,
+                                                        "options": [
+                                                            {
+                                                                "label": "选项1",
+                                                                "value": 1
+                                                            },
+                                                            {
+                                                                "label": "选项2",
+                                                                "value": 2
+                                                            },
+                                                            {
+                                                                "label": "选项3",
+                                                                "disabled": true,
+                                                                "value": 3
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "checkboxes",
+                                                        "name": "checkboxes",
+                                                        "label": "多选框",
+                                                        "value": 3,
+                                                        "options": [
+                                                            {
+                                                                "label": "选项1",
+                                                                "value": 1
+                                                            },
+                                                            {
+                                                                "label": "选项2",
+                                                                "value": 2
+                                                            },
+                                                            {
+                                                                "label": "选项3",
+                                                                "disabled": true,
+                                                                "value": 3
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "group",
+                                                "body": [
+                                                    {
+                                                        "type": "switch",
+                                                        "name": "switch",
+                                                        "onText": "开",
+                                                        "offText": "关",
+                                                        "label": "开关"
+                                                    },
+                                                    {
+                                                        "type": "switch",
+                                                        "name": "switch2",
+                                                        "value": true,
+                                                        "label": "开关开启"
+                                                    },
+                                                    {
+                                                        "type": "switch",
+                                                        "name": "switch3",
+                                                        "value": true,
+                                                        "disabled": true,
+                                                        "label": "开关禁用"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "group",
+                                                "body": [
+                                                    {
+                                                        "type": "button-group-select",
+                                                        "name": "btn-group",
+                                                        "label": "按钮组",
+                                                        "options": [
+                                                            {
+                                                                "label": "选项 A",
+                                                                "value": 1
+                                                            },
+                                                            {
+                                                                "label": "选项 B",
+                                                                "value": 2
+                                                            },
+                                                            {
+                                                                "label": "选项 C",
+                                                                "value": 3
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "list-select",
+                                                        "name": "List",
+                                                        "label": "List",
+                                                        "options": [
+                                                            {
+                                                                "label": "选项 A",
+                                                                "value": 1
+                                                            },
+                                                            {
+                                                                "label": "选项 B",
+                                                                "value": 2
+                                                            },
+                                                            {
+                                                                "label": "选项 C",
+                                                                "value": 3
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "group",
+                                                "body": [
+                                                    {
+                                                        "type": "select",
+                                                        "name": "type",
+                                                        "label": "单选",
+                                                        "inline": true,
+                                                        "options": [
+                                                            {
+                                                                "label": "选项1",
+                                                                "value": 1
+                                                            },
+                                                            {
+                                                                "label": "选项2",
+                                                                "value": 2
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "select",
+                                                        "name": "type2",
+                                                        "label": "多选",
+                                                        "multiple": true,
+                                                        "inline": true,
+                                                        "options": [
+                                                            {
+                                                                "label": "选项1",
+                                                                "value": 1
+                                                            },
+                                                            {
+                                                                "label": "选项2",
+                                                                "value": 2
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "group",
+                                                "body": [
+                                                    {
+                                                        "type": "input-date",
+                                                        "name": "date",
+                                                        "inline": true,
+                                                        "label": "日期"
+                                                    },
+                                                    {
+                                                        "type": "input-time",
+                                                        "name": "time",
+                                                        "inline": true,
+                                                        "label": "时间"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "input-date-range",
+                                                "name": "daterangee",
+                                                "inline": true,
+                                                "label": "时间范围"
+                                            },
+                                            {
+                                                "type": "input-group",
+                                                "size": "sm",
+                                                "inline": true,
+                                                "label": "Icon 组合",
+                                                "body": [
+                                                    {
+                                                        "type": "icon",
+                                                        "addOnclassName": "no-bg",
+                                                        "className": "text-sm",
+                                                        "icon": "search"
+                                                    },
+                                                    {
+                                                        "type": "input-text",
+                                                        "placeholder": "搜索作业ID/名称",
+                                                        "inputClassName": "b-l-none p-l-none",
+                                                        "name": "jobName"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "input-tree",
+                                                "name": "tree",
+                                                "label": "树",
+                                                "options": [
+                                                    {
+                                                        "label": "Folder A",
+                                                        "value": 1,
+                                                        "children": [
+                                                            {
+                                                                "label": "file A",
+                                                                "value": 2
+                                                            },
+                                                            {
+                                                                "label": "file B",
+                                                                "value": 3
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "label": "file C",
+                                                        "value": 4
+                                                    },
+                                                    {
+                                                        "label": "file D",
+                                                        "value": 5
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "group",
+                                                "body": [
+                                                    {
+                                                        "type": "input-tree",
+                                                        "name": "trees",
+                                                        "label": "树多选",
+                                                        "multiple": true,
+                                                        "options": [
+                                                            {
+                                                                "label": "Folder A",
+                                                                "value": 1,
+                                                                "children": [
+                                                                    {
+                                                                        "label": "file A",
+                                                                        "value": 2
+                                                                    },
+                                                                    {
+                                                                        "label": "file B",
+                                                                        "value": 3
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "label": "file C",
+                                                                "value": 4
+                                                            },
+                                                            {
+                                                                "label": "file D",
+                                                                "value": 5
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "nested-select",
+                                                        "name": "nestedSelect",
+                                                        "label": "级联选择器",
+                                                        "options": [
+                                                            {
+                                                                "label": "概念",
+                                                                "value": "concepts",
+                                                                "children": [
+                                                                    {
+                                                                        "label": "配置与组件",
+                                                                        "value": "schema"
+                                                                    },
+                                                                    {
+                                                                        "label": "数据域与数据链",
+                                                                        "value": "scope"
+                                                                    },
+                                                                    {
+                                                                        "label": "模板",
+                                                                        "value": "template"
+                                                                    },
+                                                                    {
+                                                                        "label": "数据映射",
+                                                                        "value": "data-mapping"
+                                                                    },
+                                                                    {
+                                                                        "label": "表达式",
+                                                                        "value": "expression"
+                                                                    },
+                                                                    {
+                                                                        "label": "联动",
+                                                                        "value": "linkage"
+                                                                    },
+                                                                    {
+                                                                        "label": "行为",
+                                                                        "value": "action"
+                                                                    },
+                                                                    {
+                                                                        "label": "样式",
+                                                                        "value": "style"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "label": "类型",
+                                                                "value": "types",
+                                                                "children": [
+                                                                    {
+                                                                        "label": "SchemaNode",
+                                                                        "value": "schemanode"
+                                                                    },
+                                                                    {
+                                                                        "label": "API",
+                                                                        "value": "api"
+                                                                    },
+                                                                    {
+                                                                        "label": "Definitions",
+                                                                        "value": "definitions"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "label": "组件",
+                                                                "value": "zujian",
+                                                                "children": [
+                                                                    {
+                                                                        "label": "布局",
+                                                                        "value": "buju",
+                                                                        "children": [
+                                                                            {
+                                                                                "label": "Page 页面",
+                                                                                "value": "page"
+                                                                            },
+                                                                            {
+                                                                                "label": "Container 容器",
+                                                                                "value": "container"
+                                                                            },
+                                                                            {
+                                                                                "label": "Collapse 折叠器",
+                                                                                "value": "Collapse"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        "label": "功能",
+                                                                        "value": "gongneng",
+                                                                        "children": [
+                                                                            {
+                                                                                "label": "Action 行为按钮",
+                                                                                "value": "action-type"
+                                                                            },
+                                                                            {
+                                                                                "label": "App 多页应用",
+                                                                                "value": "app"
+                                                                            },
+                                                                            {
+                                                                                "label": "Button 按钮",
+                                                                                "value": "button"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        "label": "数据输入",
+                                                                        "value": "shujushuru",
+                                                                        "children": [
+                                                                            {
+                                                                                "label": "Form 表单",
+                                                                                "value": "form"
+                                                                            },
+                                                                            {
+                                                                                "label": "FormItem 表单项",
+                                                                                "value": "formitem"
+                                                                            },
+                                                                            {
+                                                                                "label": "Options 选择器表单项",
+                                                                                "value": "options"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        "label": "数据展示",
+                                                                        "value": "shujuzhanshi",
+                                                                        "children": [
+                                                                            {
+                                                                                "label": "CRUD 增删改查",
+                                                                                "value": "crud"
+                                                                            },
+                                                                            {
+                                                                                "label": "Table 表格",
+                                                                                "value": "table"
+                                                                            },
+                                                                            {
+                                                                                "label": "Card 卡片",
+                                                                                "value": "card"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        "label": "反馈",
+                                                                        "value": "fankui"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "matrix-checkboxes",
+                                                "name": "matrix",
+                                                "label": "矩阵开关",
+                                                "rowLabel": "行标题说明",
+                                                "columns": [
+                                                    {
+                                                        "label": "列1"
+                                                    },
+                                                    {
+                                                        "label": "列2"
+                                                    }
+                                                ],
+                                                "rows": [
+                                                    {
+                                                        "label": "行1"
+                                                    },
+                                                    {
+                                                        "label": "行2"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "combo",
+                                                "name": "combo2",
+                                                "label": "组合多条",
+                                                "multiple": true,
+                                                "value": [
+                                                    {}
+                                                ],
+                                                "items": [
+                                                    {
+                                                        "name": "a",
+                                                        "type": "input-text",
+                                                        "placeholder": "A"
+                                                    },
+                                                    {
+                                                        "name": "b",
+                                                        "type": "select",
+                                                        "options": [
+                                                            "a",
+                                                            "b",
+                                                            "c"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "input-file",
+                                                "name": "file",
+                                                "label": "文件上传",
+                                                "joinValues": false
+                                            },
+                                            {
+                                                "type": "input-range",
+                                                "name": "range",
+                                                "label": "范围"
+                                            },
+                                            {
+                                                "type": "divider"
+                                            }
+                                        ],
+                                        "actions": []
+                                    }
+                                },
+                                {
+                                    "title": "表格预览",
+                                    "tab": {
+                                        "type": "crud",
+                                        "syncLocation": false,
+                                        "data": {
+                                            "items": [
+                                                {
+                                                    "engine": "Trident",
+                                                    "browser": "Internet Explorer 4.0",
+                                                    "platform": "Win 95+",
+                                                    "version": "4",
+                                                    "id": 1
+                                                },
+                                                {
+                                                    "engine": "Trident",
+                                                    "browser": "Internet Explorer 5.0",
+                                                    "platform": "Win 95+",
+                                                    "id": 2
+                                                },
+                                                {
+                                                    "engine": "Trident",
+                                                    "browser": "Internet Explorer 5.5",
+                                                    "platform": "Win 95+",
+                                                    "id": 3
+                                                },
+                                                {
+                                                    "engine": "Trident",
+                                                    "browser": "Internet Explorer 6",
+                                                    "platform": "Win 98+",
+                                                    "id": 4
+                                                },
+                                                {
+                                                    "engine": "Trident",
+                                                    "browser": "Internet Explorer 7",
+                                                    "platform": "Win XP SP2+",
+                                                    "id": 5
+                                                },
+                                                {
+                                                    "engine": "Trident",
+                                                    "browser": "AOL browser (AOL desktop)",
+                                                    "platform": "Win XP",
+                                                    "id": 6
+                                                }
+                                            ]
+                                        },
+                                        "source": "${items}",
+                                        "columns": [
+                                            {
+                                                "name": "id",
+                                                "label": "ID"
+                                            },
+                                            {
+                                                "name": "engine",
+                                                "label": "Rendering engine"
+                                            },
+                                            {
+                                                "name": "browser",
+                                                "label": "Browser"
+                                            },
+                                            {
+                                                "name": "platform",
+                                                "label": "Platform(s)"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

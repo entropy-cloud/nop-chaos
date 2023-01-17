@@ -1,0 +1,74 @@
+{
+    "title": "自定义组件示例",
+    "body": [
+        {
+            "type": "form",
+            "mode": "horizontal",
+            "api": "/amis/api/mock2/form/saveForm?waitSeconds=2",
+            "debug": true,
+            "actions": [
+                {
+                    "type": "submit",
+                    "label": "提交",
+                    "primary": true
+                }
+            ],
+            "body": [
+                {
+                    "label": "姓名",
+                    "type": "text",
+                    "name": "name"
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "label": "使用 custom 组件",
+                    "name": "name",
+                    "type": "custom"
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "name": "a",
+                    "asFormItem": true
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "name": "b",
+                    "type": "my-custom",
+                    "label": "自定义FormItem"
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "control",
+                    "body": {
+                        "type": "my-renderer",
+                        "source": "${x}"
+                    }
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "label": "",
+                    "asFormItem": true
+                },
+                {
+                    "name": "c",
+                    "label": "",
+                    "asFormItem": true
+                }
+            ]
+        },
+        {
+            "type": "my-renderer",
+            "tip": "放表单外的情况"
+        }
+    ]
+}

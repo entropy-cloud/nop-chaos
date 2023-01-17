@@ -1,0 +1,19 @@
+{
+  "id": "",
+  "type": "bpmn",
+  "text": "",
+  "properties": {},
+  "nodes": [
+    
+    {
+      "id": "Activity_0fiu8id",
+      "type": "bpmn:userTask",
+      "x": 410,
+      "y": 130,
+      "properties": {}
+    }
+  ],
+  "edges": [
+    
+  ]
+}

@@ -1,0 +1,26 @@
+{
+    "type": "page",
+    "title": "自定义JS",
+    "regions": [
+        "body",
+        "toolbar",
+        "header"
+    ],
+    "body": [
+        {
+            "type": "button",
+            "label": "发送个请求",
+            "className": "ml-2",
+            "onEvent": {
+                "click": {
+                    "actions": [
+                        {
+                            "actionType": "custom",
+                            "script": "doAction({actionType: 'ajax',api: '/amis/api/mock2/form/saveForm'});\n //event.stopPropagation();"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

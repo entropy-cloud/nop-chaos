@@ -1,0 +1,65 @@
+{
+  "name": "@nop-chaos/nop-amis-editor",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.1.1",
+    "amis": "2.5.1",
+    "amis-core": "2.5.1",
+    "amis-editor": "^5.2.1-beta.32",
+    "amis-editor-core": "^5.2.1-beta.32",
+    "amis-formula": "2.5.1",
+    "amis-ui": "2.5.1",
+    "amis-widget": "^2.0.5",
+    "axios": "^0.27.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "web-vitals": "^2.1.0"
+  },
+  "homepage": "./",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
+    "@vitejs/plugin-react": "^3.0.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.0.0",
+    "vite-plugin-compression": "^0.5.1"
+  },
+  "resolutions": {
+   "@types/react": "^18.0.2",
+   "@types/react-dom": "^18.0.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "^18.0.2",
+      "@types/react-dom": "^18.0.2"
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

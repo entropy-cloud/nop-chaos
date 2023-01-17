@@ -1,0 +1,11 @@
+{
+    "title": "IFrame 可以用来嵌入其他网站",
+    "body": [
+        {
+            "type": "iframe",
+            "className": "b-a",
+            "src": "https://amis-admin-vue.vercel.app/index#/Editor",
+            "height": "90vh"
+        }
+    ]
+}
