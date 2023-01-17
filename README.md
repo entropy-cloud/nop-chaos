@@ -62,11 +62,19 @@ pnpm config set sentrycli_cdnurl=https://cdn.npm.taobao.org/dist/sentry-cli
 pnpm install
 ```
 
+
 - 开发调试
 
 ```bash
 pnpm dev
 ```
+初次执行速度会很慢，需要耐心等待
+
+- 测试
+打开登录页后，输入用户名nop, 密码123。
+
+目前因为nop-entropy项目尚未提交，无法连接Nop平台的后台，所以只能在MOCK模式下使用。可以修改
+packages/nop-site/public/mock/pages目录下的JSON文件查看效果。
 
 - 打包
 
