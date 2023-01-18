@@ -78,7 +78,7 @@ pnpm dev
 
 - 测试
   
-  > 在浏览器中输入http://localhost:8010, 进入登录页，用户名nop, 密码123。
+  > 在浏览器中输入http://localhost:8100, 进入登录页，用户名nop, 密码123。
 
 目前因为nop-entropy项目尚未提交，无法连接Nop平台的后台，所以只能在MOCK模式下使用。可以修改packages/nop-site/public/mock/pages目录下的JSON文件查看效果。
 
