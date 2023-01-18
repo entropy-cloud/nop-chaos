@@ -10,6 +10,9 @@ const {supportDebug,debug} = useDebug()
 
 export const getMenuList = () => {
   if (import.meta.env.VITE_USE_MOCK) {
+    // mock模式下总是开启调试功能
+    supportDebug.value = true
+    debug.value = true
     return import("../../../public/mock/get-menu-result.json").then(d => d.default.menu)
   }
 
