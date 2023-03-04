@@ -24,7 +24,7 @@ nop-chaos目前主要使用[百度AMIS框架](https://github.com/baidu/amis)来�
 
 nop-chaos采用pnpm多模块管理，具有如下模块：
 
-1. nop-site:  前端程序主框架以及对AMIS框架的集成。其中主框架是基于[jeecgboot-vue3](https://gitee.com/jeecg/jeecgboot-vue3)和[vben-admin](https://doc.vvbin.cn/guide/introduction)项目进行改造。nop-site对AMIS进行了一定的封装和增强，内部使用SystemJs来动态加载js模块。
+1. nop-site:  前端程序主框架以及对AMIS框架的集成。其中主框架是基于[jeecgboot-vue3](https://gitee.com/jeecg/jeecgboot-vue3)和[vben-admin](https://doc.vvbin.cn/guide/introduction)项目进行改造。nop-site对AMIS进行了一定的封装和增强，内部使用SystemJs来动态加载js模块（主要代码均在src/nop目录下）。
 
 2. nop-server-tool: 在服务端通过rollup对js库进行转换打包的工具。它负责将ESM模块文件翻译为SystemJs模块标准的js文件。这一模块主要是嵌入在后端Java程序中执行。
 
@@ -80,7 +80,9 @@ pnpm dev
   
   > 在浏览器中输入http://localhost:8100, 进入登录页，用户名nop, 密码123。
 
-目前因为nop-entropy项目尚未提交，无法连接Nop平台的后台，所以只能在MOCK模式下使用。可以修改packages/nop-site/public/mock/pages目录下的JSON文件查看效果。
+需要启动nop-entropy项目中的某个服务模块来提供给后端服务，例如nop-entropy/nop-demo/nop-quarkus-demo模块。
+
+如果希望不依赖任何服务启动，可以修改packages/nop-site/.env.development文件中的VITE_USE_MOCK = true。在MOCK模式下会使用packages/nop-site/public/mock/pages目录下的JSON文件来模拟后端服务响应。
 
 - 打包
 
