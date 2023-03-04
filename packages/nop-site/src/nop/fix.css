@@ -10,3 +10,15 @@ body.is-modalOpened .ant-popover{
 .cxd-Table--autoFillHeight .cxd-Table-footToolbar{
     padding:0
 }
+
+
+/**
+ * 不显示表单的heading。heading内部包含title
+ */
+.cxd-Panel.no-heading > .cxd-Panel-heading { 
+    display: none;
+}
+
+.cxd-Panel.actions-center > .cxd-Panel-footerWrap > .cxd-Panel-btnToolbar{
+    text-align: center;
+}
