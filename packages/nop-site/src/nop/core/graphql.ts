@@ -446,10 +446,22 @@ function argQuery(data: any, arg: ArgumentDefinition) {
                 let [name, op] = k.substring("filter_".length).split("__")
                 op = op || 'eq'
                 let value = data[k]
+
+                // 不提交空的查询条件                
+                if(value == null || value == '')
+                    continue;
+
+                // 如果传入字符串__empty，则实际提交的是空字符串
+                if(value == '__empty'){
+                    value = '';
+                }else if(value == '__null'){
+                    value = null;
+                }
+
                 let min = undefined
                 let max = undefined
 
-                if (op.startsWith("between")) {
+                if (op.startsWith("between") && value != null) {
                     let ary = isString(value) ? value.split(',') : value
                     min = ary[0]
                     max = ary[1]

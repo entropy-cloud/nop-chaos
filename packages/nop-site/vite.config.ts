@@ -62,14 +62,14 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     build: {
       minify: 'esbuild',
-      target: 'es2015',
-      cssTarget: 'chrome80',
+      //target: 'es2015',
+      //cssTarget: 'chrome80',
       outDir: OUTPUT_DIR,
       terserOptions: {
         compress: {
           keep_infinity: true,
           // Used to delete console in production environment
-          drop_console: VITE_DROP_CONSOLE,
+          //drop_console: VITE_DROP_CONSOLE,
           drop_debugger: true,
         },
       },
