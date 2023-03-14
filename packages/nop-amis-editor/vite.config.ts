@@ -10,7 +10,7 @@ export default defineConfig({
     react(),
     compressPlugin({
       ext: ".gz",
-      deleteOriginFile:true,
+      //deleteOriginFile:true,
       threshold: 1024
     })
   ],
@@ -19,12 +19,6 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           console.log("id="+id)
-          if (id.includes('node_modules/amis-editor')) {
-            return "amis-editor"; 
-          }
-          if (id.includes('node_modules/amis')) {
-            return "amis"; 
-          }
           if (id.includes('node_modules')) {
             return "vendor"; 
           }
