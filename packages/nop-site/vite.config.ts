@@ -80,8 +80,32 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         output: {
           manualChunks(id) {
             console.log("id="+id)
+            if (id.includes('node_modules/amis-editor')) {
+              return "amis-editor"; 
+            }
+            if (id.includes('node_modules/amis')) {
+              return "amis"; 
+            }
+            if (id.includes('node_modules/monaco-editor')) {
+              return "manaco-editor"; 
+            }
+            if (id.includes('node_modules/tinymce')) {
+              return "tinymce"; 
+            }
+            if (id.includes('node_modules/echarts')) {
+              return "echarts"; 
+            }
+            if (id.includes('node_modules/codemirror')) {
+              return "codemirror"; 
+            }
+            if (id.includes('node_modules/froala-editor')) {
+              return "froala-editor"; 
+            }
+            if (id.includes('node_modules/exceljs')) {
+              return "exceljs"; 
+            }
             if (id.includes('node_modules')) {
-              return; 
+              return "vendor"; 
             }
             return "app"
           }
