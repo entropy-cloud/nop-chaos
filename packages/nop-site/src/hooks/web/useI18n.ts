@@ -25,7 +25,12 @@ export function useI18n(namespace?: string): {
   t: I18nGlobalTranslation;
 } {
   const normalFn = {
-    t: (key: string) => {
+    t: (key: string,...arg:any[]) => {
+      if(i18n){
+        if (!key) return '';
+        if (!key.includes('.') && !namespace) return key;
+        return i18n.global.t(getKey(namespace, key), ...(arg as I18nTranslationRestParameters));
+      }
       return getKey(namespace, key);
     },
   };
