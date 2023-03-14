@@ -28,7 +28,9 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             return "vendor"; 
           }
-          return "app"
+          if (id.includes('/nop-amis-editor/src/')) {
+            return "source"; 
+          }
         }
       }
     }

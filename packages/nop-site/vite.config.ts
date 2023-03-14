@@ -107,7 +107,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             if (id.includes('node_modules')) {
               return "vendor"; 
             }
-            return "app"
+            if (id.includes('/nop-site/src/')) {
+              return "source"; 
+            }
           }
         }
       }
