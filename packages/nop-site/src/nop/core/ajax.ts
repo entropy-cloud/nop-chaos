@@ -22,6 +22,9 @@ import { toast, alert } from './ui'
 
 import { useGlobSetting } from '/@/hooks/setting';
 
+import {attachmentAdpator} from 'amis-core';
+import { makeTranslator } from "amis-core";
+
 const globSetting = useGlobSetting()
 
 const GRAPHQL_URL = '/graphql'
@@ -52,12 +55,14 @@ export type FetcherRequest = ApiObject & {
 	config?: AjaxConfig,
 	delimiter?: string,
 	valueField?: string,
-	labelField?: string
+	labelField?: string,
+	responseKey?: string // 如果返回的数据不是对象类型，可以用这个属性将它包装为{[responseKey]:data}
 }
+
 export type AjaxResponse = NonNullable<fetcherResult['data']>
 
 export type AjaxConfig = {
-	silent?:boolean,
+	silent?: boolean,
 	withCredentials?: boolean,
 	cancelExecutor?: (cancel: Function) => void;
 
@@ -99,7 +104,7 @@ export function ajaxRequest(options: FetcherRequest): Promise<any> {
 			}
 		}
 		if (d.data?.status != 0)
-			throw new Error(d.data?.msg ||  'ajax-fail:\ncode='+d.data?.code+',status='+d.data?.status);
+			throw new Error(d.data?.msg || 'ajax-fail:\ncode=' + d.data?.code + ',status=' + d.data?.status);
 		return d.data!.data
 	})
 }
@@ -128,7 +133,8 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 		method: options.method as any || 'post',
 		headers: options.headers || {},
 		data: options.data,
-		params: query
+		params: query,
+		responseType: options.responseType
 	}
 
 	if (options.config?.cancelExecutor) {
@@ -187,10 +193,22 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 			}
 			return response
 		}).then(response => {
-			let data = response.data || {}
+			if(options.responseType == 'blob'){
+				if(response.status == 401){
+					doLogout()
+				}
 
-			if (response.status == 401 || data.status == 401)
+				const __ = makeTranslator(currentLocale.value);
+				return attachmentAdpator(response, __);
+			}
+			let data = response.data || {}
+			if (response.status == 401 || data.status == 401){
 				doLogout()
+			}else if(data.status == 0 || data.status == 200){
+				if(options.responseKey){
+					data = { [options.responseKey]: data.data}
+				}
+			}
 
 			response.data = data
 			return response
@@ -212,7 +230,7 @@ function prepareHeaders(config: AxiosRequestConfig, opts: ExtOptions) {
 	if (token && opts.withToken !== false) {
 		// jwt token
 		//config.headers.Authorization = `${options.authenticationScheme} ${token}` : token;
-		//config.headers.Authorization = `Bearer ${token}`;
+		config.headers.Authorization = `Bearer ${token}`;
 		config.headers[ConfigEnum.TOKEN] = token;
 		//--update-begin--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
 

@@ -12,14 +12,24 @@ export const mainOutRoutes: AppRouteModule[] = [
   {
     path: '/amis/:path(.*\.page\.yaml)',
     name: 'default-page',
-    component: ()=> import('/@/nop/amis/AmisPage.vue'),
-    meta:{
+    component: () => import('/@/nop/amis/AmisPage.vue'),
+    meta: {
       title: 'Page',
       hideMenu: true,
-      hideBreadcrumb:true,
+      hideBreadcrumb: true,
     },
 
-    props:(route)=> ({ path: '/' + route.params.path})
+    props: (route) => ({ path: '/' + route.params.path })
+  },
+  {
+    path: '/test1',
+    name: 'test1',
+    component: () => import('../../nop/amis/AmisTest'),
+    meta: {
+      title: 'Test',
+      hideMenu: true,
+      hideBreadcrumb: true
+    }
   }
   // {
   //   path: '/main-out',

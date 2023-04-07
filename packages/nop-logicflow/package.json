@@ -1,9 +1,9 @@
 {
-  "name": "logicflow-vue-demo",
-  "version": "0.5.0",
+  "name": "@nop-chaos/nop-logicflow",
+  "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@7.1.0",
-  "description": "Logic Flow Vue Demo",
+  "description": "Logic Flow Vue Designer",
   "scripts": {
     "all": "pnpm clean && pnpm build",
     "dev": "vite",
@@ -18,8 +18,8 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
     "@highlightjs/vue-plugin": "^2.1.0",
-    "@logicflow/core": "^1.1.29",
-    "@logicflow/extension": "^1.1.29",
+    "@logicflow/core": "^1.2.1",
+    "@logicflow/extension": "^1.2.1",
     "ant-design-vue": "^3.2.13",
     "consola": "^2.15.3",
     "highlight.js": "^11.6.0",

@@ -36,8 +36,6 @@
     "@ant-design/icons-vue": "^6.1.0",
     "@fortawesome/fontawesome-free": "^6.1.1",
     "@iconify/iconify": "^2.2.1",
-    "@logicflow/core": "^1.1.13",
-    "@logicflow/extension": "^1.1.13",
     "@vue/reactivity": "^3.2.41",
     "@vue/runtime-core": "^3.2.33",
     "@vue/shared": "^3.2.33",
@@ -94,7 +92,12 @@
     "vue-router": "^4.0.14",
     "vue-types": "^4.1.1",
     "vuedraggable": "^4.1.0",
-    "xss": "^1.0.13"
+    "xss": "^1.0.13",
+
+    "@logicflow/core": "^1.2.1",
+    "@logicflow/extension": "^1.2.1",
+    "resize-detector": "^0.3.0",
+    "splitpanes": "^3.1.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.20.2",
