@@ -24,6 +24,7 @@ import { useGlobSetting } from '/@/hooks/setting';
 
 import {attachmentAdpator} from 'amis-core';
 import { makeTranslator } from "amis-core";
+import { TreeBean } from "./types";
 
 const globSetting = useGlobSetting()
 
@@ -56,6 +57,7 @@ export type FetcherRequest = ApiObject & {
 	delimiter?: string,
 	valueField?: string,
 	labelField?: string,
+	filter?: TreeBean,
 	responseKey?: string // 如果返回的数据不是对象类型，可以用这个属性将它包装为{[responseKey]:data}
 }
 

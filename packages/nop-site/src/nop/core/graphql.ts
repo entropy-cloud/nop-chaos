@@ -14,7 +14,7 @@ export type OperationDefinition = {
 export type ArgumentDefinition = {
     name: string
     type: string
-    builder?: (data: any, arg: ArgumentDefinition) => any
+    builder?: (data: any, arg: ArgumentDefinition, options: FetcherRequest) => any
 }
 
 export function handleGraphQL(config: AxiosRequestConfig<any>, graphqlUrl: string, options: FetcherRequest) {
@@ -130,7 +130,7 @@ function handleGraphQLUrl(opType: OperationType, url: string,
     const variables: Record<string, any> = {}
     args.forEach(arg => {
         const builder = arg.builder || defaultArgBuilders[arg.type] || argValue
-        variables[arg.name] = builder(data, arg)
+        variables[arg.name] = builder(data, arg, options)
     })
 
     config.transformResponse = [transformGraphQLResponse, res => {
@@ -409,7 +409,7 @@ function argFloat(data: any, arg: ArgumentDefinition) {
 /**
  * 通过 filter_XX__ge=3来表达 <ge name="XX" value="3" />这种过滤条件
  */
-function argQuery(data: any, arg: ArgumentDefinition) {
+function argQuery(data: any, arg: ArgumentDefinition, options: FetcherRequest) {
     let query: QueryBean = {}
     query.limit = data.limit ?? data.pageSize ?? data.perPage ?? 0
     query.offset = data.offset ?? (query.limit! * ((data.page || 0) - 1))
@@ -468,6 +468,14 @@ function argQuery(data: any, arg: ArgumentDefinition) {
                     value = undefined
                 }
                 filter.$body.push({ '$type': op, name, value, min, max })
+            }
+        }
+
+        if(options.filter){
+            if(options.filter.$type == 'and' || options.filter.$type == '_' || options.filter.$type == 'filter'){
+                filter.$body = filter.$body.concat(options.filter.$body || [])
+            }else{
+                filter.$body.push(options.filter)
             }
         }
 
