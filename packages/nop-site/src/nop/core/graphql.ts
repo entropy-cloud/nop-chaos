@@ -96,7 +96,7 @@ function handleGraphQLUrl(opType: OperationType, url: string,
             data = {
                 ['filter_' + options.valueField! + '__in']: values
             }
-            selection = "items{" + options.valueField + ',' + options.labelField + "}"
+            selection = "items{" + (options.valueField || 'id') + ',' + (options.labelField || 'id') + "}"
         }
     }
 

@@ -307,9 +307,8 @@ importers:
       '@fortawesome/fontawesome-free': ^6.1.1
       '@iconify/iconify': ^2.2.1
       '@iconify/json': ^2.1.30
-      '@logicflow/core': ^1.1.13
-      '@logicflow/extension': ^1.1.13
-      '@nop-chaos/nop-logicflow': workspace:*
+      '@logicflow/core': ^1.2.1
+      '@logicflow/extension': ^1.2.1
       '@purge-icons/generated': ^0.8.1
       '@rys-fe/vite-plugin-theme': ^0.8.6
       '@types/codemirror': ^5.60.5
@@ -400,6 +399,7 @@ importers:
       qs: ^6.10.3
       react: ^18.0.0
       react-dom: ^18.0.0
+      resize-detector: ^0.3.0
       resize-observer-polyfill: ^1.5.1
       rimraf: ^3.0.2
       rollup: ^2.70.2
@@ -407,6 +407,7 @@ importers:
       sass: ^1.55.0
       showdown: ^2.1.0
       sortablejs: ^1.15.0
+      splitpanes: ^3.1.1
       stylelint: ^14.7.1
       stylelint-config-prettier: ^9.0.3
       stylelint-config-recommended: ^7.0.0
@@ -418,6 +419,7 @@ importers:
       ts-jest: ^27.0.7
       ts-node: ^10.7.0
       typescript: ^4.6.3
+      urql: ^4.0.4
       uuid: ^9.0.0
       vditor: ^3.8.13
       veaury: ^2.3.8
@@ -452,9 +454,8 @@ importers:
       '@ant-design/icons-vue': registry.npmmirror.com/@ant-design/icons-vue/6.1.0_vue@3.2.47
       '@fortawesome/fontawesome-free': registry.npmmirror.com/@fortawesome/fontawesome-free/6.3.0
       '@iconify/iconify': registry.npmmirror.com/@iconify/iconify/2.2.1
-      '@logicflow/core': registry.npmmirror.com/@logicflow/core/1.1.31
-      '@logicflow/extension': registry.npmmirror.com/@logicflow/extension/1.1.31
-      '@nop-chaos/nop-logicflow': link:../nop-logicflow
+      '@logicflow/core': registry.npmmirror.com/@logicflow/core/1.2.1
+      '@logicflow/extension': registry.npmmirror.com/@logicflow/extension/1.2.1
       '@vue/reactivity': registry.npmmirror.com/@vue/reactivity/3.2.47
       '@vue/runtime-core': registry.npmmirror.com/@vue/runtime-core/3.2.47
       '@vue/shared': registry.npmmirror.com/@vue/shared/3.2.47
@@ -493,11 +494,14 @@ importers:
       qs: registry.npmmirror.com/qs/6.11.0
       react: registry.npmmirror.com/react/18.2.0
       react-dom: registry.npmmirror.com/react-dom/18.2.0_react@18.2.0
+      resize-detector: registry.npmmirror.com/resize-detector/0.3.0
       resize-observer-polyfill: registry.npmmirror.com/resize-observer-polyfill/1.5.1
       sass: registry.npmmirror.com/sass/1.58.3
       showdown: registry.npmmirror.com/showdown/2.1.0
       sortablejs: registry.npmmirror.com/sortablejs/1.15.0
+      splitpanes: registry.npmmirror.com/splitpanes/3.1.5
       systemjs: registry.npmmirror.com/systemjs/6.14.0
+      urql: registry.npmmirror.com/urql/4.0.4_react@18.2.0
       uuid: registry.npmmirror.com/uuid/9.0.0
       vditor: registry.npmmirror.com/vditor/3.9.0
       veaury: registry.npmmirror.com/veaury/2.3.12_biqbaboplfbrettd7655fr4n2y
@@ -644,6 +648,17 @@ importers:
       vite: registry.npmmirror.com/vite/4.1.4_less@3.13.1
 
 packages:
+
+  registry.npmmirror.com/@0no-co/graphql.web/1.0.4:
+    resolution: {integrity: sha512-W3ezhHGfO0MS1PtGloaTpg0PbaT8aZSmmaerL7idtU5F7oCI+uu25k+MsMS31BVFlp4aMkHSrNRxiD72IlK8TA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@0no-co/graphql.web/-/graphql.web-1.0.4.tgz}
+    name: '@0no-co/graphql.web'
+    version: 1.0.4
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+    peerDependenciesMeta:
+      graphql:
+        optional: true
+    dev: false
 
   registry.npmmirror.com/@adobe/css-tools/4.2.0:
     resolution: {integrity: sha512-E09FiIft46CmH5Qnjb0wsW54/YQd69LsxeKUOWawmws1XWvyFGURnAChH0mlr7YPFR1ofwvUQfcL0J3lMxXqPA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@adobe/css-tools/-/css-tools-4.2.0.tgz}
@@ -5514,16 +5529,6 @@ packages:
     version: 3.4.0
     dev: false
 
-  registry.npmmirror.com/@logicflow/core/1.1.31:
-    resolution: {integrity: sha512-TQYJoxhqSzWBvw/NkI5hNZ8WkfS7JDLrvp56EU/OYo6Nbusj2n8/ya8XaMM50+GXqnp6+38t3RAGCC9Dk9cmhA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@logicflow/core/-/core-1.1.31.tgz}
-    name: '@logicflow/core'
-    version: 1.1.31
-    dependencies:
-      '@types/mousetrap': registry.npmmirror.com/@types/mousetrap/1.6.11
-      mousetrap: registry.npmmirror.com/mousetrap/1.6.5
-      preact: registry.npmmirror.com/preact/10.13.0
-    dev: false
-
   registry.npmmirror.com/@logicflow/core/1.2.1:
     resolution: {integrity: sha512-m6/K7I85jFfCWcrNEQQpchomUWM4ZUjcOhHjsVhejnfpoEx7jke3tSJlh41LyT9hIUEIy7nxnphp5L4YB+InCA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@logicflow/core/-/core-1.2.1.tgz}
     name: '@logicflow/core'
@@ -5531,16 +5536,6 @@ packages:
     dependencies:
       '@types/mousetrap': registry.npmmirror.com/@types/mousetrap/1.6.11
       mousetrap: registry.npmmirror.com/mousetrap/1.6.5
-      preact: registry.npmmirror.com/preact/10.13.0
-    dev: false
-
-  registry.npmmirror.com/@logicflow/extension/1.1.31:
-    resolution: {integrity: sha512-MUDdP7Anf3OmIEVmJTlIH8e5h2yrdqlwWYCDjDoh9R1IOfzR4wCvEiH4HgOkadTsGtfaihFRyFnPIYT1cu7oUA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@logicflow/extension/-/extension-1.1.31.tgz}
-    name: '@logicflow/extension'
-    version: 1.1.31
-    dependencies:
-      '@logicflow/core': registry.npmmirror.com/@logicflow/core/1.1.31
-      ids: registry.npmmirror.com/ids/1.0.0
       preact: registry.npmmirror.com/preact/10.13.0
     dev: false
 
@@ -6985,6 +6980,17 @@ packages:
     version: 1.1.0
     dev: false
 
+  registry.npmmirror.com/@urql/core/4.0.10:
+    resolution: {integrity: sha512-Vs3nOSAnYftqOCg034Ostp/uSqWlQg5ryLIzcOrm8+O43s4M+Ew4GQAuemIH7ZDB8dek6h61zzWI3ujd8FH3NA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@urql/core/-/core-4.0.10.tgz}
+    name: '@urql/core'
+    version: 4.0.10
+    dependencies:
+      '@0no-co/graphql.web': registry.npmmirror.com/@0no-co/graphql.web/1.0.4
+      wonka: registry.npmmirror.com/wonka/6.3.2
+    transitivePeerDependencies:
+      - graphql
+    dev: false
+
   registry.npmmirror.com/@vitejs/plugin-legacy/3.0.2_terser@5.16.5+vite@4.1.4:
     resolution: {integrity: sha512-9BT2mXunC7kQGKHP70BIbNZ/85P/KUMGKBS9CiV+XKNDZGNBjUnyrh3ofgtqgObmxKaEP2xJsEIRNIFJ+hjI8w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vitejs/plugin-legacy/-/plugin-legacy-3.0.2.tgz}
     id: registry.npmmirror.com/@vitejs/plugin-legacy/3.0.2
@@ -7066,7 +7072,7 @@ packages:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: registry.npmmirror.com/vite/4.1.4
+      vite: registry.npmmirror.com/vite/4.1.4_ptbdpn7ddl4yuve57ag34btdna
       vue: registry.npmmirror.com/vue/3.2.47
     dev: true
 
@@ -7579,10 +7585,10 @@ packages:
     name: amis-core
     version: 2.6.0
     peerDependencies:
-      amis-formula: '*'
       react: '>=16.8.6'
       react-dom: '>=16.8.6'
     dependencies:
+      amis-formula: registry.npmmirror.com/amis-formula/2.6.0
       classnames: registry.npmmirror.com/classnames/2.3.1
       file-saver: registry.npmmirror.com/file-saver/2.0.5
       hoist-non-react-statics: registry.npmmirror.com/hoist-non-react-statics/3.3.2
@@ -7952,12 +7958,12 @@ packages:
     version: 2.6.0
     peerDependencies:
       amis-core: '*'
-      amis-formula: '*'
       react: '>=16.8.6'
       react-dom: '>=16.8.6'
     dependencies:
       '@rc-component/mini-decimal': registry.npmmirror.com/@rc-component/mini-decimal/1.0.1
       amis-core: registry.npmmirror.com/amis-core/2.6.0_biqbaboplfbrettd7655fr4n2y
+      amis-formula: registry.npmmirror.com/amis-formula/2.6.0
       classnames: registry.npmmirror.com/classnames/2.3.1
       codemirror: registry.npmmirror.com/codemirror/5.65.12
       downshift: registry.npmmirror.com/downshift/6.1.12_react@18.2.0
@@ -26752,6 +26758,21 @@ packages:
       fast-url-parser: registry.npmmirror.com/fast-url-parser/1.1.3
     dev: true
 
+  registry.npmmirror.com/urql/4.0.4_react@18.2.0:
+    resolution: {integrity: sha512-C5P4BMnAsk+rbytCWglit5ijXbIKXsa9wofSGPbuMyJKsDdL+9GfipS362Nff/Caag+eYOK5W+sox8fwEILT6Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/urql/-/urql-4.0.4.tgz}
+    id: registry.npmmirror.com/urql/4.0.4
+    name: urql
+    version: 4.0.4
+    peerDependencies:
+      react: '>= 16.8.0'
+    dependencies:
+      '@urql/core': registry.npmmirror.com/@urql/core/4.0.10
+      react: registry.npmmirror.com/react/18.2.0
+      wonka: registry.npmmirror.com/wonka/6.3.2
+    transitivePeerDependencies:
+      - graphql
+    dev: false
+
   registry.npmmirror.com/use-composed-ref/1.3.0_react@16.14.0:
     resolution: {integrity: sha512-GLMG0Jc/jiKov/3Ulid1wbv3r54K9HlMW29IWcDFPEqFkSO2nS0MuefWgMJpeHQ9YJeXDL3ZUF+P3jdXlZX/cQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/use-composed-ref/-/use-composed-ref-1.3.0.tgz}
     id: registry.npmmirror.com/use-composed-ref/1.3.0
@@ -27067,7 +27088,7 @@ packages:
       chalk: registry.npmmirror.com/chalk/4.1.2
       debug: registry.npmmirror.com/debug/4.3.4
       fs-extra: registry.npmmirror.com/fs-extra/10.1.0
-      vite: registry.npmmirror.com/vite/4.1.4_@types+node@16.18.14
+      vite: registry.npmmirror.com/vite/4.1.4_ptbdpn7ddl4yuve57ag34btdna
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -27267,7 +27288,7 @@ packages:
       fs-extra: registry.npmmirror.com/fs-extra/10.1.0
       magic-string: registry.npmmirror.com/magic-string/0.25.9
       pathe: registry.npmmirror.com/pathe/0.2.0
-      vite: registry.npmmirror.com/vite/4.1.4_@types+node@18.14.6
+      vite: registry.npmmirror.com/vite/4.1.4_ptbdpn7ddl4yuve57ag34btdna
     dev: true
 
   registry.npmmirror.com/vite-plugin-svg-icons/2.0.1_vite@4.1.4:
@@ -27998,6 +28019,12 @@ packages:
     engines: {node: '>= 12'}
     hasBin: true
     dev: true
+
+  registry.npmmirror.com/wonka/6.3.2:
+    resolution: {integrity: sha512-2xXbQ1LnwNS7egVm1HPhW2FyKrekolzhpM3mCwXdQr55gO+tAiY76rhb32OL9kKsW8taj++iP7C6hxlVzbnvrw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/wonka/-/wonka-6.3.2.tgz}
+    name: wonka
+    version: 6.3.2
+    dev: false
 
   registry.npmmirror.com/word-wrap/1.2.3:
     resolution: {integrity: sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/word-wrap/-/word-wrap-1.2.3.tgz}
