@@ -15,6 +15,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
     "amis": "^3.1.0",
     "amis-core": "^3.1.0",
     "amis-ui": "^3.1.0",

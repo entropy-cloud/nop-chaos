@@ -23,6 +23,7 @@ importers:
 
   packages/nop-amis-demo:
     specifiers:
+      '@fortawesome/fontawesome-free': ^5.15.3
       '@nop-chaos/nop-amis-ext': workspace:*
       '@types/react': ^18.2.14
       '@types/react-dom': ^18.2.6
@@ -41,6 +42,7 @@ importers:
       typescript: ^5.0.2
       vite: ^4.4.0
     dependencies:
+      '@fortawesome/fontawesome-free': registry.npmmirror.com/@fortawesome/fontawesome-free/5.15.4
       '@nop-chaos/nop-amis-ext': link:../nop-amis-ext
       amis: registry.npmmirror.com/amis/3.1.1_bqc4e4l6rfzk5d5hbkj7sjpu5y
       amis-core: registry.npmmirror.com/amis-core/3.1.1_qzycrpzqvmvb7wd2jdibmpq2cy
@@ -4750,6 +4752,14 @@ packages:
     engines: {npm: '>=3.0.0'}
     dependencies:
       '@formily/shared': registry.npmmirror.com/@formily/shared/2.2.26
+    dev: false
+
+  registry.npmmirror.com/@fortawesome/fontawesome-free/5.15.4:
+    resolution: {integrity: sha512-eYm8vijH/hpzr/6/1CJ/V/Eb1xQFW2nnUKArb3z+yUWv7HTwj6M7SP957oMjfZjAHU6qpoNc2wQvIxBLWYa/Jg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.15.4.tgz}
+    name: '@fortawesome/fontawesome-free'
+    version: 5.15.4
+    engines: {node: '>=6'}
+    requiresBuild: true
     dev: false
 
   registry.npmmirror.com/@fortawesome/fontawesome-free/6.4.0:
