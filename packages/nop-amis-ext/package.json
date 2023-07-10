@@ -8,6 +8,13 @@
   },
   "private": true,
   "type": "module",
+  "types": "lib/src/index.d.ts",
+  "main": "lib/src/index.js",
+  "files": [
+    "assets",
+    "src"
+  ],
+  
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

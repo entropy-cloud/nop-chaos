@@ -8,7 +8,7 @@ import {RenderOptions, RendererProps, render as renderAmis} from 'amis'
 import page from './demo.page'
 import { RootRenderProps } from 'amis-core/lib/Root'
 
-import "@nop-chaos/nop-amis-ext/dist/nop-amis-ext.mjs"
+import "@nop-chaos/nop-amis-ext"
 
 function App() {
   const options: RenderOptions = {

@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "lib",
     "rootDir": "./",
     "module": "ESNext",
     "target": "es5",
     "lib": ["ES6", "DOM", "ES2015", "ES2021"],
     "jsx": "react",
     "moduleResolution": "node",
+    "declaration": true,
     "importHelpers": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -30,8 +31,6 @@
   "types": ["typePatches"],
   "references": [],
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.jsx"
+    "src"
   ]
 }
