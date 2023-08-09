@@ -43,7 +43,7 @@
           "
         >
           <keep-alive>
-            <component :is="propertiesPanel.component" />
+            <!-- component :is="propertiesPanel.component" /-->
           </keep-alive>
         </Pane>
       </Splitpanes>
