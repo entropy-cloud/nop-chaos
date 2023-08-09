@@ -99,14 +99,31 @@ export async function collectActions(pageUrl: string, json: any, fnScope: string
     if (isString(v)) {
       // 为每个action增加scope前缀
       if (v.startsWith("@action:")) {
-        return "@temp-action:" + amisScope + ',' + fnScope + '|' + v.substring('@action:'.length)
+        return "temp-action://" + amisScope + ',' + fnScope + '|' + v.substring('@action:'.length)
+      }else if(v.startsWith("action://")){
+        return "temp-action://" + amisScope + ',' + fnScope + '|' + v.substring('action://'.length)
       } else if (v.startsWith("@page:")) {
         // 为@page:path这种形式的链接增加scope信息
-        return "@scoped-page:" + amisScope + ',' + fnScope + '|' + v.substring("@page:".length)
+        return "scoped-page://" + amisScope + ',' + fnScope + '|' + v.substring("@page:".length)
+      }else if(v.startsWith("page://")){
+        return "scoped-page://" + amisScope + ',' + fnScope + '|' + v.substring("page://".length)
       } else if (v.startsWith("@invoke:")) {
-        return "@scoped-invoke:" + amisScope + '|' + v.substring("@invoke:".length)
+        return "scoped-invoke://" + amisScope + '|' + v.substring("@invoke:".length)
+      }else if(v.startsWith("invoke://")){
+        return "scoped-invoke://" + amisScope + '|' + v.substring("invoke://".length)
       } else if (v.startsWith("@fn:")) {
-        return "@scoped-fn:" + fnScope + '|' + v.substring("@fn:".length)
+        return "scoped-fn://" + fnScope + '|' + v.substring("@fn:".length)
+      } else if(v.startsWith("fn://")){
+        return "scoped-fn://" + fnScope + '|' + v.substring("fn://".length)
+      } else if(v.startsWith("@query:")){
+        // amis的新版本要求url必须满足URL格式，必须是schema://path形式
+        return "query://" +  v.substring("@query:".length)
+      } else if(v.startsWith("@mutation:")){
+        return "mutation://" +  v.substring("@mutation:".length)
+      } else if(v.startsWith("@graphql:")){
+        return "graphql://" +  v.substring("@graphql:".length)
+      } else if(v.startsWith("@dict:")){
+        return "dict://" +  v.substring("@dict:".length)
       }
     } else if (isPlainObject(v)) {
       process(v, fnScope, amisScope)
@@ -123,8 +140,8 @@ export async function collectActions(pageUrl: string, json: any, fnScope: string
   await Promise.all(promises)
 
   processXuiValue(json, v => {
-    if (v.startsWith("@temp-action:")) {
-      const parts = v.substring("@temp-action:".length).split('|')
+    if (v.startsWith("temp-action://")) {
+      const parts = v.substring("temp-action://".length).split('|')
       const [amisScope, fnScope] = parts[0].split(',')
       let action = fnScope + '|' + parts[1]
       let found = findAction(action, actions)
@@ -136,13 +153,13 @@ export async function collectActions(pageUrl: string, json: any, fnScope: string
         }
       }
       if (found) {
-        return "@scoped-action:" + amisScope + ',' + found;
+        return "scoped-action://" + amisScope + ',' + found;
       } else {
         console.error("nop.unknown-action:" + action)
-        return "@unknown-action:"+action
+        return "unknown-action://"+action
       }
-    } else if (v.startsWith("@scoped-fn:")) {
-      const [fnScope, fn] = v.substring("@scoped-fn:".length).split('|')
+    } else if (v.startsWith("scoped-fn://")) {
+      const [fnScope, fn] = v.substring("scoped-fn://".length).split('|')
       const fnName = fn.split('(')[0]
       const args = fn.substring(fnName.length) || '(event,props)';
       let action = fnScope + '|' + fnName
@@ -158,7 +175,7 @@ export async function collectActions(pageUrl: string, json: any, fnScope: string
         return "return props.env._page.actions['" + action + "']" + args;
       } else {
         console.error("nop.unknown-fn:" + action)
-        return "@unknown-fn:"+fn
+        return "unknown-fn://"+fn
       }
     } else {
       return v;

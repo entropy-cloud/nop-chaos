@@ -24,15 +24,30 @@ export function handleGraphQL(config: AxiosRequestConfig<any>, graphqlUrl: strin
         config.method = 'post'
         handleGraphQLUrl("query", url.substring('@query:'.length), config, graphqlUrl, options)
         return true
+    } else if (url.startsWith("query://")) {
+        normalizeData(config)
+        config.method = 'post'
+        handleGraphQLUrl("query", url.substring('query://'.length), config, graphqlUrl, options)
+        return true
     } else if (url.startsWith("@mutation:")) {
         normalizeData(config)
         config.method = 'post'
         handleGraphQLUrl("mutation", url.substring('@mutation:'.length), config, graphqlUrl, options)
         return true
+    } else if (url.startsWith("mutation://")) {
+        normalizeData(config)
+        config.method = 'post'
+        handleGraphQLUrl("mutation", url.substring('mutation://'.length), config, graphqlUrl, options)
+        return true
     } else if (url.startsWith("@subscription:")) {
         normalizeData(config)
         config.method = 'post'
         handleGraphQLUrl("subscription", url.substring("@subscription:".length), config, graphqlUrl, options)
+        return true
+    } else if (url.startsWith("subscription://")) {
+        normalizeData(config)
+        config.method = 'post'
+        handleGraphQLUrl("subscription", url.substring('subscription://'.length), config, graphqlUrl, options)
         return true
     } else if (url.endsWith("/graphql") || url.indexOf("/graphql?") >= 0) {
         normalizeData(config)
@@ -72,11 +87,11 @@ function handleGraphQLUrl(opType: OperationType, url: string,
 
     const action = pos2 > 0 ? url.substring(0, pos2) : url
     let selection = pos2 > 0 ? url.substring(pos2 + 1) : null
-    if(selection){
-        selection = selection.replaceAll('%20',' ');
-        selection = selection.replaceAll('%0A','\n');
+    if (selection) {
+        selection = selection.replaceAll('%20', ' ');
+        selection = selection.replaceAll('%0A', '\n');
     }
-    if(!selection){
+    if (!selection) {
         selection = options['gql:selection']
     }
 
@@ -448,13 +463,13 @@ function argQuery(data: any, arg: ArgumentDefinition, options: FetcherRequest) {
                 let value = data[k]
 
                 // 不提交空的查询条件                
-                if(value == null || value == '')
+                if (value == null || value == '')
                     continue;
 
                 // 如果传入字符串__empty，则实际提交的是空字符串
-                if(value == '__empty'){
+                if (value == '__empty') {
                     value = '';
-                }else if(value == '__null'){
+                } else if (value == '__null') {
                     value = null;
                 }
 
@@ -471,10 +486,10 @@ function argQuery(data: any, arg: ArgumentDefinition, options: FetcherRequest) {
             }
         }
 
-        if(options.filter){
-            if(options.filter.$type == 'and' || options.filter.$type == '_' || options.filter.$type == 'filter'){
+        if (options.filter) {
+            if (options.filter.$type == 'and' || options.filter.$type == '_' || options.filter.$type == 'filter') {
                 filter.$body = filter.$body.concat(options.filter.$body || [])
-            }else{
+            } else {
                 filter.$body.push(options.filter)
             }
         }

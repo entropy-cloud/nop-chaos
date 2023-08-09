@@ -20,6 +20,18 @@ import { registerThirdComp } from '/@/settings/registerThirdComp';
 import { useSso } from '/@/hooks/web/useSso';
 import { registerPackages } from '/@/utils/monorepo/registerPackages';
 
+// Amis内置的调试器需要这里的css
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/css/v4-shims.css';
+import 'amis/lib/themes/cxd.css';
+// import 'amis/lib/helper.css';
+//import 'amis/sdk/iconfont.css';
+import 'amis-ui/lib/locale/en-US';
+import 'amis-ui/lib/locale/zh-CN';
+
+// 为amis的helper.css增加命名空间，避免和jeecg的css冲突
+import './nop/css/helper.less'
+
 import {initNopApp} from '/@/nop/initNopApp'
 
 // 在本地开发中引入的,以提高浏览器响应速度

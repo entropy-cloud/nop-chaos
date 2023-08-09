@@ -2,17 +2,7 @@ import type { App } from 'vue';
 
 //import AmisPage from './amis/AmisPage.vue'
 
-// Amis内置的调试器需要这里的css
-import '@fortawesome/fontawesome-free/css/all.css';
-import '@fortawesome/fontawesome-free/css/v4-shims.css';
-import 'amis/lib/themes/cxd.css';
-// import 'amis/lib/helper.css';
-//import 'amis/sdk/iconfont.css';
-import 'amis-ui/lib/locale/en-US';
-import 'amis-ui/lib/locale/zh-CN';
 
-// 为amis的helper.css增加命名空间，避免和jeecg的css冲突
-import './css/helper.less'
 
 import './amis/AmisVueComponent'
 
