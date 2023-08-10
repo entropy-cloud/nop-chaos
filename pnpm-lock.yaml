@@ -597,17 +597,17 @@ importers:
         specifier: ^2.0.1
         version: registry.npmmirror.com/@zxcvbn-ts/core@2.2.1
       amis:
-        specifier: ^3.3.0
-        version: registry.npmmirror.com/amis@3.3.0(@types/react@18.2.14)(amis-core@3.3.0)(amis-ui@3.3.0)(office-viewer@0.1.5)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 2.6.0
+        version: registry.npmmirror.com/amis@2.6.0(amis-core@2.6.0)(amis-ui@2.6.0)(react-dom@18.2.0)(react@18.2.0)
       amis-core:
-        specifier: ^3.3.0
-        version: registry.npmmirror.com/amis-core@3.3.0(@types/react@18.2.14)(amis-formula@3.3.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 2.6.0
+        version: registry.npmmirror.com/amis-core@2.6.0(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0)
       amis-formula:
-        specifier: ^3.3.0
-        version: registry.npmmirror.com/amis-formula@3.3.0
+        specifier: 2.6.0
+        version: registry.npmmirror.com/amis-formula@2.6.0
       amis-ui:
-        specifier: ^3.3.0
-        version: registry.npmmirror.com/amis-ui@3.3.0(@types/react@18.2.14)(amis-core@3.3.0)(amis-formula@3.3.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 2.6.0
+        version: registry.npmmirror.com/amis-ui@2.6.0(amis-core@2.6.0)(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0)
       ant-design-vue:
         specifier: ^3.2.12
         version: registry.npmmirror.com/ant-design-vue@3.2.20(vue@3.3.4)
@@ -8694,6 +8694,40 @@ packages:
       uri-js: registry.npmmirror.com/uri-js@4.4.1
     dev: true
 
+  registry.npmmirror.com/amis-core@2.6.0(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ZdYUdvYwe2XCZaTXlyAdP3l4bpbeJN5jwKO2juxSqGEgcW17YD1NvQn/y+Rb3rZBEZ9wDGoCrzX4ryVjBtBWZA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis-core/-/amis-core-2.6.0.tgz}
+    id: registry.npmmirror.com/amis-core/2.6.0
+    name: amis-core
+    version: 2.6.0
+    peerDependencies:
+      amis-formula: '*'
+      react: '>=16.8.6'
+      react-dom: '>=16.8.6'
+    dependencies:
+      amis-formula: registry.npmmirror.com/amis-formula@2.6.0
+      classnames: registry.npmmirror.com/classnames@2.3.1
+      file-saver: registry.npmmirror.com/file-saver@2.0.5
+      hoist-non-react-statics: registry.npmmirror.com/hoist-non-react-statics@3.3.2
+      lodash: registry.npmmirror.com/lodash@4.17.21
+      match-sorter: registry.npmmirror.com/match-sorter@6.3.1
+      mobx: registry.npmmirror.com/mobx@4.15.7
+      mobx-react: registry.npmmirror.com/mobx-react@6.3.1(mobx@4.15.7)(react-dom@18.2.0)(react@18.2.0)
+      mobx-state-tree: registry.npmmirror.com/mobx-state-tree@3.17.3(mobx@4.15.7)
+      moment: registry.npmmirror.com/moment@2.29.4
+      papaparse: registry.npmmirror.com/papaparse@5.4.1
+      qs: registry.npmmirror.com/qs@6.9.7
+      react: registry.npmmirror.com/react@18.2.0
+      react-dom: registry.npmmirror.com/react-dom@18.2.0(react@18.2.0)
+      react-json-view: registry.npmmirror.com/react-json-view@1.21.3(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
+      react-visibility-sensor: registry.npmmirror.com/react-visibility-sensor@5.1.1(react-dom@18.2.0)(react@18.2.0)
+      tslib: registry.npmmirror.com/tslib@2.6.0
+      uncontrollable: registry.npmmirror.com/uncontrollable@7.2.1(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - encoding
+      - react-native
+    dev: false
+
   registry.npmmirror.com/amis-core@3.1.1(@types/react@18.2.14)(amis-formula@3.3.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-9jdpJiQiBMgoEzO796wbpfNrxJ6+h2q250s1B8s3jUivAg4LCoLkU/xYDK6SxGRySv6M6ncnWMAWoxiqnRzO6g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis-core/-/amis-core-3.1.1.tgz}
     id: registry.npmmirror.com/amis-core/3.1.1
@@ -8838,6 +8872,16 @@ packages:
       - react-native
     dev: false
 
+  registry.npmmirror.com/amis-formula@2.6.0:
+    resolution: {integrity: sha512-tF41ls3Z16ik3UMEutGUwmC1EX8912qyGeu++v+Ind28n8ZJWExAcmEufB8WrU+UUcTkfd0aza5o0hiZHRUV5w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis-formula/-/amis-formula-2.6.0.tgz}
+    name: amis-formula
+    version: 2.6.0
+    dependencies:
+      lodash: registry.npmmirror.com/lodash@4.17.21
+      moment: registry.npmmirror.com/moment@2.29.4
+      tslib: registry.npmmirror.com/tslib@2.6.0
+    dev: false
+
   registry.npmmirror.com/amis-formula@3.3.0:
     resolution: {integrity: sha512-lqJi+7vFDJidoKjuWiJUAOVyotd+w1OazXqEFbivqTK8DUfFunxmHr0e3IdbIg5h9OeZ4TlgkuCSV6Y0mmuTpw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis-formula/-/amis-formula-3.3.0.tgz}
     name: amis-formula
@@ -8877,6 +8921,59 @@ packages:
       amis-theme-editor-helper: registry.npmmirror.com/amis-theme-editor-helper@2.0.11-beta.2
       amis-ui: registry.npmmirror.com/amis-ui@3.3.0(@types/react@18.2.14)(amis-core@3.3.0)(amis-formula@3.3.0)(react-dom@18.2.0)(react@18.2.0)
       i18n-runtime: registry.npmmirror.com/i18n-runtime@1.0.2(amis-core@3.3.0)
+    dev: false
+
+  registry.npmmirror.com/amis-ui@2.6.0(amis-core@2.6.0)(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-r28KT3TSzpBr7v/WrWQKPf4KO2FUMIUnLM0+LmQuhStQs402sPfl682NFtTCQbrFQvJMpkaQCYMp6COseeqMIA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis-ui/-/amis-ui-2.6.0.tgz}
+    id: registry.npmmirror.com/amis-ui/2.6.0
+    name: amis-ui
+    version: 2.6.0
+    peerDependencies:
+      amis-core: '*'
+      amis-formula: '*'
+      react: '>=16.8.6'
+      react-dom: '>=16.8.6'
+    dependencies:
+      '@rc-component/mini-decimal': registry.npmmirror.com/@rc-component/mini-decimal@1.1.0
+      amis-core: registry.npmmirror.com/amis-core@2.6.0(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0)
+      amis-formula: registry.npmmirror.com/amis-formula@2.6.0
+      classnames: registry.npmmirror.com/classnames@2.3.1
+      codemirror: registry.npmmirror.com/codemirror@5.65.13
+      downshift: registry.npmmirror.com/downshift@6.1.12(react@18.2.0)
+      echarts: registry.npmmirror.com/echarts@5.4.0
+      froala-editor: registry.npmmirror.com/froala-editor@3.1.1
+      hoist-non-react-statics: registry.npmmirror.com/hoist-non-react-statics@3.3.2
+      jsbarcode: registry.npmmirror.com/jsbarcode@3.11.5
+      keycode: registry.npmmirror.com/keycode@2.2.1
+      lodash: registry.npmmirror.com/lodash@4.17.21
+      markdown-it: registry.npmmirror.com/markdown-it@12.3.2
+      markdown-it-html5-media: registry.npmmirror.com/markdown-it-html5-media@0.7.1
+      match-sorter: registry.npmmirror.com/match-sorter@6.3.1
+      mobx: registry.npmmirror.com/mobx@4.15.7
+      mobx-react: registry.npmmirror.com/mobx-react@6.3.1(mobx@4.15.7)(react-dom@18.2.0)(react@18.2.0)
+      mobx-state-tree: registry.npmmirror.com/mobx-state-tree@3.17.3(mobx@4.15.7)
+      moment: registry.npmmirror.com/moment@2.29.4
+      monaco-editor: registry.npmmirror.com/monaco-editor@0.30.1
+      prop-types: registry.npmmirror.com/prop-types@15.8.1
+      rc-input-number: registry.npmmirror.com/rc-input-number@7.4.2(react-dom@18.2.0)(react@18.2.0)
+      rc-progress: registry.npmmirror.com/rc-progress@3.4.2(react-dom@18.2.0)(react@18.2.0)
+      react: registry.npmmirror.com/react@18.2.0
+      react-color: registry.npmmirror.com/react-color@2.19.3(react@18.2.0)
+      react-dom: registry.npmmirror.com/react-dom@18.2.0(react@18.2.0)
+      react-hook-form: registry.npmmirror.com/react-hook-form@7.39.0(react@18.2.0)
+      react-json-view: registry.npmmirror.com/react-json-view@1.21.3(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
+      react-overlays: registry.npmmirror.com/react-overlays@5.1.1(react-dom@18.2.0)(react@18.2.0)
+      react-textarea-autosize: registry.npmmirror.com/react-textarea-autosize@8.3.3(@types/react@18.2.14)(react@18.2.0)
+      react-transition-group: registry.npmmirror.com/react-transition-group@4.4.2(react-dom@18.2.0)(react@18.2.0)
+      react-visibility-sensor: registry.npmmirror.com/react-visibility-sensor@5.1.1(react-dom@18.2.0)(react@18.2.0)
+      sortablejs: registry.npmmirror.com/sortablejs@1.15.0
+      tinymce: registry.npmmirror.com/tinymce@6.5.1
+      tslib: registry.npmmirror.com/tslib@2.6.0
+      uncontrollable: registry.npmmirror.com/uncontrollable@7.2.1(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - encoding
+      - react-native
     dev: false
 
   registry.npmmirror.com/amis-ui@3.1.1(@types/react@18.2.14)(amis-core@3.1.1)(amis-formula@3.3.0)(react-dom@18.2.0)(react@18.2.0):
@@ -9000,6 +9097,58 @@ packages:
       vue: registry.npmmirror.com/vue@2.7.14
     transitivePeerDependencies:
       - debug
+    dev: false
+
+  registry.npmmirror.com/amis@2.6.0(amis-core@2.6.0)(amis-ui@2.6.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-HgiDT3vt+NVBy50HDk5YNjKO/y2slWrNl+Wdo1ip5ExL7vMpXwkSp2XSF7YzdgeSIKUptgO+7NBRE1oKGAmtVw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis/-/amis-2.6.0.tgz}
+    id: registry.npmmirror.com/amis/2.6.0
+    name: amis
+    version: 2.6.0
+    peerDependencies:
+      amis-core: '*'
+      amis-ui: '*'
+      react: '>=16.8.6'
+      react-dom: '>=16.8.6'
+    dependencies:
+      amis-core: registry.npmmirror.com/amis-core@2.6.0(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0)
+      amis-ui: registry.npmmirror.com/amis-ui@2.6.0(amis-core@2.6.0)(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0)
+      attr-accept: registry.npmmirror.com/attr-accept@2.2.2
+      blueimp-canvastoblob: registry.npmmirror.com/blueimp-canvastoblob@2.1.0
+      classnames: registry.npmmirror.com/classnames@2.3.1
+      downshift: registry.npmmirror.com/downshift@6.1.12(react@18.2.0)
+      echarts: registry.npmmirror.com/echarts@5.4.0
+      echarts-stat: registry.npmmirror.com/echarts-stat@1.2.0
+      exceljs: registry.npmmirror.com/exceljs@4.3.0
+      file-saver: registry.npmmirror.com/file-saver@2.0.5
+      hls.js: registry.npmmirror.com/hls.js@1.1.3
+      hoist-non-react-statics: registry.npmmirror.com/hoist-non-react-statics@3.3.2
+      hotkeys-js: registry.npmmirror.com/hotkeys-js@3.10.3
+      immutability-helper: registry.npmmirror.com/immutability-helper@3.1.1
+      jsbarcode: registry.npmmirror.com/jsbarcode@3.11.5
+      keycode: registry.npmmirror.com/keycode@2.2.1
+      lodash: registry.npmmirror.com/lodash@4.17.21
+      match-sorter: registry.npmmirror.com/match-sorter@6.3.1
+      mobx: registry.npmmirror.com/mobx@4.15.7
+      mobx-react: registry.npmmirror.com/mobx-react@6.3.1(mobx@4.15.7)(react-dom@18.2.0)(react@18.2.0)
+      mobx-state-tree: registry.npmmirror.com/mobx-state-tree@3.17.3(mobx@4.15.7)
+      moment: registry.npmmirror.com/moment@2.29.4
+      mpegts.js: registry.npmmirror.com/mpegts.js@1.7.3
+      prop-types: registry.npmmirror.com/prop-types@15.8.1
+      qrcode.react: registry.npmmirror.com/qrcode.react@3.1.0(react@18.2.0)
+      rc-overflow: registry.npmmirror.com/rc-overflow@1.3.1(react-dom@18.2.0)(react@18.2.0)
+      react: registry.npmmirror.com/react@18.2.0
+      react-cropper: registry.npmmirror.com/react-cropper@2.3.3(react@18.2.0)
+      react-dom: registry.npmmirror.com/react-dom@18.2.0(react@18.2.0)
+      react-dropzone: registry.npmmirror.com/react-dropzone@11.7.1(react@18.2.0)
+      react-json-view: registry.npmmirror.com/react-json-view@1.21.3(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
+      react-transition-group: registry.npmmirror.com/react-transition-group@4.4.2(react-dom@18.2.0)(react@18.2.0)
+      sortablejs: registry.npmmirror.com/sortablejs@1.15.0
+      tslib: registry.npmmirror.com/tslib@2.6.0
+      video-react: registry.npmmirror.com/video-react@0.15.0(react-dom@18.2.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - encoding
+      - react-native
     dev: false
 
   registry.npmmirror.com/amis@3.1.1(@types/react@18.2.14)(amis-core@3.1.1)(amis-ui@3.1.1)(ooxml-viewer@0.1.3)(react-dom@18.2.0)(react@18.2.0):

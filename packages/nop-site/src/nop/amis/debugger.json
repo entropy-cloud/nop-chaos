@@ -9,28 +9,28 @@
         "type": "action",
         "actionType": "ajax",
         "level": "default",
-        "api": "@cancel"
+        "api": "call://cancel"
       },
       {
         "label": "Apply",
         "type": "action",
         "actionType": "ajax",
         "level": "success",
-        "api": "@change"
+        "api": "call://change"
       },
       {
         "label":"Yaml/JSON",
         "type":"action",
         "actionType":"ajax",
         "level":"primary",
-        "api": "@invoke:toggleYaml"
+        "api": "invoke://toggleYaml"
       },
       {
         "label": "Submit",
         "type": "action",
         "actionType": "ajax",
         "level": "primary",
-        "api": "@ok"
+        "api": "call://ok"
       }
     ],
     "body": [

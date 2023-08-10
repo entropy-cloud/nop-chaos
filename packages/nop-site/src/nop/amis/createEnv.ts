@@ -156,19 +156,19 @@ export function createEnv(page: PageObject): RenderOptions {
  * 识别具有特殊前缀的url
  */
 function handleSpecialUrl(options: FetcherRequest, page: PageObject): Promise<FetcherResult> | undefined {
-  if (options.url == '@ok') {
+  if (options.url == 'call://ok') {
     // 弹出窗口中点击确定按钮
     let ret = Promise.resolve(page.handleOk?.(options.data));
     return ret.then(fetcherOk);
-  } else if (options.url == '@cancel') {
+  } else if (options.url == 'call://cancel') {
     // 弹出窗口中点击取消按钮
     page.handleCancel?.();
     return Promise.resolve(fetcherOk(null));
-  } else if (options.url == '@change') {
+  } else if (options.url == 'call://change') {
     let ret = Promise.resolve(page.handleChange?.(options.data));
     return ret.then(fetcherOk);
-  } else if (options.url.startsWith('@scoped-invoke:')) {
-    const parsed = parseScoped(options.url, "@scoped-invoke:", page)!
+  } else if (options.url.startsWith('scoped-invoke://')) {
+    const parsed = parseScoped(options.url, "scoped-invoke://", page)!
     if (page.handleInvoke){
       let ret = Promise.resolve(page.handleInvoke(parsed.name, options, page, parsed.scoped))
       return ret.then(fetcherOk)
@@ -176,15 +176,15 @@ function handleSpecialUrl(options: FetcherRequest, page: PageObject): Promise<Fe
 
     console.error("nop.page.invoke-no-handler:action=" + options.url)
     return Promise.resolve(fetcherOk(null))
-  } else if (options.url.startsWith("@scoped-page:")) {
+  } else if (options.url.startsWith("scoped-page://")) {
     // 动态获取页面
-    const parsed = parseScoped(options.url, "@scoped-page:", page)!
+    const parsed = parseScoped(options.url, "scoped-page://", page)!
     return fetchPageAndTransform(parsed.name)
       .then((res: any) => {
         return collectActions(parsed.name, res, parsed.fnScope, parsed.amisScope, page.actions).then(v => fetcherOk(res))
       })
-  } else if(options.url.startsWith('@dict:')){
-    let dictName = options.url.substring('@dict:'.length)
+  } else if(options.url.startsWith('dict://')){
+    let dictName = options.url.substring('dict://'.length)
     return fetchDict(dictName,true).then(dict=>{
       return fetcherOk(dict)
     })
@@ -207,13 +207,13 @@ function parseScoped(url: string, prefix: string, page: PageObject) {
 }
 
 function pageJumpTo(router: Router, to: string) {
-  if (to.startsWith("@open:")) {
-    openWindow(to.substring("@open:".length))
+  if (to.startsWith("open://")) {
+    openWindow(to.substring("open://".length))
   } else {
     const go = useGo(router)
-    const replace = to.startsWith('@replace:')
+    const replace = to.startsWith('replace://')
     if (replace) {
-      to = to.substring("@replace:".length)
+      to = to.substring("replace://".length)
     }
     if (isPageUrl(to)) {
       const page: RouteLocationRaw = { name: 'jsonPage', params: { url: to } }
