@@ -17,7 +17,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
          minifyInternalExports: false,
-         globals:{}
+         globals:{},
+         dir: "lib"
       },
       // Do not bundle third-party dependencies,
       // since server packages can get them via npm install

@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "types": "lib/src/index.d.ts",
-  "main": "dist/nop-core.js",
+  "main": "lib/src/index.js",
   "files": [
     "assets",
     "src"
