@@ -39,13 +39,13 @@ importers:
         specifier: workspace:*
         version: link:../nop-amis-ext
       amis:
-        specifier: ^3.1.0
+        specifier: 3.1.1
         version: registry.npmmirror.com/amis@3.1.1(@types/react@18.2.14)(amis-core@3.1.1)(amis-ui@3.1.1)(ooxml-viewer@0.1.3)(react-dom@18.2.0)(react@18.2.0)
       amis-core:
-        specifier: ^3.1.0
+        specifier: 3.1.1
         version: registry.npmmirror.com/amis-core@3.1.1(@types/react@18.2.14)(amis-formula@3.3.0)(react-dom@18.2.0)(react@18.2.0)
       amis-ui:
-        specifier: ^3.1.0
+        specifier: 3.1.1
         version: registry.npmmirror.com/amis-ui@3.1.1(@types/react@18.2.14)(amis-core@3.1.1)(amis-formula@3.3.0)(react-dom@18.2.0)(react@18.2.0)
       ant-design-vue:
         specifier: ^3.2.12
@@ -260,6 +260,9 @@ importers:
       systemjs:
         specifier: ^6.13.0
         version: registry.npmmirror.com/systemjs@6.14.1
+      tslib:
+        specifier: ^2.3.1
+        version: registry.npmmirror.com/tslib@2.6.0
       urql:
         specifier: ^4.0.4
         version: registry.npmmirror.com/urql@4.0.4(react@18.2.0)

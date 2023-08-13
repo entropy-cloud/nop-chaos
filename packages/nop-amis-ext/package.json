@@ -8,8 +8,8 @@
   },
   "private": true,
   "type": "module",
-  "types": "dist/src/index.d.ts",
-  "main": "dist/src/index.js",
+  "types": "lib/src/index.d.ts",
+  "main": "lib/src/index.js",
   "files": [
     "assets",
     "src"

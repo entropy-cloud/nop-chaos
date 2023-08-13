@@ -5,6 +5,7 @@ export default defineConfig({
   build: {
     lib: {
       name: '@nop-chaos/nop-amis-ext',
+      formats: ['es'],
       entry: 'src/index.ts',
     },
 
@@ -12,7 +13,8 @@ export default defineConfig({
 
     rollupOptions: {
       output: {
-         minifyInternalExports: false
+         minifyInternalExports: false,
+         dir: "lib"
       },
       // Do not bundle third-party dependencies,
       // since server packages can get them via npm install

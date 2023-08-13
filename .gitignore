@@ -4,6 +4,7 @@
 *.cpuprofile
 *.local
 *.log
+*.tsbuildinfo
 /.vscode/
 /packages/vite/LICENSE
 dist
