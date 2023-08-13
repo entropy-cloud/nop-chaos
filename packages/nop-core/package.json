@@ -1,18 +1,17 @@
 {
   "name": "@nop-chaos/nop-core",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
-  "types": "dist/nop-core.d.ts",
+  "types": "lib/src/index.d.ts",
   "main": "dist/nop-core.js",
   "files": [
     "assets",
     "src"
   ],
-  
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build && tsc",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -24,6 +23,7 @@
     "pinia": "^2.0.12",
     "qs": "^6.9.7",
     "systemjs": "^6.13.0",
+    "tslib": "^2.3.1",
     "urql": "^4.0.4",
     "uuid": "^9.0.0",
     "vue": "^3.2.45",

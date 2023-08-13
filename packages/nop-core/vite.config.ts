@@ -8,6 +8,7 @@ export default defineConfig({
   build: {
     lib: {
       name: '@nop-chaos/nop-core',
+      formats: ['es'],
       entry: 'src/index.ts',
     },
 
@@ -15,7 +16,8 @@ export default defineConfig({
 
     rollupOptions: {
       output: {
-         minifyInternalExports: false
+         minifyInternalExports: false,
+         globals:{}
       },
       // Do not bundle third-party dependencies,
       // since server packages can get them via npm install

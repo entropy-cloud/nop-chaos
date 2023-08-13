@@ -257,6 +257,8 @@ function findAction(url: string, actions: Record<string, any>) {
       break
     scope = scope.substring(0, pos)
   } while (true)
+
+  return 
 }
 
 /**

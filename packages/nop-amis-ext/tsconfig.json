@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
+    "outDir": "dist",
     "rootDir": "./",
     "module": "ESNext",
-    "target": "es5",
+    "target": "ES2017",
     "lib": ["ES6", "DOM", "ES2015", "ES2021"],
     "jsx": "react",
     "moduleResolution": "node",
