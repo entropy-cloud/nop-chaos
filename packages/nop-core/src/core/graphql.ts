@@ -170,8 +170,20 @@ function toArray(value: any, delimiter?: string) {
 
 function normalizeData(config: AxiosRequestConfig) {
     const { data, params } = splitData(config.params)
-    config.data = { ...config.data, ...data }
-    config.params = { ...config.params, ...params }
+    config.data = { ...filterData(config.data), ...data }
+    config.params = params
+}
+
+function filterData(data: any) {
+    if (!data)
+        return {}
+    const ret: any = {}
+    for (let k in data) {
+        if (k.startsWith("__"))
+            continue
+        ret[k] = data[k]
+    }
+    return ret
 }
 
 function splitData(data: any) {
@@ -183,6 +195,10 @@ function splitData(data: any) {
     const params: any = {}
 
     for (let k in data) {
+        // 以__为前缀的变量不提交到后台
+        if (k.startsWith("__"))
+            continue
+
         if (k.charAt(0) == '@' || k.charAt(0) == '_') {
             params[k] = data[k]
         } else {
@@ -320,6 +336,28 @@ const operationRegistry: Record<string, OperationDefinition> = {
         ]
     },
 
+    saveOrUpdate: {
+        // operation: 'mutation',
+        arguments: [
+            {
+                name: 'data',
+                type: 'Map',
+                builder: argDataMap
+            }
+        ]
+    },
+
+    upsert: {
+        // operation: 'mutation',
+        arguments: [
+            {
+                name: 'data',
+                type: 'Map',
+                builder: argDataMap
+            }
+        ]
+    },
+
     copyForNew: {
         // operation: 'mutation',
         arguments: [
@@ -380,7 +418,7 @@ const operationRegistry: Record<string, OperationDefinition> = {
     }
 }
 
-const defaultArgBuilders:Record<string,any> = {
+const defaultArgBuilders: Record<string, any> = {
     "String": argString,
     "Boolean": argBoolean,
     "Int": argInt,
@@ -477,7 +515,7 @@ function argQuery(data: any, arg: ArgumentDefinition, options: FetcherRequest) {
                 let max = undefined
 
                 if (op.startsWith("between") && value != null) {
-                    let ary = isString(value) ? value.split(',') : value
+                    let ary = toArray(value)
                     min = ary[0]
                     max = ary[1]
                     value = undefined

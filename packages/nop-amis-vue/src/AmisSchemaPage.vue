@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, watchEffect } from 'vue';
+import { PropType, defineComponent, onBeforeUnmount, watchEffect } from 'vue';
 import type { RegisterPage } from './page';
 import { createPage, OnCancelCallback, OnChangeCallback, OnInvokeCallback, OnOkCallback } from './page';
 

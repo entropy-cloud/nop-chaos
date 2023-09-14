@@ -104,12 +104,16 @@ export const adapter = {
         throw new Error("not-impl")
     },
 
-    processRequest(request:any){
+    processRequest(request: any) {
         return request
     },
 
-    processResponse(response:any){
+    processResponse(response: any) {
         return response
+    },
+
+    compileFunction(code: string): Function {
+        return new Function("return " + code).call(null)
     }
 }
 

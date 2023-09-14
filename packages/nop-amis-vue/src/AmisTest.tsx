@@ -1,4 +1,4 @@
-import { defineComponent, ref,h } from '@vue/runtime-core';
+import { defineComponent, ref,h } from 'vue';
 import AmisSchemaPage from './AmisSchemaPage.vue';
 
 /**

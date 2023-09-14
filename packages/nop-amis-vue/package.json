@@ -17,10 +17,10 @@
   "dependencies": {
     "@vue/reactivity": "^3.2.45",
     "@vue/shared": "^3.2.45",
-    "amis": "^3.3.0",
-    "amis-core": "^3.3.0",
-    "amis-ui": "^3.3.0",
-    "amis-formula": "^3.3.0",
+    "amis": "^3.4.0",
+    "amis-core": "^3.4.0",
+    "amis-ui": "^3.4.0",
+    "amis-formula": "^3.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "ant-design-vue": "^3.2.12",    
@@ -28,6 +28,7 @@
     "pinia": "^2.0.12",
     "vue": "^3.2.45",
     "vue-router": "^4.0.14",
+    "@nop-chaos/nop-core": "workspace:*",
     "@nop-chaos/nop-amis-ext": "workspace:*"
   },
   "devDependencies": {

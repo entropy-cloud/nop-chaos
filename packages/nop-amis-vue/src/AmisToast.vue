@@ -21,35 +21,25 @@
   <div ref="domRef"></div>
 </template>
 
-<script lang="ts">
-  import { onMounted, Ref, ref, onBeforeUnmount } from '@vue/runtime-core';
-  import { AlertComponent, ToastComponent } from 'amis';
-  import { createRoot } from 'react-dom/client';
-  import { createElement, Fragment } from 'react';
+<script lang="ts" setup>
+import { onMounted, Ref, ref, onBeforeUnmount } from 'vue';
+import { ToastComponent } from 'amis';
+import { createRoot } from 'react-dom/client';
+import { createElement, Fragment } from 'react';
 
-  export default {
-    props: {},
+const domRef: Ref<HTMLElement | undefined> = ref();
 
-    setup() {
-      const domRef: Ref<HTMLElement | undefined> = ref();
+let root;
 
-      let root;
+onMounted(() => {
+  root = createRoot(domRef.value!);
+  root.render(createElement(Fragment, {}, createElement(ToastComponent, { position: 'top-right' })));
+});
 
-      onMounted(() => {
-        root = createRoot(domRef.value);
-        root.render(createElement(Fragment, {}, createElement(ToastComponent,{position:'top-right'})));
-      });
-
-      onBeforeUnmount(() => {
-        if (root) {
-          root.unmount();
-          root = undefined;
-        }
-      });
-
-      return {
-        domRef,
-      };
-    },
-  };
+onBeforeUnmount(() => {
+  if (root) {
+    root.unmount();
+    root = undefined;
+  }
+});
 </script>

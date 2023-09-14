@@ -1,4 +1,4 @@
-{
+export default {
   "type": "page",
   "body": {
     "type": "form",

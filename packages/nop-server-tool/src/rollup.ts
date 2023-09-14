@@ -77,7 +77,10 @@ export async function rollupTransform(path: string, source: string) {
                 name: "rollup-adapter",
                 resolveId(importee, importer) {
                     console.debug("resolveId:importee=" + importee + ",importer=" + importer);
-                    if(importee.endsWith(".lib")){
+                    if(importee.endsWith(".xjs")){
+                        importee = importee.substring(0,importee.length-".xjs".length) + ".js";
+                    }
+                    if(!importee.endsWith(".js")){
                         importee += ".js"
                     }
                     return absolutePath(importee, importer as string);

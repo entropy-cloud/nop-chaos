@@ -20,11 +20,11 @@ import { processXuiDirective } from './processor'
 import { resolveXuiComponent } from './registry'
 import { isArray, isObject } from "@vue/shared";
 
-const {isUserInRole} = useAdapter()
+const { isUserInRole } = useAdapter()
 
-export async function transformPageJson(pageUrl:string, json: any) {
+export async function transformPageJson(pageUrl: string, json: any) {
   json.__baseUrl = pageUrl;
-  fixPage(json)
+  //fixPage(json)
   json = await processXuiDirective(json, "xui:roles", filterByAuth);
   json = await processXuiDirective(json, "xui:component", resolveXuiComponent);
   return json;
@@ -35,6 +35,7 @@ function filterByAuth(roles: string, json: any) {
   return json;
 }
 
+/*
 function fixPage(json:any){
   if(isArray(json)){
     for(let i=0,n=json.length;i<n;i++){
@@ -74,4 +75,4 @@ function addClassName(map:any, classNameKey:string, className:string) {
       value = className + " " + value;
   }
   map[classNameKey] = value;
-}
+}*/
