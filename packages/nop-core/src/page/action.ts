@@ -18,9 +18,7 @@
 
 import { isArray, isPlainObject, isPromise, isString } from "@vue/shared";
 import { v4 as uuid } from "uuid";
-import { importModule } from "../core";
-import { getApi } from "../api/registry";
-import { ajaxFetch, ajaxRequest } from '../core/ajax';
+import { BasePage, importModule } from "../core";
 import { absolutePath } from "../shared";
 import { processXuiDirective, processXuiValue } from "./processor";
 
@@ -31,28 +29,34 @@ type FnScope = {
   libs: Record<string, object>
 }
 
+
 /**
- * 通过xui:import可以引入SystemJs格式的js模块，通过@fn:xxx这种形式可以调用js模块中的函数
+ * 通过xui:import可以引入SystemJs格式的js模块，通过@action:xxx，@fn:(a,b)=>expr这种形式可以调用js模块中的函数
  * 
  * 例如 {
  *    "xui:import": "a.lib"
  *    "page": {
  *       dialog: {
  *          "xui:import": "b.lib"
- *          api: "@fn:a.f1"
+ *          api: "@action:a.f1"
  *       }
  *    }
  * }
  * 
- * 上面的例子中@fn:a.f1首先向上查找最近的xui:import引入的js库，如果没有找到，则继续向上查找直到顶层的节点。
+ * 上面的例子中@action:a.f1首先向上查找最近的xui:import引入的js库，如果没有找到，则继续向上查找直到顶层的节点。
+ * 
+ * @action：xxx与 @fn:(a,b)=> expr的区别在于 @action:xxx对应函数名，@fn:(a,b)=>expr则是直接定义匿名函数实现
  * 
  * @param json json schema
  */
-export async function bindActions(pageUrl: string, json: any, page: any) {
+export async function bindActions(pageUrl: string, json: any, page: BasePage) {
   if (!json) return;
+
+  page.resetActions()
 
   const promises: Promise<any>[] = []
   const fnStack: FnScope[] = []
+  let actionIndex = 0
 
   // 收集所有的xui:import，异步加载脚本库
   processXuiDirective(json, "xui:import", (modulePaths, obj, processProps) => {
@@ -110,11 +114,14 @@ export async function bindActions(pageUrl: string, json: any, page: any) {
     } else if (v.startsWith("@page:")) {
       return "page://" + v.substring("@page:".length)
     } else if (v.startsWith("@action:")) {
-      const handler = findAction(v.substring("@action:".length).trim(), fnStack, stackIndex)
-      return wrapFunc(handler, v, page)
+      const fnName = v.substring("@action:".length).trim()
+      const action = findAction(fnName, fnStack, stackIndex, page)
+      const actionName = fnName + '-' + (actionIndex++)
+      page.registerAction(actionName,action)
+      return "action://" + actionName
     } else if (v.startsWith("@fn:")) {
-      const fn = buildFunction(v.substring("@fn:".length))
-      return wrapFunc(fn, v, page)
+      const fn = buildFunction(v.substring("@fn:".length), page)
+      return wrapFunc(fn, v)
     }
     return v
   }
@@ -122,8 +129,8 @@ export async function bindActions(pageUrl: string, json: any, page: any) {
   process(json)
 }
 
-function buildFunction(fn: string) {
-  return useAdapter().compileFunction(fn)
+function buildFunction(fn: string, page: BasePage) {
+  return useAdapter().compileFunction(fn, page)
 }
 
 function fetchModules(pageUrl: string, modulePaths: any, promises: Promise<any>[], fnScope: FnScope) {
@@ -151,12 +158,12 @@ function getPathName(path: string) {
   return path
 }
 
-function findAction(fnName: string, fnStack: FnScope[], stackIndex: number) {
+function findAction(fnName: string, fnStack: FnScope[], stackIndex: number, page: BasePage) {
   const pos = fnName.indexOf('.')
   if (pos < 0) {
-    const api = getApi(fnName)
+    const api = page.getAction(fnName)
     if (!api)
-      throw new Error("nop.err.unknown-fn:fnName=" + fnName)
+      throw new Error("nop.err.unknown-action:" + fnName)
     return api
   }
 
@@ -174,14 +181,14 @@ function findAction(fnName: string, fnStack: FnScope[], stackIndex: number) {
       return lib[methodName]
     }
   }
-  throw new Error("nop.err.unknown-fn:fnName=" + fnName)
+  throw new Error("nop.err.unknown-action:" + fnName)
 }
 
 /**
  * 将函数的JSON序列化结果固化为指定值
  */
-function wrapFunc(fn: Function, text: string, page: any) {
-  const ret = (...args) => fn(page, ...args)
+function wrapFunc(fn: Function, text: string) {
+  const ret = (...args) => fn(...args)
   ret.toJSON = () => text
   return ret
 }

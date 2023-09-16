@@ -44,6 +44,9 @@ export type FetcherRequest = ApiObject & {
     filter?: TreeBean,
     responseKey?: string // 如果返回的数据不是对象类型，可以用这个属性将它包装为{[responseKey]:data}
     "gql:selection"?:string
+
+    _page?: BasePage
+    _scoped?: any
 }
 
 export type AjaxResponse = NonNullable<FetcherResult['data']>
@@ -57,6 +60,12 @@ export type AjaxConfig = {
     useAlert?: boolean,
     useApiUrl?: boolean,
     withToken?: boolean
+}
+
+export type BasePage = {
+    getAction(actionName:string):Function
+    registerAction(actionName:string,fn:Function):void
+    resetActions()
 }
 
 //=================== 以下为从AMIS项目拷贝的类型定义 ===============================

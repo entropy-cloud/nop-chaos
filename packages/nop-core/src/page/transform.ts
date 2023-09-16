@@ -16,9 +16,8 @@
  * limitations under the License.
  */
 import { useAdapter } from '../adapter';
-import { processXuiDirective } from './processor'
-import { resolveXuiComponent } from './registry'
-import { isArray, isObject } from "@vue/shared";
+import { processXuiDirective } from './processor';
+import { resolveXuiComponent } from './registry';
 
 const { isUserInRole } = useAdapter()
 

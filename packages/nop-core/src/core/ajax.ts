@@ -14,7 +14,7 @@ const GRAPHQL_URL = '/graphql'
 
 const { useAuthToken, useTenantId, useLocale,
 	setAuthToken, logout, useSettings, useI18n, useAppId, globalVersion,
-	useToast, useAlert, processRequest, processResponse } = useAdapter()
+	notify, alert, processRequest, processResponse } = useAdapter()
 
 
 export const ajax = axios.create({
@@ -58,8 +58,6 @@ export function responseOk(data: any): AjaxResponse {
 }
 
 export function ajaxRequest(options: FetcherRequest): Promise<any> {
-	const toast = useToast()
-	const alert = useAlert()
 
 	return ajaxFetch(options).then(d => {
 		if (!options.silent) {
@@ -67,7 +65,7 @@ export function ajaxRequest(options: FetcherRequest): Promise<any> {
 				if (options.config?.useAlert) {
 					alert(d.data.msg)
 				} else {
-					toast[d.data?.status == 0 ? 'info' : 'error'](d.data.msg)
+					notify(d.data?.status == 0 ? 'info' : 'error', d.data.msg)
 				}
 			}
 		}
@@ -89,6 +87,21 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 	if (pos > 0) {
 		query = { ...query, ...qsparse(url.substring(pos + 1)) }
 		url = url.substring(0, pos)
+	}
+	options.query = query
+
+	if (url.startsWith("action://")) {
+		const actionName = url.substring("action://".length)
+		const action = options._page?.getAction(actionName)
+		if (!action) {
+			return Promise.reject(new Error("nop.err.unknown-action:" + actionName))
+		}
+
+		try {
+			return Promise.resolve(action(options._page, options._scoped, options))
+		} catch (e: any) {
+			return Promise.reject(e)
+		}
 	}
 
 	const globSetting = useSettings()

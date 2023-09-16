@@ -1,6 +1,10 @@
 import { Store } from "pinia";
 import { Router } from "vue-router";
 
+import { default_jumpTo,default_isCurrentUrl,default_updateLocation } from "./link";
+
+export * from "./link"
+
 export type Settings = {
     apiUrl: string
 }
@@ -9,15 +13,17 @@ export type I18nOperation = {
     t(msg: string): string
 }
 
-export type Toast = {
-    container: any;
-    success: (content: string, conf?: any) => void;
-    error: (content: string, conf?: any) => void;
-    info: (content: string, conf?: any) => void;
-    warning: (content: string, conf?: any) => void;
+export type ToastLevel = 'info' | 'success' | 'error' | 'warning';
+export type ToastConf = {
+    position?: 'top-right' | 'top-center' | 'top-left' | 'bottom-center' | 'bottom-left' | 'bottom-right' | 'center';
+    closeButton: boolean;
+    showIcon?: boolean;
+    timeout?: number;
+    errorTimeout?: number;
+    className?: string;
+    items?: Array<any>;
+    useMobileUI?: boolean;
 };
-
-export type Alert = (content: string, title?: string) => void;
 
 /**
  * nop-chaos对外部框架的依赖都集中在adapter对象中
@@ -96,14 +102,6 @@ export const adapter = {
         throw new Error("not-impl")
     },
 
-    useToast(): Toast {
-        throw new Error("not-impl")
-    },
-
-    useAlert(): Alert {
-        throw new Error("not-impl")
-    },
-
     processRequest(request: any) {
         return request
     },
@@ -112,8 +110,29 @@ export const adapter = {
         return response
     },
 
-    compileFunction(code: string): Function {
-        return new Function("return " + code).call(null)
+    compileFunction(code: string,page:any): Function {
+        return new Function("page", "return " + code).call(null,page)
+    },
+    
+    jumpTo(to: string, action?: any, ctx?: object){
+        const router = adapter.useRouter()
+        return default_jumpTo(router,to)
+    },
+
+    isCurrentUrl: default_isCurrentUrl,
+
+    updateLocation: default_updateLocation,
+
+    notify(type: ToastLevel, msg: any, conf?: ToastConf){
+        throw new Error("not-impl")
+    },
+
+    alert(msg: string, title?: string){
+        throw new Error("not-impl")
+    },
+
+    confirm(msg: string, title?: string): Promise<boolean>{
+        throw new Error("not-impl")
     }
 }
 
@@ -124,3 +143,5 @@ export function registerAdapter(data: Partial<typeof adapter>) {
 export function useAdapter() {
     return adapter;
 }
+
+export type AdapterType = typeof adapter
