@@ -143,8 +143,19 @@ function toArray(value, delimiter) {
 }
 function normalizeData(config) {
     const { data, params } = splitData(config.params);
-    config.data = Object.assign(Object.assign({}, config.data), data);
-    config.params = Object.assign(Object.assign({}, config.params), params);
+    config.data = Object.assign(Object.assign({}, filterData(config.data)), data);
+    config.params = params;
+}
+function filterData(data) {
+    if (!data)
+        return {};
+    const ret = {};
+    for (let k in data) {
+        if (k.startsWith("__"))
+            continue;
+        ret[k] = data[k];
+    }
+    return ret;
 }
 function splitData(data) {
     if (!data) {
@@ -153,6 +164,9 @@ function splitData(data) {
     const body = {};
     const params = {};
     for (let k in data) {
+        // 以__为前缀的变量不提交到后台
+        if (k.startsWith("__"))
+            continue;
         if (k.charAt(0) == '@' || k.charAt(0) == '_') {
             params[k] = data[k];
         }
@@ -269,6 +283,26 @@ const operationRegistry = {
         ]
     },
     save: {
+        // operation: 'mutation',
+        arguments: [
+            {
+                name: 'data',
+                type: 'Map',
+                builder: argDataMap
+            }
+        ]
+    },
+    saveOrUpdate: {
+        // operation: 'mutation',
+        arguments: [
+            {
+                name: 'data',
+                type: 'Map',
+                builder: argDataMap
+            }
+        ]
+    },
+    upsert: {
         // operation: 'mutation',
         arguments: [
             {
@@ -420,7 +454,7 @@ function argQuery(data, arg, options) {
                 let min = undefined;
                 let max = undefined;
                 if (op.startsWith("between") && value != null) {
-                    let ary = isString(value) ? value.split(',') : value;
+                    let ary = toArray(value);
                     min = ary[0];
                     max = ary[1];
                     value = undefined;

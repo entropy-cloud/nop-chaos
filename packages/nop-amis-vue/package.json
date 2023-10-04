@@ -15,26 +15,27 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nop-chaos/nop-core": "workspace:*",
     "@vue/reactivity": "^3.2.45",
     "@vue/shared": "^3.2.45",
     "amis": "^3.4.0",
     "amis-core": "^3.4.0",
-    "amis-ui": "^3.4.0",
     "amis-formula": "^3.4.0",
+    "amis-ui": "^3.4.0",
+    "ant-design-vue": "^3.2.12",
+    "element-plus": "^2.3.14",
+    "pinia": "^2.0.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "ant-design-vue": "^3.2.12",    
     "veaury": "^2.3.8",
-    "pinia": "^2.0.12",
     "vue": "^3.2.45",
     "vue-router": "^4.0.14",
-    "@nop-chaos/nop-core": "workspace:*",
-    "@nop-chaos/nop-amis-ext": "workspace:*"
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.6",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
-    "@types/lodash-es": "^4.17.6",
     "@vitejs/plugin-vue": "^4.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.0.0",

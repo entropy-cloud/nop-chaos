@@ -1,5 +1,6 @@
 export default {
   "type": "page",
+  "xui:schema": "amis",
   "body": {
     "type": "form",
     "title": null,
@@ -9,28 +10,28 @@ export default {
         "type": "action",
         "actionType": "ajax",
         "level": "default",
-        "api": "call://cancel"
+        "api": "action://cancel"
       },
       {
         "label": "Apply",
         "type": "action",
         "actionType": "ajax",
         "level": "success",
-        "api": "call://change"
+        "api": "action://change"
       },
       {
         "label":"Yaml/JSON",
         "type":"action",
         "actionType":"ajax",
         "level":"primary",
-        "api": "invoke://toggleYaml"
+        "api": "action://toggleYaml"
       },
       {
         "label": "Submit",
         "type": "action",
         "actionType": "ajax",
         "level": "primary",
-        "api": "call://ok"
+        "api": "action://ok"
       }
     ],
     "body": [

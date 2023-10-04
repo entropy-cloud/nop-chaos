@@ -20,7 +20,8 @@ import type { RenderOptions } from "amis-core/lib/factory";
 import type { Action } from "amis/lib/types"
 import { alert, confirm, IScopedContext, toast } from 'amis'
 import copy from 'copy-to-clipboard'
-import type { PageObject } from "./page"
+import type { PageObject } from "@nop-chaos/nop-core"
+
 import { isPageUrl } from './page'
 import { isCancel, useI18n, ajaxFetch, fetcherOk } from "../core"
 import type { FetcherRequest, FetcherResult } from '../core'

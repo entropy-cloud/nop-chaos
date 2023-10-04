@@ -1,3 +1,5 @@
+import { default_jumpTo, default_isCurrentUrl, default_updateLocation } from "./link";
+export * from "./link";
 /**
  * nop-chaos对外部框架的依赖都集中在adapter对象中
  */
@@ -60,17 +62,29 @@ export const adapter = {
     resolveVueComponent(name) {
         throw new Error("not-impl");
     },
-    useToast() {
-        throw new Error("not-impl");
-    },
-    useAlert() {
-        throw new Error("not-impl");
-    },
     processRequest(request) {
         return request;
     },
     processResponse(response) {
         return response;
+    },
+    compileFunction(code, page) {
+        return new Function("page", "return " + code).call(null, page);
+    },
+    jumpTo(to, action, ctx) {
+        const router = adapter.useRouter();
+        return default_jumpTo(router, to);
+    },
+    isCurrentUrl: default_isCurrentUrl,
+    updateLocation: default_updateLocation,
+    notify(type, msg, conf) {
+        throw new Error("not-impl");
+    },
+    alert(msg, title) {
+        throw new Error("not-impl");
+    },
+    confirm(msg, title) {
+        throw new Error("not-impl");
     }
 };
 export function registerAdapter(data) {

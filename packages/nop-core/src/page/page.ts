@@ -15,11 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Ref, ref } from "vue";
 
 import { ajaxFetch, ajaxRequest, BasePage, FetcherRequest, FetcherResult, importModule } from '../core'
 
-import { AdapterType, useAdapter } from "src/adapter";
+import { AdapterType, useAdapter } from "../adapter";
 
 /**
  * scoped对应当前amis的scope。只有page/crud/service/form/等少数组件才具有scope
@@ -47,10 +46,6 @@ export type PageObject = BasePage & {
 
   require: (path: string) => Promise<any>
 
-  comp: any,
-  domRef: Ref<HTMLElement | undefined>,
-  loading: Ref<boolean>,
-
   /**
    * 获取amis的component
    */
@@ -64,9 +59,6 @@ export type PageObject = BasePage & {
 };
 
 export type PageOptions = {
-  comp: any,
-
-  getAction(name): Function
 
   /**
    * 获取amis的component
@@ -78,28 +70,25 @@ export type PageOptions = {
   getState(name:string, value:any)
 
   setState(name:string, value:any)
+
+  actions?: Record<string,Function>
 }
 
 let g_nextIndex = 0;
 
-export function createPage(options: PageOptions): PageObject {
-  let actions: Record<string, Function> = {}
+export function createPage(options: PageOptions,): PageObject {
+  let actions: Record<string, Function> = {...options.actions}
 
   let page: PageObject = {
     id: 'page_' + String(g_nextIndex++),
     adapter: useAdapter(),
-    domRef: ref<HTMLElement>(),
     path: undefined,
-    loading: ref(false),
     ajaxRequest: ajaxRequest,
     ajaxFetch: ajaxFetch,
 
     require: importModule,
 
     getAction(name: string) {
-      const action = options.getAction(name)
-      if(action)
-        return action 
       return actions[name]
     },
 
@@ -108,10 +97,8 @@ export function createPage(options: PageOptions): PageObject {
     },
 
     resetActions() {
-      actions = {}
+      actions = {...options.actions}
     },
-
-    comp: options.comp,
 
     getComponent: options.getComponent,
 

@@ -22,10 +22,9 @@
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
-import type { RegisterPage, OnCancelCallback, OnChangeCallback, OnOkCallback } from '@nop-chaos/nop-core';
-import { createPage } from '@nop-chaos/nop-core';
-import { createRoot } from 'react-dom/client';
+import { PropType, defineComponent, onBeforeUnmount, watchEffect } from 'vue';
+import type { RegisterPage } from './page';
+import { createPage, OnCancelCallback, OnChangeCallback, OnInvokeCallback, OnOkCallback } from './page';
 
 /**
  * 嵌入到vue中的amis页面。每个AmisSchemaPage都对应一个ReactRooot。schema发生变化时会重新创建react组件
@@ -35,44 +34,36 @@ export default defineComponent({
     schema: Object,
     data: Object,
     registerPage: Function as PropType<RegisterPage>,
-    actions: Object as PropType<Record<string, Function>>
+    handleOk: Function as PropType<OnOkCallback>,
+    handleCancel: Function as PropType<OnCancelCallback>,
+    handleChange: Function as PropType<OnChangeCallback>,
+    handleInvoke: Function as PropType<OnInvokeCallback>,
   },
 
   emits: ['update:schema'],
 
   setup(props) {
-    let page = createPage({
-      getComponent(name: string): any;
-      getComponentStore(name: string): any;
-      getState(name: string, value: any): any;
-      setState(name: string, value: any): any;
-      actions: props.actions
-    });
+    let page = createPage(this);
     props.registerPage?.(page)
 
-    const domRef = ref<HTMLElement>()
-    let root;
-
-    onMounted(() => {
-      root = createRoot(domRef.value!);
-    })
+    page.handleOk = props.handleOk;
+    page.handleCancel = props.handleCancel;
+    page.handleChange = props.handleChange;
+    page.handleInvoke = props.handleInvoke;
 
     watchEffect(() => {
       page.data = props.data;
-      if (props.schema && domRef.value) {
+      if (props.schema && page.domRef.value) {
         page.renderPage(props.schema);
       }
     });
 
     onBeforeUnmount(() => {
-      if (root) {
-        root.unmount();
-        root = undefined;
-      }
+      page.destroy();
     });
 
     return {
-      domRef,
+      domRef: page.domRef,
     };
   },
 });

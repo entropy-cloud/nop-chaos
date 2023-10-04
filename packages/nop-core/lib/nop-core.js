@@ -1,10 +1,423 @@
+import qs, { parse as parse$1 } from "qs";
 import { shallowRef, toRaw, ref } from "vue";
 import LRUCache from "lru-cache";
 import { cloneDeep, isNumber, isInteger, isBoolean, omit } from "lodash-es";
 import axios from "axios";
 import { isString, isPlainObject, isArray, isObject, isPromise } from "@vue/shared";
-import { parse } from "qs";
 import "systemjs/dist/system.js";
+function lexer(str) {
+  var tokens = [];
+  var i = 0;
+  while (i < str.length) {
+    var char = str[i];
+    if (char === "*" || char === "+" || char === "?") {
+      tokens.push({ type: "MODIFIER", index: i, value: str[i++] });
+      continue;
+    }
+    if (char === "\\") {
+      tokens.push({ type: "ESCAPED_CHAR", index: i++, value: str[i++] });
+      continue;
+    }
+    if (char === "{") {
+      tokens.push({ type: "OPEN", index: i, value: str[i++] });
+      continue;
+    }
+    if (char === "}") {
+      tokens.push({ type: "CLOSE", index: i, value: str[i++] });
+      continue;
+    }
+    if (char === ":") {
+      var name = "";
+      var j = i + 1;
+      while (j < str.length) {
+        var code = str.charCodeAt(j);
+        if (
+          // `0-9`
+          code >= 48 && code <= 57 || // `A-Z`
+          code >= 65 && code <= 90 || // `a-z`
+          code >= 97 && code <= 122 || // `_`
+          code === 95
+        ) {
+          name += str[j++];
+          continue;
+        }
+        break;
+      }
+      if (!name)
+        throw new TypeError("Missing parameter name at ".concat(i));
+      tokens.push({ type: "NAME", index: i, value: name });
+      i = j;
+      continue;
+    }
+    if (char === "(") {
+      var count = 1;
+      var pattern = "";
+      var j = i + 1;
+      if (str[j] === "?") {
+        throw new TypeError('Pattern cannot start with "?" at '.concat(j));
+      }
+      while (j < str.length) {
+        if (str[j] === "\\") {
+          pattern += str[j++] + str[j++];
+          continue;
+        }
+        if (str[j] === ")") {
+          count--;
+          if (count === 0) {
+            j++;
+            break;
+          }
+        } else if (str[j] === "(") {
+          count++;
+          if (str[j + 1] !== "?") {
+            throw new TypeError("Capturing groups are not allowed at ".concat(j));
+          }
+        }
+        pattern += str[j++];
+      }
+      if (count)
+        throw new TypeError("Unbalanced pattern at ".concat(i));
+      if (!pattern)
+        throw new TypeError("Missing pattern at ".concat(i));
+      tokens.push({ type: "PATTERN", index: i, value: pattern });
+      i = j;
+      continue;
+    }
+    tokens.push({ type: "CHAR", index: i, value: str[i++] });
+  }
+  tokens.push({ type: "END", index: i, value: "" });
+  return tokens;
+}
+function parse(str, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  var tokens = lexer(str);
+  var _a = options.prefixes, prefixes = _a === void 0 ? "./" : _a;
+  var defaultPattern = "[^".concat(escapeString(options.delimiter || "/#?"), "]+?");
+  var result = [];
+  var key = 0;
+  var i = 0;
+  var path = "";
+  var tryConsume = function(type) {
+    if (i < tokens.length && tokens[i].type === type)
+      return tokens[i++].value;
+  };
+  var mustConsume = function(type) {
+    var value2 = tryConsume(type);
+    if (value2 !== void 0)
+      return value2;
+    var _a2 = tokens[i], nextType = _a2.type, index = _a2.index;
+    throw new TypeError("Unexpected ".concat(nextType, " at ").concat(index, ", expected ").concat(type));
+  };
+  var consumeText = function() {
+    var result2 = "";
+    var value2;
+    while (value2 = tryConsume("CHAR") || tryConsume("ESCAPED_CHAR")) {
+      result2 += value2;
+    }
+    return result2;
+  };
+  while (i < tokens.length) {
+    var char = tryConsume("CHAR");
+    var name = tryConsume("NAME");
+    var pattern = tryConsume("PATTERN");
+    if (name || pattern) {
+      var prefix = char || "";
+      if (prefixes.indexOf(prefix) === -1) {
+        path += prefix;
+        prefix = "";
+      }
+      if (path) {
+        result.push(path);
+        path = "";
+      }
+      result.push({
+        name: name || key++,
+        prefix,
+        suffix: "",
+        pattern: pattern || defaultPattern,
+        modifier: tryConsume("MODIFIER") || ""
+      });
+      continue;
+    }
+    var value = char || tryConsume("ESCAPED_CHAR");
+    if (value) {
+      path += value;
+      continue;
+    }
+    if (path) {
+      result.push(path);
+      path = "";
+    }
+    var open = tryConsume("OPEN");
+    if (open) {
+      var prefix = consumeText();
+      var name_1 = tryConsume("NAME") || "";
+      var pattern_1 = tryConsume("PATTERN") || "";
+      var suffix = consumeText();
+      mustConsume("CLOSE");
+      result.push({
+        name: name_1 || (pattern_1 ? key++ : ""),
+        pattern: name_1 && !pattern_1 ? defaultPattern : pattern_1,
+        prefix,
+        suffix,
+        modifier: tryConsume("MODIFIER") || ""
+      });
+      continue;
+    }
+    mustConsume("END");
+  }
+  return result;
+}
+function match(str, options) {
+  var keys = [];
+  var re = pathToRegexp(str, keys, options);
+  return regexpToFunction(re, keys, options);
+}
+function regexpToFunction(re, keys, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  var _a = options.decode, decode = _a === void 0 ? function(x) {
+    return x;
+  } : _a;
+  return function(pathname) {
+    var m = re.exec(pathname);
+    if (!m)
+      return false;
+    var path = m[0], index = m.index;
+    var params = /* @__PURE__ */ Object.create(null);
+    var _loop_1 = function(i2) {
+      if (m[i2] === void 0)
+        return "continue";
+      var key = keys[i2 - 1];
+      if (key.modifier === "*" || key.modifier === "+") {
+        params[key.name] = m[i2].split(key.prefix + key.suffix).map(function(value) {
+          return decode(value, key);
+        });
+      } else {
+        params[key.name] = decode(m[i2], key);
+      }
+    };
+    for (var i = 1; i < m.length; i++) {
+      _loop_1(i);
+    }
+    return { path, index, params };
+  };
+}
+function escapeString(str) {
+  return str.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
+}
+function flags(options) {
+  return options && options.sensitive ? "" : "i";
+}
+function regexpToRegexp(path, keys) {
+  if (!keys)
+    return path;
+  var groupsRegex = /\((?:\?<(.*?)>)?(?!\?)/g;
+  var index = 0;
+  var execResult = groupsRegex.exec(path.source);
+  while (execResult) {
+    keys.push({
+      // Use parenthesized substring match if available, index otherwise
+      name: execResult[1] || index++,
+      prefix: "",
+      suffix: "",
+      modifier: "",
+      pattern: ""
+    });
+    execResult = groupsRegex.exec(path.source);
+  }
+  return path;
+}
+function arrayToRegexp(paths, keys, options) {
+  var parts = paths.map(function(path) {
+    return pathToRegexp(path, keys, options).source;
+  });
+  return new RegExp("(?:".concat(parts.join("|"), ")"), flags(options));
+}
+function stringToRegexp(path, keys, options) {
+  return tokensToRegexp(parse(path, options), keys, options);
+}
+function tokensToRegexp(tokens, keys, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  var _a = options.strict, strict = _a === void 0 ? false : _a, _b = options.start, start = _b === void 0 ? true : _b, _c = options.end, end = _c === void 0 ? true : _c, _d = options.encode, encode = _d === void 0 ? function(x) {
+    return x;
+  } : _d, _e = options.delimiter, delimiter = _e === void 0 ? "/#?" : _e, _f = options.endsWith, endsWith = _f === void 0 ? "" : _f;
+  var endsWithRe = "[".concat(escapeString(endsWith), "]|$");
+  var delimiterRe = "[".concat(escapeString(delimiter), "]");
+  var route = start ? "^" : "";
+  for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
+    var token = tokens_1[_i];
+    if (typeof token === "string") {
+      route += escapeString(encode(token));
+    } else {
+      var prefix = escapeString(encode(token.prefix));
+      var suffix = escapeString(encode(token.suffix));
+      if (token.pattern) {
+        if (keys)
+          keys.push(token);
+        if (prefix || suffix) {
+          if (token.modifier === "+" || token.modifier === "*") {
+            var mod = token.modifier === "*" ? "?" : "";
+            route += "(?:".concat(prefix, "((?:").concat(token.pattern, ")(?:").concat(suffix).concat(prefix, "(?:").concat(token.pattern, "))*)").concat(suffix, ")").concat(mod);
+          } else {
+            route += "(?:".concat(prefix, "(").concat(token.pattern, ")").concat(suffix, ")").concat(token.modifier);
+          }
+        } else {
+          if (token.modifier === "+" || token.modifier === "*") {
+            route += "((?:".concat(token.pattern, ")").concat(token.modifier, ")");
+          } else {
+            route += "(".concat(token.pattern, ")").concat(token.modifier);
+          }
+        }
+      } else {
+        route += "(?:".concat(prefix).concat(suffix, ")").concat(token.modifier);
+      }
+    }
+  }
+  if (end) {
+    if (!strict)
+      route += "".concat(delimiterRe, "?");
+    route += !options.endsWith ? "$" : "(?=".concat(endsWithRe, ")");
+  } else {
+    var endToken = tokens[tokens.length - 1];
+    var isEndDelimited = typeof endToken === "string" ? delimiterRe.indexOf(endToken[endToken.length - 1]) > -1 : endToken === void 0;
+    if (!strict) {
+      route += "(?:".concat(delimiterRe, "(?=").concat(endsWithRe, "))?");
+    }
+    if (!isEndDelimited) {
+      route += "(?=".concat(delimiterRe, "|").concat(endsWithRe, ")");
+    }
+  }
+  return new RegExp(route, flags(options));
+}
+function pathToRegexp(path, keys, options) {
+  if (path instanceof RegExp)
+    return regexpToRegexp(path, keys);
+  if (Array.isArray(path))
+    return arrayToRegexp(path, keys, options);
+  return stringToRegexp(path, keys, options);
+}
+function default_jumpTo(router, to) {
+  if (to.startsWith("open://")) {
+    openWindow(to.substring("open://".length));
+    return;
+  }
+  if (to == "__forward") {
+    router.forward();
+    return;
+  }
+  if (to == "__back") {
+    router.back();
+    return;
+  }
+  function go(to2, replace2) {
+    if (replace2) {
+      router.push(to2);
+    } else {
+      router.replace(to2);
+    }
+  }
+  const replace = to.startsWith("replace://");
+  if (replace) {
+    to = to.substring("replace://".length);
+  }
+  if (isPageUrl(to)) {
+    const page = { name: "jsonPage", params: { url: to } };
+    go(page, replace);
+  } else {
+    go(to, replace);
+  }
+}
+function openWindow(url, opt) {
+  const { target = "__blank", noopener = true, noreferrer = true } = opt || {};
+  const feature = [];
+  noopener && feature.push("noopener=yes");
+  noreferrer && feature.push("noreferrer=yes");
+  window.open(url, target, feature.join(","));
+}
+function isPageUrl(url) {
+  let pos = url.indexOf("?");
+  if (pos > 0)
+    url = url.substring(0, pos);
+  return url.endsWith(".page.json5") || url.endsWith(".page.yaml") || url.endsWith(".page.json");
+}
+function normalizeLink(to) {
+  if (/^\/api\//.test(to)) {
+    return to;
+  }
+  to = to || "";
+  const location2 = window.location;
+  if (to && to[0] === "#") {
+    to = location2.pathname + location2.search + to;
+  } else if (to && to[0] === "?") {
+    to = location2.pathname + to;
+  }
+  const idx = to.indexOf("?");
+  const idx2 = to.indexOf("#");
+  let pathname = ~idx ? to.substring(0, idx) : ~idx2 ? to.substring(0, idx2) : to;
+  const search = ~idx ? to.substring(idx, ~idx2 ? idx2 : void 0) : "";
+  const hash = ~idx2 ? to.substring(idx2) : "";
+  if (!pathname) {
+    pathname = location2.pathname;
+  } else if (pathname[0] != "/" && !/^https?:\/\//.test(pathname)) {
+    const relativeBase = location2.pathname;
+    const paths = relativeBase.split("/");
+    paths.pop();
+    let m;
+    while (m = /^\.\.?\//.exec(pathname)) {
+      if (m[0] === "../") {
+        paths.pop();
+      }
+      pathname = pathname.substring(m[0].length);
+    }
+    pathname = paths.concat(pathname).join("/");
+  }
+  return pathname + search + hash;
+}
+function default_updateLocation(to, replace) {
+  if (to === "goBack") {
+    return window.history.back();
+  }
+  if (replace && window.history.replaceState) {
+    window.history.replaceState("", document.title, to);
+    return;
+  }
+  location.href = normalizeLink(to);
+}
+function default_isCurrentUrl(to, ctx) {
+  const link = normalizeLink(to);
+  const location2 = window.location;
+  let pathname = link;
+  let search = "";
+  const idx = link.indexOf("?");
+  if (~idx) {
+    pathname = link.substring(0, idx);
+    search = link.substring(idx);
+  }
+  if (search) {
+    if (pathname !== location2.pathname || !location2.search) {
+      return false;
+    }
+    const query = qs.parse(search.substring(1));
+    const currentQuery = qs.parse(location2.search.substring(1));
+    return Object.keys(query).every(
+      (key) => query[key] === currentQuery[key]
+    );
+  } else if (pathname === location2.pathname) {
+    return true;
+  } else if (!~pathname.indexOf("http") && ~pathname.indexOf(":")) {
+    return match(link, {
+      decode: decodeURIComponent,
+      strict: (ctx == null ? void 0 : ctx.strict) ?? true
+    })(location2.pathname);
+  }
+  return false;
+}
 const adapter = {
   globalVersion: "v3",
   // 如果存放在localStorage中的数据需要升级，这里的版本号需要增加。
@@ -64,17 +477,29 @@ const adapter = {
   resolveVueComponent(name) {
     throw new Error("not-impl");
   },
-  useToast() {
-    throw new Error("not-impl");
-  },
-  useAlert() {
-    throw new Error("not-impl");
-  },
   processRequest(request) {
     return request;
   },
   processResponse(response) {
     return response;
+  },
+  compileFunction(code, page) {
+    return new Function("page", "return " + code).call(null, page);
+  },
+  jumpTo(to, action, ctx) {
+    const router = adapter.useRouter();
+    return default_jumpTo(router, to);
+  },
+  isCurrentUrl: default_isCurrentUrl,
+  updateLocation: default_updateLocation,
+  notify(type, msg, conf) {
+    throw new Error("not-impl");
+  },
+  alert(msg, title) {
+    throw new Error("not-impl");
+  },
+  confirm(msg, title) {
+    throw new Error("not-impl");
   }
 };
 function registerAdapter(data) {
@@ -337,8 +762,19 @@ function toArray(value, delimiter) {
 }
 function normalizeData(config) {
   const { data, params } = splitData(config.params);
-  config.data = { ...config.data, ...data };
-  config.params = { ...config.params, ...params };
+  config.data = { ...filterData(config.data), ...data };
+  config.params = params;
+}
+function filterData(data) {
+  if (!data)
+    return {};
+  const ret = {};
+  for (let k in data) {
+    if (k.startsWith("__"))
+      continue;
+    ret[k] = data[k];
+  }
+  return ret;
 }
 function splitData(data) {
   if (!data) {
@@ -347,6 +783,8 @@ function splitData(data) {
   const body = {};
   const params = {};
   for (let k in data) {
+    if (k.startsWith("__"))
+      continue;
     if (k.charAt(0) == "@" || k.charAt(0) == "_") {
       params[k] = data[k];
     } else {
@@ -459,6 +897,26 @@ const operationRegistry = {
     ]
   },
   save: {
+    // operation: 'mutation',
+    arguments: [
+      {
+        name: "data",
+        type: "Map",
+        builder: argDataMap
+      }
+    ]
+  },
+  saveOrUpdate: {
+    // operation: 'mutation',
+    arguments: [
+      {
+        name: "data",
+        type: "Map",
+        builder: argDataMap
+      }
+    ]
+  },
+  upsert: {
     // operation: 'mutation',
     arguments: [
       {
@@ -602,7 +1060,7 @@ function argQuery(data, arg, options) {
         let min = void 0;
         let max = void 0;
         if (op.startsWith("between") && value != null) {
-          let ary = isString(value) ? value.split(",") : value;
+          let ary = toArray(value);
           min = ary[0];
           max = ary[1];
           value = void 0;
@@ -666,8 +1124,8 @@ const {
   useI18n,
   useAppId,
   globalVersion,
-  useToast,
-  useAlert,
+  notify,
+  alert,
   processRequest,
   processResponse
 } = useAdapter();
@@ -704,8 +1162,6 @@ function responseOk(data) {
   };
 }
 function ajaxRequest(options) {
-  const toast = useToast();
-  const alert = useAlert();
   return ajaxFetch(options).then((d) => {
     var _a, _b, _c, _d, _e, _f, _g;
     if (!options.silent) {
@@ -713,7 +1169,7 @@ function ajaxRequest(options) {
         if ((_b = options.config) == null ? void 0 : _b.useAlert) {
           alert(d.data.msg);
         } else {
-          toast[((_c = d.data) == null ? void 0 : _c.status) == 0 ? "info" : "error"](d.data.msg);
+          notify(((_c = d.data) == null ? void 0 : _c.status) == 0 ? "info" : "error", d.data.msg);
         }
       }
     }
@@ -723,14 +1179,27 @@ function ajaxRequest(options) {
   });
 }
 function ajaxFetch(options) {
-  var _a, _b;
+  var _a, _b, _c;
   options.config = options.config || {};
   let url = options.url;
   let query = options.query || {};
   const pos = url.indexOf("?");
   if (pos > 0) {
-    query = { ...query, ...parse(url.substring(pos + 1)) };
+    query = { ...query, ...parse$1(url.substring(pos + 1)) };
     url = url.substring(0, pos);
+  }
+  options.query = query;
+  if (url.startsWith("action://")) {
+    const actionName = url.substring("action://".length);
+    const action = (_a = options._page) == null ? void 0 : _a.getAction(actionName);
+    if (!action) {
+      return Promise.reject(new Error("nop.err.unknown-action:" + actionName));
+    }
+    try {
+      return Promise.resolve(action(options._page, options._scoped, options));
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
   const globSetting = useSettings();
   if (globSetting.apiUrl && options.config.useApiUrl !== false) {
@@ -745,7 +1214,7 @@ function ajaxFetch(options) {
     params: query,
     responseType: options.responseType
   };
-  if ((_a = options.config) == null ? void 0 : _a.cancelExecutor) {
+  if ((_b = options.config) == null ? void 0 : _b.cancelExecutor) {
     const controller = new AbortController();
     options.config.cancelExecutor(() => {
       controller.abort();
@@ -757,7 +1226,7 @@ function ajaxFetch(options) {
   };
   prepareHeaders(config, opts);
   handleGraphQL(config, GRAPHQL_URL, options);
-  if (((_b = config.method) == null ? void 0 : _b.toLowerCase()) == "get") {
+  if (((_c = config.method) == null ? void 0 : _c.toLowerCase()) == "get") {
     config.params = { ...options.data, ...query };
     config.data = null;
   }
@@ -1079,54 +1548,6 @@ function LoginApi__generateVerifyCode(verifySecret) {
     }
   });
 }
-const registeredApis = {};
-function registerApi(name, fn) {
-  if (registeredApis[name])
-    console.error("replace-api:name=" + name);
-  registeredApis[name] = fn;
-}
-function getApi(name) {
-  return registeredApis[name];
-}
-let getRandomValues;
-const rnds8 = new Uint8Array(16);
-function rng() {
-  if (!getRandomValues) {
-    getRandomValues = typeof crypto !== "undefined" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
-    if (!getRandomValues) {
-      throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
-    }
-  }
-  return getRandomValues(rnds8);
-}
-const byteToHex = [];
-for (let i = 0; i < 256; ++i) {
-  byteToHex.push((i + 256).toString(16).slice(1));
-}
-function unsafeStringify(arr, offset = 0) {
-  return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + "-" + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + "-" + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + "-" + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + "-" + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
-}
-const randomUUID = typeof crypto !== "undefined" && crypto.randomUUID && crypto.randomUUID.bind(crypto);
-const native = {
-  randomUUID
-};
-function v4(options, buf, offset) {
-  if (native.randomUUID && !buf && !options) {
-    return native.randomUUID();
-  }
-  options = options || {};
-  const rnds = options.random || (options.rng || rng)();
-  rnds[6] = rnds[6] & 15 | 64;
-  rnds[8] = rnds[8] & 63 | 128;
-  if (buf) {
-    offset = offset || 0;
-    for (let i = 0; i < 16; ++i) {
-      buf[offset + i] = rnds[i];
-    }
-    return buf;
-  }
-  return unsafeStringify(rnds);
-}
 async function processXuiDirective(json, typeProp, processor) {
   let futures = [];
   let ret = _processXuiDirective(json, typeProp, processor, futures);
@@ -1231,126 +1652,75 @@ function processXuiValue(json, processor) {
   }
   return json;
 }
-async function collectActions(pageUrl, json, fnScope, amisScope, actions) {
+async function bindActions(pageUrl, json, page) {
   if (!json)
     return;
+  page.resetActions();
   const promises = [];
-  function process(json2, fnScope2, amisScope2) {
-    if (hasScope(json2.type)) {
-      let name = json2.name || json2.id;
-      if (!name)
-        name = json2.name = v4();
-      amisScope2 = amisScope2 ? amisScope2 + "." + name : name;
-    }
+  const fnStack = [];
+  let actionIndex = 0;
+  processXuiDirective(json, "xui:import", (modulePaths, obj, processProps) => {
+    const standalone = obj["xui:standalone"];
+    const fnScope = { standalone, libs: {} };
+    fnStack.push(fnScope);
+    fetchModules(pageUrl, modulePaths, promises, fnScope);
+    processProps(obj);
+    return obj;
+  });
+  await Promise.all(promises);
+  let stackIndex = 0;
+  function process(json2) {
     let modulePaths = json2["xui:import"];
-    let js = json2["xui:js"];
-    if (js || modulePaths) {
-      const localScope = json2["xui:scope"] = json2["xui:scope"] || v4();
-      const standalone = json2["xui:standalone"];
-      if (standalone) {
-        fnScope2 = localScope;
-      } else {
-        fnScope2 = fnScope2 ? fnScope2 + "/" + localScope : localScope;
-      }
-      if (js) {
-        buildActions(js, fnScope2, actions);
-      }
-      if (modulePaths) {
-        fetchApis(pageUrl, modulePaths, promises, fnScope2, actions);
-      }
+    if (modulePaths) {
+      stackIndex++;
     }
     for (let key in json2) {
       const v = json2[key];
-      const processed = processValue(v, fnScope2, amisScope2);
-      if (processed !== v) {
-        if (isPromise(processed)) {
-          processed.then((v2) => json2[key] = v2);
-        } else {
-          json2[key] = processed;
+      if (!v)
+        continue;
+      if (isString(v)) {
+        json2[key] = processValue(v);
+      } else if (isArray(v)) {
+        for (let i = 0, n = v.length; i < n; i++) {
+          process(v[i]);
         }
+      } else {
+        process(v);
       }
     }
+    if (modulePaths) {
+      stackIndex--;
+    }
   }
-  function processValue(v, fnScope2, amisScope2) {
-    if (isString(v)) {
-      if (v.startsWith("@action:")) {
-        return "temp-action://" + amisScope2 + "," + fnScope2 + "|" + v.substring("@action:".length);
-      } else if (v.startsWith("action://")) {
-        return "temp-action://" + amisScope2 + "," + fnScope2 + "|" + v.substring("action://".length);
-      } else if (v.startsWith("@page:")) {
-        return "scoped-page://" + amisScope2 + "," + fnScope2 + "|" + v.substring("@page:".length);
-      } else if (v.startsWith("page://")) {
-        return "scoped-page://" + amisScope2 + "," + fnScope2 + "|" + v.substring("page://".length);
-      } else if (v.startsWith("@invoke:")) {
-        return "scoped-invoke://" + amisScope2 + "|" + v.substring("@invoke:".length);
-      } else if (v.startsWith("invoke://")) {
-        return "scoped-invoke://" + amisScope2 + "|" + v.substring("invoke://".length);
-      } else if (v.startsWith("@fn:")) {
-        return "scoped-fn://" + fnScope2 + "|" + v.substring("@fn:".length);
-      } else if (v.startsWith("fn://")) {
-        return "scoped-fn://" + fnScope2 + "|" + v.substring("fn://".length);
-      } else if (v.startsWith("@query:")) {
-        return "query://" + v.substring("@query:".length);
-      } else if (v.startsWith("@mutation:")) {
-        return "mutation://" + v.substring("@mutation:".length);
-      } else if (v.startsWith("@graphql:")) {
-        return "graphql://" + v.substring("@graphql:".length);
-      } else if (v.startsWith("@dict:")) {
-        return "dict://" + v.substring("@dict:".length);
-      }
-    } else if (isPlainObject(v)) {
-      process(v, fnScope2, amisScope2);
-    } else if (isArray(v)) {
-      for (let i = 0, n = v.length; i < n; i++) {
-        processValue(v[i], fnScope2, amisScope2);
-      }
+  function processValue(v) {
+    if (v.startsWith("@query:")) {
+      return "query://" + v.substring("@query:".length);
+    } else if (v.startsWith("@mutation:")) {
+      return "mutation://" + v.substring("@mutation:".length);
+    } else if (v.startsWith("@graphql:")) {
+      return "graphql://" + v.substring("@graphql:".length);
+    } else if (v.startsWith("@dict:")) {
+      return "dict://" + v.substring("@dict:".length);
+    } else if (v.startsWith("@page:")) {
+      return "page://" + v.substring("@page:".length);
+    } else if (v.startsWith("@action:")) {
+      const fnName = v.substring("@action:".length).trim();
+      const action = findAction(fnName, fnStack, stackIndex, page);
+      const actionName = fnName + "-" + actionIndex++;
+      page.registerAction(actionName, action);
+      return "action://" + actionName;
+    } else if (v.startsWith("@fn:")) {
+      const fn = buildFunction(v.substring("@fn:".length), page);
+      return wrapFunc(fn, v);
     }
     return v;
   }
-  process(json, fnScope, amisScope);
-  await Promise.all(promises);
-  processXuiValue(json, (v) => {
-    if (v.startsWith("temp-action://")) {
-      const parts = v.substring("temp-action://".length).split("|");
-      const [amisScope2, fnScope2] = parts[0].split(",");
-      let action = fnScope2 + "|" + parts[1];
-      let found = findAction(action, actions);
-      if (!found) {
-        const api = getApi(parts[1]);
-        if (api) {
-          found = actions[action] = api;
-        }
-      }
-      if (found) {
-        return "scoped-action://" + amisScope2 + "," + found;
-      } else {
-        console.error("nop.unknown-action:" + action);
-        return "unknown-action://" + action;
-      }
-    } else if (v.startsWith("scoped-fn://")) {
-      const [fnScope2, fn] = v.substring("scoped-fn://".length).split("|");
-      const fnName = fn.split("(")[0];
-      const args = fn.substring(fnName.length) || "(event,props)";
-      let action = fnScope2 + "|" + fnName;
-      let found = findAction(action, actions);
-      if (!found) {
-        const api = getApi(fnName);
-        if (api) {
-          found = actions[action] = api;
-        }
-      }
-      if (found) {
-        return "return props.env._page.actions['" + action + "']" + args;
-      } else {
-        console.error("nop.unknown-fn:" + action);
-        return "unknown-fn://" + fn;
-      }
-    } else {
-      return v;
-    }
-  });
+  process(json);
 }
-function fetchApis(pageUrl, modulePaths, promises, fnScope, actions) {
+function buildFunction(fn, page) {
+  return useAdapter().compileFunction(fn, page);
+}
+function fetchModules(pageUrl, modulePaths, promises, fnScope) {
   if (isString(modulePaths)) {
     modulePaths = modulePaths.split(",").reduce((m, p) => {
       m[getPathName(p)] = p;
@@ -1360,7 +1730,7 @@ function fetchApis(pageUrl, modulePaths, promises, fnScope, actions) {
   for (const moduleName in modulePaths) {
     const path = absolutePath(modulePaths[moduleName], pageUrl);
     const promise = importModule(path).then((mod) => {
-      actions[fnScope + "|" + moduleName] = mod;
+      fnScope[moduleName] = mod;
     });
     promises.push(promise);
   }
@@ -1374,45 +1744,31 @@ function getPathName(path) {
     return path.substring(0, pos2);
   return path;
 }
-function buildActions(js, fnScope, actions) {
-  try {
-    const fn = new Function("require", "ajaxFetch", "ajaxRequest", js);
-    const map = fn(importModule, ajaxFetch, ajaxRequest);
-    if (map) {
-      for (let name in map) {
-        let fullName = fnScope + "|" + name;
-        const fn2 = map[name];
-        actions[fullName] = fn2;
-      }
-    }
-  } catch (e) {
-    console.error(e);
+function findAction(fnName, fnStack, stackIndex, page) {
+  const pos = fnName.indexOf(".");
+  if (pos < 0) {
+    const api = page.getAction(fnName);
+    if (!api)
+      throw new Error("nop.err.unknown-action:" + fnName);
+    return api;
   }
-}
-function findAction(url, actions) {
-  let p = url.indexOf("?");
-  if (p >= 0)
-    url = url.substring(0, p);
-  let pos = url.lastIndexOf("|");
-  let scope = url.substring(0, pos);
-  let name = url.substring(pos + 1);
-  let names = name.split(".");
-  do {
-    if (actions[scope + "|" + name]) {
-      return scope + "|" + name;
-    }
-    if (names[1] && actions[scope + "|" + names[0]] && actions[scope + "|" + names[0]][names[1]]) {
-      return scope + "|" + name;
-    }
-    let pos2 = scope.lastIndexOf("/");
-    if (pos2 < 0)
+  const libName = fnName.substring(0, pos);
+  const methodName = fnName.substring(pos + 1);
+  for (let i = stackIndex; i >= 0; i--) {
+    let fnScope = fnStack[i];
+    if (fnScope.standalone)
       break;
-    scope = scope.substring(0, pos2);
-  } while (true);
-  return;
+    const lib = fnScope.libs[libName];
+    if (lib && lib[methodName]) {
+      return lib[methodName];
+    }
+  }
+  throw new Error("nop.err.unknown-action:" + fnName);
 }
-function hasScope(type) {
-  return ["page", "dialog", "drawer", "wizard", "service", "crud", "table", "table2", "form", "combo"].includes(type);
+function wrapFunc(fn, text) {
+  const ret = (...args) => fn(...args);
+  ret.toJSON = () => text;
+  return ret;
 }
 const g_components = {};
 function registerXuiComponent(type, component) {
@@ -1430,7 +1786,6 @@ function resolveXuiComponent(type, json) {
 const { isUserInRole } = useAdapter();
 async function transformPageJson(pageUrl, json) {
   json.__baseUrl = pageUrl;
-  fixPage(json);
   json = await processXuiDirective(json, "xui:roles", filterByAuth);
   json = await processXuiDirective(json, "xui:component", resolveXuiComponent);
   return json;
@@ -1440,39 +1795,31 @@ function filterByAuth(roles, json) {
     return;
   return json;
 }
-function fixPage(json) {
-  if (isArray(json)) {
-    for (let i = 0, n = json.length; i < n; i++) {
-      fixPage(json[i]);
-    }
-  } else if (isObject(json)) {
-    const dlg = json["dialog"];
-    if (isObject(dlg)) {
-      addClassName(dlg, "bodyClassName", "nop-page");
-    }
-    const drawer = json["drawer"];
-    if (isObject(drawer)) {
-      addClassName(drawer, "className", "nop-page");
-    }
-    if (json["type"] == "group") {
-      const body = json["body"];
-      if (isObject(body)) {
-        json["body"] = [body];
-      }
-    }
-    for (let key in json) {
-      fixPage(json[key]);
-    }
-  }
-}
-function addClassName(map, classNameKey, className) {
-  let value = map[classNameKey];
-  if (!value) {
-    value = className;
-  } else if (value.indexOf(className) < 0) {
-    value = className + " " + value;
-  }
-  map[classNameKey] = value;
+let g_nextIndex = 0;
+function createPage(options) {
+  let actions = { ...options.actions };
+  let page = {
+    id: "page_" + String(g_nextIndex++),
+    adapter: useAdapter(),
+    path: void 0,
+    ajaxRequest,
+    ajaxFetch,
+    require: importModule,
+    getAction(name) {
+      return actions[name];
+    },
+    registerAction(name, fn) {
+      actions[name] = fn;
+    },
+    resetActions() {
+      actions = { ...options.actions };
+    },
+    getComponent: options.getComponent,
+    getComponentStore: options.getComponentStore,
+    getState: options.getState,
+    setState: options.setState
+  };
+  return page;
 }
 export {
   PageApis,
@@ -1482,26 +1829,30 @@ export {
   ajax,
   ajaxFetch,
   ajaxRequest,
+  bindActions,
   clearDictCache,
   clearLocalCache,
   clearPageCache,
-  collectActions,
   conditionToTree,
   createAsyncCache,
   createCancelToken,
+  createPage,
+  default_isCurrentUrl,
+  default_jumpTo,
+  default_updateLocation,
   deleteDynamicModules,
   deletePageCache,
   fetcherOk,
   format,
-  getApi,
   handleGraphQL,
   importModule,
   isCancel,
+  isPageUrl,
+  openWindow,
   processXuiDirective,
   processXuiValue,
   refHolder,
   registerAdapter,
-  registerApi,
   registerOperation,
   registerXuiComponent,
   resolveXuiComponent,

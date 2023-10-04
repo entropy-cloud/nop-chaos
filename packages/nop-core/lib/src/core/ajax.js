@@ -4,7 +4,7 @@ import { parse as qsparse } from 'qs';
 import { useAdapter } from '../adapter';
 import { HEADER_ACCESS_TOKEN, HEADER_APP_ID, HEADER_TENANT_ID, HEADER_TIMESTAMP, HEADER_VERSION } from './consts';
 const GRAPHQL_URL = '/graphql';
-const { useAuthToken, useTenantId, useLocale, setAuthToken, logout, useSettings, useI18n, useAppId, globalVersion, useToast, useAlert, processRequest, processResponse } = useAdapter();
+const { useAuthToken, useTenantId, useLocale, setAuthToken, logout, useSettings, useI18n, useAppId, globalVersion, notify, alert, processRequest, processResponse } = useAdapter();
 export const ajax = axios.create({});
 ajax.interceptors.response.use(res => {
     const token = res.headers[HEADER_ACCESS_TOKEN];
@@ -36,8 +36,6 @@ export function responseOk(data) {
     };
 }
 export function ajaxRequest(options) {
-    const toast = useToast();
-    const alert = useAlert();
     return ajaxFetch(options).then(d => {
         var _a, _b, _c, _d, _e, _f, _g;
         if (!options.silent) {
@@ -46,7 +44,7 @@ export function ajaxRequest(options) {
                     alert(d.data.msg);
                 }
                 else {
-                    toast[((_c = d.data) === null || _c === void 0 ? void 0 : _c.status) == 0 ? 'info' : 'error'](d.data.msg);
+                    notify(((_c = d.data) === null || _c === void 0 ? void 0 : _c.status) == 0 ? 'info' : 'error', d.data.msg);
                 }
             }
         }
@@ -59,7 +57,7 @@ export function ajaxRequest(options) {
  * 提供的对外接口符合amis框架的要求
  */
 export function ajaxFetch(options) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     options.config = options.config || {};
     let url = options.url;
     let query = options.query || {};
@@ -68,12 +66,26 @@ export function ajaxFetch(options) {
         query = Object.assign(Object.assign({}, query), qsparse(url.substring(pos + 1)));
         url = url.substring(0, pos);
     }
+    options.query = query;
+    if (url.startsWith("action://")) {
+        const actionName = url.substring("action://".length);
+        const action = (_a = options._page) === null || _a === void 0 ? void 0 : _a.getAction(actionName);
+        if (!action) {
+            return Promise.reject(new Error("nop.err.unknown-action:" + actionName));
+        }
+        try {
+            return Promise.resolve(action(options._page, options._scoped, options));
+        }
+        catch (e) {
+            return Promise.reject(e);
+        }
+    }
     const globSetting = useSettings();
     if (globSetting.apiUrl && options.config.useApiUrl !== false) {
         url = `${globSetting.apiUrl}${url}`;
     }
     const config = {
-        withCredentials: (_a = options.config.withCredentials) !== null && _a !== void 0 ? _a : true,
+        withCredentials: (_b = options.config.withCredentials) !== null && _b !== void 0 ? _b : true,
         url: url,
         method: options.method || 'post',
         headers: options.headers || {},
@@ -81,7 +93,7 @@ export function ajaxFetch(options) {
         params: query,
         responseType: options.responseType
     };
-    if ((_b = options.config) === null || _b === void 0 ? void 0 : _b.cancelExecutor) {
+    if ((_c = options.config) === null || _c === void 0 ? void 0 : _c.cancelExecutor) {
         const controller = new AbortController();
         options.config.cancelExecutor(() => {
             controller.abort();
@@ -93,7 +105,7 @@ export function ajaxFetch(options) {
     };
     prepareHeaders(config, opts);
     handleGraphQL(config, GRAPHQL_URL, options);
-    if (((_c = config.method) === null || _c === void 0 ? void 0 : _c.toLowerCase()) == 'get') {
+    if (((_d = config.method) === null || _d === void 0 ? void 0 : _d.toLowerCase()) == 'get') {
         config.params = Object.assign(Object.assign({}, options.data), query);
         config.data = null;
     }

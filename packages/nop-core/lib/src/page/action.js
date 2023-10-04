@@ -15,188 +15,118 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { isArray, isPlainObject, isPromise, isString } from "@vue/shared";
-import { v4 as uuid } from "uuid";
+import { isArray, isString } from "@vue/shared";
 import { importModule } from "../core";
-import { getApi } from "../api/registry";
-import { ajaxFetch, ajaxRequest } from '../core/ajax';
 import { absolutePath } from "../shared";
-import { processXuiValue } from "./processor";
+import { processXuiDirective } from "./processor";
+import { useAdapter } from "../adapter";
 /**
- * 解析xui:js属性引入的js代码，并把返回的函数集合注册到全局的页面函数集合对象中。
- * 为了避免名字冲突，每个xui:js都处在独立的scope空间中。所有以@action:为前缀的action链接都是在父scope中查找对应的action。
+ * 通过xui:import可以引入SystemJs格式的js模块，通过@action:xxx，@fn:(a,b)=>expr这种形式可以调用js模块中的函数
  *
  * 例如 {
- *    "xui:js": "return {f1:function(){}}"
+ *    "xui:import": "a.lib"
  *    "page": {
  *       dialog: {
- *          "xui:js": "return {f2: function(){}}"
- *          api: "@action:f1"
+ *          "xui:import": "b.lib"
+ *          api: "@action:a.f1"
  *       }
  *    }
  * }
  *
- * 上面的例子中@action:f1首先向上查找最近的xui:js，如果没有找到，则继续向上查找直到顶层的节点。
- * 具体实现方法是通过预处理为每个xui:js分配一个scope，然后把前缀为 @action:的字符串都替换为 @scoped-action:scope1/scope2|originalAction这种形式
+ * 上面的例子中@action:a.f1首先向上查找最近的xui:import引入的js库，如果没有找到，则继续向上查找直到顶层的节点。
+ *
+ * @action：xxx与 @fn:(a,b)=> expr的区别在于 @action:xxx对应函数名，@fn:(a,b)=>expr则是直接定义匿名函数实现
  *
  * @param json json schema
- * @param actions 页面action集合
- * @fnScope 为函数名字空间
- * @amisScope 为状态变量名字空间，对应于amis中store构成的store tree
  */
-export async function collectActions(pageUrl, json, fnScope, amisScope, actions) {
+export async function bindActions(pageUrl, json, page) {
     if (!json)
         return;
+    page.resetActions();
     const promises = [];
-    function process(json, fnScope, amisScope) {
-        if (hasScope(json.type)) {
-            let name = json.name || json.id;
-            if (!name)
-                name = json.name = uuid();
-            amisScope = amisScope ? amisScope + '.' + name : name;
-        }
+    const fnStack = [];
+    let actionIndex = 0;
+    // 收集所有的xui:import，异步加载脚本库
+    processXuiDirective(json, "xui:import", (modulePaths, obj, processProps) => {
+        // standalone表示不会向上查找action
+        const standalone = obj['xui:standalone'];
+        const fnScope = { standalone, libs: {} };
+        fnStack.push(fnScope);
+        fetchModules(pageUrl, modulePaths, promises, fnScope);
+        processProps(obj);
+        return obj;
+    });
+    // 等待所有脚本库加载完毕
+    await Promise.all(promises);
+    let stackIndex = 0;
+    function process(json) {
         let modulePaths = json['xui:import'];
-        let js = json['xui:js'];
-        if (js || modulePaths) {
-            // 每次出现xui:import或者xui:js都会导致产生一个新的fnScope
-            const localScope = json['xui:scope'] = json['xui:scope'] || uuid();
-            // standalone表示不会向上查找action
-            const standalone = json['xui:standalone'];
-            if (standalone) {
-                fnScope = localScope;
-            }
-            else {
-                fnScope = fnScope ? fnScope + '/' + localScope : localScope;
-            }
-            if (js) {
-                buildActions(js, fnScope, actions);
-            }
-            if (modulePaths) {
-                fetchApis(pageUrl, modulePaths, promises, fnScope, actions);
-            }
+        if (modulePaths) {
+            stackIndex++;
         }
         for (let key in json) {
             const v = json[key];
-            const processed = processValue(v, fnScope, amisScope);
-            if (processed !== v) {
-                if (isPromise(processed)) {
-                    processed.then(v => json[key] = v);
-                }
-                else {
-                    json[key] = processed;
+            if (!v)
+                continue;
+            if (isString(v)) {
+                json[key] = processValue(v);
+            }
+            else if (isArray(v)) {
+                for (let i = 0, n = v.length; i < n; i++) {
+                    process(v[i]);
                 }
             }
+            else {
+                process(v);
+            }
+        }
+        if (modulePaths) {
+            stackIndex--;
         }
     }
-    function processValue(v, fnScope, amisScope) {
-        if (isString(v)) {
-            // 为每个action增加scope前缀
-            if (v.startsWith("@action:")) {
-                return "temp-action://" + amisScope + ',' + fnScope + '|' + v.substring('@action:'.length);
-            }
-            else if (v.startsWith("action://")) {
-                return "temp-action://" + amisScope + ',' + fnScope + '|' + v.substring('action://'.length);
-            }
-            else if (v.startsWith("@page:")) {
-                // 为@page:path这种形式的链接增加scope信息
-                return "scoped-page://" + amisScope + ',' + fnScope + '|' + v.substring("@page:".length);
-            }
-            else if (v.startsWith("page://")) {
-                return "scoped-page://" + amisScope + ',' + fnScope + '|' + v.substring("page://".length);
-            }
-            else if (v.startsWith("@invoke:")) {
-                return "scoped-invoke://" + amisScope + '|' + v.substring("@invoke:".length);
-            }
-            else if (v.startsWith("invoke://")) {
-                return "scoped-invoke://" + amisScope + '|' + v.substring("invoke://".length);
-            }
-            else if (v.startsWith("@fn:")) {
-                return "scoped-fn://" + fnScope + '|' + v.substring("@fn:".length);
-            }
-            else if (v.startsWith("fn://")) {
-                return "scoped-fn://" + fnScope + '|' + v.substring("fn://".length);
-            }
-            else if (v.startsWith("@query:")) {
-                // amis的新版本要求url必须满足URL格式，必须是schema://path形式
-                return "query://" + v.substring("@query:".length);
-            }
-            else if (v.startsWith("@mutation:")) {
-                return "mutation://" + v.substring("@mutation:".length);
-            }
-            else if (v.startsWith("@graphql:")) {
-                return "graphql://" + v.substring("@graphql:".length);
-            }
-            else if (v.startsWith("@dict:")) {
-                return "dict://" + v.substring("@dict:".length);
-            }
+    function processValue(v) {
+        if (v.startsWith("@query:")) {
+            // amis的新版本要求url必须满足URL格式，必须是schema://path形式
+            return "query://" + v.substring("@query:".length);
         }
-        else if (isPlainObject(v)) {
-            process(v, fnScope, amisScope);
+        else if (v.startsWith("@mutation:")) {
+            return "mutation://" + v.substring("@mutation:".length);
         }
-        else if (isArray(v)) {
-            for (let i = 0, n = v.length; i < n; i++) {
-                processValue(v[i], fnScope, amisScope);
-            }
+        else if (v.startsWith("@graphql:")) {
+            return "graphql://" + v.substring("@graphql:".length);
+        }
+        else if (v.startsWith("@dict:")) {
+            return "dict://" + v.substring("@dict:".length);
+        }
+        else if (v.startsWith("@page:")) {
+            return "page://" + v.substring("@page:".length);
+        }
+        else if (v.startsWith("@action:")) {
+            const fnName = v.substring("@action:".length).trim();
+            const action = findAction(fnName, fnStack, stackIndex, page);
+            const actionName = fnName + '-' + (actionIndex++);
+            page.registerAction(actionName, action);
+            return "action://" + actionName;
+        }
+        else if (v.startsWith("@fn:")) {
+            const fn = buildFunction(v.substring("@fn:".length), page);
+            return wrapFunc(fn, v);
         }
         return v;
     }
-    process(json, fnScope, amisScope);
-    await Promise.all(promises);
-    processXuiValue(json, v => {
-        if (v.startsWith("temp-action://")) {
-            const parts = v.substring("temp-action://".length).split('|');
-            const [amisScope, fnScope] = parts[0].split(',');
-            let action = fnScope + '|' + parts[1];
-            let found = findAction(action, actions);
-            if (!found) {
-                // 查找全局注册的api
-                const api = getApi(parts[1]);
-                if (api) {
-                    found = actions[action] = api;
-                }
-            }
-            if (found) {
-                return "scoped-action://" + amisScope + ',' + found;
-            }
-            else {
-                console.error("nop.unknown-action:" + action);
-                return "unknown-action://" + action;
-            }
-        }
-        else if (v.startsWith("scoped-fn://")) {
-            const [fnScope, fn] = v.substring("scoped-fn://".length).split('|');
-            const fnName = fn.split('(')[0];
-            const args = fn.substring(fnName.length) || '(event,props)';
-            let action = fnScope + '|' + fnName;
-            let found = findAction(action, actions);
-            if (!found) {
-                // 查找全局注册的api
-                const api = getApi(fnName);
-                if (api) {
-                    found = actions[action] = api;
-                }
-            }
-            if (found) {
-                return "return props.env._page.actions['" + action + "']" + args;
-            }
-            else {
-                console.error("nop.unknown-fn:" + action);
-                return "unknown-fn://" + fn;
-            }
-        }
-        else {
-            return v;
-        }
-    });
+    process(json);
 }
-function fetchApis(pageUrl, modulePaths, promises, fnScope, actions) {
+function buildFunction(fn, page) {
+    return useAdapter().compileFunction(fn, page);
+}
+function fetchModules(pageUrl, modulePaths, promises, fnScope) {
     if (isString(modulePaths)) {
         modulePaths = modulePaths.split(',').reduce((m, p) => { m[getPathName(p)] = p; return m; }, {});
     }
     for (const moduleName in modulePaths) {
         const path = absolutePath(modulePaths[moduleName], pageUrl);
         const promise = importModule(path).then((mod) => {
-            actions[fnScope + '|' + moduleName] = mod;
+            fnScope[moduleName] = mod;
         });
         promises.push(promise);
     }
@@ -210,60 +140,32 @@ function getPathName(path) {
         return path.substring(0, pos2);
     return path;
 }
-/**
- * 解析js代码，得到返回的函数集合，为每个返回的函数名增加scope前缀，然后注册到页面action集合中
- *
- * @param js js代码
- * @param fnScope scope标识
- * @param actions 页面action集合
- */
-function buildActions(js, fnScope, actions) {
-    try {
-        const fn = new Function("require", "ajaxFetch", "ajaxRequest", js);
-        const map = fn(importModule, ajaxFetch, ajaxRequest);
-        if (map) {
-            for (let name in map) {
-                let fullName = fnScope + '|' + name;
-                const fn = map[name];
-                actions[fullName] = fn;
-            }
-        }
+function findAction(fnName, fnStack, stackIndex, page) {
+    const pos = fnName.indexOf('.');
+    if (pos < 0) {
+        const api = page.getAction(fnName);
+        if (!api)
+            throw new Error("nop.err.unknown-action:" + fnName);
+        return api;
     }
-    catch (e) {
-        console.error(e);
-    }
-}
-function findAction(url, actions) {
-    let p = url.indexOf('?');
-    if (p >= 0)
-        url = url.substring(0, p);
-    let pos = url.lastIndexOf('|');
-    let scope = url.substring(0, pos);
-    let name = url.substring(pos + 1);
-    let names = name.split('.');
-    // 如果未找到，则在上一级scope中查找
-    do {
-        if (actions[scope + '|' + name]) {
-            return scope + '|' + name;
-        }
-        // 对于模块加载，对应的格式为 scope|moduelName.actionName
-        if (names[1] && actions[scope + '|' + names[0]] && actions[scope + '|' + names[0]][names[1]]) {
-            return scope + '|' + name;
-        }
-        let pos = scope.lastIndexOf('/');
-        if (pos < 0)
+    const libName = fnName.substring(0, pos);
+    const methodName = fnName.substring(pos + 1);
+    for (let i = stackIndex; i >= 0; i--) {
+        let fnScope = fnStack[i];
+        if (fnScope.standalone)
             break;
-        scope = scope.substring(0, pos);
-    } while (true);
-    return;
+        const lib = fnScope.libs[libName];
+        if (lib && lib[methodName]) {
+            return lib[methodName];
+        }
+    }
+    throw new Error("nop.err.unknown-action:" + fnName);
 }
 /**
- * 只有少数组件具有独立的scope。`@Renderer`注解中设置了isolateScope:true
- * 另外参见store/index.ts中allowedStoreList
- * @param type
- * @returns
+ * 将函数的JSON序列化结果固化为指定值
  */
-function hasScope(type) {
-    return ["page", "dialog", "drawer", "wizard", "service", "crud", "table", "table2", "form", "combo"].includes(type);
+function wrapFunc(fn, text) {
+    const ret = (...args) => fn(...args);
+    ret.toJSON = () => text;
+    return ret;
 }
-// crud, dialog, drawer, wizard, service, table, form

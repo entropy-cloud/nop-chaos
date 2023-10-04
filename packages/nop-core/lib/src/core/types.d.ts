@@ -39,6 +39,8 @@ export type FetcherRequest = ApiObject & {
     filter?: TreeBean;
     responseKey?: string;
     "gql:selection"?: string;
+    _page?: BasePage;
+    _scoped?: any;
 };
 export type AjaxResponse = NonNullable<FetcherResult['data']>;
 export type AjaxConfig = {
@@ -49,6 +51,11 @@ export type AjaxConfig = {
     useAlert?: boolean;
     useApiUrl?: boolean;
     withToken?: boolean;
+};
+export type BasePage = {
+    getAction(actionName: string): Function;
+    registerAction(actionName: string, fn: Function): void;
+    resetActions(): any;
 };
 interface BaseApiObject {
     /**
