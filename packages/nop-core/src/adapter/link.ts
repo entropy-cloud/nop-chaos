@@ -33,7 +33,10 @@ export function default_jumpTo(router: Router, to: string) {
         to = to.substring("replace://".length)
     }
     if (isPageUrl(to)) {
-        const page = { name: 'jsonPage', params: { url: to } }
+        const pos = to.indexOf('?')
+        const query = pos > 0 ? to.substring(pos+1) : null
+        const data = query ? qs.parse(query) : null
+        const page = { name: 'jsonPage', params: { path: to, data} }
         go(page as any, replace)
     } else {
         go(to, replace)

@@ -133,6 +133,16 @@ export const adapter = {
 
     confirm(msg: string, title?: string): Promise<boolean>{
         throw new Error("not-impl")
+    },
+
+    dataMapping(
+        to: any,
+        from: Record<string,any> = {},
+        ignoreFunction: boolean | ((key: string, value: any) => boolean) = false,
+        convertKeyToPath?: boolean,
+        ignoreIfNotMatch = false
+      ){
+        throw new Error("not-impl")
     }
 }
 
