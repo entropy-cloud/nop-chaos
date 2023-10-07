@@ -19,3 +19,15 @@ export function deleteDynamicModules() {
             System.delete(moduleId);
     }
 }
+export function registerModule(name, lib) {
+    let libPath = name;
+    if (name.startsWith("./")) {
+        libPath = System.resolve(name);
+    }
+    System.set(libPath, lib);
+}
+export function addSystemImportMap(imports) {
+    System.addImportMap({
+        imports
+    });
+}

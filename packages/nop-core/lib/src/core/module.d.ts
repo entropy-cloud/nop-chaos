@@ -6,3 +6,5 @@ import 'systemjs/dist/system.js';
  */
 export declare function importModule(path: string): any;
 export declare function deleteDynamicModules(): void;
+export declare function registerModule(name: string, lib: any): void;
+export declare function addSystemImportMap(imports: Record<string, string>): void;

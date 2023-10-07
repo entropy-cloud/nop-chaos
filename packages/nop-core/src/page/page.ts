@@ -16,9 +16,7 @@
  * limitations under the License.
  */
 
-import { ajaxFetch, ajaxRequest, BasePage, FetcherRequest, FetcherResult, importModule } from '../core'
-
-import { AdapterType, useAdapter } from "../adapter";
+import { BasePage, FetcherRequest, FetcherResult } from '../core'
 
 /**
  * scoped对应当前amis的scope。只有page/crud/service/form/等少数组件才具有scope
@@ -36,24 +34,12 @@ export type RegisterPage = (page: PageObject) => void
  */
 export type PageObject = BasePage & {
   id: string,
-  path?: string,
 
-  adapter: AdapterType
+  getScopedStore(name: string): any
 
-  ajaxRequest: (req: FetcherRequest) => Promise<any>
+  getComponent(name:string):any
 
-  ajaxFetch: (req: FetcherRequest) => Promise<FetcherResult>
-
-  require: (path: string) => Promise<any>
-
-  /**
-   * 获取amis的component
-   */
-  getComponent(name: string): any
-
-  getComponentStore(name: string): any
-
-  getState(name:string, value:any)
+  getState(name:string):any
 
   setState(name:string, value:any)
 };
@@ -65,9 +51,9 @@ export type PageOptions = {
    */
   getComponent(name: string): any
 
-  getComponentStore(name: string): any
+  getScopedStore(name: string): any
 
-  getState(name:string, value:any)
+  getState(name:string):any
 
   setState(name:string, value:any)
 
@@ -81,12 +67,6 @@ export function createPage(options: PageOptions,): PageObject {
 
   let page: PageObject = {
     id: 'page_' + String(g_nextIndex++),
-    adapter: useAdapter(),
-    path: undefined,
-    ajaxRequest: ajaxRequest,
-    ajaxFetch: ajaxFetch,
-
-    require: importModule,
 
     getAction(name: string) {
       return actions[name]
@@ -102,7 +82,7 @@ export function createPage(options: PageOptions,): PageObject {
 
     getComponent: options.getComponent,
 
-    getComponentStore: options.getComponentStore,
+    getScopedStore: options.getScopedStore,
 
     getState: options.getState,
 

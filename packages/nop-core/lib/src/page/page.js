@@ -15,18 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ajaxFetch, ajaxRequest, importModule } from '../core';
-import { useAdapter } from "../adapter";
 let g_nextIndex = 0;
 export function createPage(options) {
     let actions = Object.assign({}, options.actions);
     let page = {
         id: 'page_' + String(g_nextIndex++),
-        adapter: useAdapter(),
-        path: undefined,
-        ajaxRequest: ajaxRequest,
-        ajaxFetch: ajaxFetch,
-        require: importModule,
         getAction(name) {
             return actions[name];
         },
@@ -37,7 +30,7 @@ export function createPage(options) {
             actions = Object.assign({}, options.actions);
         },
         getComponent: options.getComponent,
-        getComponentStore: options.getComponentStore,
+        getScopedStore: options.getScopedStore,
         getState: options.getState,
         setState: options.setState
     };

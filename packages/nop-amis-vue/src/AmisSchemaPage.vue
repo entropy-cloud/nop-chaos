@@ -22,10 +22,14 @@
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
-import type { RegisterPage, OnCancelCallback, OnChangeCallback, OnOkCallback } from '@nop-chaos/nop-core';
-import { createPage } from '@nop-chaos/nop-core';
-import { createRoot } from 'react-dom/client';
+import { PropType, defineComponent, onBeforeUnmount, ref, watchEffect } from 'vue';
+import type { RegisterPage } from '@nop-chaos/nop-core';
+import { bindActions, createPage, transformPageJson, useAdapter } from '@nop-chaos/nop-core';
+import { clearStoresCache, setDefaultLocale } from 'amis';
+import { RootRenderProps } from 'amis-core/lib/Root';
+import { render as renderAmis } from 'amis'
+import { createEnv } from './env'
+
 
 /**
  * 嵌入到vue中的amis页面。每个AmisSchemaPage都对应一个ReactRooot。schema发生变化时会重新创建react组件
@@ -38,29 +42,102 @@ export default defineComponent({
     actions: Object as PropType<Record<string, Function>>
   },
 
-  emits: ['update:schema'],
-
   setup(props) {
-    let page = createPage({
-      getComponent(name: string): any;
-      getComponentStore(name: string): any;
-      getState(name: string, value: any): any;
-      setState(name: string, value: any): any;
-      actions: props.actions
-    });
-    props.registerPage?.(page)
 
     const domRef = ref<HTMLElement>()
-    let root;
+    let root: any;
+    let amisScoped: any;
 
-    onMounted(() => {
-      root = createRoot(domRef.value!);
-    })
+    let page = createPage({
+      getComponent(name: string) {
+        return get_component(name)
+      },
+
+      getScopedStore(name: string) {
+        return get_component(name)?.props?.store
+      },
+
+      getState(name: string) {
+        return get_root_store().get(name)
+      },
+
+      setState(name: string, value: any) {
+        get_root_store().set(name, value)
+      },
+
+      actions: props.actions
+    });
+
+    props.registerPage?.(page)
+
+    function get_root() {
+      return amisScoped?.getComponents()[0];
+    }
+
+    function get_root_store() {
+      return get_root()?.context.store
+    }
+
+    function get_component(name: string) {
+      if (name[0] == "#") {
+        let pos = name.indexOf(".");
+        if (pos < 0) {
+          return get_root()?.context.getComponentById(name.substring(1));
+        } else {
+          return get_root()
+            ?.context.getComponentById(name.substring(1))
+            .getComponentByName(name.substring(pos + 1));
+        }
+      } else {
+        return get_root()?.context.getComponentByName(name);
+      }
+    }
+
+    function get_form() {
+      let root = get_root()
+      let comps = root?.context.getComponents()
+      for (let i = 0, n = comps.length; i < n; i++) {
+        if (comps[i].props.type == 'form')
+          return comps[i]
+      }
+      return null
+    }
+
+    function destroyPage() {
+      root?.unmount();
+      clearStoresCache(page.id);
+    }
+
+    async function renderPage() {
+      let env = createEnv(page);
+      const locale = useAdapter().useLocale()
+      let opts: RootRenderProps = {
+        data: props.data,
+        onConfirm: page.getAction('ok') || function () { },
+        onClose: function (b) {
+          if (b) {
+            page.getAction('ok')?.()
+          } else {
+            page.getAction('cancel')?.()
+          }
+        },
+        scopeRef: scoped => { amisScoped = scoped },
+        locale: locale, // amis内部会自动替换zh_CN为zh-CN
+        theme: 'cxd'
+      };
+
+      setDefaultLocale(locale);
+      const schema = props.schema as any
+      await bindActions(schema.__baseUrl, schema, page)
+      const vdom = renderAmis(schema, opts, env);
+      // render返回undefined
+      root.render(vdom as any);
+    }
 
     watchEffect(() => {
-      page.data = props.data;
+      destroyPage()
       if (props.schema && domRef.value) {
-        page.renderPage(props.schema);
+        renderPage();
       }
     });
 

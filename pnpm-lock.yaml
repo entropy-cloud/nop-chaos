@@ -269,12 +269,21 @@ importers:
       ant-design-vue:
         specifier: ^3.2.12
         version: registry.npmmirror.com/ant-design-vue@3.2.20(vue@3.3.4)
+      clipboard:
+        specifier: ^2.0.8
+        version: registry.npmmirror.com/clipboard@2.0.11
+      copy-to-clipboard:
+        specifier: ^3.3.2
+        version: registry.npmmirror.com/copy-to-clipboard@3.3.3
       element-plus:
         specifier: ^2.3.14
         version: registry.npmmirror.com/element-plus@2.3.14(vue@3.3.4)
       js-yaml:
         specifier: ^4.1.0
         version: registry.npmmirror.com/js-yaml@4.1.0
+      lodash-es:
+        specifier: ^4.17.21
+        version: registry.npmmirror.com/lodash-es@4.17.21
       pinia:
         specifier: ^2.0.12
         version: registry.npmmirror.com/pinia@2.1.4(typescript@4.9.5)(vue@3.3.4)

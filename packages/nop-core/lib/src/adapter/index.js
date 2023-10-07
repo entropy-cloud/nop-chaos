@@ -85,6 +85,18 @@ export const adapter = {
     },
     confirm(msg, title) {
         throw new Error("not-impl");
+    },
+    dataMapping(to, from = {}, ignoreFunction = false, convertKeyToPath, ignoreIfNotMatch = false) {
+        throw new Error("not-impl");
+    },
+    fetchDict(dictName, options) {
+        throw new Error("not-impl");
+    },
+    fetchPageAndTransform(pageName, options) {
+        throw new Error("not-impl");
+    },
+    getPage(pageUrl) {
+        throw new Error("not-impl");
     }
 };
 export function registerAdapter(data) {

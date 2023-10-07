@@ -1,5 +1,6 @@
 import { Store } from "pinia";
 import { Router } from "vue-router";
+import { FetcherResult, FetcherRequest } from "../core/types";
 import { default_isCurrentUrl, default_updateLocation } from "./link";
 export * from "./link";
 export type Settings = {
@@ -61,6 +62,10 @@ export declare const adapter: {
     notify(type: ToastLevel, msg: any, conf?: ToastConf): never;
     alert(msg: string, title?: string): never;
     confirm(msg: string, title?: string): Promise<boolean>;
+    dataMapping(to: any, from?: Record<string, any>, ignoreFunction?: boolean | ((key: string, value: any) => boolean), convertKeyToPath?: boolean, ignoreIfNotMatch?: boolean): never;
+    fetchDict(dictName: string, options: FetcherRequest): Promise<FetcherResult>;
+    fetchPageAndTransform(pageName: string, options: FetcherRequest): Promise<FetcherResult>;
+    getPage(pageUrl: string): Promise<any>;
 };
 export declare function registerAdapter(data: Partial<typeof adapter>): void;
 export declare function useAdapter(): {
@@ -102,5 +107,9 @@ export declare function useAdapter(): {
     notify(type: ToastLevel, msg: any, conf?: ToastConf | undefined): never;
     alert(msg: string, title?: string | undefined): never;
     confirm(msg: string, title?: string | undefined): Promise<boolean>;
+    dataMapping(to: any, from?: Record<string, any>, ignoreFunction?: boolean | ((key: string, value: any) => boolean), convertKeyToPath?: boolean | undefined, ignoreIfNotMatch?: boolean): never;
+    fetchDict(dictName: string, options: FetcherRequest): Promise<FetcherResult>;
+    fetchPageAndTransform(pageName: string, options: FetcherRequest): Promise<FetcherResult>;
+    getPage(pageUrl: string): Promise<any>;
 };
 export type AdapterType = typeof adapter;

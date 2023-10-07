@@ -56,7 +56,6 @@ export async function bindActions(pageUrl: string, json: any, page: BasePage) {
 
   const promises: Promise<any>[] = []
   const fnStack: FnScope[] = []
-  let actionIndex = 0
 
   // 收集所有的xui:import，异步加载脚本库
   processXuiDirective(json, "xui:import", (modulePaths, obj, processProps) => {
@@ -86,7 +85,7 @@ export async function bindActions(pageUrl: string, json: any, page: BasePage) {
         continue
 
       if (isString(v)) {
-        json[key] = processValue(v)
+        json[key] = processValue(key,v)
       } else if (isArray(v)) {
         for (let i = 0, n = v.length; i < n; i++) {
           process(v[i])
@@ -101,32 +100,49 @@ export async function bindActions(pageUrl: string, json: any, page: BasePage) {
     }
   }
 
-  function processValue(v: string) {
-    if (v.startsWith("@query:")) {
+  function processValue(key:string, v: string) {
       // amis的新版本要求url必须满足URL格式，必须是schema://path形式
-      return "query://" + v.substring("@query:".length)
-    } else if (v.startsWith("@mutation:")) {
-      return "mutation://" + v.substring("@mutation:".length)
-    } else if (v.startsWith("@graphql:")) {
-      return "graphql://" + v.substring("@graphql:".length)
-    } else if (v.startsWith("@dict:")) {
-      return "dict://" + v.substring("@dict:".length)
-    } else if (v.startsWith("@page:")) {
-      return "page://" + v.substring("@page:".length)
-    } else if (v.startsWith("@action:")) {
-      const fnName = v.substring("@action:".length).trim()
+      const [type, path] = splitPrefixUrl(v) || []
+      if(!type)
+        return v
+    if (['query','mutation','graphql','dict','page'].includes(type)) {
+      return type + "://" +path
+    } else if (v == 'action') {
+      const fnName = path.split('-')[0]
       const action = findAction(fnName, fnStack, stackIndex, page)
-      const actionName = fnName + '-' + (actionIndex++)
-      page.registerAction(actionName,action)
-      return "action://" + actionName
-    } else if (v.startsWith("@fn:")) {
-      const fn = buildFunction(v.substring("@fn:".length), page)
+      for(let i=0;i<1000;i++){
+          const actionName = i == 0 ? fnName : fnName + '-' + i
+          const existed = page.getAction(actionName)
+          if(!existed){
+            page.registerAction(actionName, action)
+            return "action://" + actionName
+          }else if(existed == action){
+            return "action://" + actionName            
+          }
+      }
+      throw new Error("nop.err.action-name-conflict:"+v)
+    } else if (type == 'fn') {
+      const fn = buildFunction(path, page)
       return wrapFunc(fn, v)
     }
     return v
   }
 
   process(json)
+}
+
+export function splitPrefixUrl(url:string){
+  if(url.startsWith("@")){
+    let pos = url.indexOf(':');
+    if(pos < 0){
+      return;
+    }
+    return [url.substring(1,pos), url.substring(pos+1).trim()]
+  }
+  let pos = url.indexOf("://")
+  if(pos < 0)
+    return
+  return [url.substring(0,pos), url.substring(pos+3)]
 }
 
 function buildFunction(fn: string, page: BasePage) {

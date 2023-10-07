@@ -3,6 +3,7 @@ import { AxiosRequestConfig } from 'axios'
 import { isBoolean, isInteger, isNumber } from "lodash-es"
 import { FetcherRequest } from "./types"
 import type { OrderFieldBean, QueryBean, TreeBean } from "./types"
+import { splitPrefixUrl } from "../page"
 
 
 export type OperationType = "query" | "mutation" | "subscription"
@@ -19,35 +20,11 @@ export type ArgumentDefinition = {
 
 export function handleGraphQL(config: AxiosRequestConfig<any>, graphqlUrl: string, options: FetcherRequest) {
     let url = config.url!
-    if (url.startsWith("@query:")) {
+    const [type,path] = splitPrefixUrl(url) || []
+    if (type == 'query' || type == 'mutation' || type == 'subscription') {
         normalizeData(config)
         config.method = 'post'
-        handleGraphQLUrl("query", url.substring('@query:'.length), config, graphqlUrl, options)
-        return true
-    } else if (url.startsWith("query://")) {
-        normalizeData(config)
-        config.method = 'post'
-        handleGraphQLUrl("query", url.substring('query://'.length), config, graphqlUrl, options)
-        return true
-    } else if (url.startsWith("@mutation:")) {
-        normalizeData(config)
-        config.method = 'post'
-        handleGraphQLUrl("mutation", url.substring('@mutation:'.length), config, graphqlUrl, options)
-        return true
-    } else if (url.startsWith("mutation://")) {
-        normalizeData(config)
-        config.method = 'post'
-        handleGraphQLUrl("mutation", url.substring('mutation://'.length), config, graphqlUrl, options)
-        return true
-    } else if (url.startsWith("@subscription:")) {
-        normalizeData(config)
-        config.method = 'post'
-        handleGraphQLUrl("subscription", url.substring("@subscription:".length), config, graphqlUrl, options)
-        return true
-    } else if (url.startsWith("subscription://")) {
-        normalizeData(config)
-        config.method = 'post'
-        handleGraphQLUrl("subscription", url.substring('subscription://'.length), config, graphqlUrl, options)
+        handleGraphQLUrl(type, path, config, graphqlUrl, options)
         return true
     } else if (url.endsWith("/graphql") || url.indexOf("/graphql?") >= 0) {
         normalizeData(config)

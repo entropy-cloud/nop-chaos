@@ -3,7 +3,7 @@ import 'systemjs/dist/system.js'
 
 declare var global:any
 
-const System = (typeof self !== 'undefined' ? self : global).System
+const System  = (typeof self !== 'undefined' ? self : global).System
 
 /**
  * 动态加载js文件
@@ -25,4 +25,18 @@ export function deleteDynamicModules() {
         if (moduleId.endsWith(".lib.js"))
             System.delete(moduleId)
     }
+}
+
+export function registerModule(name:string, lib:any){
+    let libPath = name
+    if(name.startsWith("./")){
+        libPath = System.resolve(name)
+    }
+    System.set(libPath,lib)
+}
+
+export function addSystemImportMap(imports: Record<string,string>){
+    System.addImportMap({
+        imports
+    })
 }

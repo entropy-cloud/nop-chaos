@@ -61,13 +61,16 @@ import { shallowRef, ref } from 'vue';
 import { ElDialog, ElButton } from 'element-plus';
 
 import AmisSchemaPage from './AmisSchemaPage.vue';
-import debuggerSchema from './debugger.js';
+import debuggerSchema from './debugger';
 import yaml from 'js-yaml';
 
 import XuiPageEditor from './XuiPageEditor.vue';
 
 const props = defineProps({
-  path: String,
+  path: {
+    type: String,
+    required:true,
+  },
   schema: Object,
 });
 
@@ -93,13 +96,13 @@ const schemaActions: Record<string, Function> = {
   "toggleYaml": handleToggleYaml,
 }
 
-function handleChange(page: any, scoped: any, data: any) {
+function handleChange(data: any) {
   let json = schemaData.value.lang == 'yaml' ? yaml.load(data.schema) : JSON.parse(data.schema);
   emit('update:schema', json);
 }
 
-function handleOk(page: any, scoped: any, data: any) {
-  handleChange(page, scoped, data);
+function handleOk(data: any) {
+  handleChange(data);
   schemaVisible.value = false
 }
 
@@ -111,8 +114,7 @@ function handleRebuild() {
   emit('rebuild');
 }
 
-function handleToggleYaml(page: any, scoped: any, options: any) {
-
+function handleToggleYaml(options: any) {
   let schema = options.data.schema;
   if (options.data.lang == 'yaml') {
     schemaData.value = { lang: 'json', schema: JSON.stringify(yaml.load(schema), null, '  ') };

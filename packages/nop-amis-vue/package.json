@@ -1,5 +1,5 @@
 {
-  "name": "@nop-chaos/nop-core",
+  "name": "@nop-chaos/nop-amis-vue",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -30,7 +30,10 @@
     "veaury": "^2.3.8",
     "vue": "^3.2.45",
     "vue-router": "^4.0.14",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "clipboard": "^2.0.8",
+    "copy-to-clipboard": "^3.3.2",
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",

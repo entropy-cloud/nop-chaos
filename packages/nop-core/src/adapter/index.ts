@@ -1,5 +1,6 @@
 import { Store } from "pinia";
 import { Router } from "vue-router";
+import { FetcherResult, FetcherRequest } from "../core/types";
 
 import { default_jumpTo,default_isCurrentUrl,default_updateLocation } from "./link";
 
@@ -142,6 +143,18 @@ export const adapter = {
         convertKeyToPath?: boolean,
         ignoreIfNotMatch = false
       ){
+        throw new Error("not-impl")
+    },
+
+    fetchDict(dictName:string, options:FetcherRequest): Promise<FetcherResult>{
+        throw new Error("not-impl")
+    },
+
+    fetchPageAndTransform(pageName:string, options:FetcherRequest): Promise<FetcherResult>{
+        throw new Error("not-impl")
+    },
+
+    getPage(pageUrl:string): Promise<any>{
         throw new Error("not-impl")
     }
 }

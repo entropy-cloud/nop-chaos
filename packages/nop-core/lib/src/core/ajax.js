@@ -3,6 +3,7 @@ import { handleGraphQL } from './graphql';
 import { parse as qsparse } from 'qs';
 import { useAdapter } from '../adapter';
 import { HEADER_ACCESS_TOKEN, HEADER_APP_ID, HEADER_TENANT_ID, HEADER_TIMESTAMP, HEADER_VERSION } from './consts';
+import { splitPrefixUrl } from '../page';
 const GRAPHQL_URL = '/graphql';
 const { useAuthToken, useTenantId, useLocale, setAuthToken, logout, useSettings, useI18n, useAppId, globalVersion, notify, alert, processRequest, processResponse } = useAdapter();
 export const ajax = axios.create({});
@@ -67,18 +68,25 @@ export function ajaxFetch(options) {
         url = url.substring(0, pos);
     }
     options.query = query;
-    if (url.startsWith("action://")) {
-        const actionName = url.substring("action://".length);
+    const [type, path] = splitPrefixUrl(url) || [];
+    if (type == 'action') {
+        const actionName = path;
         const action = (_a = options._page) === null || _a === void 0 ? void 0 : _a.getAction(actionName);
         if (!action) {
             return Promise.reject(new Error("nop.err.unknown-action:" + actionName));
         }
         try {
-            return Promise.resolve(action(options._page, options._scoped, options));
+            return Promise.resolve(action(options));
         }
         catch (e) {
             return Promise.reject(e);
         }
+    }
+    else if (type == 'dict') {
+        return useAdapter().fetchDict(path, options);
+    }
+    else if (type == 'page') {
+        return useAdapter().fetchPageAndTransform(path, options);
     }
     const globSetting = useSettings();
     if (globSetting.apiUrl && options.config.useApiUrl !== false) {

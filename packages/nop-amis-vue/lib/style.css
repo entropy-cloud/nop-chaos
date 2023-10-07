@@ -1,0 +1,14 @@
+.page-full-screen .el-dialog__body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.page-full-screen .el-dialog__header {
+  display: none;
+}
+.page-debugger {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 100;
+}

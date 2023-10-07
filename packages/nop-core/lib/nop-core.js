@@ -3,7 +3,7 @@ import { shallowRef, toRaw, ref } from "vue";
 import LRUCache from "lru-cache";
 import { cloneDeep, isNumber, isInteger, isBoolean, omit } from "lodash-es";
 import axios from "axios";
-import { isString, isPlainObject, isArray, isObject, isPromise } from "@vue/shared";
+import { isObject, isArray, isPromise, isString, isPlainObject } from "@vue/shared";
 import "systemjs/dist/system.js";
 function lexer(str) {
   var tokens = [];
@@ -327,7 +327,10 @@ function default_jumpTo(router, to) {
     to = to.substring("replace://".length);
   }
   if (isPageUrl(to)) {
-    const page = { name: "jsonPage", params: { url: to } };
+    const pos = to.indexOf("?");
+    const query = pos > 0 ? to.substring(pos + 1) : null;
+    const data = query ? qs.parse(query) : null;
+    const page = { name: "jsonPage", params: { path: to, data } };
     go(page, replace);
   } else {
     go(to, replace);
@@ -500,6 +503,18 @@ const adapter = {
   },
   confirm(msg, title) {
     throw new Error("not-impl");
+  },
+  dataMapping(to, from = {}, ignoreFunction = false, convertKeyToPath, ignoreIfNotMatch = false) {
+    throw new Error("not-impl");
+  },
+  fetchDict(dictName, options) {
+    throw new Error("not-impl");
+  },
+  fetchPageAndTransform(pageName, options) {
+    throw new Error("not-impl");
+  },
+  getPage(pageUrl) {
+    throw new Error("not-impl");
   }
 };
 function registerAdapter(data) {
@@ -632,37 +647,296 @@ function createAsyncCache(options) {
     }
   };
 }
+async function processXuiDirective(json, typeProp, processor) {
+  let futures = [];
+  let ret = _processXuiDirective(json, typeProp, processor, futures);
+  await Promise.all(futures);
+  return ret;
+}
+function _processXuiDirective(json, typeProp, processor, futures) {
+  if (!json)
+    return json;
+  function processProps(json2) {
+    for (let key in json2) {
+      let v = json2[key];
+      v = _processXuiDirective(v, typeProp, processor, futures);
+      if (v === void 0) {
+        delete json2[key];
+      } else if (v != json2[key]) {
+        json2[key] = v;
+        if (isPromise(v)) {
+          v.then((ret) => {
+            if (ret === void 0) {
+              delete json2[key];
+            } else {
+              json2[key] = ret;
+            }
+          });
+          json2[key] = v;
+          futures.push(v);
+        }
+      }
+    }
+    return json2;
+  }
+  if (isObject(json)) {
+    let type = json[typeProp];
+    if (type) {
+      return processor(type, json, processProps);
+    }
+    processProps(json);
+  } else if (isArray(json)) {
+    for (let i = 0, n = json.length; i < n; i++) {
+      let child = _processXuiDirective(json[i], typeProp, processor, futures);
+      if (child === void 0) {
+        delete json[i];
+        i--;
+        n--;
+      } else if (child != json[i]) {
+        json[i] = child;
+        if (isPromise(child)) {
+          child.then((ret) => {
+            let idx = json.indexOf(child);
+            if (idx < 0)
+              return;
+            if (ret == void 0) {
+              delete json[idx];
+            } else {
+              json[idx] = ret;
+            }
+          });
+        }
+      }
+    }
+  }
+  return json;
+}
+function processXuiValue(json, processor) {
+  if (!json)
+    return json;
+  function processProps(json2) {
+    for (let key in json2) {
+      let v = json2[key];
+      if (isString(v)) {
+        v = processor(v, key, json2);
+        if (v === void 0) {
+          delete json2[key];
+        } else if (v != json2[key]) {
+          json2[key] = v;
+        }
+      } else {
+        processXuiValue(v, processor);
+      }
+    }
+    return json2;
+  }
+  if (isObject(json)) {
+    processProps(json);
+  } else if (isArray(json)) {
+    for (let i = 0, n = json.length; i < n; i++) {
+      let child = json[i];
+      if (isString(child)) {
+        let v = processor(child, i, json);
+        if (v === void 0) {
+          delete json[i];
+          i--;
+          n--;
+        } else if (v != json[i]) {
+          json[i] = v;
+        }
+      } else {
+        processXuiValue(child, processor);
+      }
+    }
+  }
+  return json;
+}
+async function bindActions(pageUrl, json, page) {
+  if (!json)
+    return;
+  page.resetActions();
+  const promises = [];
+  const fnStack = [];
+  processXuiDirective(json, "xui:import", (modulePaths, obj, processProps) => {
+    const standalone = obj["xui:standalone"];
+    const fnScope = { standalone, libs: {} };
+    fnStack.push(fnScope);
+    fetchModules(pageUrl, modulePaths, promises, fnScope);
+    processProps(obj);
+    return obj;
+  });
+  await Promise.all(promises);
+  let stackIndex = 0;
+  function process(json2) {
+    let modulePaths = json2["xui:import"];
+    if (modulePaths) {
+      stackIndex++;
+    }
+    for (let key in json2) {
+      const v = json2[key];
+      if (!v)
+        continue;
+      if (isString(v)) {
+        json2[key] = processValue(key, v);
+      } else if (isArray(v)) {
+        for (let i = 0, n = v.length; i < n; i++) {
+          process(v[i]);
+        }
+      } else {
+        process(v);
+      }
+    }
+    if (modulePaths) {
+      stackIndex--;
+    }
+  }
+  function processValue(key, v) {
+    const [type, path] = splitPrefixUrl(v) || [];
+    if (!type)
+      return v;
+    if (["query", "mutation", "graphql", "dict", "page"].includes(type)) {
+      return type + "://" + path;
+    } else if (v == "action") {
+      const fnName = path.split("-")[0];
+      const action = findAction(fnName, fnStack, stackIndex, page);
+      for (let i = 0; i < 1e3; i++) {
+        const actionName = i == 0 ? fnName : fnName + "-" + i;
+        const existed = page.getAction(actionName);
+        if (!existed) {
+          page.registerAction(actionName, action);
+          return "action://" + actionName;
+        } else if (existed == action) {
+          return "action://" + actionName;
+        }
+      }
+      throw new Error("nop.err.action-name-conflict:" + v);
+    } else if (type == "fn") {
+      const fn = buildFunction(path, page);
+      return wrapFunc(fn, v);
+    }
+    return v;
+  }
+  process(json);
+}
+function splitPrefixUrl(url) {
+  if (url.startsWith("@")) {
+    let pos2 = url.indexOf(":");
+    if (pos2 < 0) {
+      return;
+    }
+    return [url.substring(1, pos2), url.substring(pos2 + 1).trim()];
+  }
+  let pos = url.indexOf("://");
+  if (pos < 0)
+    return;
+  return [url.substring(0, pos), url.substring(pos + 3)];
+}
+function buildFunction(fn, page) {
+  return useAdapter().compileFunction(fn, page);
+}
+function fetchModules(pageUrl, modulePaths, promises, fnScope) {
+  if (isString(modulePaths)) {
+    modulePaths = modulePaths.split(",").reduce((m, p) => {
+      m[getPathName(p)] = p;
+      return m;
+    }, {});
+  }
+  for (const moduleName in modulePaths) {
+    const path = absolutePath(modulePaths[moduleName], pageUrl);
+    const promise = importModule(path).then((mod) => {
+      fnScope[moduleName] = mod;
+    });
+    promises.push(promise);
+  }
+}
+function getPathName(path) {
+  let pos = path.lastIndexOf("/");
+  if (pos >= 0)
+    path = path.substring(pos + 1);
+  let pos2 = path.indexOf(".");
+  if (pos2 > 0)
+    return path.substring(0, pos2);
+  return path;
+}
+function findAction(fnName, fnStack, stackIndex, page) {
+  const pos = fnName.indexOf(".");
+  if (pos < 0) {
+    const api = page.getAction(fnName);
+    if (!api)
+      throw new Error("nop.err.unknown-action:" + fnName);
+    return api;
+  }
+  const libName = fnName.substring(0, pos);
+  const methodName = fnName.substring(pos + 1);
+  for (let i = stackIndex; i >= 0; i--) {
+    let fnScope = fnStack[i];
+    if (fnScope.standalone)
+      break;
+    const lib = fnScope.libs[libName];
+    if (lib && lib[methodName]) {
+      return lib[methodName];
+    }
+  }
+  throw new Error("nop.err.unknown-action:" + fnName);
+}
+function wrapFunc(fn, text) {
+  const ret = (...args) => fn(...args);
+  ret.toJSON = () => text;
+  return ret;
+}
+const g_components = {};
+function registerXuiComponent(type, component) {
+  g_components[type] = component;
+}
+function unregisterXuiComponent(type) {
+  delete g_components[type];
+}
+function resolveXuiComponent(type, json) {
+  const comp = g_components[type];
+  if (!comp)
+    throw new Error("nop.err.xui.unknown-component:" + type);
+  return comp(json);
+}
+const { isUserInRole } = useAdapter();
+async function transformPageJson(pageUrl, json) {
+  json.__baseUrl = pageUrl;
+  json = await processXuiDirective(json, "xui:roles", filterByAuth);
+  json = await processXuiDirective(json, "xui:component", resolveXuiComponent);
+  return json;
+}
+function filterByAuth(roles, json) {
+  if (!isUserInRole(roles))
+    return;
+  return json;
+}
+let g_nextIndex = 0;
+function createPage(options) {
+  let actions = { ...options.actions };
+  let page = {
+    id: "page_" + String(g_nextIndex++),
+    getAction(name) {
+      return actions[name];
+    },
+    registerAction(name, fn) {
+      actions[name] = fn;
+    },
+    resetActions() {
+      actions = { ...options.actions };
+    },
+    getComponent: options.getComponent,
+    getScopedStore: options.getScopedStore,
+    getState: options.getState,
+    setState: options.setState
+  };
+  return page;
+}
 function handleGraphQL(config, graphqlUrl, options) {
   let url = config.url;
-  if (url.startsWith("@query:")) {
+  const [type, path] = splitPrefixUrl(url) || [];
+  if (type == "query" || type == "mutation" || type == "subscription") {
     normalizeData(config);
     config.method = "post";
-    handleGraphQLUrl("query", url.substring("@query:".length), config, graphqlUrl, options);
-    return true;
-  } else if (url.startsWith("query://")) {
-    normalizeData(config);
-    config.method = "post";
-    handleGraphQLUrl("query", url.substring("query://".length), config, graphqlUrl, options);
-    return true;
-  } else if (url.startsWith("@mutation:")) {
-    normalizeData(config);
-    config.method = "post";
-    handleGraphQLUrl("mutation", url.substring("@mutation:".length), config, graphqlUrl, options);
-    return true;
-  } else if (url.startsWith("mutation://")) {
-    normalizeData(config);
-    config.method = "post";
-    handleGraphQLUrl("mutation", url.substring("mutation://".length), config, graphqlUrl, options);
-    return true;
-  } else if (url.startsWith("@subscription:")) {
-    normalizeData(config);
-    config.method = "post";
-    handleGraphQLUrl("subscription", url.substring("@subscription:".length), config, graphqlUrl, options);
-    return true;
-  } else if (url.startsWith("subscription://")) {
-    normalizeData(config);
-    config.method = "post";
-    handleGraphQLUrl("subscription", url.substring("subscription://".length), config, graphqlUrl, options);
+    handleGraphQLUrl(type, path, config, graphqlUrl, options);
     return true;
   } else if (url.endsWith("/graphql") || url.indexOf("/graphql?") >= 0) {
     normalizeData(config);
@@ -1189,17 +1463,22 @@ function ajaxFetch(options) {
     url = url.substring(0, pos);
   }
   options.query = query;
-  if (url.startsWith("action://")) {
-    const actionName = url.substring("action://".length);
+  const [type, path] = splitPrefixUrl(url) || [];
+  if (type == "action") {
+    const actionName = path;
     const action = (_a = options._page) == null ? void 0 : _a.getAction(actionName);
     if (!action) {
       return Promise.reject(new Error("nop.err.unknown-action:" + actionName));
     }
     try {
-      return Promise.resolve(action(options._page, options._scoped, options));
+      return Promise.resolve(action(options));
     } catch (e) {
       return Promise.reject(e);
     }
+  } else if (type == "dict") {
+    return useAdapter().fetchDict(path, options);
+  } else if (type == "page") {
+    return useAdapter().fetchPageAndTransform(path, options);
   }
   const globSetting = useSettings();
   if (globSetting.apiUrl && options.config.useApiUrl !== false) {
@@ -1380,6 +1659,18 @@ function deleteDynamicModules() {
       System.delete(moduleId);
   }
 }
+function registerModule(name, lib) {
+  let libPath = name;
+  if (name.startsWith("./")) {
+    libPath = System.resolve(name);
+  }
+  System.set(libPath, lib);
+}
+function addSystemImportMap(imports) {
+  System.addImportMap({
+    imports
+  });
+}
 const pageCache = createAsyncCache({ max: 50 });
 const dictCache = createAsyncCache({ max: 100 });
 const { useLocale } = useAdapter();
@@ -1548,284 +1839,46 @@ function LoginApi__generateVerifyCode(verifySecret) {
     }
   });
 }
-async function processXuiDirective(json, typeProp, processor) {
-  let futures = [];
-  let ret = _processXuiDirective(json, typeProp, processor, futures);
-  await Promise.all(futures);
-  return ret;
+let s_page;
+function usePage() {
+  return s_page;
 }
-function _processXuiDirective(json, typeProp, processor, futures) {
-  if (!json)
-    return json;
-  function processProps(json2) {
-    for (let key in json2) {
-      let v = json2[key];
-      v = _processXuiDirective(v, typeProp, processor, futures);
-      if (v === void 0) {
-        delete json2[key];
-      } else if (v != json2[key]) {
-        json2[key] = v;
-        if (isPromise(v)) {
-          v.then((ret) => {
-            if (ret === void 0) {
-              delete json2[key];
-            } else {
-              json2[key] = ret;
-            }
-          });
-          json2[key] = v;
-          futures.push(v);
-        }
-      }
-    }
-    return json2;
-  }
-  if (isObject(json)) {
-    let type = json[typeProp];
-    if (type) {
-      return processor(type, json, processProps);
-    }
-    processProps(json);
-  } else if (isArray(json)) {
-    for (let i = 0, n = json.length; i < n; i++) {
-      let child = _processXuiDirective(json[i], typeProp, processor, futures);
-      if (child === void 0) {
-        delete json[i];
-        i--;
-        n--;
-      } else if (child != json[i]) {
-        json[i] = child;
-        if (isPromise(child)) {
-          child.then((ret) => {
-            let idx = json.indexOf(child);
-            if (idx < 0)
-              return;
-            if (ret == void 0) {
-              delete json[idx];
-            } else {
-              json[idx] = ret;
-            }
-          });
-        }
-      }
-    }
-  }
-  return json;
+function providePage(page) {
+  s_page = page;
 }
-function processXuiValue(json, processor) {
-  if (!json)
-    return json;
-  function processProps(json2) {
-    for (let key in json2) {
-      let v = json2[key];
-      if (isString(v)) {
-        v = processor(v, key, json2);
-        if (v === void 0) {
-          delete json2[key];
-        } else if (v != json2[key]) {
-          json2[key] = v;
-        }
-      } else {
-        processXuiValue(v, processor);
-      }
-    }
-    return json2;
-  }
-  if (isObject(json)) {
-    processProps(json);
-  } else if (isArray(json)) {
-    for (let i = 0, n = json.length; i < n; i++) {
-      let child = json[i];
-      if (isString(child)) {
-        let v = processor(child, i, json);
-        if (v === void 0) {
-          delete json[i];
-          i--;
-          n--;
-        } else if (v != json[i]) {
-          json[i] = v;
-        }
-      } else {
-        processXuiValue(child, processor);
-      }
-    }
-  }
-  return json;
+let s_scoped;
+function useScoped() {
+  return s_scoped;
 }
-async function bindActions(pageUrl, json, page) {
-  if (!json)
-    return;
-  page.resetActions();
-  const promises = [];
-  const fnStack = [];
-  let actionIndex = 0;
-  processXuiDirective(json, "xui:import", (modulePaths, obj, processProps) => {
-    const standalone = obj["xui:standalone"];
-    const fnScope = { standalone, libs: {} };
-    fnStack.push(fnScope);
-    fetchModules(pageUrl, modulePaths, promises, fnScope);
-    processProps(obj);
-    return obj;
-  });
-  await Promise.all(promises);
-  let stackIndex = 0;
-  function process(json2) {
-    let modulePaths = json2["xui:import"];
-    if (modulePaths) {
-      stackIndex++;
-    }
-    for (let key in json2) {
-      const v = json2[key];
-      if (!v)
-        continue;
-      if (isString(v)) {
-        json2[key] = processValue(v);
-      } else if (isArray(v)) {
-        for (let i = 0, n = v.length; i < n; i++) {
-          process(v[i]);
-        }
-      } else {
-        process(v);
-      }
-    }
-    if (modulePaths) {
-      stackIndex--;
-    }
-  }
-  function processValue(v) {
-    if (v.startsWith("@query:")) {
-      return "query://" + v.substring("@query:".length);
-    } else if (v.startsWith("@mutation:")) {
-      return "mutation://" + v.substring("@mutation:".length);
-    } else if (v.startsWith("@graphql:")) {
-      return "graphql://" + v.substring("@graphql:".length);
-    } else if (v.startsWith("@dict:")) {
-      return "dict://" + v.substring("@dict:".length);
-    } else if (v.startsWith("@page:")) {
-      return "page://" + v.substring("@page:".length);
-    } else if (v.startsWith("@action:")) {
-      const fnName = v.substring("@action:".length).trim();
-      const action = findAction(fnName, fnStack, stackIndex, page);
-      const actionName = fnName + "-" + actionIndex++;
-      page.registerAction(actionName, action);
-      return "action://" + actionName;
-    } else if (v.startsWith("@fn:")) {
-      const fn = buildFunction(v.substring("@fn:".length), page);
-      return wrapFunc(fn, v);
-    }
-    return v;
-  }
-  process(json);
+function provideScoped(scoped) {
+  s_scoped = scoped;
 }
-function buildFunction(fn, page) {
-  return useAdapter().compileFunction(fn, page);
+let s_scopedStore;
+function useScopedStore() {
+  return s_scopedStore;
 }
-function fetchModules(pageUrl, modulePaths, promises, fnScope) {
-  if (isString(modulePaths)) {
-    modulePaths = modulePaths.split(",").reduce((m, p) => {
-      m[getPathName(p)] = p;
-      return m;
-    }, {});
-  }
-  for (const moduleName in modulePaths) {
-    const path = absolutePath(modulePaths[moduleName], pageUrl);
-    const promise = importModule(path).then((mod) => {
-      fnScope[moduleName] = mod;
-    });
-    promises.push(promise);
-  }
+function provideScopedStore(store) {
+  s_scopedStore = store;
 }
-function getPathName(path) {
-  let pos = path.lastIndexOf("/");
-  if (pos >= 0)
-    path = path.substring(pos + 1);
-  let pos2 = path.indexOf(".");
-  if (pos2 > 0)
-    return path.substring(0, pos2);
-  return path;
+function clearScoped() {
+  s_page = void 0;
+  s_scoped = void 0;
+  s_scopedStore = void 0;
 }
-function findAction(fnName, fnStack, stackIndex, page) {
-  const pos = fnName.indexOf(".");
-  if (pos < 0) {
-    const api = page.getAction(fnName);
-    if (!api)
-      throw new Error("nop.err.unknown-action:" + fnName);
-    return api;
-  }
-  const libName = fnName.substring(0, pos);
-  const methodName = fnName.substring(pos + 1);
-  for (let i = stackIndex; i >= 0; i--) {
-    let fnScope = fnStack[i];
-    if (fnScope.standalone)
-      break;
-    const lib = fnScope.libs[libName];
-    if (lib && lib[methodName]) {
-      return lib[methodName];
-    }
-  }
-  throw new Error("nop.err.unknown-action:" + fnName);
+const schemaTypes = {};
+function registerSchemaType(typeName, schemaType) {
+  schemaTypes[typeName] = schemaType;
 }
-function wrapFunc(fn, text) {
-  const ret = (...args) => fn(...args);
-  ret.toJSON = () => text;
-  return ret;
+function getSchemaType(typeName) {
+  return schemaTypes[typeName];
 }
-const g_components = {};
-function registerXuiComponent(type, component) {
-  g_components[type] = component;
-}
-function unregisterXuiComponent(type) {
-  delete g_components[type];
-}
-function resolveXuiComponent(type, json) {
-  const comp = g_components[type];
-  if (!comp)
-    throw new Error("nop.err.xui.unknown-component:" + type);
-  return comp(json);
-}
-const { isUserInRole } = useAdapter();
-async function transformPageJson(pageUrl, json) {
-  json.__baseUrl = pageUrl;
-  json = await processXuiDirective(json, "xui:roles", filterByAuth);
-  json = await processXuiDirective(json, "xui:component", resolveXuiComponent);
-  return json;
-}
-function filterByAuth(roles, json) {
-  if (!isUserInRole(roles))
-    return;
-  return json;
-}
-let g_nextIndex = 0;
-function createPage(options) {
-  let actions = { ...options.actions };
-  let page = {
-    id: "page_" + String(g_nextIndex++),
-    adapter: useAdapter(),
-    path: void 0,
-    ajaxRequest,
-    ajaxFetch,
-    require: importModule,
-    getAction(name) {
-      return actions[name];
-    },
-    registerAction(name, fn) {
-      actions[name] = fn;
-    },
-    resetActions() {
-      actions = { ...options.actions };
-    },
-    getComponent: options.getComponent,
-    getComponentStore: options.getComponentStore,
-    getState: options.getState,
-    setState: options.setState
-  };
-  return page;
-}
-export {
+const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
   PageApis,
   UserApis,
   absolutePath,
   adapter,
+  addSystemImportMap,
   ajax,
   ajaxFetch,
   ajaxRequest,
@@ -1833,6 +1886,7 @@ export {
   clearDictCache,
   clearLocalCache,
   clearPageCache,
+  clearScoped,
   conditionToTree,
   createAsyncCache,
   createCancelToken,
@@ -1844,6 +1898,7 @@ export {
   deletePageCache,
   fetcherOk,
   format,
+  getSchemaType,
   handleGraphQL,
   importModule,
   isCancel,
@@ -1851,17 +1906,100 @@ export {
   openWindow,
   processXuiDirective,
   processXuiValue,
+  providePage,
+  provideScoped,
+  provideScopedStore,
   refHolder,
   registerAdapter,
+  registerModule,
   registerOperation,
+  registerSchemaType,
   registerXuiComponent,
   resolveXuiComponent,
   responseOk,
+  splitPrefixUrl,
   transformPageJson,
   treeToCondition,
   unregisterXuiComponent,
   useAdapter,
   useDebug,
+  usePage,
+  useScoped,
+  useScopedStore,
+  withDictCache,
+  withPageCache
+}, Symbol.toStringTag, { value: "Module" }));
+registerModule("@nop-chaos/nop-core", NopCore);
+registerAdapter({
+  fetchDict(dictName, options) {
+    return PageApis.DictProvider__getDict(dictName, options.silent || false).then((res) => fetcherOk(res));
+  },
+  fetchPageAndTransform(pagePath, options) {
+    return PageApis.PageProvider__getPage(pagePath).then(async (pageData) => {
+      pageData = await transformPageJson(pagePath, pageData);
+      if (options._page) {
+        bindActions(pagePath, pageData, options._page);
+      }
+      return fetcherOk(pageData);
+    });
+  },
+  getPage(pageUrl) {
+    return PageApis.PageProvider__getPage(pageUrl);
+  }
+});
+export {
+  PageApis,
+  UserApis,
+  absolutePath,
+  adapter,
+  addSystemImportMap,
+  ajax,
+  ajaxFetch,
+  ajaxRequest,
+  bindActions,
+  clearDictCache,
+  clearLocalCache,
+  clearPageCache,
+  clearScoped,
+  conditionToTree,
+  createAsyncCache,
+  createCancelToken,
+  createPage,
+  default_isCurrentUrl,
+  default_jumpTo,
+  default_updateLocation,
+  deleteDynamicModules,
+  deletePageCache,
+  fetcherOk,
+  format,
+  getSchemaType,
+  handleGraphQL,
+  importModule,
+  isCancel,
+  isPageUrl,
+  openWindow,
+  processXuiDirective,
+  processXuiValue,
+  providePage,
+  provideScoped,
+  provideScopedStore,
+  refHolder,
+  registerAdapter,
+  registerModule,
+  registerOperation,
+  registerSchemaType,
+  registerXuiComponent,
+  resolveXuiComponent,
+  responseOk,
+  splitPrefixUrl,
+  transformPageJson,
+  treeToCondition,
+  unregisterXuiComponent,
+  useAdapter,
+  useDebug,
+  usePage,
+  useScoped,
+  useScopedStore,
   withDictCache,
   withPageCache
 };

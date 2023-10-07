@@ -22,7 +22,8 @@ export default defineConfig({
       },
       // Do not bundle third-party dependencies,
       // since server packages can get them via npm install
-      external: ['vue', '@vue/shared', 'axios','systemjs','systemjs/dist/system.js','lru-cache','lodash-es','qs'],
+      external: ['vue', '@vue/reactivity','@vue/shared','vue-router', 
+          'axios', 'amis','react','react-dom','amis-ui','amis-formula','amis-core'],
     },
   },
 })

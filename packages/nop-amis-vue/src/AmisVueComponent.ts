@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormItem, FormControlProps,Renderer,ScopedContext, IScopedContext } from 'amis';
-import { createObject, resolveVariableAndFilter,ActionObject} from 'amis-core';
+import { createObject, resolveVariableAndFilter,ActionObject, RendererData} from 'amis-core';
 
 import {useAdapter} from '@nop-chaos/nop-core'
 import  {applyPureVueInReact} from 'veaury'
@@ -21,7 +21,7 @@ export default class VueControl extends React.Component<VueControlProps, any> {
         this.vueComponent = applyPureVueInReact(resolveVueComponent(props.vueComponent))
     }
 
-    doAction(action: ActionObject, data: object, throwErrors: boolean) {
+    doAction(action: ActionObject, data: RendererData, throwErrors?: boolean) {
         const {resetValue, onChange} = this.props;
         const actionType = action?.actionType as string;
     

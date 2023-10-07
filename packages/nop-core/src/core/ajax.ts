@@ -9,6 +9,7 @@ import { parse as qsparse } from 'qs'
 import { AjaxResponse, FetcherRequest, FetcherResult } from "./types";
 import { useAdapter } from '../adapter';
 import { HEADER_ACCESS_TOKEN, HEADER_APP_ID, HEADER_TENANT_ID, HEADER_TIMESTAMP, HEADER_VERSION } from './consts';
+import { splitPrefixUrl } from '../page';
 
 const GRAPHQL_URL = '/graphql'
 
@@ -90,18 +91,24 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 	}
 	options.query = query
 
-	if (url.startsWith("action://")) {
-		const actionName = url.substring("action://".length)
+	const [type,path] = splitPrefixUrl(url) || []
+
+	if (type == 'action') {
+		const actionName = path
 		const action = options._page?.getAction(actionName)
 		if (!action) {
 			return Promise.reject(new Error("nop.err.unknown-action:" + actionName))
 		}
 
 		try {
-			return Promise.resolve(action(options._page, options._scoped, options))
+			return Promise.resolve(action(options))
 		} catch (e: any) {
 			return Promise.reject(e)
 		}
+	}else if(type == 'dict'){
+		return useAdapter().fetchDict(path,options)
+	}else if(type == 'page'){
+		return useAdapter().fetchPageAndTransform(path, options)
 	}
 
 	const globSetting = useSettings()

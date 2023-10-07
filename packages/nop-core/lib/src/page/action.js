@@ -45,7 +45,6 @@ export async function bindActions(pageUrl, json, page) {
     page.resetActions();
     const promises = [];
     const fnStack = [];
-    let actionIndex = 0;
     // 收集所有的xui:import，异步加载脚本库
     processXuiDirective(json, "xui:import", (modulePaths, obj, processProps) => {
         // standalone表示不会向上查找action
@@ -69,7 +68,7 @@ export async function bindActions(pageUrl, json, page) {
             if (!v)
                 continue;
             if (isString(v)) {
-                json[key] = processValue(v);
+                json[key] = processValue(key, v);
             }
             else if (isArray(v)) {
                 for (let i = 0, n = v.length; i < n; i++) {
@@ -84,37 +83,50 @@ export async function bindActions(pageUrl, json, page) {
             stackIndex--;
         }
     }
-    function processValue(v) {
-        if (v.startsWith("@query:")) {
-            // amis的新版本要求url必须满足URL格式，必须是schema://path形式
-            return "query://" + v.substring("@query:".length);
+    function processValue(key, v) {
+        // amis的新版本要求url必须满足URL格式，必须是schema://path形式
+        const [type, path] = splitPrefixUrl(v) || [];
+        if (!type)
+            return v;
+        if (['query', 'mutation', 'graphql', 'dict', 'page'].includes(type)) {
+            return type + "://" + path;
         }
-        else if (v.startsWith("@mutation:")) {
-            return "mutation://" + v.substring("@mutation:".length);
-        }
-        else if (v.startsWith("@graphql:")) {
-            return "graphql://" + v.substring("@graphql:".length);
-        }
-        else if (v.startsWith("@dict:")) {
-            return "dict://" + v.substring("@dict:".length);
-        }
-        else if (v.startsWith("@page:")) {
-            return "page://" + v.substring("@page:".length);
-        }
-        else if (v.startsWith("@action:")) {
-            const fnName = v.substring("@action:".length).trim();
+        else if (v == 'action') {
+            const fnName = path.split('-')[0];
             const action = findAction(fnName, fnStack, stackIndex, page);
-            const actionName = fnName + '-' + (actionIndex++);
-            page.registerAction(actionName, action);
-            return "action://" + actionName;
+            for (let i = 0; i < 1000; i++) {
+                const actionName = i == 0 ? fnName : fnName + '-' + i;
+                const existed = page.getAction(actionName);
+                if (!existed) {
+                    page.registerAction(actionName, action);
+                    return "action://" + actionName;
+                }
+                else if (existed == action) {
+                    return "action://" + actionName;
+                }
+            }
+            throw new Error("nop.err.action-name-conflict:" + v);
         }
-        else if (v.startsWith("@fn:")) {
-            const fn = buildFunction(v.substring("@fn:".length), page);
+        else if (type == 'fn') {
+            const fn = buildFunction(path, page);
             return wrapFunc(fn, v);
         }
         return v;
     }
     process(json);
+}
+export function splitPrefixUrl(url) {
+    if (url.startsWith("@")) {
+        let pos = url.indexOf(':');
+        if (pos < 0) {
+            return;
+        }
+        return [url.substring(1, pos), url.substring(pos + 1).trim()];
+    }
+    let pos = url.indexOf("://");
+    if (pos < 0)
+        return;
+    return [url.substring(0, pos), url.substring(pos + 3)];
 }
 function buildFunction(fn, page) {
     return useAdapter().compileFunction(fn, page);

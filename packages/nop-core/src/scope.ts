@@ -1,6 +1,6 @@
 import { PageObject } from "./page";
 
-let s_page: PageObject
+let s_page: PageObject|undefined
 
 export function usePage(){
     return s_page
@@ -29,4 +29,10 @@ export function useScopedStore(){
 
 export function provideScopedStore(store:any){
     s_scopedStore = store
+}
+
+export function clearScoped(){
+    s_page = undefined
+    s_scoped = undefined
+    s_scopedStore = undefined
 }

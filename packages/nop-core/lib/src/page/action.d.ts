@@ -19,3 +19,4 @@ import { BasePage } from "../core";
  * @param json json schema
  */
 export declare function bindActions(pageUrl: string, json: any, page: BasePage): Promise<void>;
+export declare function splitPrefixUrl(url: string): string[] | undefined;
