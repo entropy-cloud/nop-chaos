@@ -8,7 +8,7 @@
   },
   "private": true,
   "type": "module",
-  "types": "lib/src/index.d.ts",
+  "types": "lib/index.d.ts",
   "main": "lib/nop-amis-ext.js",
   "files": [
     "assets",
@@ -17,7 +17,7 @@
   
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc",
+    "build": "vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -40,6 +40,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
     "typescript": "^5.0.2",
-    "vite": "^4.4.9"
+    "vite": "^4.4.9",
+    "vite-plugin-dts": "^3.6.0"
   }
 }

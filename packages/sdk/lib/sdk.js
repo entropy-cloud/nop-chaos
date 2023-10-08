@@ -1,6 +1,6 @@
 import qs, { parse } from "qs";
 import { match } from "path-to-regexp";
-import { shallowRef, toRaw, ref, defineComponent, onMounted, onUnmounted, watchEffect, onBeforeUnmount, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
+import { ref, shallowRef, toRaw, defineComponent, onMounted, onUnmounted, watchEffect, onBeforeUnmount, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
 import LRUCache from "lru-cache";
 import { cloneDeep, isNumber, isInteger, isBoolean, omit, isString as isString$1 } from "lodash-es";
 import axios from "axios";
@@ -106,7 +106,6 @@ function default_updateLocation(to, replace) {
   location.href = normalizeLink(to);
 }
 function default_isCurrentUrl(to, ctx) {
-  var _a;
   const link = normalizeLink(to);
   const location2 = window.location;
   let pathname = link;
@@ -122,13 +121,15 @@ function default_isCurrentUrl(to, ctx) {
     }
     const query = qs.parse(search.substring(1));
     const currentQuery = qs.parse(location2.search.substring(1));
-    return Object.keys(query).every((key) => query[key] === currentQuery[key]);
+    return Object.keys(query).every(
+      (key) => query[key] === currentQuery[key]
+    );
   } else if (pathname === location2.pathname) {
     return true;
   } else if (!~pathname.indexOf("http") && ~pathname.indexOf(":")) {
     return match(link, {
       decode: decodeURIComponent,
-      strict: (_a = ctx === null || ctx === void 0 ? void 0 : ctx.strict) !== null && _a !== void 0 ? _a : true
+      strict: (ctx == null ? void 0 : ctx.strict) ?? true
     })(location2.pathname);
   }
   return false;
@@ -260,7 +261,10 @@ function absolutePath(path, basePath) {
   if (basePath && !resolvedPath.startsWith("/")) {
     resolvedPath = basePath + "/../" + path;
   }
-  resolvedPath = normalizeArray(resolvedPath.split("/"), false).join("/");
+  resolvedPath = normalizeArray(
+    resolvedPath.split("/"),
+    false
+  ).join("/");
   return "/" + resolvedPath;
 }
 function format(msg, placeholderStart, placeholdeEnd, resolver) {
@@ -620,7 +624,7 @@ function filterByAuth(roles, json) {
 }
 let g_nextIndex = 0;
 function createPage(options) {
-  let actions = Object.assign({}, options.actions);
+  let actions = { ...options.actions };
   let page = {
     id: "page_" + String(g_nextIndex++),
     getAction(name) {
@@ -630,7 +634,7 @@ function createPage(options) {
       actions[name] = fn;
     },
     resetActions() {
-      actions = Object.assign({}, options.actions);
+      actions = { ...options.actions };
     },
     getComponent: options.getComponent,
     getScopedStore: options.getScopedStore,
@@ -659,12 +663,12 @@ function handleGraphQL(config, graphqlUrl, options) {
 function transformGraphQLResponse(data) {
   var _a, _b, _c;
   data = JSON.parse(data);
-  if (((_a = data.errors) === null || _a === void 0 ? void 0 : _a.length) > 0) {
-    data.status = parseInt(((_b = data.extensions) === null || _b === void 0 ? void 0 : _b["nop-status"]) || -1);
+  if (((_a = data.errors) == null ? void 0 : _a.length) > 0) {
+    data.status = parseInt(((_b = data.extensions) == null ? void 0 : _b["nop-status"]) || -1);
     data.msg = data.errors[0].message;
   } else {
     data.status = 0;
-    data.msg = (_c = data.extensions) === null || _c === void 0 ? void 0 : _c["nop-msg"];
+    data.msg = (_c = data.extensions) == null ? void 0 : _c["nop-msg"];
   }
   return data;
 }
@@ -745,7 +749,7 @@ function toArray(value, delimiter) {
 }
 function normalizeData(config) {
   const { data, params } = splitData(config.params);
-  config.data = Object.assign(Object.assign({}, filterData(config.data)), data);
+  config.data = { ...filterData(config.data), ...data };
   config.params = params;
 }
 function filterData(data) {
@@ -1001,11 +1005,10 @@ function argFloat(data, arg) {
   return parseFloat(v);
 }
 function argQuery(data, arg, options) {
-  var _a, _b, _c, _d, _e;
   let query = {};
-  query.limit = (_c = (_b = (_a = data.limit) !== null && _a !== void 0 ? _a : data.pageSize) !== null && _b !== void 0 ? _b : data.perPage) !== null && _c !== void 0 ? _c : 0;
-  query.offset = (_d = data.offset) !== null && _d !== void 0 ? _d : query.limit * ((data.page || 0) - 1);
-  query.orderBy = toOrderBy((_e = data.orderBy) !== null && _e !== void 0 ? _e : data.orderField, data.orderDir);
+  query.limit = data.limit ?? data.pageSize ?? data.perPage ?? 0;
+  query.offset = data.offset ?? query.limit * ((data.page || 0) - 1);
+  query.orderBy = toOrderBy(data.orderBy ?? data.orderField, data.orderDir);
   query.filter = toFilter(data);
   query.cursor = data.cursor;
   query.timeout = data.timeout;
@@ -1099,13 +1102,15 @@ const HEADER_APP_ID = "nop-app-id";
 const HEADER_VERSION = "x-version";
 const GRAPHQL_URL = "/graphql";
 const ajax = axios.create({});
-ajax.interceptors.response.use((res) => {
-  const token = res.headers[HEADER_ACCESS_TOKEN];
-  if (token) {
-    useAdapter().setAuthToken(token);
+ajax.interceptors.response.use(
+  (res) => {
+    const token = res.headers[HEADER_ACCESS_TOKEN];
+    if (token) {
+      useAdapter().setAuthToken(token);
+    }
+    return res;
   }
-  return res;
-});
+);
 const isCancel = axios.isCancel;
 function createCancelToken(cancelExecutor) {
   return new axios.CancelToken(cancelExecutor);
@@ -1133,34 +1138,34 @@ function ajaxRequest(options) {
   return ajaxFetch(options).then((d) => {
     var _a, _b, _c, _d, _e, _f, _g;
     if (!options.silent) {
-      if ((_a = d.data) === null || _a === void 0 ? void 0 : _a.msg) {
-        if ((_b = options.config) === null || _b === void 0 ? void 0 : _b.useAlert) {
+      if ((_a = d.data) == null ? void 0 : _a.msg) {
+        if ((_b = options.config) == null ? void 0 : _b.useAlert) {
           alert2(d.data.msg);
         } else {
-          notify(((_c = d.data) === null || _c === void 0 ? void 0 : _c.status) == 0 ? "info" : "error", d.data.msg);
+          notify(((_c = d.data) == null ? void 0 : _c.status) == 0 ? "info" : "error", d.data.msg);
         }
       }
     }
-    if (((_d = d.data) === null || _d === void 0 ? void 0 : _d.status) != 0)
-      throw new Error(((_e = d.data) === null || _e === void 0 ? void 0 : _e.msg) || "ajax-fail:\ncode=" + ((_f = d.data) === null || _f === void 0 ? void 0 : _f.code) + ",status=" + ((_g = d.data) === null || _g === void 0 ? void 0 : _g.status));
+    if (((_d = d.data) == null ? void 0 : _d.status) != 0)
+      throw new Error(((_e = d.data) == null ? void 0 : _e.msg) || "ajax-fail:\ncode=" + ((_f = d.data) == null ? void 0 : _f.code) + ",status=" + ((_g = d.data) == null ? void 0 : _g.status));
     return d.data.data;
   });
 }
 function ajaxFetch(options) {
-  var _a, _b, _c, _d;
+  var _a, _b, _c;
   options.config = options.config || {};
   let url = options.url;
   let query = options.query || {};
   const pos = url.indexOf("?");
   if (pos > 0) {
-    query = Object.assign(Object.assign({}, query), parse(url.substring(pos + 1)));
+    query = { ...query, ...parse(url.substring(pos + 1)) };
     url = url.substring(0, pos);
   }
   options.query = query;
   const [type, path] = splitPrefixUrl(url) || [];
   if (type == "action") {
     const actionName = path;
-    const action = (_a = options._page) === null || _a === void 0 ? void 0 : _a.getAction(actionName);
+    const action = (_a = options._page) == null ? void 0 : _a.getAction(actionName);
     if (!action) {
       return Promise.reject(new Error("nop.err.unknown-action:" + actionName));
     }
@@ -1179,7 +1184,7 @@ function ajaxFetch(options) {
     url = `${globSetting.apiUrl}${url}`;
   }
   const config = {
-    withCredentials: (_b = options.config.withCredentials) !== null && _b !== void 0 ? _b : true,
+    withCredentials: options.config.withCredentials ?? true,
     url,
     method: options.method || "post",
     headers: options.headers || {},
@@ -1187,7 +1192,7 @@ function ajaxFetch(options) {
     params: query,
     responseType: options.responseType
   };
-  if ((_c = options.config) === null || _c === void 0 ? void 0 : _c.cancelExecutor) {
+  if ((_b = options.config) == null ? void 0 : _b.cancelExecutor) {
     const controller = new AbortController();
     options.config.cancelExecutor(() => {
       controller.abort();
@@ -1199,14 +1204,14 @@ function ajaxFetch(options) {
   };
   prepareHeaders(config, opts);
   handleGraphQL(config, GRAPHQL_URL, options);
-  if (((_d = config.method) === null || _d === void 0 ? void 0 : _d.toLowerCase()) == "get") {
-    config.params = Object.assign(Object.assign({}, options.data), query);
+  if (((_c = config.method) == null ? void 0 : _c.toLowerCase()) == "get") {
+    config.params = { ...options.data, ...query };
     config.data = null;
   }
   const { useI18n, processRequest, processResponse } = useAdapter();
   const res = ajax.request(processRequest(config)).then((res2) => {
     var _a2;
-    if (res2.status == 200 && ((_a2 = options.config) === null || _a2 === void 0 ? void 0 : _a2.rawResponse)) {
+    if (res2.status == 200 && ((_a2 = options.config) == null ? void 0 : _a2.rawResponse)) {
       res2.data = responseOk(res2.data);
     }
     return res2;
@@ -1222,10 +1227,10 @@ function ajaxFetch(options) {
     }
     const err = error.toString();
     let errMessage = normalizeErrMessage(response.status, "");
-    if (!errMessage && (err === null || err === void 0 ? void 0 : err.includes("Network Error"))) {
+    if (!errMessage && (err == null ? void 0 : err.includes("Network Error"))) {
       errMessage = t("sys.api.networkExceptionMsg");
     }
-    if (((_a2 = response.data) === null || _a2 === void 0 ? void 0 : _a2.status) == null) {
+    if (((_a2 = response.data) == null ? void 0 : _a2.status) == null) {
       return {
         status: response.status,
         data: {
@@ -1575,7 +1580,6 @@ const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   PageApis,
   UserApis,
   absolutePath,
-  adapter,
   addSystemImportMap,
   ajax,
   ajaxFetch,
@@ -2520,7 +2524,6 @@ export {
   _sfc_main$3 as XuiPageEditor,
   XuiSchemaPage,
   absolutePath,
-  adapter,
   addSystemImportMap,
   ajax,
   ajaxFetch,
