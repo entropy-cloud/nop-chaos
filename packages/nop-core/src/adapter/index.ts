@@ -33,7 +33,7 @@ interface PlainObject {
 /**
  * nop-chaos对外部框架的依赖都集中在adapter对象中
  */
-export const adapter = {
+const adapter = {
     globalVersion: 'v3' as string,
 
     // 如果存放在localStorage中的数据需要升级，这里的版本号需要增加。
