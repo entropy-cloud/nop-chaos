@@ -1,48 +1,29 @@
-import { Store } from "pinia";
-import { Router } from "vue-router";
-import { FetcherResult, FetcherRequest } from "../core/types";
+// Amis内置的调试器需要这里的css
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/css/v4-shims.css';
+import 'amis/lib/themes/cxd.css';
+// import 'amis/lib/helper.css';
+//import 'amis/sdk/iconfont.css';
+import 'amis-ui/lib/locale/en-US';
+import 'amis-ui/lib/locale/zh-CN';
 
-import { default_jumpTo,default_isCurrentUrl,default_updateLocation } from "./link";
+// 为amis的helper.css增加命名空间，避免和jeecg的css冲突
+import './css/helper.less'
 
-export * from "./link"
+import type { App } from 'vue';
 
-export type Settings = {
-    apiUrl: string
-}
+import { clearLocalCache, registerAdapter, XuiPage } from '@nop-chaos/sdk';
+import { useUserStoreWithOut } from '../store/modules/user';
+import { isArray } from '../utils/is';
 
-export type I18nOperation = {
-    t(msg: string): string
-}
+import {IconPicker,Icon} from '/@/components/Icon'
+import './registerLibs'
 
-export type ToastLevel = 'info' | 'success' | 'error' | 'warning';
-export type ToastConf = {
-    position?: 'top-right' | 'top-center' | 'top-left' | 'bottom-center' | 'bottom-left' | 'bottom-right' | 'center';
-    closeButton: boolean;
-    showIcon?: boolean;
-    timeout?: number;
-    errorTimeout?: number;
-    className?: string;
-    items?: Array<any>;
-    useMobileUI?: boolean;
-};
+import './fix.css'
 
-interface PlainObject {
-    [propsName: string]: any;
-}
-
-/**
- * nop-chaos对外部框架的依赖都集中在adapter对象中
- */
-export const adapter = {
-    globalVersion: 'v3' as string,
-
-    // 如果存放在localStorage中的数据需要升级，这里的版本号需要增加。
-    // 从localStorage中读取缓存数据时会检查版本号，如果版本不一致，会调用configUpgrade函数来升级，缺省会丢弃原有配置
-    configUpgrade(configName: string, version: number, prevVersion: number, config: any): any {
-        return undefined
-    },
-
-    /**
+function initAdapter(){
+    registerAdapter({
+            /**
      * 返回当前的locale
      */
     useLocale(): string {
@@ -142,11 +123,11 @@ export const adapter = {
 
     dataMapping(
         to: any,
-        from: PlainObject = {},
+        from: Record<string,any> = {},
         ignoreFunction: boolean | ((key: string, value: any) => boolean) = false,
         convertKeyToPath?: boolean,
         ignoreIfNotMatch = false
-      ):any{
+      ){
         throw new Error("not-impl")
     },
 
@@ -161,14 +142,28 @@ export const adapter = {
     getPage(pageUrl:string): Promise<any>{
         throw new Error("not-impl")
     }
+    })
 }
 
-export function registerAdapter(data: Partial<typeof adapter>) {
-    Object.assign(adapter, data)
-}
+export function initNopApp(app:App){
+   app.component("XuiPage", XuiPage)
+   app.component("XUI", XuiPage)
+   app.component("AMIS", XuiPage)
+   app.component("icon-picker",IconPicker)
+   app.component("icon",Icon)
 
-export function useAdapter() {
-    return adapter;
+   useUserStoreWithOut().$subscribe((mutation)=>{
+      // 登录信息变化的时候清空页面缓存和字典缓存
+      if(mutation.events && mutation.events){
+         if(isArray(mutation.events)){
+            for(const event of mutation.events){
+               if(event.key == 'userInfo'){
+                  clearLocalCache()
+               }
+            }
+         }else if(mutation.events.key == 'userInfo'){
+            clearLocalCache()
+         }
+      }
+   })
 }
-
-export type AdapterType = typeof adapter

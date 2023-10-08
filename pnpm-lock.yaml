@@ -245,9 +245,6 @@ importers:
       '@nop-chaos/nop-core':
         specifier: workspace:*
         version: link:../nop-core
-      '@vue/reactivity':
-        specifier: ^3.3.4
-        version: registry.npmmirror.com/@vue/reactivity@3.3.4
       '@vue/shared':
         specifier: ^3.3.4
         version: registry.npmmirror.com/@vue/shared@3.3.4
@@ -321,9 +318,6 @@ importers:
 
   packages/nop-core:
     dependencies:
-      '@vue/reactivity':
-        specifier: ^3.2.45
-        version: registry.npmmirror.com/@vue/reactivity@3.3.4
       '@vue/shared':
         specifier: ^3.2.45
         version: registry.npmmirror.com/@vue/shared@3.3.4
@@ -638,15 +632,6 @@ importers:
       '@rollup/browser':
         specifier: ^3.9.0
         version: registry.npmmirror.com/@rollup/browser@3.26.0
-      '@vue/reactivity':
-        specifier: ^3.2.41
-        version: registry.npmmirror.com/@vue/reactivity@3.3.4
-      '@vue/runtime-core':
-        specifier: ^3.2.33
-        version: registry.npmmirror.com/@vue/runtime-core@3.3.4
-      '@vue/shared':
-        specifier: ^3.2.33
-        version: registry.npmmirror.com/@vue/shared@3.3.4
       dayjs:
         specifier: ^1.11.1
         version: registry.npmmirror.com/dayjs@1.11.8
@@ -711,9 +696,9 @@ importers:
       '@logicflow/extension':
         specifier: ^1.2.1
         version: registry.npmmirror.com/@logicflow/extension@1.2.9(ts-node@10.9.1)
-      '@nop-chaos/nop-amis-vue':
+      '@nop-chaos/sdk':
         specifier: workspace:*
-        version: link:../nop-amis-vue
+        version: link:../sdk
       '@vue/reactivity':
         specifier: ^3.2.41
         version: registry.npmmirror.com/@vue/reactivity@3.3.4

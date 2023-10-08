@@ -18,9 +18,9 @@
 import { alert, confirm, toast } from 'amis';
 import copy from 'copy-to-clipboard';
 import { useDebug, default_jumpTo, isCancel, useAdapter, default_isCurrentUrl, ajaxFetch, default_updateLocation, providePage } from "@nop-chaos/nop-core";
-const { debug } = useDebug();
-const adaptor = useAdapter();
 export function createEnv(page) {
+    const { debug } = useDebug();
+    const adapter = useAdapter();
     let env = {
         session: page.id,
         affixOffsetTop: 0,
@@ -30,7 +30,7 @@ export function createEnv(page) {
             return ajaxFetch(options);
         },
         jumpTo(to, action, ctx) {
-            const router = useAdapter().useRouter();
+            const router = adapter.useRouter();
             return default_jumpTo(router, to);
         },
         isCancel: isCancel,
@@ -63,7 +63,7 @@ export function createEnv(page) {
             if (options === void 0) {
                 options = {};
             }
-            const { t } = adaptor.useI18n();
+            const { t } = adapter.useI18n();
             const ret = copy(contents, options);
             ret &&
                 (!options || options.shutup !== true) &&

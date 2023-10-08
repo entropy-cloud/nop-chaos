@@ -5,12 +5,11 @@ import { useAdapter } from '../adapter';
 import { HEADER_ACCESS_TOKEN, HEADER_APP_ID, HEADER_TENANT_ID, HEADER_TIMESTAMP, HEADER_VERSION } from './consts';
 import { splitPrefixUrl } from '../page';
 const GRAPHQL_URL = '/graphql';
-const { useAuthToken, useTenantId, useLocale, setAuthToken, logout, useSettings, useI18n, useAppId, globalVersion, notify, alert, processRequest, processResponse } = useAdapter();
 export const ajax = axios.create({});
 ajax.interceptors.response.use(res => {
     const token = res.headers[HEADER_ACCESS_TOKEN];
     if (token) {
-        setAuthToken(token);
+        useAdapter().setAuthToken(token);
     }
     return res;
 });
@@ -37,6 +36,7 @@ export function responseOk(data) {
     };
 }
 export function ajaxRequest(options) {
+    const { notify, alert } = useAdapter();
     return ajaxFetch(options).then(d => {
         var _a, _b, _c, _d, _e, _f, _g;
         if (!options.silent) {
@@ -88,7 +88,7 @@ export function ajaxFetch(options) {
     else if (type == 'page') {
         return useAdapter().fetchPageAndTransform(path, options);
     }
-    const globSetting = useSettings();
+    const globSetting = useAdapter().useSettings();
     if (globSetting.apiUrl && options.config.useApiUrl !== false) {
         url = `${globSetting.apiUrl}${url}`;
     }
@@ -117,6 +117,7 @@ export function ajaxFetch(options) {
         config.params = Object.assign(Object.assign({}, options.data), query);
         config.data = null;
     }
+    const { useI18n, processRequest, processResponse } = useAdapter();
     const res = ajax.request(processRequest(config))
         .then(res => {
         var _a;
@@ -176,6 +177,7 @@ export function ajaxFetch(options) {
     return processResponse(res);
 }
 function prepareHeaders(config, opts) {
+    const { useAuthToken, useTenantId, useLocale, useAppId, globalVersion } = useAdapter();
     // 请求之前处理config
     const token = useAuthToken();
     let tenantid = useTenantId();
@@ -213,7 +215,7 @@ function prepareHeaders(config, opts) {
     }
 }
 function normalizeErrMessage(status, msg) {
-    const { t } = useI18n();
+    const { t } = useAdapter().useI18n();
     let errMessage = '';
     switch (status) {
         // 401: Not logged in
@@ -258,6 +260,7 @@ function normalizeErrMessage(status, msg) {
     return errMessage;
 }
 function doLogout(reason) {
+    const { setAuthToken, logout } = useAdapter();
     setAuthToken(undefined);
     logout(reason);
 }

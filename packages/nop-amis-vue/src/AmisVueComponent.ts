@@ -5,8 +5,6 @@ import { createObject, resolveVariableAndFilter,ActionObject, RendererData} from
 import {useAdapter} from '@nop-chaos/nop-core'
 import  {applyPureVueInReact} from 'veaury'
 
-const {resolveVueComponent} = useAdapter()
-
 export interface VueControlProps extends FormControlProps {
     componentName: string;
     props: Record<string,any>;
@@ -17,7 +15,7 @@ export default class VueControl extends React.Component<VueControlProps, any> {
 
     constructor(props) {
         super(props)
-        
+        const {resolveVueComponent} = useAdapter()
         this.vueComponent = applyPureVueInReact(resolveVueComponent(props.vueComponent))
     }
 

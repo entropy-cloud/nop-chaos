@@ -3,8 +3,6 @@ import { ajaxRequest, useDebug } from '../core'
 
 const { supportDebug, debug } = useDebug()
 
-const { useAuthToken } = useAdapter()
-
 export const UserApis = {
     SiteMapApi__getSiteMap,
     LoginApi__login,
@@ -45,6 +43,8 @@ function LoginApi__login(req: LoginRequest) {
 }
 
 function LoginApi__getLoginUserInfo() {
+    const { useAuthToken } = useAdapter()
+
     return ajaxRequest({
         url: '@query:LoginApi__getLoginUserInfo/username:userName,realname:nickName',
         data: {
@@ -54,6 +54,8 @@ function LoginApi__getLoginUserInfo() {
 }
 
 function LoginApi__logout() {
+    const { useAuthToken } = useAdapter()
+
     return ajaxRequest({
         url: '@mutation:LoginApi__logout',
         data: {

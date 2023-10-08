@@ -4,12 +4,10 @@
 
 
 <script lang="ts">
-import { PropType, defineComponent, watchEffect,ref} from 'vue'
+import { PropType, defineComponent, watchEffect, ref } from 'vue'
 import AmisSchemaPage from './AmisSchemaPage.vue';
 
-import {getSchemaType, useAdapter, RegisterPage} from '@nop-chaos/nop-core'
-
-const {useI18n} = useAdapter()
+import { getSchemaType, useAdapter, RegisterPage } from '@nop-chaos/nop-core'
 
 /**
  * 嵌入到vue中的amis页面。每个AmisSchemaPage都对应一个ReactRooot。schema发生变化时会重新创建react组件
@@ -23,25 +21,28 @@ export default defineComponent({
   },
 
   setup(props) {
+
+    const { useI18n } = useAdapter()
+
     let componentType = ref(AmisSchemaPage)
-    watchEffect(()=>{
-       const schemaTypeName = props.schema?.['xui:schema-type']
-       if(!schemaTypeName){
+    watchEffect(() => {
+      const schemaTypeName = props.schema?.['xui:schema-type']
+      if (!schemaTypeName) {
         componentType.value = AmisSchemaPage
-       }else{
-         const schemaType = getSchemaType(schemaTypeName)
-         if(!schemaType){
-          const {t} = useI18n()
-          useAdapter().notify("error",t("nop.err.unknown-schema-type"));
+      } else {
+        const schemaType = getSchemaType(schemaTypeName)
+        if (!schemaType) {
+          const { t } = useI18n()
+          useAdapter().notify("error", t("nop.err.unknown-schema-type"));
           throw new Error("nop.err.unknown-schema-type")
-         }
-         componentType.value = schemaType.componentType as ReturnType<typeof defineComponent>
-       }
+        }
+        componentType.value = schemaType.componentType as ReturnType<typeof defineComponent>
+      }
     })
 
     return {
       componentType
-    }    
+    }
   },
 });
 </script>

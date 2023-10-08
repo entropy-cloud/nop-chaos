@@ -1,5 +1,5 @@
 import { PageEnum } from '/@/enums/pageEnum';
-import { ajaxRequest, useDebug } from '@nop-chaos/nop-amis-vue';
+import { ajaxRequest, useDebug } from '@nop-chaos/sdk';
 import { URL_HASH_TAB } from '/@/utils';
 
 const {supportDebug,debug} = useDebug()

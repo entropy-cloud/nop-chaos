@@ -13,10 +13,6 @@ import { splitPrefixUrl } from '../page';
 
 const GRAPHQL_URL = '/graphql'
 
-const { useAuthToken, useTenantId, useLocale,
-	setAuthToken, logout, useSettings, useI18n, useAppId, globalVersion,
-	notify, alert, processRequest, processResponse } = useAdapter()
-
 
 export const ajax = axios.create({
 
@@ -26,7 +22,7 @@ ajax.interceptors.response.use(
 	res => {
 		const token = res.headers[HEADER_ACCESS_TOKEN]
 		if (token) {
-			setAuthToken(token)
+			useAdapter().setAuthToken(token)
 		}
 		return res
 	}
@@ -59,6 +55,8 @@ export function responseOk(data: any): AjaxResponse {
 }
 
 export function ajaxRequest(options: FetcherRequest): Promise<any> {
+	const { notify, alert } = useAdapter()
+
 
 	return ajaxFetch(options).then(d => {
 		if (!options.silent) {
@@ -91,7 +89,7 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 	}
 	options.query = query
 
-	const [type,path] = splitPrefixUrl(url) || []
+	const [type, path] = splitPrefixUrl(url) || []
 
 	if (type == 'action') {
 		const actionName = path
@@ -105,13 +103,13 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 		} catch (e: any) {
 			return Promise.reject(e)
 		}
-	}else if(type == 'dict'){
-		return useAdapter().fetchDict(path,options)
-	}else if(type == 'page'){
+	} else if (type == 'dict') {
+		return useAdapter().fetchDict(path, options)
+	} else if (type == 'page') {
 		return useAdapter().fetchPageAndTransform(path, options)
 	}
 
-	const globSetting = useSettings()
+	const globSetting = useAdapter().useSettings()
 
 	if (globSetting.apiUrl && options.config.useApiUrl !== false) {
 		url = `${globSetting.apiUrl}${url}`;
@@ -147,6 +145,10 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 		config.params = { ...options.data, ...query }
 		config.data = null
 	}
+
+	const { useI18n, processRequest, processResponse } = useAdapter()
+
+
 
 	const res = ajax.request(processRequest(config))
 		.then(res => {
@@ -214,6 +216,9 @@ type ExtOptions = {
 }
 
 function prepareHeaders(config: AxiosRequestConfig, opts: ExtOptions) {
+	const { useAuthToken, useTenantId, useLocale, useAppId, globalVersion } = useAdapter()
+
+
 	// 请求之前处理config
 	const token = useAuthToken();
 	let tenantid = useTenantId();
@@ -256,7 +261,7 @@ function prepareHeaders(config: AxiosRequestConfig, opts: ExtOptions) {
 }
 
 function normalizeErrMessage(status: number, msg: string) {
-	const { t } = useI18n()
+	const { t } = useAdapter().useI18n()
 
 	let errMessage = ''
 	switch (status) {
@@ -303,6 +308,7 @@ function normalizeErrMessage(status: number, msg: string) {
 }
 
 function doLogout(reason: string) {
+	const { setAuthToken, logout } = useAdapter()
 	setAuthToken(undefined)
 	logout(reason)
 }

@@ -22,10 +22,11 @@ import copy from 'copy-to-clipboard'
 import type { PageObject, FetcherRequest, FetcherResult } from "@nop-chaos/nop-core"
 import { useDebug,  default_jumpTo, isCancel, useAdapter,default_isCurrentUrl ,ajaxFetch, default_updateLocation, providePage} from "@nop-chaos/nop-core";
 
-const {debug} = useDebug()
-const adaptor = useAdapter()
 
 export function createEnv(page: PageObject): RenderOptions {
+  const {debug} = useDebug()
+  const adapter = useAdapter()
+
   let env: RenderOptions = {
     session: page.id,
     affixOffsetTop: 0,
@@ -37,7 +38,7 @@ export function createEnv(page: PageObject): RenderOptions {
     },
 
     jumpTo(to: string, action?:ActionObject, ctx?: object) {
-      const router = useAdapter().useRouter()
+      const router = adapter.useRouter()
       return default_jumpTo(router, to)
     },
 
@@ -75,7 +76,7 @@ export function createEnv(page: PageObject): RenderOptions {
       if (options === void 0) {
         options = {};
       }
-      const { t } = adaptor.useI18n()
+      const { t } = adapter.useI18n()
       const ret = copy(contents, options);
       ret &&
         (!options || options.shutup !== true) &&

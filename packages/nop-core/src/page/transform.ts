@@ -19,8 +19,6 @@ import { useAdapter } from '../adapter';
 import { processXuiDirective } from './processor';
 import { resolveXuiComponent } from './registry';
 
-const { isUserInRole } = useAdapter()
-
 export async function transformPageJson(pageUrl: string, json: any) {
   json.__baseUrl = pageUrl;
   //fixPage(json)
@@ -30,6 +28,8 @@ export async function transformPageJson(pageUrl: string, json: any) {
 }
 
 function filterByAuth(roles: string, json: any) {
+  const { isUserInRole } = useAdapter()
+
   if (!isUserInRole(roles)) return;
   return json;
 }

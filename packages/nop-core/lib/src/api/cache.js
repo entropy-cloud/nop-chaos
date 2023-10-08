@@ -3,8 +3,8 @@ import { deleteDynamicModules } from '../core';
 import { useAdapter } from '../adapter';
 const pageCache = createAsyncCache({ max: 50 });
 const dictCache = createAsyncCache({ max: 100 });
-const { useLocale } = useAdapter();
 function buildLocaleKey(name) {
+    const { useLocale } = useAdapter();
     return useLocale() + '|' + name;
 }
 export function clearLocalCache() {

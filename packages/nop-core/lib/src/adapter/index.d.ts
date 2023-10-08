@@ -20,6 +20,9 @@ export type ToastConf = {
     items?: Array<any>;
     useMobileUI?: boolean;
 };
+interface PlainObject {
+    [propsName: string]: any;
+}
 /**
  * nop-chaos对外部框架的依赖都集中在adapter对象中
  */
@@ -62,7 +65,7 @@ export declare const adapter: {
     notify(type: ToastLevel, msg: any, conf?: ToastConf): never;
     alert(msg: string, title?: string): never;
     confirm(msg: string, title?: string): Promise<boolean>;
-    dataMapping(to: any, from?: Record<string, any>, ignoreFunction?: boolean | ((key: string, value: any) => boolean), convertKeyToPath?: boolean, ignoreIfNotMatch?: boolean): never;
+    dataMapping(to: any, from?: PlainObject, ignoreFunction?: boolean | ((key: string, value: any) => boolean), convertKeyToPath?: boolean, ignoreIfNotMatch?: boolean): any;
     fetchDict(dictName: string, options: FetcherRequest): Promise<FetcherResult>;
     fetchPageAndTransform(pageName: string, options: FetcherRequest): Promise<FetcherResult>;
     getPage(pageUrl: string): Promise<any>;
@@ -107,7 +110,7 @@ export declare function useAdapter(): {
     notify(type: ToastLevel, msg: any, conf?: ToastConf | undefined): never;
     alert(msg: string, title?: string | undefined): never;
     confirm(msg: string, title?: string | undefined): Promise<boolean>;
-    dataMapping(to: any, from?: Record<string, any>, ignoreFunction?: boolean | ((key: string, value: any) => boolean), convertKeyToPath?: boolean | undefined, ignoreIfNotMatch?: boolean): never;
+    dataMapping(to: any, from?: PlainObject, ignoreFunction?: boolean | ((key: string, value: any) => boolean), convertKeyToPath?: boolean | undefined, ignoreIfNotMatch?: boolean): any;
     fetchDict(dictName: string, options: FetcherRequest): Promise<FetcherResult>;
     fetchPageAndTransform(pageName: string, options: FetcherRequest): Promise<FetcherResult>;
     getPage(pageUrl: string): Promise<any>;

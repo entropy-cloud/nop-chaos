@@ -31,7 +31,6 @@ import XuiSchemaPage from './XuiSchemaPage.vue';
 import { useDebug,useAdapter } from '@nop-chaos/nop-core'
 import { cloneDeep } from 'lodash-es';
 
-const { getPage} = useAdapter()
 /**
  * 在AmisSchemaPage的基础上增加AmisDebugger调试功能，以及根据path动态加载schema的功能
  */
@@ -51,6 +50,8 @@ export default defineComponent({
   components: { XuiDebugger, XuiSchemaPage },
 
   setup(props) {
+    const { getPage} = useAdapter()
+    
     let pageSchema = shallowRef<any>();
 
     function registerPage(p: PageObject) {

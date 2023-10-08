@@ -3,10 +3,10 @@ import { FormItem, Renderer, ScopedContext } from 'amis';
 import { createObject, resolveVariableAndFilter } from 'amis-core';
 import { useAdapter } from '@nop-chaos/nop-core';
 import { applyPureVueInReact } from 'veaury';
-const { resolveVueComponent } = useAdapter();
 export default class VueControl extends React.Component {
     constructor(props) {
         super(props);
+        const { resolveVueComponent } = useAdapter();
         this.vueComponent = applyPureVueInReact(resolveVueComponent(props.vueComponent));
     }
     doAction(action, data, throwErrors) {

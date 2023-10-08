@@ -1,0 +1,24 @@
+body.is-modalOpened .ant-popover{
+    z-index:1400; /* amis的dialog为1400，导致ant-popover显示在弹窗的下面*/
+}
+
+/** 修正pager的大小 */
+.cxd-Pagination>li>a, .cxd-Pagination>li>span{
+    height:auto;
+}
+
+.cxd-Table--autoFillHeight .cxd-Table-footToolbar{
+    padding:0
+}
+
+
+/**
+ * 不显示表单的heading。heading内部包含title
+ */
+.cxd-Panel.no-heading > .cxd-Panel-heading { 
+    display: none;
+}
+
+.cxd-Panel.actions-center > .cxd-Panel-footerWrap > .cxd-Panel-btnToolbar{
+    text-align: center;
+}
