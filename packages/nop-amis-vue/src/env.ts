@@ -17,7 +17,7 @@
  */
 
 import type { RenderOptions } from "amis-core/lib/factory";
-import { alert, confirm, toast,ActionObject } from 'amis'
+import { toast,ActionObject } from 'amis'
 import copy from 'copy-to-clipboard'
 import type { PageObject, FetcherRequest, FetcherResult } from "@nop-chaos/nop-core"
 import { useDebug,  default_jumpTo, isCancel, useAdapter,default_isCurrentUrl ,ajaxFetch, default_updateLocation, providePage} from "@nop-chaos/nop-core";
@@ -53,25 +53,13 @@ export function createEnv(page: PageObject): RenderOptions {
       default_updateLocation(to,!!replace)
     },
 
-    notify: (type, msg, conf) => {
-      if (msg.startsWith("_")) return;
-      conf = {closeButton:true,...conf}
-      toast[type] ?
-        toast[type](msg, conf)
-        : console.warn("[notify]", type, msg);
-      // toast[type]
-      //   ? toast[type](
-      //     msg,
-      //     conf
-      //   )
-      //   : console.warn("[notify]", type, msg);
-      console.log("[notify]", type, msg);
-    },
+    notify: adapter.notify,
 
     enableAMISDebug: debug.value,
 
-    alert,
-    confirm,
+    alert: adapter.alert,
+    confirm: adapter.confirm,
+
     copy: (contents, options) => {
       if (options === void 0) {
         options = {};

@@ -2,7 +2,7 @@ import type { AxiosRequestConfig, AxiosInstance, AxiosResponse, AxiosError } fro
 import type { RequestOptions, Result, UploadFileParams, UploadFileCallBack } from '/#/axios';
 import type { CreateAxiosOptions } from './axiosTransform';
 import axios from 'axios';
-import qs from 'qs';
+//import qs from 'qs';
 import { AxiosCanceler } from './axiosCancel';
 import { isFunction } from '/@/utils/is';
 import { cloneDeep } from 'lodash-es';

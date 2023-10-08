@@ -16,154 +16,127 @@ import { clearLocalCache, registerAdapter, XuiPage } from '@nop-chaos/sdk';
 import { useUserStoreWithOut } from '../store/modules/user';
 import { isArray } from '../utils/is';
 
-import {IconPicker,Icon} from '/@/components/Icon'
-import './registerLibs'
+import { IconPicker, Icon } from '/@/components/Icon'
 
 import './fix.css'
 
-function initAdapter(){
+import { useLocale } from '/@/locales/useLocale'
+import { useI18n } from '/@/hooks/web/useI18n'
+import { router } from '/@/router'
+import { store } from '/@/store'
+import { useUserStore } from '/@/store/modules/user'
+import { intersection } from 'lodash-es';
+import type { RoleEnum } from '/@/enums/roleEnum';
+import { getToken, getTenantId } from '/@/utils/auth';
+import { SessionTimeoutProcessingEnum } from '/@/enums/appEnum';
+import projectSetting from '/@/settings/projectSetting';
+
+const currentLocale = useLocale().getLocale
+const i18n = useI18n()
+
+function initAdapter(app: App) {
     registerAdapter({
-            /**
-     * 返回当前的locale
-     */
-    useLocale(): string {
-        throw new Error("not-impl")
-    },
+        /**
+         * 返回当前的locale
+         */
+        useLocale(): string {
+            return currentLocale.value
+        },
 
-    useI18n(): I18nOperation {
-        throw new Error("not-impl")
-    },
+        useI18n() {
+            return {
+                t: i18n.t
+            }
+        },
 
-    /**
-     * 返回当前的全局store
-     */
-    useStore(): Store {
-        throw new Error("not-impl")
-    },
+        /**
+         * 返回当前的全局store
+         */
+        useStore() {
+            return store
+        },
 
-    useRouter(): Router {
-        throw new Error("not-impl")
-    },
+        useRouter() {
+            return router
+        },
 
-    useSettings(): Settings {
-        return {
-            apiUrl: ''
+        useSettings() {
+            return {
+                apiUrl: ''
+            }
+        },
+
+        /**
+         * 返回当前的认证token
+         */
+        useAuthToken(): string {
+            return getToken()
+        },
+
+        setAuthToken(token?: string) {
+            useUserStore().setToken(token)
+        },
+
+        isUserInRole(role: string): boolean {
+            const userStore = useUserStore()
+            let roles = role.split(',')
+            if (roles.length == 1) {
+                return userStore.getRoleList?.includes(role as RoleEnum);
+            }
+            return (intersection(roles, userStore.getRoleList) as RoleEnum[]).length > 0;
+        },
+
+        useTenantId(): string {
+            return getTenantId()
+        },
+
+        useAppId(): string {
+            return "nop-chaos"
+        },
+
+        /**
+         * 自动退出时执行的回调
+         */
+        logout(): void {
+            const userStore = useUserStoreWithOut();
+            userStore.setToken(undefined);
+            if (projectSetting.sessionTimeoutProcessing === SessionTimeoutProcessingEnum.PAGE_COVERAGE) {
+                userStore.setSessionTimeout(true);
+            } else {
+                userStore.logout(true);
+            }
+        },
+
+        /**
+         * 根据组件名加载Vue组件
+         */
+        resolveVueComponent(name: string): any {
+            return app.component(name)
         }
-    },
-
-    /**
-     * 返回当前的认证token
-     */
-    useAuthToken(): string {
-        throw new Error("not-impl")
-    },
-
-    setAuthToken(token?: string) {
-
-    },
-
-    isUserInRole(role: string): boolean {
-        throw new Error("not-impl")
-    },
-
-    useTenantId(): string {
-        throw new Error("not-impl")
-    },
-
-    useAppId(): string {
-        return "nop-chaos"
-    },
-
-    /**
-     * 自动退出时执行的回调
-     */
-    logout(reason: string): void {
-        throw new Error("not-impl")
-    },
-
-    /**
-     * 根据组件名加载Vue组件
-     */
-    resolveVueComponent(name: string): any {
-        throw new Error("not-impl")
-    },
-
-    processRequest(request: any) {
-        return request
-    },
-
-    processResponse(response: any) {
-        return response
-    },
-
-    compileFunction(code: string,page:any): Function {
-        return new Function("page", "return " + code).call(null,page)
-    },
-    
-    jumpTo(to: string, action?: any, ctx?: object){
-        const router = adapter.useRouter()
-        return default_jumpTo(router,to)
-    },
-
-    isCurrentUrl: default_isCurrentUrl,
-
-    updateLocation: default_updateLocation,
-
-    notify(type: ToastLevel, msg: any, conf?: ToastConf){
-        throw new Error("not-impl")
-    },
-
-    alert(msg: string, title?: string){
-        throw new Error("not-impl")
-    },
-
-    confirm(msg: string, title?: string): Promise<boolean>{
-        throw new Error("not-impl")
-    },
-
-    dataMapping(
-        to: any,
-        from: Record<string,any> = {},
-        ignoreFunction: boolean | ((key: string, value: any) => boolean) = false,
-        convertKeyToPath?: boolean,
-        ignoreIfNotMatch = false
-      ){
-        throw new Error("not-impl")
-    },
-
-    fetchDict(dictName:string, options:FetcherRequest): Promise<FetcherResult>{
-        throw new Error("not-impl")
-    },
-
-    fetchPageAndTransform(pageName:string, options:FetcherRequest): Promise<FetcherResult>{
-        throw new Error("not-impl")
-    },
-
-    getPage(pageUrl:string): Promise<any>{
-        throw new Error("not-impl")
-    }
     })
 }
 
-export function initNopApp(app:App){
-   app.component("XuiPage", XuiPage)
-   app.component("XUI", XuiPage)
-   app.component("AMIS", XuiPage)
-   app.component("icon-picker",IconPicker)
-   app.component("icon",Icon)
+export function initNopApp(app: App) {
+    initAdapter(app)
 
-   useUserStoreWithOut().$subscribe((mutation)=>{
-      // 登录信息变化的时候清空页面缓存和字典缓存
-      if(mutation.events && mutation.events){
-         if(isArray(mutation.events)){
-            for(const event of mutation.events){
-               if(event.key == 'userInfo'){
-                  clearLocalCache()
-               }
+    app.component("XuiPage", XuiPage)
+    app.component("XUI", XuiPage)
+    app.component("AMIS", XuiPage)
+    app.component("icon-picker", IconPicker)
+    app.component("icon", Icon)
+
+    useUserStoreWithOut().$subscribe((mutation) => {
+        // 登录信息变化的时候清空页面缓存和字典缓存
+        if (mutation.events && mutation.events) {
+            if (isArray(mutation.events)) {
+                for (const event of mutation.events) {
+                    if (event.key == 'userInfo') {
+                        clearLocalCache()
+                    }
+                }
+            } else if (mutation.events.key == 'userInfo') {
+                clearLocalCache()
             }
-         }else if(mutation.events.key == 'userInfo'){
-            clearLocalCache()
-         }
-      }
-   })
+        }
+    })
 }

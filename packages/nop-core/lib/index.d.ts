@@ -49,8 +49,8 @@ declare const adapter: {
     jumpTo(to: string, action?: any, ctx?: object): void;
     isCurrentUrl: typeof default_isCurrentUrl;
     updateLocation: typeof default_updateLocation;
-    notify(type: ToastLevel, msg: any, conf?: ToastConf): never;
-    alert(msg: string, title?: string): never;
+    notify(type: ToastLevel, msg: any, conf?: ToastConf): void;
+    alert(msg: string, title?: string): Promise<void>;
     confirm(msg: string, title?: string): Promise<boolean>;
     dataMapping(to: any, from?: PlainObject, ignoreFunction?: boolean | ((key: string, value: any) => boolean), convertKeyToPath?: boolean, ignoreIfNotMatch?: boolean): any;
     fetchDict(dictName: string, options: FetcherRequest): Promise<FetcherResult>;
@@ -586,8 +586,8 @@ export declare function useAdapter(): {
     jumpTo(to: string, action?: any, ctx?: object | undefined): void;
     isCurrentUrl: typeof default_isCurrentUrl;
     updateLocation: typeof default_updateLocation;
-    notify(type: ToastLevel, msg: any, conf?: ToastConf | undefined): never;
-    alert(msg: string, title?: string | undefined): never;
+    notify(type: ToastLevel, msg: any, conf?: ToastConf | undefined): void;
+    alert(msg: string, title?: string | undefined): Promise<void>;
     confirm(msg: string, title?: string | undefined): Promise<boolean>;
     dataMapping(to: any, from?: PlainObject, ignoreFunction?: boolean | ((key: string, value: any) => boolean), convertKeyToPath?: boolean | undefined, ignoreIfNotMatch?: boolean): any;
     fetchDict(dictName: string, options: FetcherRequest): Promise<FetcherResult>;

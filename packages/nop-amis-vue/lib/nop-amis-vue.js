@@ -1,13 +1,13 @@
 import { defineComponent, ref, onMounted, onUnmounted, openBlock, createElementBlock, watchEffect, onBeforeUnmount, createBlock, resolveDynamicComponent, shallowRef, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
 import { deletePageCache, ajaxFetch, PageApis, useDebug, useAdapter, providePage, default_jumpTo, isCancel, default_isCurrentUrl, default_updateLocation, createPage, bindActions, getSchemaType, registerAdapter } from "@nop-chaos/nop-core";
 import { isString, cloneDeep } from "lodash-es";
-import { toast, alert, confirm, clearStoresCache, setDefaultLocale, render, ToastComponent, ScopedContext, Renderer, FormItem } from "amis";
+import { toast, clearStoresCache, setDefaultLocale, render, ToastComponent, ScopedContext, Renderer, FormItem, dataMapping, alert, confirm } from "amis";
 import copy from "copy-to-clipboard";
 import require$$0 from "react-dom";
 import React, { createElement, Fragment } from "react";
 import { ElButton, ElDialog } from "element-plus";
 import yaml from "js-yaml";
-import { createObject, resolveVariableAndFilter, dataMapping } from "amis-core";
+import { createObject, resolveVariableAndFilter } from "amis-core";
 import { applyPureVueInReact } from "veaury";
 const _sfc_main$6 = defineComponent({
   props: {
@@ -167,16 +167,10 @@ function createEnv(page) {
     updateLocation(to, replace) {
       default_updateLocation(to, !!replace);
     },
-    notify: (type, msg, conf) => {
-      if (msg.startsWith("_"))
-        return;
-      conf = { closeButton: true, ...conf };
-      toast[type] ? toast[type](msg, conf) : console.warn("[notify]", type, msg);
-      console.log("[notify]", type, msg);
-    },
+    notify: adapter.notify,
     enableAMISDebug: debug.value,
-    alert,
-    confirm,
+    alert: adapter.alert,
+    confirm: adapter.confirm,
     copy: (contents, options) => {
       if (options === void 0) {
         options = {};
@@ -738,7 +732,16 @@ FormItem({
   autoVar: false
 })(VueFormItem);
 registerAdapter({
-  dataMapping
+  dataMapping,
+  alert,
+  confirm,
+  notify(type, msg, conf) {
+    if (msg.startsWith("_"))
+      return;
+    conf = { closeButton: true, ...conf };
+    toast[type] ? toast[type](msg, conf) : console.warn("[notify]", type, msg);
+    console.log("[notify]", type, msg);
+  }
 });
 export {
   AmisPageEditor,

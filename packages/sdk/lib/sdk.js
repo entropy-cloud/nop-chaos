@@ -6,10 +6,10 @@ import { cloneDeep, isNumber, isInteger, isBoolean, omit, isString as isString$1
 import axios from "axios";
 import { isObject, isArray, isPromise, isString, isPlainObject } from "@vue/shared";
 import "systemjs/dist/system.js";
-import { noop, themeable, localeable, uncontrollable, FormItem, autobind, createObject, resolveVariableAndFilter, dataMapping } from "amis-core";
+import { noop, themeable, localeable, uncontrollable, FormItem, autobind, createObject, resolveVariableAndFilter } from "amis-core";
 import React, { createElement, Fragment } from "react";
 import { PickerContainer, ResultBox } from "amis-ui";
-import { ScopedContext, Renderer, FormItem as FormItem$1, clearStoresCache, setDefaultLocale, render, ToastComponent, toast, alert, confirm } from "amis";
+import { ScopedContext, Renderer, FormItem as FormItem$1, clearStoresCache, setDefaultLocale, render, ToastComponent, dataMapping, alert, confirm, toast } from "amis";
 import copy from "copy-to-clipboard";
 import require$$0 from "react-dom";
 import { ElButton, ElDialog } from "element-plus";
@@ -1940,16 +1940,10 @@ function createEnv(page) {
     updateLocation(to, replace) {
       default_updateLocation(to, !!replace);
     },
-    notify: (type, msg, conf) => {
-      if (msg.startsWith("_"))
-        return;
-      conf = { closeButton: true, ...conf };
-      toast[type] ? toast[type](msg, conf) : console.warn("[notify]", type, msg);
-      console.log("[notify]", type, msg);
-    },
+    notify: adapter2.notify,
     enableAMISDebug: debug2.value,
-    alert,
-    confirm,
+    alert: adapter2.alert,
+    confirm: adapter2.confirm,
     copy: (contents, options) => {
       if (options === void 0) {
         options = {};
@@ -2510,7 +2504,16 @@ FormItem$1({
   autoVar: false
 })(VueFormItem);
 registerAdapter({
-  dataMapping
+  dataMapping,
+  alert,
+  confirm,
+  notify(type, msg, conf) {
+    if (msg.startsWith("_"))
+      return;
+    conf = { closeButton: true, ...conf };
+    toast[type] ? toast[type](msg, conf) : console.warn("[notify]", type, msg);
+    console.log("[notify]", type, msg);
+  }
 });
 export {
   AmisPageEditor,

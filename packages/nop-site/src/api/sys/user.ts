@@ -1,7 +1,7 @@
 import { LoginParams } from './model/userModel';
 import { ErrorMessageMode } from '/#/axios';
 import { useMessage } from '/@/hooks/web/useMessage';
-import { ajaxRequest } from '/@/nop/core';
+import { ajaxRequest } from '@nop-chaos/sdk';
 import { getToken } from '/@/utils/auth';
 
 

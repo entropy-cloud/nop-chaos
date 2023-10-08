@@ -9,18 +9,20 @@ import { getTenantId, getToken } from '/@/utils/auth';
 import { warn } from '/@/utils/log';
 import { packageViews } from '/@/utils/monorepo/dynamicRouter';
 
+import {XuiPage} from '@nop-chaos/sdk'
+
 export type LayoutMapKey = 'LAYOUT';
 const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
 const LayoutContent = () => import('/@/layouts/default/content/index.vue');
 
-const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>();
+const LayoutMap = new Map<string, any>();
 
 LayoutMap.set('LAYOUT', LAYOUT);
 LayoutMap.set('IFRAME', IFRAME);
 //微前端qiankun
 LayoutMap.set('LayoutsContent', LayoutContent);
 
-const AMIS = () => import("/@/nop/amis/AmisPage.vue")
+const AMIS = XuiPage // () => import("/@/nop/amis/AmisPage.vue")
 LayoutMap.set("AMIS", AMIS)
 
 let dynamicViewsModules: Record<string, () => Promise<Recordable>>;

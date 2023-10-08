@@ -128,11 +128,11 @@ const adapter = {
 
     updateLocation: default_updateLocation,
 
-    notify(type: ToastLevel, msg: any, conf?: ToastConf){
+    notify(type: ToastLevel, msg: any, conf?: ToastConf):void{
         throw new Error("not-impl")
     },
 
-    alert(msg: string, title?: string){
+    alert(msg: string, title?: string):Promise<void>{
         throw new Error("not-impl")
     },
 

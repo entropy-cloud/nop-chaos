@@ -200,7 +200,7 @@ export const useUserStore = defineStore({
       if (!this.getToken) {
         return null;
       }
-      const { userInfo, sysAllDictItems } = await getUserInfo();
+      const { userInfo, sysAllDictItems } = (await getUserInfo()) || {};
       if (userInfo) {
         const { roles = [] } = userInfo;
         if (isArray(roles)) {

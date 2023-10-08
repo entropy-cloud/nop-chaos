@@ -4,7 +4,7 @@ It is an independent new page.
 the contents of the file still need to log in to access
  */
 import type { AppRouteModule } from '/@/router/types';
-
+import { XuiPage } from '@nop-chaos/sdk';
 
 // test
 // http:ip:port/main-out
@@ -12,25 +12,43 @@ export const mainOutRoutes: AppRouteModule[] = [
   {
     path: '/amis/:path(.*\.page\.yaml)',
     name: 'default-page',
-    component: () => import('/@/nop/amis/AmisPage.vue'),
+    component: XuiPage,
     meta: {
       title: 'Page',
       hideMenu: true,
       hideBreadcrumb: true,
     },
 
-    props: (route) => ({ path: '/' + route.params.path })
-  },
-  {
-    path: '/test1',
-    name: 'test1',
-    component: () => import('../../nop/amis/AmisTest'),
-    meta: {
-      title: 'Test',
-      hideMenu: true,
-      hideBreadcrumb: true
+    props: (route) => {
+      return { path: '/' + route.params.path }
     }
-  }
+  },
+
+  {
+    path: '/pages/',
+    name: 'jsonPage',
+    component: XuiPage,
+    meta: {
+      title: 'Page',
+      hideMenu: true,
+      hideBreadcrumb: true,
+    },
+
+    props: (route) => {
+      return { path: '/' + route.params.path }
+    }
+  },
+
+  // {
+  //   path: '/test1',
+  //   name: 'test1',
+  //   component: () => import('../../nop/amis/AmisTest'),
+  //   meta: {
+  //     title: 'Test',
+  //     hideMenu: true,
+  //     hideBreadcrumb: true
+  //   }
+  // }
   // {
   //   path: '/main-out',
   //   name: 'MainOut',
