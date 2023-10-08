@@ -11,7 +11,7 @@ export default class VueControl extends React.Component {
     }
     doAction(action, data, throwErrors) {
         const { resetValue, onChange } = this.props;
-        const actionType = action?.actionType;
+        const actionType = action === null || action === void 0 ? void 0 : action.actionType;
         if (actionType === 'clear') {
             onChange(undefined);
         }
@@ -24,7 +24,7 @@ export default class VueControl extends React.Component {
         const rendererEvent = await dispatchEvent('change', createObject(data, {
             value: eventData
         }));
-        if (rendererEvent?.prevented) {
+        if (rendererEvent === null || rendererEvent === void 0 ? void 0 : rendererEvent.prevented) {
             return;
         }
         onChange && onChange(eventData);
@@ -32,19 +32,14 @@ export default class VueControl extends React.Component {
     render() {
         let { props, value, env, store } = this.props;
         if (props) {
-            props = { ...props };
+            props = Object.assign({}, props);
             for (const key of Object.keys(props)) {
                 if (typeof props[key] === 'string') {
                     props[key] = resolveVariableAndFilter(props[key], this.props.data, '| raw');
                 }
             }
         }
-        let mergedProps = {
-            env, store,
-            ...props,
-            value,
-            'onUpdate:value': ((value) => this.dispatchChangeEvent(value))
-        };
+        let mergedProps = Object.assign(Object.assign({ env, store }, props), { value, 'onUpdate:value': ((value) => this.dispatchChangeEvent(value)) });
         return React.createElement(this.vueComponent, mergedProps);
     }
 }

@@ -1,10 +1,10 @@
 {
-  "name": "@nop-chaos/nop-amis-vue",
+  "name": "@nop-chaos/sdk",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "types": "lib/src/index.d.ts",
-  "main": "lib/nop-amis-vue.js",
+  "main": "lib/sdk.js",
   "files": [
     "assets",
     "src"
@@ -16,22 +16,8 @@
   },
   "dependencies": {
     "@nop-chaos/nop-core": "workspace:*",
-    "@vue/shared": "^3.3.4",
-    "amis": "^3.4.0",
-    "amis-core": "^3.4.0",
-    "amis-formula": "^3.4.0",
-    "amis-ui": "^3.4.0",
-    "element-plus": "^2.3.14",
-    "pinia": "^2.0.12",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "veaury": "^2.3.8",
-    "vue": "^3.3.4",
-    "vue-router": "^4.0.14",
-    "js-yaml": "^4.1.0",
-    "clipboard": "^2.0.8",
-    "copy-to-clipboard": "^3.3.2",
-    "lodash-es": "^4.17.21"
+    "@nop-chaos/nop-amis-ext": "workspace:*",
+    "@nop-chaos/nop-amis-vue": "workspace:*"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",

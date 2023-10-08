@@ -11,7 +11,7 @@
     "all": "pnpm -r all",
     "dev": "pnpm -F nop-site dev",
     "build": "pnpm -r build",
-    "build-lib": "pnpm build --filter @nop-chaos/nop-core,@nop-chaos/nop-amis-ext,@nop-chaos/nop-amis-vue",
+    "build-sdk": "pnpm --filter @nop-chaos/nop-core build & pnpm --filter @nop-chaos/nop-amis-ext build & pnpm --filter @nop-chaos/nop-amis-vue build & pnpm --filter @nop-chaos/sdk build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "pnpm -F nop-site preview",

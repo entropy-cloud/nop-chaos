@@ -7,7 +7,7 @@ export default defineConfig({
 
   build: {
     lib: {
-      name: '@nop-chaos/nop-amis-vue',
+      name: '@nop-chaos/sdk',
       formats: ['es'],
       entry: 'src/index.ts',
     },
@@ -22,7 +22,7 @@ export default defineConfig({
       },
       // Do not bundle third-party dependencies,
       // since server packages can get them via npm install
-      external: ['vue', '@vue/reactivity','@vue/shared','vue-router', '@nop-chaos/nop-core',
+      external: ['vue', '@vue/reactivity','@vue/shared','vue-router', 
           'axios', 'amis','react','react-dom','amis-ui','amis-formula','amis-core'],
     },
   },

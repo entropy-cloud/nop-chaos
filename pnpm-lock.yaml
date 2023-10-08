@@ -199,9 +199,6 @@ importers:
       amis-ui:
         specifier: ^3.4.0
         version: registry.npmmirror.com/amis-ui@3.4.0(@types/react@18.2.14)(amis-core@3.4.0)(amis-formula@3.4.0)(react-dom@18.2.0)(react@18.2.0)
-      ant-design-vue:
-        specifier: ^3.2.12
-        version: registry.npmmirror.com/ant-design-vue@3.2.20(vue@3.3.4)
       react:
         specifier: ^18.2.0
         version: registry.npmmirror.com/react@18.2.0
@@ -249,10 +246,10 @@ importers:
         specifier: workspace:*
         version: link:../nop-core
       '@vue/reactivity':
-        specifier: ^3.2.45
+        specifier: ^3.3.4
         version: registry.npmmirror.com/@vue/reactivity@3.3.4
       '@vue/shared':
-        specifier: ^3.2.45
+        specifier: ^3.3.4
         version: registry.npmmirror.com/@vue/shared@3.3.4
       amis:
         specifier: ^3.4.0
@@ -266,9 +263,6 @@ importers:
       amis-ui:
         specifier: ^3.4.0
         version: registry.npmmirror.com/amis-ui@3.4.0(@types/react@18.2.14)(amis-core@3.4.0)(amis-formula@3.4.0)(react-dom@18.2.0)(react@18.2.0)
-      ant-design-vue:
-        specifier: ^3.2.12
-        version: registry.npmmirror.com/ant-design-vue@3.2.20(vue@3.3.4)
       clipboard:
         specifier: ^2.0.8
         version: registry.npmmirror.com/clipboard@2.0.11
@@ -286,7 +280,7 @@ importers:
         version: registry.npmmirror.com/lodash-es@4.17.21
       pinia:
         specifier: ^2.0.12
-        version: registry.npmmirror.com/pinia@2.1.4(typescript@4.9.5)(vue@3.3.4)
+        version: registry.npmmirror.com/pinia@2.1.4(typescript@5.1.6)(vue@3.3.4)
       react:
         specifier: ^18.2.0
         version: registry.npmmirror.com/react@18.2.0
@@ -297,7 +291,7 @@ importers:
         specifier: ^2.3.8
         version: registry.npmmirror.com/veaury@2.3.12(react-dom@18.2.0)(react@18.2.0)
       vue:
-        specifier: ^3.2.45
+        specifier: ^3.3.4
         version: registry.npmmirror.com/vue@3.3.4
       vue-router:
         specifier: ^4.0.14
@@ -313,17 +307,17 @@ importers:
         specifier: ^18.2.6
         version: registry.npmmirror.com/@types/react-dom@18.2.6
       '@vitejs/plugin-vue':
-        specifier: ^4.0.0
-        version: registry.npmmirror.com/@vitejs/plugin-vue@4.2.3(vite@4.3.9)(vue@3.3.4)
+        specifier: ^4.2.3
+        version: registry.npmmirror.com/@vitejs/plugin-vue@4.2.3(vite@4.4.9)(vue@3.3.4)
       typescript:
-        specifier: ^4.9.3
-        version: registry.npmmirror.com/typescript@4.9.5
+        specifier: ^5.0.2
+        version: registry.npmmirror.com/typescript@5.1.6
       vite:
-        specifier: ^4.0.0
-        version: registry.npmmirror.com/vite@4.3.9(@types/node@17.0.45)(less@4.1.3)(sass@1.63.6)(terser@5.18.2)
+        specifier: ^4.4.5
+        version: registry.npmmirror.com/vite@4.4.9
       vue-tsc:
-        specifier: ^1.0.11
-        version: registry.npmmirror.com/vue-tsc@1.8.3(typescript@4.9.5)
+        specifier: ^1.8.5
+        version: registry.npmmirror.com/vue-tsc@1.8.5(typescript@5.1.6)
 
   packages/nop-core:
     dependencies:
@@ -717,6 +711,9 @@ importers:
       '@logicflow/extension':
         specifier: ^1.2.1
         version: registry.npmmirror.com/@logicflow/extension@1.2.9(ts-node@10.9.1)
+      '@nop-chaos/nop-amis-vue':
+        specifier: workspace:*
+        version: link:../nop-amis-vue
       '@vue/reactivity':
         specifier: ^3.2.41
         version: registry.npmmirror.com/@vue/reactivity@3.3.4
@@ -736,17 +733,17 @@ importers:
         specifier: ^2.0.1
         version: registry.npmmirror.com/@zxcvbn-ts/core@2.2.1
       amis:
-        specifier: 2.6.0
-        version: registry.npmmirror.com/amis@2.6.0(amis-core@2.6.0)(amis-ui@2.6.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^3.4.0
+        version: registry.npmmirror.com/amis@3.4.0(@types/react@18.2.14)(amis-core@3.4.0)(amis-ui@3.4.0)(office-viewer@0.1.5)(react-dom@18.2.0)(react@18.2.0)
       amis-core:
-        specifier: 2.6.0
-        version: registry.npmmirror.com/amis-core@2.6.0(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^3.4.0
+        version: registry.npmmirror.com/amis-core@3.4.0(@types/react@18.2.14)(amis-formula@3.4.0)(react-dom@18.2.0)(react@18.2.0)
       amis-formula:
-        specifier: 2.6.0
-        version: registry.npmmirror.com/amis-formula@2.6.0
+        specifier: ^3.4.0
+        version: registry.npmmirror.com/amis-formula@3.4.0
       amis-ui:
-        specifier: 2.6.0
-        version: registry.npmmirror.com/amis-ui@2.6.0(amis-core@2.6.0)(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^3.4.0
+        version: registry.npmmirror.com/amis-ui@3.4.0(@types/react@18.2.14)(amis-core@3.4.0)(amis-formula@3.4.0)(react-dom@18.2.0)(react@18.2.0)
       ant-design-vue:
         specifier: ^3.2.12
         version: registry.npmmirror.com/ant-design-vue@3.2.20(vue@3.3.4)
@@ -756,12 +753,6 @@ importers:
       china-area-data:
         specifier: ^5.0.1
         version: registry.npmmirror.com/china-area-data@5.0.1
-      clipboard:
-        specifier: ^2.0.8
-        version: registry.npmmirror.com/clipboard@2.0.11
-      copy-to-clipboard:
-        specifier: ^3.3.2
-        version: registry.npmmirror.com/copy-to-clipboard@3.3.3
       cron-parser:
         specifier: ^3.5.0
         version: registry.npmmirror.com/cron-parser@3.5.0
@@ -792,15 +783,9 @@ importers:
       js-cookie:
         specifier: ^2.2.1
         version: registry.npmmirror.com/js-cookie@2.2.1
-      js-yaml:
-        specifier: ^4.1.0
-        version: registry.npmmirror.com/js-yaml@4.1.0
       lodash-es:
         specifier: ^4.17.21
         version: registry.npmmirror.com/lodash-es@4.17.21
-      lru-cache:
-        specifier: ^7.14.0
-        version: registry.npmmirror.com/lru-cache@7.18.3
       md5:
         specifier: ^2.3.0
         version: registry.npmmirror.com/md5@2.3.0
@@ -825,9 +810,6 @@ importers:
       qrcodejs2:
         specifier: ^0.0.2
         version: registry.npmmirror.com/qrcodejs2@0.0.2
-      qs:
-        specifier: ^6.10.3
-        version: registry.npmmirror.com/qs@6.11.2
       react:
         specifier: ^18.0.0
         version: registry.npmmirror.com/react@18.2.0
@@ -852,21 +834,9 @@ importers:
       splitpanes:
         specifier: ^3.1.1
         version: registry.npmmirror.com/splitpanes@3.1.5
-      systemjs:
-        specifier: ^6.13.0
-        version: registry.npmmirror.com/systemjs@6.14.1
-      urql:
-        specifier: ^4.0.4
-        version: registry.npmmirror.com/urql@4.0.4(react@18.2.0)
-      uuid:
-        specifier: ^9.0.0
-        version: registry.npmmirror.com/uuid@9.0.0
       vditor:
         specifier: ^3.8.13
         version: registry.npmmirror.com/vditor@3.9.4
-      veaury:
-        specifier: ^2.3.8
-        version: registry.npmmirror.com/veaury@2.3.12(react-dom@18.2.0)(react@18.2.0)
       vue:
         specifier: ^3.2.33
         version: registry.npmmirror.com/vue@3.3.4
@@ -1217,6 +1187,40 @@ importers:
       vite:
         specifier: ^4.0.0
         version: registry.npmmirror.com/vite@4.3.9(less@3.13.1)
+
+  packages/sdk:
+    dependencies:
+      '@nop-chaos/nop-amis-ext':
+        specifier: workspace:*
+        version: link:../nop-amis-ext
+      '@nop-chaos/nop-amis-vue':
+        specifier: workspace:*
+        version: link:../nop-amis-vue
+      '@nop-chaos/nop-core':
+        specifier: workspace:*
+        version: link:../nop-core
+    devDependencies:
+      '@types/lodash-es':
+        specifier: ^4.17.6
+        version: registry.npmmirror.com/@types/lodash-es@4.17.7
+      '@types/react':
+        specifier: ^18.2.14
+        version: registry.npmmirror.com/@types/react@18.2.14
+      '@types/react-dom':
+        specifier: ^18.2.6
+        version: registry.npmmirror.com/@types/react-dom@18.2.6
+      '@vitejs/plugin-vue':
+        specifier: ^4.2.3
+        version: registry.npmmirror.com/@vitejs/plugin-vue@4.2.3(vite@4.4.9)(vue@3.3.4)
+      typescript:
+        specifier: ^5.0.2
+        version: registry.npmmirror.com/typescript@5.1.6
+      vite:
+        specifier: ^4.4.5
+        version: registry.npmmirror.com/vite@4.4.9
+      vue-tsc:
+        specifier: ^1.8.5
+        version: registry.npmmirror.com/vue-tsc@1.8.5(typescript@5.1.6)
 
 packages:
 
@@ -8176,12 +8180,34 @@ packages:
       vue: registry.npmmirror.com/vue@3.3.4
     dev: true
 
+  registry.npmmirror.com/@vitejs/plugin-vue@4.2.3(vite@4.4.9)(vue@3.3.4):
+    resolution: {integrity: sha512-R6JDUfiZbJA9cMiguQ7jxALsgiprjBeHL5ikpXfJCH62pPHtI+JdJ5xWj6Ev73yXSlYl86+blXn1kZHQ7uElxw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vitejs/plugin-vue/-/plugin-vue-4.2.3.tgz}
+    id: registry.npmmirror.com/@vitejs/plugin-vue/4.2.3
+    name: '@vitejs/plugin-vue'
+    version: 4.2.3
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.0.0
+      vue: ^3.2.25
+    dependencies:
+      vite: registry.npmmirror.com/vite@4.4.9
+      vue: registry.npmmirror.com/vue@3.3.4
+    dev: true
+
   registry.npmmirror.com/@volar/language-core@1.7.10:
     resolution: {integrity: sha512-18Gmth5M0UI3hDDqhZngjMnb6WCslcfglkOdepRIhGxRYe7xR7DRRzciisYDMZsvOQxDYme+uaohg0dKUxLV2Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@volar/language-core/-/language-core-1.7.10.tgz}
     name: '@volar/language-core'
     version: 1.7.10
     dependencies:
       '@volar/source-map': registry.npmmirror.com/@volar/source-map@1.7.10
+    dev: true
+
+  registry.npmmirror.com/@volar/language-core@1.9.2:
+    resolution: {integrity: sha512-9GTes/IUPOl0YoV5RQWhCP5a4EDFFfJZGwZn1xA5ug1FO0G6GOVoJI6tQatujtcQmDOQlOM5/0NewnlumygPkQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@volar/language-core/-/language-core-1.9.2.tgz}
+    name: '@volar/language-core'
+    version: 1.9.2
+    dependencies:
+      '@volar/source-map': registry.npmmirror.com/@volar/source-map@1.9.2
     dev: true
 
   registry.npmmirror.com/@volar/source-map@1.7.10:
@@ -8192,12 +8218,28 @@ packages:
       muggle-string: registry.npmmirror.com/muggle-string@0.3.1
     dev: true
 
+  registry.npmmirror.com/@volar/source-map@1.9.2:
+    resolution: {integrity: sha512-rYTvV/HMf2CSRkd6oiVxcjX4rnSxEsVfJmw1KTmD4VTBXlz1+b16VIysQX4+1p/eZd2TyCeFblyylIxbZ+YOGg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@volar/source-map/-/source-map-1.9.2.tgz}
+    name: '@volar/source-map'
+    version: 1.9.2
+    dependencies:
+      muggle-string: registry.npmmirror.com/muggle-string@0.3.1
+    dev: true
+
   registry.npmmirror.com/@volar/typescript@1.7.10:
     resolution: {integrity: sha512-yqIov4wndLU3GE1iE25bU5W6T+P+exPePcE1dFPPBKzQIBki1KvmdQN5jBlJp3Wo+wp7UIxa/RsdNkXT+iFBjg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@volar/typescript/-/typescript-1.7.10.tgz}
     name: '@volar/typescript'
     version: 1.7.10
     dependencies:
       '@volar/language-core': registry.npmmirror.com/@volar/language-core@1.7.10
+    dev: true
+
+  registry.npmmirror.com/@volar/typescript@1.9.2:
+    resolution: {integrity: sha512-l4DA+S3ZVOWGACDdRNVSYZ41nuTWOH8OMS/yVeFV2fTmr/IuD37+3wzzGnjIPwCUa0w+fpg8vJPalzYetmlFTQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@volar/typescript/-/typescript-1.9.2.tgz}
+    name: '@volar/typescript'
+    version: 1.9.2
+    dependencies:
+      '@volar/language-core': registry.npmmirror.com/@volar/language-core@1.9.2
     dev: true
 
   registry.npmmirror.com/@vue/babel-helper-vue-transform-on@1.1.5:
@@ -8252,7 +8294,7 @@ packages:
     version: 2.7.14
     dependencies:
       '@babel/parser': registry.npmmirror.com/@babel/parser@7.22.5
-      postcss: registry.npmmirror.com/postcss@8.4.24
+      postcss: registry.npmmirror.com/postcss@8.4.29
       source-map: registry.npmmirror.com/source-map@0.6.1
 
   registry.npmmirror.com/@vue/compiler-sfc@3.3.4:
@@ -8304,6 +8346,28 @@ packages:
       minimatch: registry.npmmirror.com/minimatch@9.0.2
       muggle-string: registry.npmmirror.com/muggle-string@0.3.1
       typescript: registry.npmmirror.com/typescript@4.9.5
+      vue-template-compiler: registry.npmmirror.com/vue-template-compiler@2.7.14
+    dev: true
+
+  registry.npmmirror.com/@vue/language-core@1.8.5(typescript@5.1.6):
+    resolution: {integrity: sha512-DKQNiNQzNV7nrkZQujvjfX73zqKdj2+KoM4YeKl+ft3f+crO3JB4ycPnmgaRMNX/ULJootdQPGHKFRl5cXxwaw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue/language-core/-/language-core-1.8.5.tgz}
+    id: registry.npmmirror.com/@vue/language-core/1.8.5
+    name: '@vue/language-core'
+    version: 1.8.5
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@volar/language-core': registry.npmmirror.com/@volar/language-core@1.9.2
+      '@volar/source-map': registry.npmmirror.com/@volar/source-map@1.9.2
+      '@vue/compiler-dom': registry.npmmirror.com/@vue/compiler-dom@3.3.4
+      '@vue/reactivity': registry.npmmirror.com/@vue/reactivity@3.3.4
+      '@vue/shared': registry.npmmirror.com/@vue/shared@3.3.4
+      minimatch: registry.npmmirror.com/minimatch@9.0.2
+      muggle-string: registry.npmmirror.com/muggle-string@0.3.1
+      typescript: registry.npmmirror.com/typescript@5.1.6
       vue-template-compiler: registry.npmmirror.com/vue-template-compiler@2.7.14
     dev: true
 
@@ -8387,6 +8451,18 @@ packages:
     dependencies:
       '@volar/typescript': registry.npmmirror.com/@volar/typescript@1.7.10
       '@vue/language-core': registry.npmmirror.com/@vue/language-core@1.8.3(typescript@4.9.5)
+    transitivePeerDependencies:
+      - typescript
+    dev: true
+
+  registry.npmmirror.com/@vue/typescript@1.8.5(typescript@5.1.6):
+    resolution: {integrity: sha512-domFBbNr3PEcjGBeB+cmgUM3cI6pJsJezguIUKZ1rphkfIkICyoMjCd3TitoP32yo2KABLiaXcGFzgFfQf6B3w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue/typescript/-/typescript-1.8.5.tgz}
+    id: registry.npmmirror.com/@vue/typescript/1.8.5
+    name: '@vue/typescript'
+    version: 1.8.5
+    dependencies:
+      '@volar/typescript': registry.npmmirror.com/@volar/typescript@1.9.2
+      '@vue/language-core': registry.npmmirror.com/@vue/language-core@1.8.5(typescript@5.1.6)
     transitivePeerDependencies:
       - typescript
     dev: true
@@ -8911,40 +8987,6 @@ packages:
       uri-js: registry.npmmirror.com/uri-js@4.4.1
     dev: true
 
-  registry.npmmirror.com/amis-core@2.6.0(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-ZdYUdvYwe2XCZaTXlyAdP3l4bpbeJN5jwKO2juxSqGEgcW17YD1NvQn/y+Rb3rZBEZ9wDGoCrzX4ryVjBtBWZA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis-core/-/amis-core-2.6.0.tgz}
-    id: registry.npmmirror.com/amis-core/2.6.0
-    name: amis-core
-    version: 2.6.0
-    peerDependencies:
-      amis-formula: '*'
-      react: '>=16.8.6'
-      react-dom: '>=16.8.6'
-    dependencies:
-      amis-formula: registry.npmmirror.com/amis-formula@2.6.0
-      classnames: registry.npmmirror.com/classnames@2.3.1
-      file-saver: registry.npmmirror.com/file-saver@2.0.5
-      hoist-non-react-statics: registry.npmmirror.com/hoist-non-react-statics@3.3.2
-      lodash: registry.npmmirror.com/lodash@4.17.21
-      match-sorter: registry.npmmirror.com/match-sorter@6.3.1
-      mobx: registry.npmmirror.com/mobx@4.15.7
-      mobx-react: registry.npmmirror.com/mobx-react@6.3.1(mobx@4.15.7)(react-dom@18.2.0)(react@18.2.0)
-      mobx-state-tree: registry.npmmirror.com/mobx-state-tree@3.17.3(mobx@4.15.7)
-      moment: registry.npmmirror.com/moment@2.29.4
-      papaparse: registry.npmmirror.com/papaparse@5.4.1
-      qs: registry.npmmirror.com/qs@6.9.7
-      react: registry.npmmirror.com/react@18.2.0
-      react-dom: registry.npmmirror.com/react-dom@18.2.0(react@18.2.0)
-      react-json-view: registry.npmmirror.com/react-json-view@1.21.3(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
-      react-visibility-sensor: registry.npmmirror.com/react-visibility-sensor@5.1.1(react-dom@18.2.0)(react@18.2.0)
-      tslib: registry.npmmirror.com/tslib@2.6.0
-      uncontrollable: registry.npmmirror.com/uncontrollable@7.2.1(react@18.2.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - encoding
-      - react-native
-    dev: false
-
   registry.npmmirror.com/amis-core@3.3.0(@types/react@18.2.14)(amis-formula@3.3.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-8Aye3gcPeYzVzcjMjrmgSexm+pcXtj1SgaDZknLCouAo3ATe3p3tmDWHakjr9iOKyAWSQnV+inm4UpChrVAOfw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis-core/-/amis-core-3.3.0.tgz}
     id: registry.npmmirror.com/amis-core/3.3.0
@@ -9089,16 +9131,6 @@ packages:
       - react-native
     dev: false
 
-  registry.npmmirror.com/amis-formula@2.6.0:
-    resolution: {integrity: sha512-tF41ls3Z16ik3UMEutGUwmC1EX8912qyGeu++v+Ind28n8ZJWExAcmEufB8WrU+UUcTkfd0aza5o0hiZHRUV5w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis-formula/-/amis-formula-2.6.0.tgz}
-    name: amis-formula
-    version: 2.6.0
-    dependencies:
-      lodash: registry.npmmirror.com/lodash@4.17.21
-      moment: registry.npmmirror.com/moment@2.29.4
-      tslib: registry.npmmirror.com/tslib@2.6.0
-    dev: false
-
   registry.npmmirror.com/amis-formula@3.3.0:
     resolution: {integrity: sha512-lqJi+7vFDJidoKjuWiJUAOVyotd+w1OazXqEFbivqTK8DUfFunxmHr0e3IdbIg5h9OeZ4TlgkuCSV6Y0mmuTpw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis-formula/-/amis-formula-3.3.0.tgz}
     name: amis-formula
@@ -9148,59 +9180,6 @@ packages:
       amis-theme-editor-helper: registry.npmmirror.com/amis-theme-editor-helper@2.0.22-beta.1
       amis-ui: registry.npmmirror.com/amis-ui@3.3.0(@types/react@18.2.14)(amis-core@3.3.0)(amis-formula@3.3.0)(react-dom@18.2.0)(react@18.2.0)
       i18n-runtime: registry.npmmirror.com/i18n-runtime@1.0.2(amis-core@3.3.0)
-    dev: false
-
-  registry.npmmirror.com/amis-ui@2.6.0(amis-core@2.6.0)(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-r28KT3TSzpBr7v/WrWQKPf4KO2FUMIUnLM0+LmQuhStQs402sPfl682NFtTCQbrFQvJMpkaQCYMp6COseeqMIA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis-ui/-/amis-ui-2.6.0.tgz}
-    id: registry.npmmirror.com/amis-ui/2.6.0
-    name: amis-ui
-    version: 2.6.0
-    peerDependencies:
-      amis-core: '*'
-      amis-formula: '*'
-      react: '>=16.8.6'
-      react-dom: '>=16.8.6'
-    dependencies:
-      '@rc-component/mini-decimal': registry.npmmirror.com/@rc-component/mini-decimal@1.1.0
-      amis-core: registry.npmmirror.com/amis-core@2.6.0(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0)
-      amis-formula: registry.npmmirror.com/amis-formula@2.6.0
-      classnames: registry.npmmirror.com/classnames@2.3.1
-      codemirror: registry.npmmirror.com/codemirror@5.65.13
-      downshift: registry.npmmirror.com/downshift@6.1.12(react@18.2.0)
-      echarts: registry.npmmirror.com/echarts@5.4.0
-      froala-editor: registry.npmmirror.com/froala-editor@3.1.1
-      hoist-non-react-statics: registry.npmmirror.com/hoist-non-react-statics@3.3.2
-      jsbarcode: registry.npmmirror.com/jsbarcode@3.11.5
-      keycode: registry.npmmirror.com/keycode@2.2.1
-      lodash: registry.npmmirror.com/lodash@4.17.21
-      markdown-it: registry.npmmirror.com/markdown-it@12.3.2
-      markdown-it-html5-media: registry.npmmirror.com/markdown-it-html5-media@0.7.1
-      match-sorter: registry.npmmirror.com/match-sorter@6.3.1
-      mobx: registry.npmmirror.com/mobx@4.15.7
-      mobx-react: registry.npmmirror.com/mobx-react@6.3.1(mobx@4.15.7)(react-dom@18.2.0)(react@18.2.0)
-      mobx-state-tree: registry.npmmirror.com/mobx-state-tree@3.17.3(mobx@4.15.7)
-      moment: registry.npmmirror.com/moment@2.29.4
-      monaco-editor: registry.npmmirror.com/monaco-editor@0.30.1
-      prop-types: registry.npmmirror.com/prop-types@15.8.1
-      rc-input-number: registry.npmmirror.com/rc-input-number@7.4.2(react-dom@18.2.0)(react@18.2.0)
-      rc-progress: registry.npmmirror.com/rc-progress@3.4.2(react-dom@18.2.0)(react@18.2.0)
-      react: registry.npmmirror.com/react@18.2.0
-      react-color: registry.npmmirror.com/react-color@2.19.3(react@18.2.0)
-      react-dom: registry.npmmirror.com/react-dom@18.2.0(react@18.2.0)
-      react-hook-form: registry.npmmirror.com/react-hook-form@7.39.0(react@18.2.0)
-      react-json-view: registry.npmmirror.com/react-json-view@1.21.3(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
-      react-overlays: registry.npmmirror.com/react-overlays@5.1.1(react-dom@18.2.0)(react@18.2.0)
-      react-textarea-autosize: registry.npmmirror.com/react-textarea-autosize@8.3.3(@types/react@18.2.14)(react@18.2.0)
-      react-transition-group: registry.npmmirror.com/react-transition-group@4.4.2(react-dom@18.2.0)(react@18.2.0)
-      react-visibility-sensor: registry.npmmirror.com/react-visibility-sensor@5.1.1(react-dom@18.2.0)(react@18.2.0)
-      sortablejs: registry.npmmirror.com/sortablejs@1.15.0
-      tinymce: registry.npmmirror.com/tinymce@6.5.1
-      tslib: registry.npmmirror.com/tslib@2.6.0
-      uncontrollable: registry.npmmirror.com/uncontrollable@7.2.1(react@18.2.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - encoding
-      - react-native
     dev: false
 
   registry.npmmirror.com/amis-ui@3.3.0(@types/react@18.2.14)(amis-core@3.3.0)(amis-formula@3.3.0)(react-dom@18.2.0)(react@18.2.0):
@@ -9325,58 +9304,6 @@ packages:
       vue: registry.npmmirror.com/vue@2.7.14
     transitivePeerDependencies:
       - debug
-    dev: false
-
-  registry.npmmirror.com/amis@2.6.0(amis-core@2.6.0)(amis-ui@2.6.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-HgiDT3vt+NVBy50HDk5YNjKO/y2slWrNl+Wdo1ip5ExL7vMpXwkSp2XSF7YzdgeSIKUptgO+7NBRE1oKGAmtVw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/amis/-/amis-2.6.0.tgz}
-    id: registry.npmmirror.com/amis/2.6.0
-    name: amis
-    version: 2.6.0
-    peerDependencies:
-      amis-core: '*'
-      amis-ui: '*'
-      react: '>=16.8.6'
-      react-dom: '>=16.8.6'
-    dependencies:
-      amis-core: registry.npmmirror.com/amis-core@2.6.0(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0)
-      amis-ui: registry.npmmirror.com/amis-ui@2.6.0(amis-core@2.6.0)(amis-formula@2.6.0)(react-dom@18.2.0)(react@18.2.0)
-      attr-accept: registry.npmmirror.com/attr-accept@2.2.2
-      blueimp-canvastoblob: registry.npmmirror.com/blueimp-canvastoblob@2.1.0
-      classnames: registry.npmmirror.com/classnames@2.3.1
-      downshift: registry.npmmirror.com/downshift@6.1.12(react@18.2.0)
-      echarts: registry.npmmirror.com/echarts@5.4.0
-      echarts-stat: registry.npmmirror.com/echarts-stat@1.2.0
-      exceljs: registry.npmmirror.com/exceljs@4.3.0
-      file-saver: registry.npmmirror.com/file-saver@2.0.5
-      hls.js: registry.npmmirror.com/hls.js@1.1.3
-      hoist-non-react-statics: registry.npmmirror.com/hoist-non-react-statics@3.3.2
-      hotkeys-js: registry.npmmirror.com/hotkeys-js@3.10.3
-      immutability-helper: registry.npmmirror.com/immutability-helper@3.1.1
-      jsbarcode: registry.npmmirror.com/jsbarcode@3.11.5
-      keycode: registry.npmmirror.com/keycode@2.2.1
-      lodash: registry.npmmirror.com/lodash@4.17.21
-      match-sorter: registry.npmmirror.com/match-sorter@6.3.1
-      mobx: registry.npmmirror.com/mobx@4.15.7
-      mobx-react: registry.npmmirror.com/mobx-react@6.3.1(mobx@4.15.7)(react-dom@18.2.0)(react@18.2.0)
-      mobx-state-tree: registry.npmmirror.com/mobx-state-tree@3.17.3(mobx@4.15.7)
-      moment: registry.npmmirror.com/moment@2.29.4
-      mpegts.js: registry.npmmirror.com/mpegts.js@1.7.3
-      prop-types: registry.npmmirror.com/prop-types@15.8.1
-      qrcode.react: registry.npmmirror.com/qrcode.react@3.1.0(react@18.2.0)
-      rc-overflow: registry.npmmirror.com/rc-overflow@1.3.1(react-dom@18.2.0)(react@18.2.0)
-      react: registry.npmmirror.com/react@18.2.0
-      react-cropper: registry.npmmirror.com/react-cropper@2.3.3(react@18.2.0)
-      react-dom: registry.npmmirror.com/react-dom@18.2.0(react@18.2.0)
-      react-dropzone: registry.npmmirror.com/react-dropzone@11.7.1(react@18.2.0)
-      react-json-view: registry.npmmirror.com/react-json-view@1.21.3(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
-      react-transition-group: registry.npmmirror.com/react-transition-group@4.4.2(react-dom@18.2.0)(react@18.2.0)
-      sortablejs: registry.npmmirror.com/sortablejs@1.15.0
-      tslib: registry.npmmirror.com/tslib@2.6.0
-      video-react: registry.npmmirror.com/video-react@0.15.0(react-dom@18.2.0)(react@18.2.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - encoding
-      - react-native
     dev: false
 
   registry.npmmirror.com/amis@3.3.0(@types/react@18.2.14)(amis-core@3.3.0)(amis-ui@3.3.0)(office-viewer@0.1.5)(react-dom@18.2.0)(react@18.2.0):
@@ -11564,12 +11491,6 @@ packages:
     resolution: {integrity: sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/classnames/-/classnames-2.2.6.tgz}
     name: classnames
     version: 2.2.6
-
-  registry.npmmirror.com/classnames@2.3.1:
-    resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/classnames/-/classnames-2.3.1.tgz}
-    name: classnames
-    version: 2.3.1
-    dev: false
 
   registry.npmmirror.com/classnames@2.3.2:
     resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/classnames/-/classnames-2.3.2.tgz}
@@ -23345,6 +23266,27 @@ packages:
       vue-demi: registry.npmmirror.com/vue-demi@0.14.5(vue@3.3.4)
     dev: false
 
+  registry.npmmirror.com/pinia@2.1.4(typescript@5.1.6)(vue@3.3.4):
+    resolution: {integrity: sha512-vYlnDu+Y/FXxv1ABo1vhjC+IbqvzUdiUC3sfDRrRyY2CQSrqqaa+iiHmqtARFxJVqWQMCJfXx1PBvFs9aJVLXQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/pinia/-/pinia-2.1.4.tgz}
+    id: registry.npmmirror.com/pinia/2.1.4
+    name: pinia
+    version: 2.1.4
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.3.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': registry.npmmirror.com/@vue/devtools-api@6.5.0
+      typescript: registry.npmmirror.com/typescript@5.1.6
+      vue: registry.npmmirror.com/vue@3.3.4
+      vue-demi: registry.npmmirror.com/vue-demi@0.14.5(vue@3.3.4)
+    dev: false
+
   registry.npmmirror.com/pinkie-promise@2.0.1:
     resolution: {integrity: sha512-0Gni6D4UcLTbv9c57DfxDGdr41XfgUjqWZu492f0cIGr16zDU06BWP/RAEvOuo7CQ0CNjHaLlM59YJJFm3NWlw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/pinkie-promise/-/pinkie-promise-2.0.1.tgz}
     name: pinkie-promise
@@ -23617,7 +23559,6 @@ packages:
       nanoid: registry.npmmirror.com/nanoid@3.3.6
       picocolors: registry.npmmirror.com/picocolors@1.0.0
       source-map-js: registry.npmmirror.com/source-map-js@1.0.2
-    dev: true
 
   registry.npmmirror.com/posthtml-parser@0.2.1:
     resolution: {integrity: sha512-nPC53YMqJnc/+1x4fRYFfm81KV2V+G9NZY+hTohpYg64Ay7NemWWcV4UWuy/SgMupqQ3kJ88M/iRfZmSnxT+pw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/posthtml-parser/-/posthtml-parser-0.2.1.tgz}
@@ -28468,7 +28409,6 @@ packages:
     version: 5.1.6
     engines: {node: '>=14.17'}
     hasBin: true
-    dev: true
 
   registry.npmmirror.com/ua-parser-js@1.0.35:
     resolution: {integrity: sha512-fKnGuqmTBnIE+/KXSzCn4db8RTigUzw1AN0DmdU6hJovUTbYJKyqj+8Mt1c4VfRDnOVJnENmfYkIPZ946UrSAA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ua-parser-js/-/ua-parser-js-1.0.35.tgz}
@@ -29887,6 +29827,21 @@ packages:
       '@vue/typescript': registry.npmmirror.com/@vue/typescript@1.8.3(typescript@4.9.5)
       semver: registry.npmmirror.com/semver@7.5.3
       typescript: registry.npmmirror.com/typescript@4.9.5
+    dev: true
+
+  registry.npmmirror.com/vue-tsc@1.8.5(typescript@5.1.6):
+    resolution: {integrity: sha512-Jr8PTghJIwp69MFsEZoADDcv2l+lXA8juyN/5AYA5zxyZNvIHjSbgKgkYIYc1qnihrOyIG1VOnfk4ZE0jqn8bw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-tsc/-/vue-tsc-1.8.5.tgz}
+    id: registry.npmmirror.com/vue-tsc/1.8.5
+    name: vue-tsc
+    version: 1.8.5
+    hasBin: true
+    peerDependencies:
+      typescript: '*'
+    dependencies:
+      '@vue/language-core': registry.npmmirror.com/@vue/language-core@1.8.5(typescript@5.1.6)
+      '@vue/typescript': registry.npmmirror.com/@vue/typescript@1.8.5(typescript@5.1.6)
+      semver: registry.npmmirror.com/semver@7.5.3
+      typescript: registry.npmmirror.com/typescript@5.1.6
     dev: true
 
   registry.npmmirror.com/vue-types@3.0.2(vue@3.3.4):

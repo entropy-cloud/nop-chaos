@@ -44,7 +44,7 @@ export function createEnv(page) {
         notify: (type, msg, conf) => {
             if (msg.startsWith("_"))
                 return;
-            conf = { closeButton: true, ...conf };
+            conf = Object.assign({ closeButton: true }, conf);
             toast[type] ?
                 toast[type](msg, conf)
                 : console.warn("[notify]", type, msg);

@@ -15,7 +15,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vue/reactivity": "^3.2.45",
     "@vue/shared": "^3.2.45",
     "axios": "^0.26.1",
     "lodash-es": "^4.17.21",

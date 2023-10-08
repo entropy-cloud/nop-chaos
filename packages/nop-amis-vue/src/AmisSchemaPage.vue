@@ -24,7 +24,7 @@
 <script lang="ts">
 import { PropType, defineComponent, onBeforeUnmount, ref, watchEffect } from 'vue';
 import type { RegisterPage } from '@nop-chaos/nop-core';
-import { bindActions, createPage, transformPageJson, useAdapter } from '@nop-chaos/nop-core';
+import { bindActions, createPage,  useAdapter } from '@nop-chaos/nop-core';
 import { clearStoresCache, setDefaultLocale } from 'amis';
 import { RootRenderProps } from 'amis-core/lib/Root';
 import { render as renderAmis } from 'amis'
