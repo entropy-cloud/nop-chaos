@@ -29,6 +29,8 @@ import { clearStoresCache, setDefaultLocale } from 'amis';
 import { RootRenderProps } from 'amis-core/lib/Root';
 import { render as renderAmis } from 'amis'
 import { createEnv } from './env'
+import {createRoot} from 'react-dom/client'
+import {cloneDeep} from 'lodash-es'
 
 
 /**
@@ -127,10 +129,11 @@ export default defineComponent({
       };
 
       setDefaultLocale(locale);
-      const schema = props.schema as any
+      const schema = cloneDeep(props.schema as any)
       await bindActions(schema.__baseUrl, schema, page)
       const vdom = renderAmis(schema, opts, env);
       // render返回undefined
+      root = createRoot(domRef.value);
       root.render(vdom as any);
     }
 

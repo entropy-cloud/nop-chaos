@@ -31,6 +31,13 @@ export function registerModule(name:string, lib:any){
     let libPath = name
     if(name.startsWith("./")){
         libPath = System.resolve(name)
+    }else{
+        libPath = System.resolve('./@nop/' + name+'.js')
+        System.addImportMap({
+            imports: {
+                [name] : libPath
+            }
+        })
     }
     System.set(libPath,lib)
 }

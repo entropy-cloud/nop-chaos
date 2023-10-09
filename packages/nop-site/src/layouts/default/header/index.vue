@@ -73,7 +73,7 @@
   import LoginSelect from '/@/views/sys/login/LoginSelect.vue';
   import { useUserStore } from '/@/store/modules/user';
 
-  import {useDebug} from '/@/nop/core'
+  import {useDebug} from '@nop-chaos/sdk'
 
   export default defineComponent({
     name: 'LayoutHeader',

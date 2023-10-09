@@ -56,7 +56,7 @@
   // import { DB_DICT_DATA_KEY } from '/src/enums/cacheEnum';
   // import { removeAuthCache, setAuthCache } from '/src/utils/auth';
   import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
-import { clearComponentCache, clearLocalCache } from '/@/nop/api';
+import { PageApis, clearLocalCache } from '@nop-chaos/sdk';
 
   type MenuEvent = 'logout' | 'doc' | 'lock' | 'cache' | 'depart';
   const { createMessage } = useMessage();
@@ -117,7 +117,7 @@ import { clearComponentCache, clearLocalCache } from '/@/nop/api';
       // 清除缓存
       async function clearCache() {
         clearLocalCache()
-        await clearComponentCache()
+        await PageApis.DevTool__clearComponentCache()
         createMessage.success('Refresh Cache Finished')
 
         // const result = await refreshCache();

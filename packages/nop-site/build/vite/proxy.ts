@@ -23,9 +23,13 @@ export function createProxy(list: ProxyList = []) {
     // https://github.com/http-party/node-http-proxy#options
     ret[prefix] = {
       target: target,
-      changeOrigin: true,
+      changeOrigin: false,
       ws: true,
-      rewrite: (path) => path.replace(new RegExp(`^${prefix}`), ''),
+      rewrite: (path) => {
+        const full = path.replace(new RegExp(`^${prefix}`), '')
+       // console.log("prefix="+prefix+",full="+full+",target="+target)
+        return full
+      },
       // https is require secure=false
       ...(isHttps ? { secure: false } : {}),
     };

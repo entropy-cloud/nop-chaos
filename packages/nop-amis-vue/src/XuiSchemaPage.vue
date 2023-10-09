@@ -4,7 +4,7 @@
 
 
 <script lang="ts">
-import { PropType, defineComponent, watchEffect, ref } from 'vue'
+import { PropType, defineComponent, watchEffect, ref,markRaw } from 'vue'
 import AmisSchemaPage from './AmisSchemaPage.vue';
 
 import { getSchemaType, useAdapter, RegisterPage } from '@nop-chaos/nop-core'
@@ -24,11 +24,11 @@ export default defineComponent({
 
     const { useI18n } = useAdapter()
 
-    let componentType = ref(AmisSchemaPage)
+    let componentType = ref(markRaw(AmisSchemaPage))
     watchEffect(() => {
       const schemaTypeName = props.schema?.['xui:schema-type']
       if (!schemaTypeName) {
-        componentType.value = AmisSchemaPage
+        componentType.value = markRaw(AmisSchemaPage)
       } else {
         const schemaType = getSchemaType(schemaTypeName)
         if (!schemaType) {
@@ -36,7 +36,7 @@ export default defineComponent({
           useAdapter().notify("error", t("nop.err.unknown-schema-type"));
           throw new Error("nop.err.unknown-schema-type")
         }
-        componentType.value = schemaType.componentType as ReturnType<typeof defineComponent>
+        componentType.value = markRaw(schemaType.componentType as ReturnType<typeof defineComponent>)
       }
     })
 

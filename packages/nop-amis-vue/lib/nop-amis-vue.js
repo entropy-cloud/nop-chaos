@@ -1,14 +1,17 @@
-import { defineComponent, ref, onMounted, onUnmounted, openBlock, createElementBlock, watchEffect, onBeforeUnmount, createBlock, resolveDynamicComponent, shallowRef, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
-import { deletePageCache, ajaxFetch, PageApis, useDebug, useAdapter, providePage, default_jumpTo, isCancel, default_isCurrentUrl, default_updateLocation, createPage, bindActions, getSchemaType, registerAdapter } from "@nop-chaos/nop-core";
+import * as Vue from "vue";
+import { defineComponent, ref, onMounted, onUnmounted, openBlock, createElementBlock, watchEffect, onBeforeUnmount, markRaw, createBlock, resolveDynamicComponent, shallowRef, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
+import { deletePageCache, ajaxFetch, PageApis, useDebug, useAdapter, providePage, default_jumpTo, isCancel, default_isCurrentUrl, default_updateLocation, createPage, bindActions, getSchemaType, registerAdapter, registerModule } from "@nop-chaos/nop-core";
 import { isString, cloneDeep } from "lodash-es";
 import { toast, clearStoresCache, setDefaultLocale, render, ToastComponent, ScopedContext, Renderer, FormItem, dataMapping, alert, confirm } from "amis";
 import copy from "copy-to-clipboard";
-import require$$0 from "react-dom";
-import React, { createElement, Fragment } from "react";
+import { createRoot } from "react-dom/client";
+import * as React from "react";
+import React__default, { createElement, Fragment } from "react";
 import { ElButton, ElDialog } from "element-plus";
 import yaml from "js-yaml";
 import { createObject, resolveVariableAndFilter } from "amis-core";
 import { applyPureVueInReact } from "veaury";
+import * as ReactDom from "react-dom";
 const _sfc_main$6 = defineComponent({
   props: {
     path: {
@@ -235,6 +238,7 @@ const _sfc_main$5 = defineComponent({
       }
     }
     function destroyPage() {
+      root == null ? void 0 : root.unmount();
       clearStoresCache(page.id);
     }
     async function renderPage() {
@@ -260,9 +264,10 @@ const _sfc_main$5 = defineComponent({
         theme: "cxd"
       };
       setDefaultLocale(locale);
-      const schema = props.schema;
+      const schema = cloneDeep(props.schema);
       await bindActions(schema.__baseUrl, schema, page);
       const vdom = render(schema, opts, env);
+      root = createRoot(domRef.value);
       root.render(vdom);
     }
     watchEffect(() => {
@@ -272,6 +277,10 @@ const _sfc_main$5 = defineComponent({
       }
     });
     onBeforeUnmount(() => {
+      if (root) {
+        root.unmount();
+        root = void 0;
+      }
     });
     return {
       domRef
@@ -287,22 +296,6 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", _hoisted_1$1, null, 512);
 }
 const AmisSchemaPage = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$2]]);
-var createRoot;
-var m = require$$0;
-if (process.env.NODE_ENV === "production") {
-  createRoot = m.createRoot;
-  m.hydrateRoot;
-} else {
-  var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-  createRoot = function(c, o) {
-    i.usingClientEntryPoint = true;
-    try {
-      return m.createRoot(c, o);
-    } finally {
-      i.usingClientEntryPoint = false;
-    }
-  };
-}
 const _sfc_main$4 = /* @__PURE__ */ defineComponent({
   __name: "AmisToast",
   setup(__props) {
@@ -392,13 +385,13 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
     function handleExit() {
       emit("exit");
     }
-    const componentType = ref(AmisPageEditor);
+    const componentType = ref(markRaw(AmisPageEditor));
     const { useI18n } = useAdapter();
     watchEffect(() => {
       useAdapter().getPage(props.path).then((schema) => {
         const schemaTypeName = schema["xui:schema-type"];
         if (!schemaTypeName) {
-          componentType.value = AmisPageEditor;
+          componentType.value = markRaw(AmisPageEditor);
         } else {
           const schemaType = getSchemaType(schemaTypeName);
           if (!schemaType) {
@@ -406,7 +399,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
             useAdapter().notify("error", t("nop.err.unknown-schema-type"));
             throw new Error("nop.err.unknown-schema-type");
           }
-          componentType.value = schemaType.editorComponentType;
+          componentType.value = markRaw(schemaType.editorComponentType);
         }
       });
     });
@@ -567,12 +560,12 @@ const _sfc_main$1 = defineComponent({
   },
   setup(props) {
     const { useI18n } = useAdapter();
-    let componentType = ref(AmisSchemaPage);
+    let componentType = ref(markRaw(AmisSchemaPage));
     watchEffect(() => {
       var _a;
       const schemaTypeName = (_a = props.schema) == null ? void 0 : _a["xui:schema-type"];
       if (!schemaTypeName) {
-        componentType.value = AmisSchemaPage;
+        componentType.value = markRaw(AmisSchemaPage);
       } else {
         const schemaType = getSchemaType(schemaTypeName);
         if (!schemaType) {
@@ -580,7 +573,7 @@ const _sfc_main$1 = defineComponent({
           useAdapter().notify("error", t("nop.err.unknown-schema-type"));
           throw new Error("nop.err.unknown-schema-type");
         }
-        componentType.value = schemaType.componentType;
+        componentType.value = markRaw(schemaType.componentType);
       }
     });
     return {
@@ -655,7 +648,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   ], 64);
 }
 const XuiPage = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-class VueControl extends React.Component {
+class VueControl extends React__default.Component {
   constructor(props) {
     super(props);
     const { resolveVueComponent } = useAdapter();
@@ -704,7 +697,7 @@ class VueControl extends React.Component {
       value,
       "onUpdate:value": (value2) => this.dispatchChangeEvent(value2)
     };
-    return React.createElement(this.vueComponent, mergedProps);
+    return React__default.createElement(this.vueComponent, mergedProps);
   }
 }
 class VueRenderer extends VueControl {
@@ -743,6 +736,9 @@ registerAdapter({
     console.log("[notify]", type, msg);
   }
 });
+registerModule("vue", Vue);
+registerModule("react", React);
+registerModule("react-dom", ReactDom);
 export {
   AmisPageEditor,
   AmisSchemaPage,

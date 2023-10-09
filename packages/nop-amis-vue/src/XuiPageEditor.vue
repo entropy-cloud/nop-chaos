@@ -4,7 +4,7 @@
   
 <script lang="ts" setup>
 import { useAdapter,getSchemaType } from '@nop-chaos/nop-core';
-import { defineComponent, ref, watchEffect } from 'vue';
+import { defineComponent, ref, watchEffect,markRaw } from 'vue';
 import AmisPageEditor from './AmisPageEditor.vue';
 
 const props = defineProps({
@@ -20,7 +20,7 @@ function handleExit() {
     emit("exit")
 }
 
-const componentType = ref(AmisPageEditor)
+const componentType = ref(markRaw(AmisPageEditor))
 
 const {useI18n} = useAdapter()
 
@@ -28,7 +28,7 @@ watchEffect(() => {
     useAdapter().getPage(props.path).then(schema => {
         const schemaTypeName = schema['xui:schema-type']
         if (!schemaTypeName) {
-            componentType.value = AmisPageEditor
+            componentType.value = markRaw(AmisPageEditor)
         } else {
             const schemaType = getSchemaType(schemaTypeName)
             if (!schemaType) {
@@ -36,7 +36,7 @@ watchEffect(() => {
                 useAdapter().notify("error", t("nop.err.unknown-schema-type"));
                 throw new Error("nop.err.unknown-schema-type")
             }
-            componentType.value = schemaType.editorComponentType as ReturnType<typeof defineComponent>
+            componentType.value = markRaw(schemaType.editorComponentType as ReturnType<typeof defineComponent>)
         }
     })
 })

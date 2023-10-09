@@ -7,6 +7,7 @@ import { ExtractPropTypes } from 'vue';
 import { FormControlProps } from 'amis';
 import type { PageObject } from '@nop-chaos/nop-core';
 import { PropType } from 'vue';
+import { Raw } from 'vue';
 import { default as React_2 } from 'react';
 import { Ref } from 'vue';
 import { RegisterPage } from '@nop-chaos/nop-core';
@@ -119,7 +120,7 @@ export declare const XuiSchemaPage: DefineComponent<{
     registerPage: PropType<RegisterPage>;
     actions: PropType<Record<string, Function>>;
 }, {
-    componentType: Ref<DefineComponent<{
+    componentType: Ref<Raw<DefineComponent<{
         schema: ObjectConstructor;
         data: ObjectConstructor;
         registerPage: PropType<RegisterPage>;
@@ -131,7 +132,7 @@ export declare const XuiSchemaPage: DefineComponent<{
         data: ObjectConstructor;
         registerPage: PropType<RegisterPage>;
         actions: PropType<Record<string, Function>>;
-    }>>, {}, {}>>;
+    }>>, {}, {}>>>;
 }, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
     schema: ObjectConstructor;
     data: ObjectConstructor;

@@ -1,20 +1,23 @@
 import qs, { parse } from "qs";
 import { match } from "path-to-regexp";
-import { ref, shallowRef, toRaw, defineComponent, onMounted, onUnmounted, watchEffect, onBeforeUnmount, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
+import * as Vue from "vue";
+import { ref, shallowRef, toRaw, defineComponent, onMounted, onUnmounted, watchEffect, onBeforeUnmount, markRaw, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
 import LRUCache from "lru-cache";
 import { cloneDeep, isNumber, isInteger, isBoolean, omit, isString as isString$1 } from "lodash-es";
 import axios from "axios";
 import { isObject, isArray, isPromise, isString, isPlainObject } from "@vue/shared";
 import "systemjs/dist/system.js";
 import { noop, themeable, localeable, uncontrollable, FormItem, autobind, createObject, resolveVariableAndFilter } from "amis-core";
-import React, { createElement, Fragment } from "react";
+import * as React from "react";
+import React__default, { createElement, Fragment } from "react";
 import { PickerContainer, ResultBox } from "amis-ui";
 import { ScopedContext, Renderer, FormItem as FormItem$1, clearStoresCache, setDefaultLocale, render, ToastComponent, dataMapping, alert, confirm, toast } from "amis";
 import copy from "copy-to-clipboard";
-import require$$0 from "react-dom";
+import { createRoot } from "react-dom/client";
 import { ElButton, ElDialog } from "element-plus";
 import yaml from "js-yaml";
 import { applyPureVueInReact } from "veaury";
+import * as ReactDom from "react-dom";
 function default_jumpTo(router, to) {
   if (to.startsWith("open://")) {
     openWindow(to.substring("open://".length));
@@ -84,12 +87,12 @@ function normalizeLink(to) {
     const relativeBase = location2.pathname;
     const paths = relativeBase.split("/");
     paths.pop();
-    let m2;
-    while (m2 = /^\.\.?\//.exec(pathname)) {
-      if (m2[0] === "../") {
+    let m;
+    while (m = /^\.\.?\//.exec(pathname)) {
+      if (m[0] === "../") {
         paths.pop();
       }
-      pathname = pathname.substring(m2[0].length);
+      pathname = pathname.substring(m[0].length);
     }
     pathname = paths.concat(pathname).join("/");
   }
@@ -480,7 +483,7 @@ async function bindActions(pageUrl, json, page) {
   });
   await Promise.all(promises);
   let stackIndex = 0;
-  function process2(json2) {
+  function process(json2) {
     let modulePaths = json2["xui:import"];
     if (modulePaths) {
       stackIndex++;
@@ -493,10 +496,10 @@ async function bindActions(pageUrl, json, page) {
         json2[key] = processValue(key, v);
       } else if (isArray(v)) {
         for (let i = 0, n = v.length; i < n; i++) {
-          process2(v[i]);
+          process(v[i]);
         }
       } else {
-        process2(v);
+        process(v);
       }
     }
     if (modulePaths) {
@@ -529,7 +532,7 @@ async function bindActions(pageUrl, json, page) {
     }
     return v;
   }
-  process2(json);
+  process(json);
 }
 function splitPrefixUrl(url) {
   if (url.startsWith("@")) {
@@ -549,9 +552,9 @@ function buildFunction(fn, page) {
 }
 function fetchModules(pageUrl, modulePaths, promises, fnScope) {
   if (isString(modulePaths)) {
-    modulePaths = modulePaths.split(",").reduce((m2, p) => {
-      m2[getPathName(p)] = p;
-      return m2;
+    modulePaths = modulePaths.split(",").reduce((m, p) => {
+      m[getPathName(p)] = p;
+      return m;
     }, {});
   }
   for (const moduleName in modulePaths) {
@@ -1365,6 +1368,13 @@ function registerModule(name, lib) {
   let libPath = name;
   if (name.startsWith("./")) {
     libPath = System.resolve(name);
+  } else {
+    libPath = System.resolve("./@nop/" + name + ".js");
+    System.addImportMap({
+      imports: {
+        [name]: libPath
+      }
+    });
   }
   System.set(libPath, lib);
 }
@@ -1631,7 +1641,7 @@ const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   withDictCache,
   withPageCache
 }, Symbol.toStringTag, { value: "Module" }));
-registerModule("@nop-chaos/nop-core", NopCore);
+registerModule("@nop-chaos/nop-core.js", NopCore);
 registerAdapter({
   fetchDict(dictName, options) {
     return PageApis.DictProvider__getDict(dictName, options.silent || false).then((res) => fetcherOk(res));
@@ -1660,7 +1670,7 @@ var __decorateClass$1 = (decorators, target, key, kind) => {
     __defProp$1(target, key, result);
   return result;
 };
-class PopupEditor extends React.Component {
+class PopupEditor extends React__default.Component {
   handleClear() {
     this.props.onChange();
   }
@@ -1671,7 +1681,7 @@ class PopupEditor extends React.Component {
         "Condition.configured"
       )}</span>`
     };
-    return /* @__PURE__ */ React.createElement("div", { className: cx("CPGroup-result"), dangerouslySetInnerHTML: html });
+    return /* @__PURE__ */ React__default.createElement("div", { className: cx("CPGroup-result"), dangerouslySetInnerHTML: html });
   }
   renderBody(onChange, value, popOverContainer) {
     const {
@@ -1696,7 +1706,7 @@ class PopupEditor extends React.Component {
       disabled,
       popOverContainer
     } = this.props;
-    return /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React__default.createElement(
       PickerContainer,
       {
         classnames: cx,
@@ -1710,7 +1720,7 @@ class PopupEditor extends React.Component {
         bodyRender: (params) => this.renderBody(params.onChange, params.value, popOverContainer),
         title
       },
-      ({ onClick, isOpened }) => /* @__PURE__ */ React.createElement(
+      ({ onClick, isOpened }) => /* @__PURE__ */ React__default.createElement(
         ResultBox,
         {
           classnames: cx,
@@ -1727,7 +1737,7 @@ class PopupEditor extends React.Component {
           disabled,
           borderMode: "full",
           placeholder,
-          actions: pickerIcon && /* @__PURE__ */ React.createElement("span", { className: cx("CBPicker-trigger"), onClick }, pickerIcon),
+          actions: pickerIcon && /* @__PURE__ */ React__default.createElement("span", { className: cx("CBPicker-trigger"), onClick }, pickerIcon),
           onResultClick: onClick
         }
       )
@@ -1758,14 +1768,14 @@ var __decorateClass = (decorators, target, key, kind) => {
     __defProp(target, key, result);
   return result;
 };
-class PopupEditorControl extends React.Component {
+class PopupEditorControl extends React__default.Component {
   renderPickerIcon() {
     const { render: render2, pickerIcon } = this.props;
     return pickerIcon ? render2("picker-icon", pickerIcon) : void 0;
   }
   render() {
     const { className, classnames: cx, style, pickerIcon, ...rest } = this.props;
-    return /* @__PURE__ */ React.createElement("div", { className: cx(`ConditionBuilderControl`, className) }, /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React__default.createElement("div", { className: cx(`ConditionBuilderControl`, className) }, /* @__PURE__ */ React__default.createElement(
       PopupEditor$1,
       {
         pickerIcon: this.renderPickerIcon(),
@@ -2008,6 +2018,7 @@ const _sfc_main$5 = defineComponent({
       }
     }
     function destroyPage() {
+      root == null ? void 0 : root.unmount();
       clearStoresCache(page.id);
     }
     async function renderPage() {
@@ -2033,9 +2044,10 @@ const _sfc_main$5 = defineComponent({
         theme: "cxd"
       };
       setDefaultLocale(locale);
-      const schema = props.schema;
+      const schema = cloneDeep(props.schema);
       await bindActions(schema.__baseUrl, schema, page);
       const vdom = render(schema, opts, env);
+      root = createRoot(domRef.value);
       root.render(vdom);
     }
     watchEffect(() => {
@@ -2045,6 +2057,10 @@ const _sfc_main$5 = defineComponent({
       }
     });
     onBeforeUnmount(() => {
+      if (root) {
+        root.unmount();
+        root = void 0;
+      }
     });
     return {
       domRef
@@ -2060,22 +2076,6 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", _hoisted_1$1, null, 512);
 }
 const AmisSchemaPage = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$2]]);
-var createRoot;
-var m = require$$0;
-if (process.env.NODE_ENV === "production") {
-  createRoot = m.createRoot;
-  m.hydrateRoot;
-} else {
-  var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-  createRoot = function(c, o) {
-    i.usingClientEntryPoint = true;
-    try {
-      return m.createRoot(c, o);
-    } finally {
-      i.usingClientEntryPoint = false;
-    }
-  };
-}
 const _sfc_main$4 = /* @__PURE__ */ defineComponent({
   __name: "AmisToast",
   setup(__props) {
@@ -2165,13 +2165,13 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
     function handleExit() {
       emit("exit");
     }
-    const componentType = ref(AmisPageEditor);
+    const componentType = ref(markRaw(AmisPageEditor));
     const { useI18n } = useAdapter();
     watchEffect(() => {
       useAdapter().getPage(props.path).then((schema) => {
         const schemaTypeName = schema["xui:schema-type"];
         if (!schemaTypeName) {
-          componentType.value = AmisPageEditor;
+          componentType.value = markRaw(AmisPageEditor);
         } else {
           const schemaType = getSchemaType(schemaTypeName);
           if (!schemaType) {
@@ -2179,7 +2179,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
             useAdapter().notify("error", t("nop.err.unknown-schema-type"));
             throw new Error("nop.err.unknown-schema-type");
           }
-          componentType.value = schemaType.editorComponentType;
+          componentType.value = markRaw(schemaType.editorComponentType);
         }
       });
     });
@@ -2339,12 +2339,12 @@ const _sfc_main$1 = defineComponent({
   },
   setup(props) {
     const { useI18n } = useAdapter();
-    let componentType = ref(AmisSchemaPage);
+    let componentType = ref(markRaw(AmisSchemaPage));
     watchEffect(() => {
       var _a;
       const schemaTypeName = (_a = props.schema) == null ? void 0 : _a["xui:schema-type"];
       if (!schemaTypeName) {
-        componentType.value = AmisSchemaPage;
+        componentType.value = markRaw(AmisSchemaPage);
       } else {
         const schemaType = getSchemaType(schemaTypeName);
         if (!schemaType) {
@@ -2352,7 +2352,7 @@ const _sfc_main$1 = defineComponent({
           useAdapter().notify("error", t("nop.err.unknown-schema-type"));
           throw new Error("nop.err.unknown-schema-type");
         }
-        componentType.value = schemaType.componentType;
+        componentType.value = markRaw(schemaType.componentType);
       }
     });
     return {
@@ -2427,7 +2427,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   ], 64);
 }
 const XuiPage = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-class VueControl extends React.Component {
+class VueControl extends React__default.Component {
   constructor(props) {
     super(props);
     const { resolveVueComponent } = useAdapter();
@@ -2476,7 +2476,7 @@ class VueControl extends React.Component {
       value,
       "onUpdate:value": (value2) => this.dispatchChangeEvent(value2)
     };
-    return React.createElement(this.vueComponent, mergedProps);
+    return React__default.createElement(this.vueComponent, mergedProps);
   }
 }
 class VueRenderer extends VueControl {
@@ -2515,6 +2515,9 @@ registerAdapter({
     console.log("[notify]", type, msg);
   }
 });
+registerModule("vue", Vue);
+registerModule("react", React);
+registerModule("react-dom", ReactDom);
 export {
   AmisPageEditor,
   AmisSchemaPage,

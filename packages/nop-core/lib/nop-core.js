@@ -1356,6 +1356,13 @@ function registerModule(name, lib) {
   let libPath = name;
   if (name.startsWith("./")) {
     libPath = System.resolve(name);
+  } else {
+    libPath = System.resolve("./@nop/" + name + ".js");
+    System.addImportMap({
+      imports: {
+        [name]: libPath
+      }
+    });
   }
   System.set(libPath, lib);
 }
@@ -1622,7 +1629,7 @@ const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   withDictCache,
   withPageCache
 }, Symbol.toStringTag, { value: "Module" }));
-registerModule("@nop-chaos/nop-core", NopCore);
+registerModule("@nop-chaos/nop-core.js", NopCore);
 registerAdapter({
   fetchDict(dictName, options) {
     return PageApis.DictProvider__getDict(dictName, options.silent || false).then((res) => fetcherOk(res));
