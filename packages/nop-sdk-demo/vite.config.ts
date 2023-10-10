@@ -8,7 +8,7 @@ export default defineConfig({
 
   resolve: {
     alias:{
-      "react-json-view": "./nop-sdk/fix/react-json-view.js"
+      "react-json-view": "./nop-sdk/fix-react-json-view.js"
     }
   },
 

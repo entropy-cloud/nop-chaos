@@ -21,7 +21,6 @@ import {useStore} from '../store'
 
 import { registerAdapter, XuiPage } from '@nop-chaos/sdk';
 
-import './fix.css'
 
 function initAdapter(app: App) {
     registerAdapter({

@@ -1629,7 +1629,7 @@ const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   withDictCache,
   withPageCache
 }, Symbol.toStringTag, { value: "Module" }));
-registerModule("@nop-chaos/nop-core.js", NopCore);
+registerModule("@nop-chaos/nop-core", NopCore);
 registerAdapter({
   fetchDict(dictName, options) {
     return PageApis.DictProvider__getDict(dictName, options.silent || false).then((res) => fetcherOk(res));
