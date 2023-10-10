@@ -1161,7 +1161,12 @@ function ajaxFetch(options) {
       return Promise.reject(new Error("nop.err.unknown-action:" + actionName));
     }
     try {
-      return Promise.resolve(action(options));
+      let result = action(options);
+      return Promise.resolve(result).then((res2) => {
+        if (res2 == null)
+          return fetcherOk(res2);
+        return res2;
+      });
     } catch (e) {
       return Promise.reject(e);
     }

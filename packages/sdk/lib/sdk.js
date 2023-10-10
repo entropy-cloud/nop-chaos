@@ -1,7 +1,7 @@
 import qs, { parse } from "qs";
 import { match } from "path-to-regexp";
 import * as Vue from "vue";
-import { ref, shallowRef, toRaw, defineComponent, onMounted, onUnmounted, watchEffect, onBeforeUnmount, markRaw, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent, pushScopeId, popScopeId } from "vue";
+import { ref, shallowRef, toRaw, defineComponent, onMounted, onUnmounted, watchEffect, onBeforeUnmount, markRaw, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
 import LRUCache from "lru-cache";
 import { cloneDeep, isNumber, isInteger, isBoolean, omit, isString as isString$1 } from "lodash-es";
 import axios from "axios";
@@ -1173,7 +1173,12 @@ function ajaxFetch(options) {
       return Promise.reject(new Error("nop.err.unknown-action:" + actionName));
     }
     try {
-      return Promise.resolve(action(options));
+      let result = action(options);
+      return Promise.resolve(result).then((res2) => {
+        if (res2 == null)
+          return fetcherOk(res2);
+        return res2;
+      });
     } catch (e) {
       return Promise.reject(e);
     }
@@ -2111,7 +2116,12 @@ const debuggerSchema = {
         "type": "action",
         "actionType": "ajax",
         "level": "default",
-        "api": "action://cancel"
+        "api": {
+          url: "action://cancel",
+          messages: {
+            success: "_"
+          }
+        }
       },
       {
         "label": "Apply",
@@ -2191,9 +2201,8 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _withScopeId = (n) => (pushScopeId("data-v-41310ed0"), n = n(), popScopeId(), n);
 const _hoisted_1 = { class: "page-debugger" };
-const _hoisted_2 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createElementVNode("header", null, null, -1));
+const _hoisted_2 = /* @__PURE__ */ createElementVNode("header", null, null, -1);
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "XuiDebugger",
   props: {
@@ -2256,7 +2265,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         createElementVNode("span", _hoisted_1, [
           createVNode(unref(ElButton), {
             type: "primary",
-            shape: "circle",
+            circle: true,
             title: "Schema Json Editor",
             onClick: openSchemaEditor
           }, {
@@ -2268,7 +2277,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
           __props.path ? (openBlock(), createBlock(unref(ElButton), {
             key: 0,
             type: "danger",
-            shape: "circle",
+            circle: true,
             title: "Page Visual Designer",
             danger: "",
             onClick: openXuiPageEditor
@@ -2331,7 +2340,6 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const XuiDebugger = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-41310ed0"]]);
 const _sfc_main$1 = defineComponent({
   props: {
     schema: Object,
@@ -2378,7 +2386,7 @@ const _sfc_main = defineComponent({
     registerPage: Function,
     actions: Object
   },
-  components: { XuiDebugger, XuiSchemaPage },
+  components: { XuiDebugger: _sfc_main$2, XuiSchemaPage },
   setup(props) {
     const { getPage } = useAdapter();
     let pageSchema = shallowRef();

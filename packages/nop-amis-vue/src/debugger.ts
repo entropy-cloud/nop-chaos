@@ -10,7 +10,12 @@ export default {
         "type": "action",
         "actionType": "ajax",
         "level": "default",
-        "api": "action://cancel"
+        "api": {
+          url: "action://cancel",
+          messages:{
+            success: "_"
+          }
+        }
       },
       {
         "label": "Apply",
@@ -20,10 +25,10 @@ export default {
         "api": "action://change"
       },
       {
-        "label":"Yaml/JSON",
-        "type":"action",
-        "actionType":"ajax",
-        "level":"primary",
+        "label": "Yaml/JSON",
+        "type": "action",
+        "actionType": "ajax",
+        "level": "primary",
         "api": "action://toggleYaml"
       },
       {
@@ -39,13 +44,13 @@ export default {
         "type": "editor",
         "name": "schema",
         "placeholder": "{}",
-        "visibleOn":"this.lang !='yaml'"
+        "visibleOn": "this.lang !='yaml'"
       },
       {
         "type": "yaml-editor",
-        "name":"schema",
-        "placeholder":{},
-        "visibleOn":"this.lang == 'yaml'"
+        "name": "schema",
+        "placeholder": {},
+        "visibleOn": "this.lang == 'yaml'"
       }
     ]
   }

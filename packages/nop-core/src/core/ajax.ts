@@ -10,6 +10,7 @@ import { AjaxResponse, FetcherRequest, FetcherResult } from "./types";
 import { useAdapter } from '../adapter';
 import { HEADER_ACCESS_TOKEN, HEADER_APP_ID, HEADER_TENANT_ID, HEADER_TIMESTAMP, HEADER_VERSION } from './consts';
 import { splitPrefixUrl } from '../page';
+import { isPlainObject } from 'lodash-es';
 
 const GRAPHQL_URL = '/graphql'
 
@@ -99,7 +100,12 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 		}
 
 		try {
-			return Promise.resolve(action(options))
+			let result = action(options)
+			return Promise.resolve(result).then(res=>{
+				if(res == null)
+					return fetcherOk(res)
+				return res as any
+			})
 		} catch (e: any) {
 			return Promise.reject(e)
 		}
