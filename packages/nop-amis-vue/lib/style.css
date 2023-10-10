@@ -1,12 +1,13 @@
-.page-full-screen .el-dialog__body {
+
+.page-full-screen .el-dialog__body[data-v-41310ed0] {
   height: 100%;
   margin: 0;
   padding: 0;
 }
-.page-full-screen .el-dialog__header {
-  display: none;
+.page-full-screen .el-dialog__header[data-v-41310ed0] {
+  display: none
 }
-.page-debugger {
+.page-debugger[data-v-41310ed0] {
   position: absolute;
   top: 0px;
   right: 0px;

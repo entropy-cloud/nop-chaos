@@ -8,6 +8,6 @@
 </template>
 
 <script lang="ts" setup>
-
+import {ConfigProvider} from 'ant-design-vue'
 import {AmisToast} from '@nop-chaos/sdk'
 </script>

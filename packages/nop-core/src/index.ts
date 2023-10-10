@@ -10,7 +10,7 @@ import { transformPageJson,bindActions } from './page';
 
 import * as NopCore from './lib'
 
-registerModule("@nop-chaos/nop-core.js", NopCore)
+registerModule("@nop-chaos/nop-core", NopCore)
 
 registerAdapter({
     fetchDict(dictName:string,options: FetcherRequest){

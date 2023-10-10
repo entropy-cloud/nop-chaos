@@ -1,3 +1,11 @@
+import React from 'react'
+
+const oldLazy = React.lazy;
+React.lazy = async (fn: any) => {
+  console.log(fn)
+  return oldLazy(fn)
+}
+
 import { createApp } from 'vue';
 import App from './App.vue';
 import {useRouter} from './router';

@@ -18,7 +18,7 @@
  */
 -->
 <template>
-  <span class="my4 page-debugger">
+  <span class="page-debugger">
     <el-button type="primary" shape="circle" title="Schema Json Editor" @click="openSchemaEditor">S</el-button>
     <el-button type="danger" shape="circle" title="Page Visual Designer" v-if="path" danger
       @click="openXuiPageEditor">V</el-button>
@@ -37,7 +37,7 @@
   </el-dialog>
 </template>
 
-<style lang="less">
+<style scoped>
 .page-full-screen .el-dialog__body {
   height: 100%;
   margin: 0;

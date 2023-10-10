@@ -6,7 +6,7 @@
   "types": "lib/index.d.ts",
   "main": "lib/nop-amis-vue.js",
   "files": [
-    "assets",
+    "lib",
     "src"
   ],
   "scripts": {

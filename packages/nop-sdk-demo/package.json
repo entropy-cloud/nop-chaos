@@ -24,7 +24,11 @@
     "amis-formula": "^3.4.0",
     "amis-ui": "^3.4.0",
     "vue-router": "^4.0.14",
-    "pinia": "^2.0.12"
+    "pinia": "^2.0.12",
+    "element-plus": "^2.3.14",
+    "react-json-view":"^1.21.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

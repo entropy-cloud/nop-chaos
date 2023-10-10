@@ -1,5 +1,5 @@
 import * as Vue from "vue";
-import { defineComponent, ref, onMounted, onUnmounted, openBlock, createElementBlock, watchEffect, onBeforeUnmount, markRaw, createBlock, resolveDynamicComponent, shallowRef, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
+import { defineComponent, ref, onMounted, onUnmounted, openBlock, createElementBlock, watchEffect, onBeforeUnmount, markRaw, createBlock, resolveDynamicComponent, shallowRef, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, pushScopeId, popScopeId, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
 import { deletePageCache, ajaxFetch, PageApis, useDebug, useAdapter, providePage, default_jumpTo, isCancel, default_isCurrentUrl, default_updateLocation, createPage, bindActions, getSchemaType, registerAdapter, registerModule } from "@nop-chaos/nop-core";
 import { isString, cloneDeep } from "lodash-es";
 import { toast, clearStoresCache, setDefaultLocale, render, ToastComponent, ScopedContext, Renderer, FormItem, dataMapping, alert, confirm } from "amis";
@@ -411,8 +411,9 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _hoisted_1 = { class: "my4 page-debugger" };
-const _hoisted_2 = /* @__PURE__ */ createElementVNode("header", null, null, -1);
+const _withScopeId = (n) => (pushScopeId("data-v-41310ed0"), n = n(), popScopeId(), n);
+const _hoisted_1 = { class: "page-debugger" };
+const _hoisted_2 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createElementVNode("header", null, null, -1));
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "XuiDebugger",
   props: {
@@ -550,7 +551,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const XuiDebugger_vue_vue_type_style_index_0_lang = "";
+const XuiDebugger_vue_vue_type_style_index_0_scoped_41310ed0_lang = "";
+const XuiDebugger = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-41310ed0"]]);
 const _sfc_main$1 = defineComponent({
   props: {
     schema: Object,
@@ -597,7 +599,7 @@ const _sfc_main = defineComponent({
     registerPage: Function,
     actions: Object
   },
-  components: { XuiDebugger: _sfc_main$2, XuiSchemaPage },
+  components: { XuiDebugger, XuiSchemaPage },
   setup(props) {
     const { getPage } = useAdapter();
     let pageSchema = shallowRef();

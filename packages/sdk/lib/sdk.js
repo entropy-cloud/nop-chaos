@@ -1,7 +1,7 @@
 import qs, { parse } from "qs";
 import { match } from "path-to-regexp";
 import * as Vue from "vue";
-import { ref, shallowRef, toRaw, defineComponent, onMounted, onUnmounted, watchEffect, onBeforeUnmount, markRaw, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
+import { ref, shallowRef, toRaw, defineComponent, onMounted, onUnmounted, watchEffect, onBeforeUnmount, markRaw, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent, pushScopeId, popScopeId } from "vue";
 import LRUCache from "lru-cache";
 import { cloneDeep, isNumber, isInteger, isBoolean, omit, isString as isString$1 } from "lodash-es";
 import axios from "axios";
@@ -1774,7 +1774,7 @@ class PopupEditorControl extends React__default.Component {
     return pickerIcon ? render2("picker-icon", pickerIcon) : void 0;
   }
   render() {
-    const { className, classnames: cx, style, pickerIcon, ...rest } = this.props;
+    const { className, classnames: cx, style: style2, pickerIcon, ...rest } = this.props;
     return /* @__PURE__ */ React__default.createElement("div", { className: cx(`ConditionBuilderControl`, className) }, /* @__PURE__ */ React__default.createElement(
       PopupEditor$1,
       {
@@ -2191,8 +2191,9 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _hoisted_1 = { class: "my4 page-debugger" };
-const _hoisted_2 = /* @__PURE__ */ createElementVNode("header", null, null, -1);
+const _withScopeId = (n) => (pushScopeId("data-v-41310ed0"), n = n(), popScopeId(), n);
+const _hoisted_1 = { class: "page-debugger" };
+const _hoisted_2 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createElementVNode("header", null, null, -1));
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "XuiDebugger",
   props: {
@@ -2330,6 +2331,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
+const XuiDebugger = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-41310ed0"]]);
 const _sfc_main$1 = defineComponent({
   props: {
     schema: Object,
@@ -2376,7 +2378,7 @@ const _sfc_main = defineComponent({
     registerPage: Function,
     actions: Object
   },
-  components: { XuiDebugger: _sfc_main$2, XuiSchemaPage },
+  components: { XuiDebugger, XuiSchemaPage },
   setup(props) {
     const { getPage } = useAdapter();
     let pageSchema = shallowRef();
@@ -2518,6 +2520,7 @@ registerAdapter({
 registerModule("vue", Vue);
 registerModule("react", React);
 registerModule("react-dom", ReactDom);
+const style = "";
 export {
   AmisPageEditor,
   AmisSchemaPage,
