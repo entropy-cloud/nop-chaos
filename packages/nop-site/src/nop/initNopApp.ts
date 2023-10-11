@@ -1,14 +1,18 @@
 // Amis内置的调试器需要这里的css
+import 'amis/lib/helper.css';
+
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/css/v4-shims.css';
 import 'amis/lib/themes/cxd.css';
-// import 'amis/lib/helper.css';
+
 //import 'amis/sdk/iconfont.css';
 import 'amis-ui/lib/locale/en-US';
 import 'amis-ui/lib/locale/zh-CN';
 
-// 为amis的helper.css增加命名空间，避免和jeecg的css冲突
-import './css/helper.less'
+import '@nop-chaos/sdk/lib/style.css'
+
+// 调试器使用了element的组件
+import 'element-plus/dist/index.css'
 
 import type { App } from 'vue';
 
@@ -17,8 +21,6 @@ import { useUserStoreWithOut } from '../store/modules/user';
 import { isArray } from '../utils/is';
 
 import { IconPicker, Icon } from '/@/components/Icon'
-
-import './fix.css'
 
 import { useLocale } from '/@/locales/useLocale'
 import { useI18n } from '/@/hooks/web/useI18n'

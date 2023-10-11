@@ -13,6 +13,7 @@ module.exports = {
       true,
       {
         ignorePseudoElements: ['v-deep'],
+        ignorePseudoElements: ['deep'],
       },
     ],
     'at-rule-no-unknown': [

@@ -23,7 +23,9 @@
     "skipLibCheck": true,
     "paths": {
       "/@/*": ["src/*"],
-      "/#/*": ["types/*"]
+      "/#/*": ["types/*"],
+      "@/*": ["src/*"],
+      "#/*": ["types/*"]
     }
   },
   "include": [

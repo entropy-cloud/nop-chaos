@@ -1,9 +1,5 @@
 import '/@/design/index.less';
-// 注册 windi
-import 'virtual:windi-base.css';
-import 'virtual:windi-components.css';
-import 'virtual:windi-utilities.css';
-import 'virtual:windi-devtools';
+
 // 注册图标
 import 'virtual:svg-icons-register';
 import App from './App.vue';
@@ -23,6 +19,9 @@ import { registerPackages } from '/@/utils/monorepo/registerPackages';
 
 
 import {initNopApp} from './nop/initNopApp'
+
+// 这个css必须放在amis引入的css后面，它的优先级才能覆盖amis的样式
+import 'uno.css';
 
 // 在本地开发中引入的,以提高浏览器响应速度
 if (import.meta.env.DEV) {

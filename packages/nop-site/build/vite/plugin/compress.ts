@@ -13,6 +13,10 @@ export function configCompressPlugin(compress: 'gzip' | 'brotli' | 'none', delet
   if (compressList.includes('gzip')) {
     plugins.push(
       compressPlugin({
+        verbose: true,
+        disable: false,
+        threshold: 10240,
+        algorithm: 'gzip',
         ext: '.gz',
         deleteOriginFile,
       })
