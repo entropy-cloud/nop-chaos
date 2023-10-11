@@ -96,7 +96,8 @@ const schemaActions: Record<string, Function> = {
   "toggleYaml": handleToggleYaml,
 }
 
-function handleChange(data: any) {
+function handleChange(options: any) {
+  const data = options.data
   let json = schemaData.value.lang == 'yaml' ? yaml.load(data.schema) : JSON.parse(data.schema);
   emit('update:schema', json);
 }

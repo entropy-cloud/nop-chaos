@@ -2298,7 +2298,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       "rebuild": handleRebuild,
       "toggleYaml": handleToggleYaml
     };
-    function handleChange(data) {
+    function handleChange(options) {
+      const data = options.data;
       let json = schemaData.value.lang == "yaml" ? yaml.load(data.schema) : JSON.parse(data.schema);
       emit("update:schema", json);
     }
