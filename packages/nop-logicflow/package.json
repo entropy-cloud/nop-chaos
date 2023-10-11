@@ -48,10 +48,5 @@
     "vite-plugin-resolve-externals": "^0.2.2",
     "vite-plugin-style-import": "^2.0.0",
     "vue-tsc": "^1.0.3"
-  },
-  "pnpm": {
-    "overrides": {
-      "bin-wrapper": "npm:bin-wrapper-china"
-    }
   }
 }

@@ -37,3 +37,10 @@ body.is-modalOpened .ant-popover{
 .cxd-Panel.actions-center > .cxd-Panel-footerWrap > .cxd-Panel-btnToolbar{
     text-align: center;
 }
+
+/**
+ * amis的Tree缺省设置了最大高度
+ */
+.cxd-TreeControl.h-full > .cxd-Tree {
+    max-height: none;
+}

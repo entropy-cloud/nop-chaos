@@ -78,6 +78,7 @@ function initAdapter(app: App) {
          */
         logout(): void {
             localStorage.removeItem("nop-token")
+            useRouter().push("/login")
         },
 
         /**

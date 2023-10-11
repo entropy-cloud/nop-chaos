@@ -1,3 +1,6 @@
+// 调试器使用了element的组件
+import 'element-plus/dist/index.css'
+
 // Amis内置的调试器需要这里的css
 import 'amis/lib/helper.css';
 
@@ -11,8 +14,7 @@ import 'amis-ui/lib/locale/zh-CN';
 
 import '@nop-chaos/sdk/lib/style.css'
 
-// 调试器使用了element的组件
-import 'element-plus/dist/index.css'
+
 
 import type { App } from 'vue';
 

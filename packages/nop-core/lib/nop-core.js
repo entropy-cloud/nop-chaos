@@ -1091,6 +1091,72 @@ const HEADER_ACCESS_TOKEN = "x-access-token";
 const HEADER_TIMESTAMP = "x-timestamp";
 const HEADER_APP_ID = "nop-app-id";
 const HEADER_VERSION = "x-version";
+function attachmentAdpator(response, __) {
+  if (response && response.headers && response.headers["content-disposition"]) {
+    const disposition = response.headers["content-disposition"];
+    let filename = "";
+    if (disposition && disposition.indexOf("attachment") !== -1) {
+      let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+      let matches = disposition.match(filenameRegex);
+      if (matches && matches.length) {
+        filename = matches[1].replace(`UTF-8''`, "").replace(/['"]/g, "");
+      }
+      if (filename && filename.replace(/[^%]/g, "").length > 2) {
+        filename = decodeURIComponent(filename);
+      }
+      let type = response.headers["content-type"];
+      let blob = response.data.toString() === "[object Blob]" ? response.data : new Blob([response.data], { type });
+      if (typeof window.navigator.msSaveBlob !== "undefined") {
+        window.navigator.msSaveBlob(blob, filename);
+      } else {
+        let URL = window.URL || window.webkitURL;
+        let downloadUrl = URL.createObjectURL(blob);
+        if (filename) {
+          let a = document.createElement("a");
+          if (typeof a.download === "undefined") {
+            window.location = downloadUrl;
+          } else {
+            a.href = downloadUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+          }
+        } else {
+          window.location = downloadUrl;
+        }
+        setTimeout(function() {
+          URL.revokeObjectURL(downloadUrl);
+        }, 100);
+      }
+      return {
+        ...response,
+        data: {
+          status: 0,
+          msg: __("sys.api.downloading")
+        }
+      };
+    }
+  } else if (response.data && response.data.toString() === "[object Blob]") {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+      reader.addEventListener("loadend", (e) => {
+        const text = reader.result;
+        try {
+          resolve({
+            ...response,
+            data: {
+              ...JSON.parse(text)
+            }
+          });
+        } catch (e2) {
+          reject(e2);
+        }
+      });
+      reader.readAsText(response.data);
+    });
+  }
+  return response;
+}
 const GRAPHQL_URL = "/graphql";
 const ajax = axios.create({});
 ajax.interceptors.response.use(
@@ -1242,7 +1308,8 @@ function ajaxFetch(options) {
         doLogout("401");
         return response;
       }
-      return response;
+      const __ = useI18n().t;
+      return attachmentAdpator(response, __);
     }
     let data = response.data || {};
     if (response.status == 401 || data.status == 401) {

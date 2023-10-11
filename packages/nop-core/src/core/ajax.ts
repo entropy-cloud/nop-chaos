@@ -10,7 +10,7 @@ import { AjaxResponse, FetcherRequest, FetcherResult } from "./types";
 import { useAdapter } from '../adapter';
 import { HEADER_ACCESS_TOKEN, HEADER_APP_ID, HEADER_TENANT_ID, HEADER_TIMESTAMP, HEADER_VERSION } from './consts';
 import { splitPrefixUrl } from '../page';
-import { isPlainObject } from 'lodash-es';
+import attachmentAdpator from './attachmentAdpator';
 
 const GRAPHQL_URL = '/graphql'
 
@@ -197,9 +197,9 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 					return response
 				}
 
-				//const __ = makeTranslator(currentLocale.value);
-				//return attachmentAdpator(response, __);
-				return response
+				const __ = useI18n().t
+				return attachmentAdpator(response, __);
+				//return response
 			}
 			let data = response.data || {}
 			if (response.status == 401 || data.status == 401) {
