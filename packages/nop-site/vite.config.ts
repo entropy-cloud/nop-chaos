@@ -85,23 +85,61 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         output: {
           chunkFileNames: 'js/[name]-[hash].js', // 引入文件名的名称
           entryFileNames: 'js/[name]-[hash].js', // 包的入口文件名称
-          // manualChunks配置 (依赖包从大到小排列)
-          manualChunks: {
-            'tinymce-vendor': ['tinymce'],
-            'echarts-vendor': ['echarts'],
-            'antd-vue-vendor': ['ant-design-vue','@ant-design/icons-vue','@ant-design/colors'],
-            'codemirror-vendor': ['codemirror'],
-            //'emoji-mart-vue-fast': ['emoji-mart-vue-fast'],
-            // 将 Lodash 库的代码单独打包
-            'lodash-es-vendor': ['lodash-es'],
-            'html2canvas-vendor': ['html2canvas'],
-            // vue vue-router合并打包
-            "vue-vendor": ['vue', 'vue-router'],
-            'cron-parser-vendor': ['cron-parser'],
-            "amis-vendor": ["amis-core","amis","amis-formula","amis-ui"],
-            "monaco-vendor": ["monaco-editor"],
-            "nop-chaos": ["@nop-chaos/sdk"]
-          },
+          manualChunks(id) {
+           // console.log("id="+id)
+            if (id.includes('node_modules/amis-editor')) {
+              return "amis-editor"; 
+            }
+            if (id.includes('node_modules/amis')) {
+              return "amis"; 
+            }
+            if (id.includes('node_modules/monaco-editor')) {
+              return "manaco-editor"; 
+            }
+            if (id.includes('node_modules/tinymce')) {
+              return "tinymce"; 
+            }
+            if (id.includes('node_modules/echarts')) {
+              return "echarts"; 
+            }
+            if (id.includes('node_modules/codemirror')) {
+              return "codemirror"; 
+            }
+            if (id.includes('node_modules/froala-editor')) {
+              return "froala-editor"; 
+            }
+            if (id.includes('node_modules/exceljs')) {
+              return "exceljs"; 
+            }
+            if (id.includes('node_modules/xlsx')) {
+              return "xlsx"; 
+            }
+            if (id.includes('node_modules/office-viewer')) {
+              return "office-viewer"; 
+            }
+            
+            if (id.includes('node_modules/ant-design-vue')) {
+              return "ant-design-vue"; 
+            }
+
+            if (id.includes('node_modules/vue')) {
+              return "vue"; 
+            }
+
+            if (id.includes('node_modules/react')) {
+              return "react"; 
+            }
+
+            if (id.includes('node_modules/@nop-chaos')) {
+              return "nop-sdk"; 
+            }
+            if (id.includes('node_modules')) {
+              return "vendor"; 
+            }
+            if (id.includes('/nop-site/src/')) {
+              return "source"; 
+            }
+          }
         }
       },
     },

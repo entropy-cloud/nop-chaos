@@ -40,7 +40,9 @@ function initAdapter(app: App) {
         /**
          * 返回当前的全局store
          */
-        useStore,
+        useStore(){
+            return useStore()
+        },
 
         useRouter,
 

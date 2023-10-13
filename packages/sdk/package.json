@@ -4,13 +4,14 @@
   "version": "0.1.0",
   "type": "module",
   "main": "lib/sdk.js",
+  "types": "lib/sdk.d.ts",
   "files": [
     "assets",
     "src"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -46,6 +47,7 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
-    "vue-tsc": "^1.8.5"
+    "vue-tsc": "^1.8.5",
+    "vite-plugin-dts": "^3.6.0"
   }
 }

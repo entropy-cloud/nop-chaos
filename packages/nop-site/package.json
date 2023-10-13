@@ -11,7 +11,7 @@
     "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
     "dev": "vite",
     "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=8192 vite build && esno ./build/script/postBuild.ts",
-    "build:report": "pnpm clean:cache && cross-env REPORT=true npm run build",
+    "build:report": "cross-env REPORT=true pnpm run build",
     "preview": "npm run build && vite preview",
     "reinstall": "rimraf pnpm-lock.yaml && rimraf yarn.lock && rimraf package.lock.json && rimraf node_modules && npm run install",
     "clean:lib": "rimraf node_modules",

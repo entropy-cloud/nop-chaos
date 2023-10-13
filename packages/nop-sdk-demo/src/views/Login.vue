@@ -36,7 +36,7 @@ import { useRouter } from '../router';
 import {ajaxRequest, useAdapter} from '@nop-chaos/sdk'
 
 import {Form as AForm, FormItem as AFormItem, Button as AButton, 
-  Input as AInput, Checkbox as ACheckbox, InputPassword as AInputPassword} from 'ant-design-vue'
+  Input as AInput, InputPassword as AInputPassword} from 'ant-design-vue'
 
 const router = useRouter();
 
