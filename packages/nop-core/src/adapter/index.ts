@@ -1,4 +1,4 @@
-import { Store } from "pinia";
+import { Pinia, Store } from "pinia";
 import { Router } from "vue-router";
 import { FetcherResult, FetcherRequest } from "../core/types";
 
@@ -53,10 +53,14 @@ const adapter = {
         throw new Error("not-impl")
     },
 
+    usePinia():Pinia{
+        throw new Error("not-impl")
+    },
+
     /**
-     * 返回当前的全局store
+     * 返回指定的Store
      */
-    useStore(): Store {
+    useStore(name:string): Store{
         throw new Error("not-impl")
     },
 

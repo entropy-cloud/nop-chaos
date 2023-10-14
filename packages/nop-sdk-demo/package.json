@@ -23,7 +23,7 @@
     "amis-core": "^3.4.2",
     "amis-formula": "^3.4.2",
     "amis-ui": "^3.4.2",
-    "vue-router": "^4.0.14",
+    "vue-router": "^4.2.4",
     "pinia": "^2.0.12",
     "element-plus": "^2.3.14",
     "react-json-view":"^1.21.3",

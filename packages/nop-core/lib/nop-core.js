@@ -141,10 +141,13 @@ const adapter = {
   useI18n() {
     throw new Error("not-impl");
   },
+  usePinia() {
+    throw new Error("not-impl");
+  },
   /**
-   * 返回当前的全局store
+   * 返回指定的Store
    */
-  useStore() {
+  useStore(name) {
     throw new Error("not-impl");
   },
   useRouter() {

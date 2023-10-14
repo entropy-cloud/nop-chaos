@@ -4,6 +4,7 @@ import { CancelToken } from 'axios';
 import { Component } from 'vue';
 import { Match } from 'path-to-regexp';
 import type { Options } from 'lru-cache';
+import { Pinia } from 'pinia';
 import { Ref } from 'vue';
 import { Router } from 'vue-router';
 import { Store } from 'pinia';
@@ -21,10 +22,11 @@ declare const adapter: {
      */
     useLocale(): string;
     useI18n(): I18nOperation;
+    usePinia(): Pinia;
     /**
-     * 返回当前的全局store
+     * 返回指定的Store
      */
-    useStore(): Store;
+    useStore(name: string): Store;
     useRouter(): Router;
     useSettings(): Settings;
     /**
@@ -558,10 +560,11 @@ export declare function useAdapter(): {
      */
     useLocale(): string;
     useI18n(): I18nOperation;
+    usePinia(): Pinia;
     /**
-     * 返回当前的全局store
+     * 返回指定的Store
      */
-    useStore(): Store;
+    useStore(name: string): Store;
     useRouter(): Router;
     useSettings(): Settings;
     /**

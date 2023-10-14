@@ -1,7 +1,14 @@
 import { createPinia } from 'pinia';
-const store = createPinia();
+const pinia = createPinia();
 
+import {useAppStore} from './app'
 
-export function useStore(){
-    return store
+export function usePinia(){
+    return pinia
+}
+
+export function useStore(name:string){
+    if(name == 'app')
+        return useAppStore(pinia)
+    throw new Error("invalid-store:"+name)
 }

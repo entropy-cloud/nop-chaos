@@ -389,8 +389,8 @@ importers:
         specifier: ^3.2.45
         version: registry.npmmirror.com/vue@3.3.4
       vue-router:
-        specifier: ^4.0.14
-        version: registry.npmmirror.com/vue-router@4.2.2(vue@3.3.4)
+        specifier: ^4.2.4
+        version: registry.npmmirror.com/vue-router@4.2.4(vue@3.3.4)
     devDependencies:
       '@types/lodash-es':
         specifier: ^4.17.6
@@ -706,8 +706,8 @@ importers:
         specifier: ^3.3.4
         version: registry.npmmirror.com/vue@3.3.4
       vue-router:
-        specifier: ^4.0.14
-        version: registry.npmmirror.com/vue-router@4.2.2(vue@3.3.4)
+        specifier: ^4.2.4
+        version: registry.npmmirror.com/vue-router@4.2.4(vue@3.3.4)
     devDependencies:
       '@types/react':
         specifier: ^18.2.14
@@ -1340,8 +1340,8 @@ importers:
         specifier: ^3.3.4
         version: registry.npmmirror.com/vue@3.3.4
       vue-router:
-        specifier: ^4.0.14
-        version: registry.npmmirror.com/vue-router@4.2.2(vue@3.3.4)
+        specifier: ^4.2.4
+        version: registry.npmmirror.com/vue-router@4.2.4(vue@3.3.4)
     devDependencies:
       '@types/lodash-es':
         specifier: ^4.17.6

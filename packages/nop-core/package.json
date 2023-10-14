@@ -27,7 +27,7 @@
     "urql": "^4.0.4",
     "uuid": "^9.0.0",
     "vue": "^3.2.45",
-    "vue-router": "^4.0.14"
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",

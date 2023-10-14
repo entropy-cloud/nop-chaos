@@ -17,7 +17,7 @@ import 'element-plus/dist/index.css'
 
 import type { App } from 'vue';
 import { useRouter } from '../router';
-import {useStore} from '../store'
+import {useStore, usePinia} from '../store'
 
 import { registerAdapter, XuiPage } from '@nop-chaos/sdk';
 
@@ -37,13 +37,8 @@ function initAdapter(app: App) {
             }
         },
 
-        /**
-         * 返回当前的全局store
-         */
-        useStore(){
-            return useStore()
-        },
-
+        useStore,
+        usePinia,
         useRouter,
 
         useSettings() {

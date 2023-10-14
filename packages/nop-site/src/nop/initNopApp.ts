@@ -14,8 +14,6 @@ import 'amis-ui/lib/locale/zh-CN';
 
 import '@nop-chaos/sdk/lib/style.css'
 
-
-
 import type { App } from 'vue';
 
 import { clearLocalCache, registerAdapter, XuiPage } from '@nop-chaos/sdk';
@@ -34,6 +32,7 @@ import type { RoleEnum } from '/@/enums/roleEnum';
 import { getToken, getTenantId } from '/@/utils/auth';
 import { SessionTimeoutProcessingEnum } from '/@/enums/appEnum';
 import projectSetting from '/@/settings/projectSetting';
+import {Store} from 'pinia'
 
 const currentLocale = useLocale().getLocale
 const i18n = useI18n()
@@ -53,11 +52,17 @@ function initAdapter(app: App) {
             }
         },
 
+        usePinia(){
+            return store
+        },
+
         /**
          * 返回当前的全局store
          */
-        useStore() {
-            return store
+        useStore(name:string):Store {
+            if(name == 'app-user')
+                return useUserStore(store)
+            throw new Error("invalid-store:"+name)
         },
 
         useRouter() {
