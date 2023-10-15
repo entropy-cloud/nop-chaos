@@ -133,7 +133,7 @@ export default defineComponent({
       await bindActions(schema.__baseUrl, schema, page)
       const vdom = renderAmis(schema, opts, env);
       // render返回undefined
-      root = createRoot(domRef.value);
+      root = createRoot(domRef.value!);
       root.render(vdom as any);
     }
 

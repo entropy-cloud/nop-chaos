@@ -1431,8 +1431,10 @@ function registerModule(name, lib) {
   let libPath = name;
   if (name.startsWith("./")) {
     libPath = System.resolve(name);
+  } else if (name.startsWith("@nop/")) {
+    libPath = System.resolve("./nop/" + name.substring("@nop/".length) + ".js");
   } else {
-    libPath = System.resolve("./@nop/" + name + ".js");
+    libPath = System.resolve("./nop/" + name + ".js");
     System.addImportMap({
       imports: {
         [name]: libPath

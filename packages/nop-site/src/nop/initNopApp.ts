@@ -16,7 +16,7 @@ import '@nop-chaos/sdk/lib/style.css'
 
 import type { App } from 'vue';
 
-import { clearLocalCache, registerAdapter, XuiPage } from '@nop-chaos/sdk';
+import { clearLocalCache, registerAdapter, registerModule, XuiPage } from '@nop-chaos/sdk';
 import { useUserStoreWithOut } from '../store/modules/user';
 import { isArray } from '../utils/is';
 
@@ -148,4 +148,6 @@ export function initNopApp(app: App) {
             }
         }
     })
+
+    registerModule('@nop/app-starter',"/nop/app-starter.js")
 }
