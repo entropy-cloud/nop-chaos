@@ -1,6 +1,6 @@
 import AmisPageEditor from "./AmisPageEditor.vue"
 
-import AmisSchemaPage from "./AmisSchemaPage.vue"
+import AmisSchemaPage from "./AmisSchemaPage"
 
 import AmisToast from "./AmisToast.vue"
 

@@ -12,7 +12,10 @@ import { default as React_2 } from 'react';
 import { Ref } from 'vue';
 import { RegisterPage } from '@nop-chaos/nop-core';
 import { RendererData } from 'amis-core';
+import { RendererElement } from 'vue';
+import { RendererNode } from 'vue';
 import { ShallowRef } from 'vue';
+import { VNode } from 'vue';
 import { VNodeProps } from 'vue';
 
 export declare const AmisPageEditor: DefineComponent<{
@@ -31,17 +34,14 @@ export declare const AmisPageEditor: DefineComponent<{
     onExit?: ((...args: any[]) => any) | undefined;
 }, {}, {}>;
 
-/**
- * 嵌入到vue中的amis页面。每个AmisSchemaPage都对应一个ReactRooot。schema发生变化时会重新创建react组件
- */
 export declare const AmisSchemaPage: DefineComponent<{
     schema: ObjectConstructor;
     data: ObjectConstructor;
     registerPage: PropType<RegisterPage>;
     actions: PropType<Record<string, Function>>;
-}, {
-    domRef: Ref<HTMLElement | undefined>;
-}, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
+}, () => VNode<RendererNode, RendererElement, {
+    [key: string]: any;
+}>, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
     schema: ObjectConstructor;
     data: ObjectConstructor;
     registerPage: PropType<RegisterPage>;
@@ -125,9 +125,9 @@ export declare const XuiSchemaPage: DefineComponent<{
         data: ObjectConstructor;
         registerPage: PropType<RegisterPage>;
         actions: PropType<Record<string, Function>>;
-    }, {
-        domRef: Ref<HTMLElement | undefined>;
-    }, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
+    }, () => VNode<RendererNode, RendererElement, {
+        [key: string]: any;
+    }>, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
         schema: ObjectConstructor;
         data: ObjectConstructor;
         registerPage: PropType<RegisterPage>;

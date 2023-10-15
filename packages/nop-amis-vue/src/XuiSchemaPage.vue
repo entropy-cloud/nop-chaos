@@ -5,7 +5,7 @@
 
 <script lang="ts">
 import { PropType, defineComponent, watchEffect, ref,markRaw } from 'vue'
-import AmisSchemaPage from './AmisSchemaPage.vue';
+import AmisSchemaPage from './AmisSchemaPage';
 
 import { getSchemaType, useAdapter, RegisterPage } from '@nop-chaos/nop-core'
 

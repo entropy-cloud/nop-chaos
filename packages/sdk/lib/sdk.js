@@ -1,7 +1,7 @@
 import qs, { parse } from "qs";
 import { match } from "path-to-regexp";
 import * as Vue from "vue";
-import { ref, shallowRef, toRaw, defineComponent, onMounted, onUnmounted, watchEffect, onBeforeUnmount, markRaw, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
+import { ref, shallowRef, toRaw, defineComponent, onMounted, onUnmounted, markRaw, watchEffect, onBeforeUnmount, h, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
 import LRUCache from "lru-cache";
 import { cloneDeep, isNumber, isInteger, isBoolean, omit, isString as isString$1 } from "lodash-es";
 import axios from "axios";
@@ -1869,7 +1869,7 @@ PopupEditorRenderer = __decorateClass([
     strictMode: false
   })
 ], PopupEditorRenderer);
-const _sfc_main$6 = defineComponent({
+const _sfc_main$5 = defineComponent({
   props: {
     path: {
       type: String,
@@ -1998,15 +1998,15 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _hoisted_1$2 = {
+const _hoisted_1$1 = {
   style: { "width": "100%", "height": "100%", "border": "none" },
   ref: "editorRef",
   src: "/amis-editor/index.html"
 };
-function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("iframe", _hoisted_1$2, null, 512);
+function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("iframe", _hoisted_1$1, null, 512);
 }
-const AmisPageEditor = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$3]]);
+const AmisPageEditor = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$2]]);
 function createEnv(page) {
   const { debug: debug2 } = useDebug();
   const adapter2 = useAdapter();
@@ -2045,70 +2045,88 @@ function createEnv(page) {
   page.env = env;
   return env;
 }
-const _sfc_main$5 = defineComponent({
-  props: {
-    schema: Object,
-    data: Object,
-    registerPage: Function,
-    actions: Object
-  },
-  setup(props) {
-    var _a;
-    const domRef = ref();
-    let root;
-    let amisScoped;
-    let page = createPage({
-      getComponent(name) {
-        return get_component(name);
-      },
-      getScopedStore(name) {
-        var _a2, _b;
-        return (_b = (_a2 = get_component(name)) == null ? void 0 : _a2.props) == null ? void 0 : _b.store;
-      },
-      getState(name) {
-        return get_root_store().get(name);
-      },
-      setState(name, value) {
-        get_root_store().set(name, value);
-      },
-      actions: props.actions
-    });
-    (_a = props.registerPage) == null ? void 0 : _a.call(props, page);
-    function get_root() {
-      return amisScoped == null ? void 0 : amisScoped.getComponents()[0];
-    }
-    function get_root_store() {
-      var _a2;
-      return (_a2 = get_root()) == null ? void 0 : _a2.context.store;
-    }
-    function get_component(name) {
-      var _a2, _b, _c;
-      if (name[0] == "#") {
-        let pos = name.indexOf(".");
-        if (pos < 0) {
-          return (_a2 = get_root()) == null ? void 0 : _a2.context.getComponentById(name.substring(1));
-        } else {
-          return (_b = get_root()) == null ? void 0 : _b.context.getComponentById(name.substring(1)).getComponentByName(name.substring(pos + 1));
+function defineReactPageComponent(builder) {
+  return defineComponent({
+    props: {
+      schema: Object,
+      data: Object,
+      registerPage: Function,
+      actions: Object
+    },
+    setup(props) {
+      var _a;
+      const domRef = ref();
+      let root;
+      const options = builder();
+      let page = createPage(options);
+      (_a = props.registerPage) == null ? void 0 : _a.call(props, page);
+      function destroyPage() {
+        if (root) {
+          options.onDestroyPage(page);
+          root.unmount();
+          root = void 0;
         }
-      } else {
-        return (_c = get_root()) == null ? void 0 : _c.context.getComponentByName(name);
       }
+      function renderPage() {
+        const schema = cloneDeep(props.schema);
+        root = createRoot(domRef.value);
+        const r = root;
+        const vdom = Promise.resolve(options.onRenderPage(schema, props.data, page));
+        vdom.then((v) => r.render(v));
+      }
+      watchEffect(() => {
+        destroyPage();
+        if (props.schema && domRef.value) {
+          renderPage();
+        }
+      });
+      onBeforeUnmount(() => {
+        destroyPage();
+        return {
+          domRef
+        };
+      });
+      return () => h("div", {
+        ref: domRef,
+        style: {
+          width: "100%",
+          height: "100%"
+        },
+        class: "nop-page"
+      });
     }
-    function destroyPage() {
-      root == null ? void 0 : root.unmount();
+  });
+}
+const AmisSchemaPage = defineReactPageComponent(() => {
+  let amisScoped;
+  return {
+    getComponent(name) {
+      return get_component(name);
+    },
+    getScopedStore(name) {
+      var _a, _b;
+      return (_b = (_a = get_component(name)) == null ? void 0 : _a.props) == null ? void 0 : _b.store;
+    },
+    getState(name) {
+      return get_root_store().get(name);
+    },
+    setState(name, value) {
+      get_root_store().set(name, value);
+    },
+    onDestroyPage(page) {
       clearStoresCache(page.id);
-    }
-    async function renderPage() {
+    },
+    async onRenderPage(schema, data, page) {
       let env = createEnv(page);
       const locale = useAdapter().useLocale();
       let opts = {
-        data: props.data,
+        data,
         onConfirm: page.getAction("ok") || function() {
         },
         onClose: function(b) {
-          var _a2, _b;
+          var _a, _b;
           if (b) {
-            (_a2 = page.getAction("ok")) == null ? void 0 : _a2();
+            (_a = page.getAction("ok")) == null ? void 0 : _a();
           } else {
             (_b = page.getAction("cancel")) == null ? void 0 : _b();
           }
@@ -2121,38 +2139,31 @@ const _sfc_main$5 = defineComponent({
         theme: "cxd"
       };
       setDefaultLocale(locale);
-      const schema = cloneDeep(props.schema);
       await bindActions(schema.__baseUrl, schema, page);
-      const vdom = render(schema, opts, env);
-      root = createRoot(domRef.value);
-      root.render(vdom);
+      return render(schema, opts, env);
     }
-    watchEffect(() => {
-      destroyPage();
-      if (props.schema && domRef.value) {
-        renderPage();
+  };
+  function get_root() {
+    return amisScoped == null ? void 0 : amisScoped.getComponents()[0];
+  }
+  function get_root_store() {
+    var _a;
+    return (_a = get_root()) == null ? void 0 : _a.context.store;
+  }
+  function get_component(name) {
+    var _a, _b, _c;
+    if (name[0] == "#") {
+      let pos = name.indexOf(".");
+      if (pos < 0) {
+        return (_a = get_root()) == null ? void 0 : _a.context.getComponentById(name.substring(1));
+      } else {
+        return (_b = get_root()) == null ? void 0 : _b.context.getComponentById(name.substring(1)).getComponentByName(name.substring(pos + 1));
       }
-    });
-    onBeforeUnmount(() => {
-      if (root) {
-        root.unmount();
-        root = void 0;
-      }
-    });
-    return {
-      domRef
-    };
+    } else {
+      return (_c = get_root()) == null ? void 0 : _c.context.getComponentByName(name);
+    }
   }
 });
-const _hoisted_1$1 = {
-  ref: "domRef",
-  style: { "width": "100%", "height": "100%" },
-  class: "amis"
-};
-function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("div", _hoisted_1$1, null, 512);
-}
-const AmisSchemaPage = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$2]]);
 const _sfc_main$4 = /* @__PURE__ */ defineComponent({
   __name: "AmisToast",
   setup(__props) {
@@ -2377,7 +2388,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
           destroyOnClose: ""
         }, {
           default: withCtx(() => [
-            createVNode(AmisSchemaPage, {
+            createVNode(unref(AmisSchemaPage), {
               schema: unref(debuggerSchema),
               actions: schemaActions,
               data: schemaData.value

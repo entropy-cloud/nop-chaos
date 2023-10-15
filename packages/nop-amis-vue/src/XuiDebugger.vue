@@ -60,7 +60,7 @@
 import { shallowRef, ref } from 'vue';
 import { ElDialog, ElButton } from 'element-plus';
 
-import AmisSchemaPage from './AmisSchemaPage.vue';
+import AmisSchemaPage from './AmisSchemaPage';
 import debuggerSchema from './debugger';
 import yaml from 'js-yaml';
 
