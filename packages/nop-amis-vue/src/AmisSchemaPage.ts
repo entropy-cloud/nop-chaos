@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PageObject, bindActions, useAdapter } from '@nop-chaos/nop-core';
+import { PageObject, bindActions, useAdapter,transformPageJson } from '@nop-chaos/nop-core';
 import { clearStoresCache, render as renderAmis, setDefaultLocale } from 'amis';
 import { RootRenderProps } from 'amis-core/lib/Root';
 import { createEnv } from './env';
@@ -65,6 +65,7 @@ export default defineReactPageComponent(()=>{
       };
 
       setDefaultLocale(locale);
+      schema = await transformPageJson(schema.__baseUrl, schema);
       await bindActions(schema.__baseUrl, schema, page)
       return renderAmis(schema, opts, env);
     }

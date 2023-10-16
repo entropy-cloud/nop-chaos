@@ -2061,9 +2061,10 @@ function defineReactPageComponent(builder) {
       let page = createPage(options);
       (_a = props.registerPage) == null ? void 0 : _a.call(props, page);
       function destroyPage() {
+        var _a2;
         if (root) {
-          options.onDestroyPage(page);
           root.unmount();
+          (_a2 = options.onDestroyPage) == null ? void 0 : _a2.call(options, page);
           root = void 0;
         }
       }
@@ -2139,6 +2140,7 @@ const AmisSchemaPage = defineReactPageComponent(() => {
         theme: "cxd"
       };
       setDefaultLocale(locale);
+      schema = await transformPageJson(schema.__baseUrl, schema);
       await bindActions(schema.__baseUrl, schema, page);
       return render(schema, opts, env);
     }

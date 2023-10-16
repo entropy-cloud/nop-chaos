@@ -7,7 +7,7 @@ import { cloneDeep } from 'lodash-es'
 
 export type ReactPageOptions = PageOptions & {
     onRenderPage(schema, data:any, page: PageObject): Promise<JSX.Element>|JSX.Element
-    onDestroyPage(page: PageObject): void
+    onDestroyPage?(page: PageObject): void
 }
 
 export function defineReactPageComponent(builder: ()=> ReactPageOptions) {
@@ -30,8 +30,9 @@ export function defineReactPageComponent(builder: ()=> ReactPageOptions) {
 
             function destroyPage() {
                 if (root) {
-                    options.onDestroyPage(page)
+                    // 先卸载root触发销毁操作，然后再执行其他清理函数
                     root.unmount();
+                    options.onDestroyPage?.(page);
                     root = undefined
                 }
             }
@@ -42,7 +43,7 @@ export function defineReactPageComponent(builder: ()=> ReactPageOptions) {
                 root = createRoot(domRef.value!);
                 const r = root
                 const vdom = Promise.resolve(options.onRenderPage(schema, props.data, page))
-                vdom.then(v => r.render(v));
+                vdom.then(v => r.render(v as any));
             }
 
             watchEffect(() => {

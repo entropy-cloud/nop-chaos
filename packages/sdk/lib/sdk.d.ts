@@ -723,7 +723,7 @@ export declare function defineReactPageComponent(builder: () => ReactPageOptions
 
 export declare type ReactPageOptions = PageOptions & {
     onRenderPage(schema: any, data: any, page: PageObject): Promise<JSX.Element> | JSX.Element;
-    onDestroyPage(page: PageObject): void;
+    onDestroyPage?(page: PageObject): void;
 };
 
 declare interface VueControlProps extends FormControlProps {

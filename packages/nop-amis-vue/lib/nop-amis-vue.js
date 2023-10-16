@@ -1,6 +1,6 @@
 import * as Vue from "vue";
 import { defineComponent, ref, onMounted, onUnmounted, openBlock, createElementBlock, watchEffect, onBeforeUnmount, h, markRaw, createBlock, resolveDynamicComponent, shallowRef, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
-import { deletePageCache, ajaxFetch, PageApis, useDebug, useAdapter, providePage, default_jumpTo, isCancel, default_isCurrentUrl, default_updateLocation, createPage, bindActions, getSchemaType, registerAdapter, registerModule } from "@nop-chaos/nop-core";
+import { deletePageCache, ajaxFetch, PageApis, useDebug, useAdapter, providePage, default_jumpTo, isCancel, default_isCurrentUrl, default_updateLocation, createPage, transformPageJson, bindActions, getSchemaType, registerAdapter, registerModule } from "@nop-chaos/nop-core";
 import { isString, cloneDeep } from "lodash-es";
 import { toast, clearStoresCache, setDefaultLocale, render, ToastComponent, ScopedContext, Renderer, FormItem, dataMapping, alert, confirm } from "amis";
 import copy from "copy-to-clipboard";
@@ -204,9 +204,10 @@ function defineReactPageComponent(builder) {
       let page = createPage(options);
       (_a = props.registerPage) == null ? void 0 : _a.call(props, page);
       function destroyPage() {
+        var _a2;
         if (root) {
-          options.onDestroyPage(page);
           root.unmount();
+          (_a2 = options.onDestroyPage) == null ? void 0 : _a2.call(options, page);
           root = void 0;
         }
       }
@@ -282,6 +283,7 @@ const AmisSchemaPage = defineReactPageComponent(() => {
         theme: "cxd"
       };
       setDefaultLocale(locale);
+      schema = await transformPageJson(schema.__baseUrl, schema);
       await bindActions(schema.__baseUrl, schema, page);
       return render(schema, opts, env);
     }
