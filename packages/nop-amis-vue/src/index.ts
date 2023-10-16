@@ -8,6 +8,8 @@ import XuiPage from './XuiPage.vue'
 import XuiPageEditor from './XuiPageEditor.vue'
 import XuiSchemaPage from './XuiSchemaPage.vue'
 
+export * from './react-adapter'
+
 import './AmisVueComponent'
 
 import AmisVueComponent from './AmisVueComponent'

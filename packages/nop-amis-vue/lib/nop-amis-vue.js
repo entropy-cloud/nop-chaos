@@ -763,5 +763,6 @@ export {
   VueControl as AmisVueComponent,
   XuiPage,
   _sfc_main$3 as XuiPageEditor,
-  XuiSchemaPage
+  XuiSchemaPage,
+  defineReactPageComponent
 };

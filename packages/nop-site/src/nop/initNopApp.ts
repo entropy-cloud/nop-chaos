@@ -16,7 +16,7 @@ import '@nop-chaos/sdk/lib/style.css'
 
 import type { App } from 'vue';
 
-import { clearLocalCache, registerAdapter, registerModule, XuiPage } from '@nop-chaos/sdk';
+import { clearLocalCache, importModule, registerAdapter, registerModule, XuiPage } from '@nop-chaos/sdk';
 import { useUserStoreWithOut } from '../store/modules/user';
 import { isArray } from '../utils/is';
 
@@ -125,7 +125,7 @@ function initAdapter(app: App) {
     })
 }
 
-export function initNopApp(app: App) {
+export async function initNopApp(app: App) {
     initAdapter(app)
 
     app.component("XuiPage", XuiPage)
@@ -149,5 +149,5 @@ export function initNopApp(app: App) {
         }
     })
 
-    registerModule('@nop/app-starter',"/nop/app-starter.js")
+    await importModule('./nop/app-starter.js')
 }

@@ -61,7 +61,7 @@ async function bootstrap() {
   // 配置全局错误处理
   setupErrorHandle(app);
 
-  initNopApp(app)
+  await initNopApp(app)
 
   // 注册第三方组件
   await registerThirdComp(app);

@@ -654,6 +654,7 @@ import { DefineComponent } from 'vue';
 import { ExtractPropTypes } from 'vue';
 import { FormControlProps } from 'amis';
 import type { PageObject } from '@nop-chaos/nop-core';
+import { PageOptions } from '@nop-chaos/nop-core';
 import { PropType } from 'vue';
 import { Raw } from 'vue';
 import { default as React_2 } from 'react';
@@ -705,6 +706,25 @@ export declare class AmisVueComponent extends React_2.Component<VueControlProps,
     dispatchChangeEvent(eventData?: any): Promise<void>;
     render(): React_2.DetailedReactHTMLElement<React_2.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 }
+
+export declare function defineReactPageComponent(builder: () => ReactPageOptions): DefineComponent<{
+    schema: ObjectConstructor;
+    data: ObjectConstructor;
+    registerPage: PropType<RegisterPage>;
+    actions: PropType<Record<string, Function>>;
+}, () => VNode<RendererNode, RendererElement, {
+    [key: string]: any;
+}>, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
+    schema: ObjectConstructor;
+    data: ObjectConstructor;
+    registerPage: PropType<RegisterPage>;
+    actions: PropType<Record<string, Function>>;
+}>>, {}, {}>;
+
+export declare type ReactPageOptions = PageOptions & {
+    onRenderPage(schema: any, data: any, page: PageObject): Promise<JSX.Element> | JSX.Element;
+    onDestroyPage(page: PageObject): void;
+};
 
 declare interface VueControlProps extends FormControlProps {
     componentName: string;
