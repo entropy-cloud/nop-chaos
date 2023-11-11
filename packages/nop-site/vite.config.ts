@@ -40,10 +40,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           find: "react-json-view",
           replacement: "./nop-sdk/fix-react-json-view.js"
         },
-        {
-          find: 'vue-i18n',
-          replacement: 'vue-i18n/dist/vue-i18n.cjs.js',
-        },
+     //   {
+     //     find: 'vue-i18n',
+     //     replacement: 'vue-i18n/dist/vue-i18n.cjs.js',
+     //   },
         // /@/xxxx => src/xxxx
         {
           find: /\/@\//,
@@ -74,74 +74,71 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       proxy: createProxy(VITE_PROXY),
     },
     build: {
-      minify: 'esbuild',
-      target: 'es2020',
+      //minify: 'esbuild',
+      //target: 'es2015',
       //cssTarget: 'chrome80',
       outDir: OUTPUT_DIR,
       // Turning off brotliSize display can slightly reduce packaging time
       reportCompressedSize: false,
-      chunkSizeWarningLimit: 2000,
+      chunkSizeWarningLimit: 20000,
       rollupOptions: {
         output: {
           chunkFileNames: 'js/[name]-[hash].js', // 引入文件名的名称
           entryFileNames: 'js/[name]-[hash].js', // 包的入口文件名称
           manualChunks(id) {
-           // console.log("id="+id)
-            if (id.includes('node_modules/amis-editor')) {
-              return "amis-editor"; 
-            }
-            if (id.includes('node_modules/amis')) {
-              return "amis"; 
-            }
-            if (id.includes('node_modules/monaco-editor')) {
-              return "manaco-editor"; 
-            }
-            if (id.includes('node_modules/tinymce')) {
-              return "tinymce"; 
-            }
-            if (id.includes('node_modules/echarts')) {
-              return "echarts"; 
-            }
-            if (id.includes('node_modules/codemirror')) {
-              return "codemirror"; 
-            }
-            if (id.includes('node_modules/froala-editor')) {
-              return "froala-editor"; 
-            }
-            if (id.includes('node_modules/exceljs')) {
-              return "exceljs"; 
-            }
-            if (id.includes('node_modules/xlsx')) {
-              return "xlsx"; 
-            }
-            if (id.includes('node_modules/office-viewer')) {
-              return "office-viewer"; 
-            }
-            
-            if (id.includes('node_modules/ant-design-vue')) {
-              return "ant-design-vue"; 
-            }
+                 // console.log("id="+id)
+             const libs = ["amis-editor","monaco-editor","tinymce","codemirror",
+                       "froala-editor","exceljs","xlsx","office-viewer","ant-design-vue"];
+             for(let lib of libs){
+          	   if(id.includes("node_modules/"+lib+'/'))
+          		  return lib
+             }
+		   
+          	function include_any(libs){
+          	   for(let lib of libs){
+          	     if(id.includes("/node_modules/"+lib+'/'))
+          		   return true
+                 }
+                     return false			   
+          	}
+			
+          	// if(include_any(["react","react-dom","react-router"]))
+          	//    return "react";
+		   
+		     			
+          	// if (include_any(["lodash","lodash-es","dayjs","axios","js-yaml","clipboard","copy-to-clipboard"])){
+            //         return "shared-lib"; 
+            //       }
+			
+		   
+              if(include_any(["echarts","zrender"]))
+          		return "echarts"
+		   
+              if(include_any(["amis","amis-ui","amis-formula","amis-core","video-react"]))
+          		return "amis";
+        
 
-            if (id.includes('node_modules/vue')) {
-              return "vue"; 
-            }
+              //     if (include_any(["vue","vue-router","@vue","pinia"])){
+          		// console.log("vue,id=:" + id);
+              //       return "vue"; 
+              //     }
 
-            if (id.includes('node_modules/react')) {
-              return "react"; 
-            }
-
-            if (id.includes('node_modules/@nop-chaos')) {
-              return "nop-sdk"; 
-            }
-            if (id.includes('node_modules')) {
-              return "vendor"; 
-            }
-            if (id.includes('/nop-site/src/')) {
-              return "source"; 
-            }
-          }
+                  if (id.includes('node_modules/@nop-chaos')) {
+                    return "nop-sdk"; 
+                  }
+                 // if (id.includes('node_modules')) {
+          //		console.log("vendor,id=:" + id);
+              //      return "vendor"; 
+              //    }
+                  if (id.includes('/packages/nop-site/src/') && !id.includes('/.pnpm/')) {
+          		console.log("nop-site,id=:" + id);
+                    return "nop-site"; 
+                  }
+          	//console.log("app,id="+id);
+          	//return "app"
+                }
         }
-      },
+      }
     },
     define: {
       // setting vue-i18-next
@@ -163,7 +160,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
 
     optimizeDeps: {
       esbuildOptions: {
-        target: 'es2020',
+        target: 'es2015',
       },
 
       include: [

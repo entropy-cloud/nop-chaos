@@ -25,6 +25,7 @@ export default defineConfig({
           if (id.includes('/nop-amis-editor/src/')) {
             return "source"; 
           }
+		  return "app"
         }
       }
     }
