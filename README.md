@@ -250,3 +250,18 @@ api:{
 ```
 
 通过`@graphql:`前缀来表示graphql请求，此时需要使用完整的grapqhl语法，参数需要指定类型。 通过data属性可以传递graphql请求所需的variables参数。
+
+
+#### 技术支持
+
+使用中遇到问题或者BUG可以在[Gitee上提Issues](https://gitee.com/canonical-entropy/nop-chaos/issues)
+
+#### 微信群
+
+![](https://gitee.com/canonical-entropy/nop-entropy/raw/master/wechat-group.png)
+
+添加微信时请注明：加入Nop平台群
+
+#### 微信公众号
+
+![](https://gitee.com/canonical-entropy/nop-entropy/raw/master/wechat-public-account.jpg)
