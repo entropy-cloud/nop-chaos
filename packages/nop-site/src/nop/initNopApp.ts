@@ -16,7 +16,7 @@ import '@nop-chaos/sdk/lib/style.css'
 
 import type { App } from 'vue';
 
-import { clearLocalCache, importModule, registerAdapter, registerModule, XuiPage } from '@nop-chaos/sdk';
+import { clearLocalCache, importModule, registerAdapter, registerModule, XuiPage,useAdapter,ajaxRequest } from '@nop-chaos/sdk';
 import { useUserStoreWithOut } from '../store/modules/user';
 import { isArray } from '../utils/is';
 
@@ -37,6 +37,8 @@ import {Store} from 'pinia'
 const currentLocale = useLocale().getLocale
 const i18n = useI18n()
 
+const {getPage} = useAdapter()
+
 function initAdapter(app: App) {
     registerAdapter({
         /**
@@ -54,6 +56,12 @@ function initAdapter(app: App) {
 
         usePinia(){
             return store
+        },
+
+        getPage(path:string){
+             if (import.meta.env.VITE_USE_MOCK)
+                return ajaxRequest({ method: 'get', url: `/mock${path}`, config: { rawResponse: true } })
+            return getPage(string)
         },
 
         /**
