@@ -36,10 +36,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     root,
     resolve: {
       alias: [
-        {
-          find: "react-json-view",
-          replacement: "./nop-sdk/fix-react-json-view.js"
-        },
+    //    {
+    //      find: "react-json-view",
+    //      replacement: "./nop-sdk/fix-react-json-view.js"
+    //    },
      //   {
      //     find: 'vue-i18n',
      //     replacement: 'vue-i18n/dist/vue-i18n.cjs.js',
