@@ -61,7 +61,7 @@ function initAdapter(app: App) {
         getPage(path:string){
              if (import.meta.env.VITE_USE_MOCK)
                 return ajaxRequest({ method: 'get', url: `/mock${path}`, config: { rawResponse: true } })
-            return getPage(string)
+            return getPage(path)
         },
 
         /**
