@@ -487,6 +487,8 @@ async function bindActions(pageUrl, json, page) {
   await Promise.all(promises);
   let stackIndex = 0;
   function process(json2) {
+    if (!isPlainObject(json2))
+      return;
     let modulePaths = json2["xui:import"];
     if (modulePaths) {
       stackIndex++;
