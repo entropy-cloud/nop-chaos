@@ -74,6 +74,9 @@ export async function bindActions(pageUrl: string, json: any, page: BasePage) {
   let stackIndex = 0;
 
   function process(json: any) {
+    if(!isPlainObject(json))
+      return;
+    
     let modulePaths = json['xui:import']
     if (modulePaths) {
       stackIndex++
