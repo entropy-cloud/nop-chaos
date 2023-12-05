@@ -80,7 +80,8 @@ export async function rollupTransform(path: string, source: string) {
                     if(importee.endsWith(".xjs")){
                         importee = importee.substring(0,importee.length-".xjs".length) + ".js";
                     }
-                    if(!importee.endsWith(".js")){
+                    
+                    if (!importee.endsWith(".js") && !importee.endsWith(".mjs")){    
                         importee += ".js"
                     }
                     return absolutePath(importee, importer as string);
