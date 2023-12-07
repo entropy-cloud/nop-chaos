@@ -121,12 +121,14 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 		url = `${globSetting.apiUrl}${url}`;
 	}
 
+	const data = options.data && Object.assign({}, options.data)
+
 	const config: AxiosRequestConfig<any> = {
 		withCredentials: options.config.withCredentials ?? true,
 		url: url,
 		method: options.method as any || 'post',
 		headers: options.headers || {},
-		data: options.data,
+		data: data,
 		params: query,
 		responseType: options.responseType
 	}
@@ -148,7 +150,7 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 	handleGraphQL(config, GRAPHQL_URL, options)
 
 	if (config.method?.toLowerCase() == 'get') {
-		config.params = { ...options.data, ...query }
+		config.params = { ...config.data, ...query }
 		config.data = null
 	}
 

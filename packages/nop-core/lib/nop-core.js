@@ -1250,12 +1250,13 @@ function ajaxFetch(options) {
   if (globSetting.apiUrl && options.config.useApiUrl !== false) {
     url = `${globSetting.apiUrl}${url}`;
   }
+  const data = options.data && Object.assign({}, options.data);
   const config = {
     withCredentials: options.config.withCredentials ?? true,
     url,
     method: options.method || "post",
     headers: options.headers || {},
-    data: options.data,
+    data,
     params: query,
     responseType: options.responseType
   };
@@ -1272,7 +1273,7 @@ function ajaxFetch(options) {
   prepareHeaders(config, opts);
   handleGraphQL(config, GRAPHQL_URL, options);
   if (((_c = config.method) == null ? void 0 : _c.toLowerCase()) == "get") {
-    config.params = { ...options.data, ...query };
+    config.params = { ...config.data, ...query };
     config.data = null;
   }
   const { useI18n, processRequest, processResponse } = useAdapter();
@@ -1316,15 +1317,15 @@ function ajaxFetch(options) {
       const __ = useI18n().t;
       return attachmentAdpator(response, __);
     }
-    let data = response.data || {};
-    if (response.status == 401 || data.status == 401) {
+    let data2 = response.data || {};
+    if (response.status == 401 || data2.status == 401) {
       doLogout("401");
-    } else if (data.status == 0 || data.status == 200) {
+    } else if (data2.status == 0 || data2.status == 200) {
       if (options.responseKey) {
-        data = { [options.responseKey]: data.data };
+        data2 = { [options.responseKey]: data2.data };
       }
     }
-    response.data = data;
+    response.data = data2;
     return response;
   });
   return processResponse(res);
