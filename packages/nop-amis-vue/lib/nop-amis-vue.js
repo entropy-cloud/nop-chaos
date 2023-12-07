@@ -200,7 +200,7 @@ function defineReactPageComponent(builder) {
       var _a;
       const domRef = ref();
       let root;
-      const options = builder();
+      const options = builder({ actions: props.actions });
       let page = createPage(options);
       (_a = props.registerPage) == null ? void 0 : _a.call(props, page);
       function destroyPage() {
@@ -241,9 +241,10 @@ function defineReactPageComponent(builder) {
     }
   });
 }
-const AmisSchemaPage = defineReactPageComponent(() => {
+const AmisSchemaPage = defineReactPageComponent((props) => {
   let amisScoped;
   return {
+    actions: props.actions,
     getComponent(name) {
       return get_component(name);
     },

@@ -707,7 +707,9 @@ export declare class AmisVueComponent extends React_2.Component<VueControlProps,
     render(): React_2.DetailedReactHTMLElement<React_2.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 }
 
-export declare function defineReactPageComponent(builder: () => ReactPageOptions): DefineComponent<{
+export declare function defineReactPageComponent(builder: (props: {
+    actions?: Record<string, Function>;
+}) => ReactPageOptions): DefineComponent<{
     schema: ObjectConstructor;
     data: ObjectConstructor;
     registerPage: PropType<RegisterPage>;

@@ -10,7 +10,7 @@ export type ReactPageOptions = PageOptions & {
     onDestroyPage?(page: PageObject): void
 }
 
-export function defineReactPageComponent(builder: ()=> ReactPageOptions) {
+export function defineReactPageComponent(builder: (props: {actions?:Record<string,Function>})=> ReactPageOptions) {
     return defineComponent({
         props: {
             schema: Object,
@@ -23,7 +23,7 @@ export function defineReactPageComponent(builder: ()=> ReactPageOptions) {
             const domRef = ref<HTMLElement>()
             let root: Root | undefined;
 
-            const options = builder()
+            const options = builder({actions: props.actions})
             let page = createPage(options);
 
             props.registerPage?.(page)

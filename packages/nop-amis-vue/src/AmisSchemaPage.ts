@@ -22,10 +22,11 @@ import { RootRenderProps } from 'amis-core/lib/Root';
 import { createEnv } from './env';
 import { defineReactPageComponent } from './react-adapter';
 
-export default defineReactPageComponent(()=>{
+export default defineReactPageComponent((props: {actions?: Record<string,Function>})=>{
   let amisScoped:any
 
   return {
+    actions: props.actions,
     getComponent(name: string) {
       return get_component(name)
     },
