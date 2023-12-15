@@ -9,8 +9,10 @@ import FlowBuilder, {
 import './index.css';
 import { RendererProps, registerRenderer, unRegisterRenderer } from 'amis';
 
-const ConfigComponent: React.FC = () => {
-  return <></>
+class ConfigComponent extends React.Component {
+  render() {
+    return <></>
+  }
 }
 
 const DrawerComponent = (props: any) => {
@@ -153,8 +155,11 @@ const FlowBuilderControl = (props: FlowBuilderProps) => {
 
     if (props.onEditorEvent) {
       if (event == "click-node") {
-        props.onEditorEvent("click-node", node)
+        props.onEditorEvent("selectElement", { groupName: 'steps', elementType: 'step', elementId: node.id })
+      }else if(event == 'remove-node'){
+        props.onEditorEvent("removeElement", { groupName: 'steps', elementType: 'step', elementId: node.id})
       }
+      props.onEditorEvent("graphChange", {nodes})
     }
   };
 

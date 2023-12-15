@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "./",
+    "module": "ESNext",
+    "target": "ES2017",
+    "lib": ["DOM", "ES2015", "ES2021"],
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "lib",
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceRoot": "",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "downlevelIteration": false,
+    "composite": true,
+    "allowJs": true,
+    "baseUrl": "./",
+    "paths": {
+     
+    }
+  },
+ 
+  "references": [],
+  "include": [
+    "src"
+  ]
+}

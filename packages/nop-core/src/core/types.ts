@@ -185,7 +185,7 @@ interface PlainObject {
     [propsName: string]: any;
 }
 
-interface ApiObject extends BaseApiObject {
+export interface ApiObject extends BaseApiObject {
     config?: {
         withCredentials?: boolean;
         cancelExecutor?: (cancel: Function) => void;

@@ -1,6 +1,6 @@
 import {createRoot} from 'react-dom/client'
 
-import 'react-json-view'
+//import 'react-json-view'
 import App from './App'
 
 

@@ -17,7 +17,7 @@ import { useCallback, useState } from 'react';
 import { SchemaApi, SchemaCollection } from 'amis';
 import { useSplitter } from '../Splitter';
 
-import "./designer.css"
+import "./designer.css";
 
 export interface GraphDesignerSchema extends BaseSchemaWithoutType {
     type: 'graph-designer',
@@ -58,10 +58,38 @@ export interface GraphDesignerSchema extends BaseSchemaWithoutType {
  *    }
  * }
  */
-export type DiagramData = PlainObject & {
+export type GraphData = PlainObject & {
     [groupName: string]: {
         [id: string]: PlainObject & {
             type: string
+        }
+    }
+}
+
+function updateMainData(data: GraphData, values: any){
+    return {
+        ...data,
+        ...cleanData(values)
+    }
+}
+
+
+function updateElement(data: GraphData, elm: SelectedElement, values: any) {
+    return {
+        ...data,
+        [elm.groupName]: {
+            ...data?.[elm.groupName],
+            [elm.elementId]: cleanData(values)
+        }
+    }
+}
+
+function removeElement(data: GraphData, elm: SelectedElement) {
+    return {
+        ...data,
+        [elm.groupName]: {
+            ...data?.[elm.groupName],
+            [elm.elementId]: undefined
         }
     }
 }
@@ -79,13 +107,29 @@ export interface GraphDesignerProps
     Omit<GraphDesignerSchema, 'type' | 'className'> {
 }
 
+function getDesignerAction(action: ActionObject) {
+    if (action.actionType?.startsWith("designer:"))
+        return action.actionType.substring("designer:".length)
+    if (action.api instanceof String) {
+        if (action.api.startsWith("designer://"))
+            return action.api.substring("designer://".length)
+    }
+    return
+}
+
+function cleanData(data: any) {
+    const { __super, __pristine, __prev, ...ret } = data || {}
+    return ret
+}
+
 export function GraphDesigner(props: GraphDesignerProps) {
 
-    const { className, toolbarClassName, classnames: cx, onAction, style, render, minPanelWidth,maxPanelWidth,
+    const { className, toolbarClassName, classnames: cx, onAction, style, render, minPanelWidth, maxPanelWidth,
         initApi, saveApi, toolbar, value, onChange, ...rest } = props;
 
     const [showRightPanel, setShowRightPanel] = useState(true)
-    const [diagramData, setDiagramData] = useState<DiagramData>(value)
+    const [graphData, setGraphData] = useState<GraphData>(value?.data || {})
+    const [graphDiagram, setGraphDiagram] = useState(value?.diagram || {})
 
     const [inited, setInited] = useState(false)
     const [currentElement, setCurrentElement] = useState<SelectedElement>({
@@ -95,17 +139,23 @@ export function GraphDesigner(props: GraphDesignerProps) {
     })
 
     const editorCallbacks = React.useRef([] as HandleEditorEvent[])
-    const [handleResizeMouseDown] = useSplitter({ alignRight: true, asideMinWidth: minPanelWidth || 50, 
-        asideMaxWidth: maxPanelWidth || 800 })
+    const [handleResizeMouseDown] = useSplitter({
+        alignRight: true, asideMinWidth: minPanelWidth || 50,
+        asideMaxWidth: maxPanelWidth || 800
+    })
 
     if (!inited) {
         setInited(true)
         if (isEffectiveApi(initApi, props.data)) {
             const store = props.store as IServiceStore
             store.fetchData(initApi, props.data).then(res => {
-                setDiagramData(res)
+                setGraphData(res || {})
             })
         }
+    }
+
+    function selectMain() {
+        setCurrentElement({ groupName: "main", elementType: "default", elementId: "default" })
     }
 
     const handleAction = useCallback((
@@ -114,18 +164,25 @@ export function GraphDesigner(props: GraphDesignerProps) {
         ctx: object,
         throwErrors: boolean = false,
         delegate?: IScopedContext) => {
-        if (action.actionType == 'submit') {
-            if (onChange && diagramData != value)
-                onChange(diagramData)
+        const designerAction = getDesignerAction(action);
+        if (designerAction == 'save') {
+            const data = { data: graphData, diagram: graphDiagram}
+            if (onChange && (graphData != value?.data || graphDiagram != value?.diagram))
+                onChange(data)
 
             if (isEffectiveApi(saveApi, action.data)) {
                 const store = props.store as IServiceStore
-                store.fetchData(saveApi, { data: diagramData })
+                store.fetchData(saveApi, { data })
+            } else {
+                console.log("designer:save", data)
             }
+            return
+        } else if (designerAction == 'selectMain') {
+            selectMain()
             return
         }
         onAction && onAction(e, action, ctx, throwErrors, delegate)
-    }, [])
+    }, [currentElement, graphData])
 
     const handleEditorAction = useCallback((
         e: React.UIEvent<any> | void,
@@ -134,33 +191,46 @@ export function GraphDesigner(props: GraphDesignerProps) {
         throwErrors: boolean = false,
         delegate?: IScopedContext) => {
         if (action.actionType == 'submit') {
-            if (!diagramData)
-                return
-
             if (currentElement && currentElement.groupName != 'main') {
-                let group = diagramData[currentElement.groupName] || (diagramData[currentElement.groupName] = {})
+                let group = graphData[currentElement.groupName] || (graphData[currentElement.groupName] = {})
                 group[currentElement.elementId] = action.payload
             }
             return
         }
         onAction && onAction(e, action, ctx, throwErrors, delegate)
-    }, [])
+    }, [currentElement, graphData])
+
+    const handleEditorChange = useCallback((values: any) => {
+        if (currentElement && currentElement.groupName != 'main') {
+            let data = updateElement(graphData,currentElement,values)
+            setGraphData(data)
+        } else if (currentElement && currentElement.groupName == 'main') {
+            let data = updateMainData(graphData,values)
+            setGraphData(data)
+        }
+    }, [currentElement, graphData])
 
     const handleEditorEvent = useCallback((event: string, data: any) => {
         if (event == 'selectElement') {
             setCurrentElement(data)
             setShowRightPanel(data != null)
         } else if (event == 'selectMain') {
-            setCurrentElement({ elementType: 'default', groupName: 'main', elementId: 'default' })
+            selectMain()
+        } else if (event == 'removeElement') {
+            if (data.elementId == currentElement.elementId) {
+                selectMain()
+            }
+            let newData = removeElement(graphData,data)
+            setGraphData(newData)
         }
         editorCallbacks.current.forEach(callback => {
             callback(event, data)
         })
-    }, [])
+    }, [editorCallbacks])
 
     const registerEditorCallback = useCallback((callback: HandleEditorEvent) => {
         editorCallbacks.current.push(callback)
-    }, [])
+    }, [editorCallbacks])
 
     const subProps = {
         onAction: handleAction,
@@ -179,10 +249,10 @@ export function GraphDesigner(props: GraphDesignerProps) {
         let data;
         if (!currentElement || currentElement.groupName == 'main') {
             schema = props.subEditors['main']?.default
-            data = diagramData
+            data = graphData
         } else {
             schema = props.subEditors[currentElement.groupName]?.[currentElement.elementType]
-            data = diagramData?.[currentElement.groupName]?.[currentElement.elementId]
+            data = graphData?.[currentElement.groupName]?.[currentElement.elementId]
         }
         if (!schema)
             return null
@@ -195,7 +265,10 @@ export function GraphDesigner(props: GraphDesignerProps) {
                 className={cx(`GraphDesigner-panelResizor`)}
             ></div>
 
-            {render('subEditor', schema || '', { ...subProps, onAction: handleEditorAction, data })}
+            {render('subEditor', schema || '', {
+                ...subProps, data,
+                onAction: handleEditorAction, onChange: handleEditorChange
+            })}
         </div>
     }
 

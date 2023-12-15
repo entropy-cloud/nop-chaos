@@ -5391,9 +5391,11 @@ var FlowBuilder = /* @__PURE__ */ forwardRef(function(props, ref) {
   }));
 });
 const index = "";
-const ConfigComponent = () => {
-  return /* @__PURE__ */ jsx(Fragment, {});
-};
+class ConfigComponent extends React.Component {
+  render() {
+    return /* @__PURE__ */ jsx(Fragment, {});
+  }
+}
 const DrawerComponent = (props) => {
   const { visible, children, ...restProps } = props;
   return /* @__PURE__ */ jsx(Drawer, { open: visible, ...restProps, children });
@@ -5508,7 +5510,9 @@ const FlowBuilderControl = (props) => {
     setNodes(nodes2);
     if (props.onEditorEvent) {
       if (event == "click-node") {
-        props.onEditorEvent("click-node", node);
+        props.onEditorEvent("selectElement", { groupName: "steps", elementType: "step", elementId: node.id });
+      } else if (event == "remove-node") {
+        props.onEditorEvent("removeElement", { groupName: "steps", elementType: "step", elementId: node.id });
       }
     }
   };

@@ -1,0 +1,51 @@
+{
+  "name": "@nop-chaos/nop-flow-builder",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@7.1.0",
+  "description": "FlowBuilder Designer",
+  "type": "module",
+  "types": "src/index.ts",
+  "main": "src/index.ts",
+  "files": [
+    "assets",
+    "src"
+  ],
+  "scripts": {
+    "all": "pnpm clean && pnpm build",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:report": "cross-env REPORT=true pnpm run build",
+    "cy:run": "cypress install && cypress run",
+    "test": "pnpm test:e2e",
+    "test:e2e": "start-server-and-test 'vite preview --open false' http://127.0.0.1:4173/ 'pnpm cy:run'",
+    "clean": "rimraf dist",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tslib": "^2.3.1",
+    "@nop-chaos/nop-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.6",
+    "@types/node": "^18.8.4",
+    "@types/react": "^18.2.14",
+    "@types/splitpanes": "^2.2.1",
+    "@vitejs/plugin-react": "^4.2.0",
+    "@vitejs/plugin-vue": "^3.1.2",
+    "systemjs": "^6.13.0",
+    "cross-env": "^7.0.3",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.79.1",
+    "rollup-plugin-visualizer": "^5.8.2",
+    "typescript": "^4.9.4",
+    "unplugin-vue-components": "^0.22.8",
+    "vite": "^4.4.9",
+    "vite-plugin-dts": "^3.6.0",
+    "vite-plugin-resolve-externals": "^0.2.2",
+    "vite-plugin-style-import": "^2.0.0"
+  }
+}

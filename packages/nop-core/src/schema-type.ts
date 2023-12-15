@@ -1,18 +1,18 @@
 import { Component } from "vue";
 
-export type SchemaType = {
+export type SchemaProcessorType = {
     componentType: Component,
     editorComponentType: Component,
     transformSchemaIn?(schema:any):any
     transformSchemaOut?(schema:any):any
 }
 
-const schemaTypes: Record<string, SchemaType> = {}
+const schemaProcessorTypes: Record<string, SchemaProcessorType> = {}
 
-export function registerSchemaType(typeName:string, schemaType: SchemaType){
-    schemaTypes[typeName] = schemaType
+export function registerSchemaProcessorType(typeName:string, schemaProcessorType: SchemaProcessorType){
+    schemaProcessorTypes[typeName] = schemaProcessorType
 }
 
-export function getSchemaType(typeName:string){
-    return schemaTypes[typeName]
+export function getSchemaProcessorType(typeName:string){
+    return schemaProcessorTypes[typeName]
 }

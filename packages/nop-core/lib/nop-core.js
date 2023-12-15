@@ -1646,12 +1646,12 @@ function clearScoped() {
   s_scoped = void 0;
   s_scopedStore = void 0;
 }
-const schemaTypes = {};
-function registerSchemaType(typeName, schemaType) {
-  schemaTypes[typeName] = schemaType;
+const schemaProcessorTypes = {};
+function registerSchemaProcessorType(typeName, schemaProcessorType) {
+  schemaProcessorTypes[typeName] = schemaProcessorType;
 }
-function getSchemaType(typeName) {
-  return schemaTypes[typeName];
+function getSchemaProcessorType(typeName) {
+  return schemaProcessorTypes[typeName];
 }
 const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
@@ -1678,7 +1678,7 @@ const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   deletePageCache,
   fetcherOk,
   format,
-  getSchemaType,
+  getSchemaProcessorType,
   handleGraphQL,
   importModule,
   isCancel,
@@ -1693,7 +1693,7 @@ const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   registerAdapter,
   registerModule,
   registerOperation,
-  registerSchemaType,
+  registerSchemaProcessorType,
   registerXuiComponent,
   resolveXuiComponent,
   responseOk,
@@ -1751,7 +1751,7 @@ export {
   deletePageCache,
   fetcherOk,
   format,
-  getSchemaType,
+  getSchemaProcessorType,
   handleGraphQL,
   importModule,
   isCancel,
@@ -1766,7 +1766,7 @@ export {
   registerAdapter,
   registerModule,
   registerOperation,
-  registerSchemaType,
+  registerSchemaProcessorType,
   registerXuiComponent,
   resolveXuiComponent,
   responseOk,

@@ -11,3 +11,5 @@ export * from './shared'
 export * from './scope'
 
 export * from './schema-type'
+
+export * from './renderer/types'

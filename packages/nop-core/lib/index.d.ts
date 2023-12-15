@@ -85,7 +85,7 @@ export declare function ajaxRequest(options: FetcherRequest): Promise<any>;
 
 export declare type AjaxResponse = NonNullable<FetcherResult['data']>;
 
-declare interface ApiObject extends BaseApiObject {
+export declare interface ApiObject extends BaseApiObject {
     config?: {
         withCredentials?: boolean;
         cancelExecutor?: (cancel: Function) => void;
@@ -292,6 +292,8 @@ declare function DevTool__clearComponentCache(): Promise<any>;
 
 declare function DictProvider__getDict(dictName: string, silent: boolean): Promise<any>;
 
+export declare type ExecutorType = (api: FetcherRequest, ctx: any) => Promise<FetcherResult>;
+
 export declare function fetcherOk(data: any): FetcherResult;
 
 export declare type FetcherRequest = ApiObject & {
@@ -324,7 +326,7 @@ export declare type FetcherResult = {
 
 export declare function format(msg: string, placeholderStart: string, placeholdeEnd: string, resolver: ResolveFunction): string;
 
-export declare function getSchemaType(typeName: string): SchemaType;
+export declare function getSchemaProcessorType(typeName: string): SchemaProcessorType;
 
 export declare function handleGraphQL(config: AxiosRequestConfig<any>, graphqlUrl: string, options: FetcherRequest): boolean;
 
@@ -363,6 +365,8 @@ export declare type OnCancelCallback = () => void;
 
 export declare type OnChangeCallback = (value: any) => void;
 
+export declare type OnEventType = (event: string, data: any, ctx: any) => any;
+
 export declare type OnOkCallback = (value?: any) => Promise<boolean | void> | boolean | void;
 
 export declare function openWindow(url: string, opt?: {
@@ -376,6 +380,10 @@ export declare type OperationDefinition = {
 };
 
 export declare type OperationType = "query" | "mutation" | "subscription";
+
+export declare type OptionsType = {
+    [propName: string]: any;
+};
 
 export declare type OrderFieldBean = {
     name: string;
@@ -479,9 +487,32 @@ export declare function registerOperation(name: string, op: OperationDefinition)
 
 export declare type RegisterPage = (page: PageObject) => void;
 
-export declare function registerSchemaType(typeName: string, schemaType: SchemaType): void;
+export declare function registerSchemaProcessorType(typeName: string, schemaProcessorType: SchemaProcessorType): void;
 
 export declare function registerXuiComponent(type: string, component: XuiComponent): void;
+
+export declare type RenderContext = {
+    /**
+     * 将json对象渲染为虚拟DOM类型。不同的框架实现不同
+     */
+    render: RenderType;
+    /**
+     * 动态执行ajax调用，
+     */
+    executor: ExecutorType;
+    /**
+     * 向上冒泡触发自定义动作
+     */
+    onEvent: OnEventType;
+    /**
+     * 监听兄弟节点或者父节点触发的事件
+     * @param source 兄弟节点或者父节点的标识
+     * @param handler 回调函数
+     */
+    observeEvent: (source: string, handler: OnEventType) => void;
+};
+
+export declare type RenderType = (name: string, schema: SchemaType, props: OptionsType, ctx: any) => VDomType;
 
 declare type ResolveFunction = (name: string) => any;
 
@@ -489,11 +520,16 @@ export declare function resolveXuiComponent(type: string, json: any): any;
 
 export declare function responseOk(data: any): AjaxResponse;
 
-export declare type SchemaType = {
+export declare type SchemaProcessorType = {
     componentType: Component;
     editorComponentType: Component;
     transformSchemaIn?(schema: any): any;
     transformSchemaOut?(schema: any): any;
+};
+
+export declare type SchemaType = {
+    type: string;
+    [propName: string]: any;
 };
 
 declare function setDebug(b: boolean): void;
@@ -628,6 +664,8 @@ export declare type ValueHolder<T> = {
     get(): T | undefined;
     set(value: T): void;
 };
+
+export declare type VDomType = any;
 
 export declare function withDictCache(dictName: string, fn: () => Promise<any>): Promise<any>;
 

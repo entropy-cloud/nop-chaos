@@ -8,14 +8,22 @@ export default {
     },
     body: {
         type: "nop-graph-designer",
+        name: "designer",
         toolbar: [
             {
                 type: 'action',
                 label: "Save",
                 level: 'primary',
-                actionType: "commit"
+                actionType: "designer:save"
+            },
+            {
+                type: 'action',
+                label: "SelectMain",
+                level: 'primary',
+                actionType: "designer:selectMain",
             }
         ],
+
         mainEditor: {
             type: "nop-flow-builder",
             label: "Edit"
@@ -27,6 +35,7 @@ export default {
                     type: "form",
                     className: "h-full",
                     title: "属性编辑",
+                    submitOnChange: true,
                     body:[
                         {
                             "type": "input-text",
@@ -37,10 +46,13 @@ export default {
                 }
             },
             "steps": {
-                "approve": {
+                "step": {
                     type: "form",
+                    title: "步骤信息",
+                    submitOnChange: true,
                     body: {
                         type: "input-text",
+                        label: "displayName",
                         name: "displayName"
                     }
                 }

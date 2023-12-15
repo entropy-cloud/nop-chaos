@@ -177,6 +177,44 @@ var __decorateClass = (decorators, target, key, kind) => {
     __defProp(target, key, result);
   return result;
 };
+function updateMainData(data, values) {
+  return {
+    ...data,
+    ...cleanData(values)
+  };
+}
+function updateElement(data, elm, values) {
+  return {
+    ...data,
+    [elm.groupName]: {
+      ...data == null ? void 0 : data[elm.groupName],
+      [elm.elementId]: cleanData(values)
+    }
+  };
+}
+function removeElement(data, elm) {
+  return {
+    ...data,
+    [elm.groupName]: {
+      ...data == null ? void 0 : data[elm.groupName],
+      [elm.elementId]: void 0
+    }
+  };
+}
+function getDesignerAction(action) {
+  var _a;
+  if ((_a = action.actionType) == null ? void 0 : _a.startsWith("designer:"))
+    return action.actionType.substring("designer:".length);
+  if (action.api instanceof String) {
+    if (action.api.startsWith("designer://"))
+      return action.api.substring("designer://".length);
+  }
+  return;
+}
+function cleanData(data) {
+  const { __super, __pristine, __prev, ...ret } = data || {};
+  return ret;
+}
 function GraphDesigner(props) {
   const {
     className,
@@ -195,7 +233,8 @@ function GraphDesigner(props) {
     ...rest
   } = props;
   const [showRightPanel, setShowRightPanel] = useState(true);
-  const [diagramData, setDiagramData] = useState(value);
+  const [graphData, setGraphData] = useState((value == null ? void 0 : value.data) || {});
+  const [graphDiagram, setGraphDiagram] = useState((value == null ? void 0 : value.diagram) || {});
   const [inited, setInited] = useState(false);
   const [currentElement, setCurrentElement] = useState({
     groupName: "main",
@@ -213,48 +252,71 @@ function GraphDesigner(props) {
     if (isEffectiveApi(initApi, props.data)) {
       const store = props.store;
       store.fetchData(initApi, props.data).then((res) => {
-        setDiagramData(res);
+        setGraphData(res || {});
       });
     }
   }
+  function selectMain() {
+    setCurrentElement({ groupName: "main", elementType: "default", elementId: "default" });
+  }
   const handleAction = useCallback((e, action, ctx, throwErrors = false, delegate) => {
-    if (action.actionType == "submit") {
-      if (onChange && diagramData != value)
-        onChange(diagramData);
+    const designerAction = getDesignerAction(action);
+    if (designerAction == "save") {
+      const data = { data: graphData, diagram: graphDiagram };
+      if (onChange && (graphData != (value == null ? void 0 : value.data) || graphDiagram != (value == null ? void 0 : value.diagram)))
+        onChange(data);
       if (isEffectiveApi(saveApi, action.data)) {
         const store = props.store;
-        store.fetchData(saveApi, { data: diagramData });
+        store.fetchData(saveApi, { data });
+      } else {
+        console.log("designer:save", data);
       }
+      return;
+    } else if (designerAction == "selectMain") {
+      selectMain();
       return;
     }
     onAction && onAction(e, action, ctx, throwErrors, delegate);
-  }, []);
+  }, [currentElement, graphData]);
   const handleEditorAction = useCallback((e, action, ctx, throwErrors = false, delegate) => {
     if (action.actionType == "submit") {
-      if (!diagramData)
-        return;
       if (currentElement && currentElement.groupName != "main") {
-        let group = diagramData[currentElement.groupName] || (diagramData[currentElement.groupName] = {});
+        let group = graphData[currentElement.groupName] || (graphData[currentElement.groupName] = {});
         group[currentElement.elementId] = action.payload;
       }
       return;
     }
     onAction && onAction(e, action, ctx, throwErrors, delegate);
-  }, []);
+  }, [currentElement, graphData]);
+  const handleEditorChange = useCallback((values) => {
+    if (currentElement && currentElement.groupName != "main") {
+      let data = updateElement(graphData, currentElement, values);
+      setGraphData(data);
+    } else if (currentElement && currentElement.groupName == "main") {
+      let data = updateMainData(graphData, values);
+      setGraphData(data);
+    }
+  }, [currentElement, graphData]);
   const handleEditorEvent = useCallback((event, data) => {
     if (event == "selectElement") {
       setCurrentElement(data);
       setShowRightPanel(data != null);
     } else if (event == "selectMain") {
-      setCurrentElement({ elementType: "default", groupName: "main", elementId: "default" });
+      selectMain();
+    } else if (event == "removeElement") {
+      if (data.elementId == currentElement.elementId) {
+        selectMain();
+      }
+      let newData = removeElement(graphData, data);
+      setGraphData(newData);
     }
     editorCallbacks.current.forEach((callback) => {
       callback(event, data);
     });
-  }, []);
+  }, [editorCallbacks]);
   const registerEditorCallback = useCallback((callback) => {
     editorCallbacks.current.push(callback);
-  }, []);
+  }, [editorCallbacks]);
   const subProps = {
     onAction: handleAction,
     onEditorEvent: handleEditorEvent,
@@ -269,10 +331,10 @@ function GraphDesigner(props) {
     let data;
     if (!currentElement || currentElement.groupName == "main") {
       schema = (_a = props.subEditors["main"]) == null ? void 0 : _a.default;
-      data = diagramData;
+      data = graphData;
     } else {
       schema = (_b = props.subEditors[currentElement.groupName]) == null ? void 0 : _b[currentElement.elementType];
-      data = (_c = diagramData == null ? void 0 : diagramData[currentElement.groupName]) == null ? void 0 : _c[currentElement.elementId];
+      data = (_c = graphData == null ? void 0 : graphData[currentElement.groupName]) == null ? void 0 : _c[currentElement.elementId];
     }
     if (!schema)
       return null;
@@ -284,7 +346,12 @@ function GraphDesigner(props) {
         onMouseDown: handleResizeMouseDown,
         className: cx(`GraphDesigner-panelResizor`)
       }
-    ), render("subEditor", schema || "", { ...subProps, onAction: handleEditorAction, data }));
+    ), render("subEditor", schema || "", {
+      ...subProps,
+      data,
+      onAction: handleEditorAction,
+      onChange: handleEditorChange
+    }));
   }
   return /* @__PURE__ */ React.createElement("div", { className: cx("GraphDesigner", className) }, toolbar ? renderToolbar() : null, /* @__PURE__ */ React.createElement("div", { className: cx("GraphDesigner-inner") }, /* @__PURE__ */ React.createElement("div", { className: cx("GraphDesigner-main") }, render("main", props.mainEditor, subProps)), showRightPanel ? renderRightPanel() : null));
 }
