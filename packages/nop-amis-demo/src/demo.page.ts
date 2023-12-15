@@ -1,9 +1,15 @@
-export default  {
-    type: "page",
-    body: {
+export default {
+	type: "page",
+	data: {
+		a: "A1",
+		b: "B2",
+		c: "C3",
+		d: "D4"
+	},
+	body: {
 		type: "form",
 		debug: true,
-        body:[
+		body: [
 			{
 				type: "input-text",
 				name: "a",
@@ -12,12 +18,21 @@ export default  {
 			{
 				type: "popup-editor",
 				size: "sm",
-				name : "b",
+				name: "b2",
 				popup: {
-					type : "input-text",
-					name: "c"
+					type: "group",
+					body: [
+						{
+							type: "input-text",
+							name: "c"
+						},
+						{
+							type: "input-text",
+							name: "d"
+						},
+					]
 				}
 			}
 		]
-    }
+	}
 }

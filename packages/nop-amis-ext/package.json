@@ -22,10 +22,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "amis": "^3.4.0",
-    "amis-core": "^3.4.0",
-    "amis-ui": "^3.4.0",
-	  "amis-formula": "^3.4.0",
+    "amis": "^3.6.1",
+    "amis-core": "^3.6.1",
+    "amis-ui": "^3.6.1",
+	  "amis-formula": "^3.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tslib": "^2.3.1"
