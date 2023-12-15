@@ -1,0 +1,11 @@
+/docs
+/docs-dist
+/node_modules
+/public
+/src
+.*
+*.zip
+tsconfig.json
+typings.d.ts
+*.lock
+*.log

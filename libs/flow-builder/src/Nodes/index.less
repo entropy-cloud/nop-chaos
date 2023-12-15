@@ -1,0 +1,121 @@
+.flow-builder-node,
+.flow-builder-node__content-wrap,
+.flow-builder-node__content,
+.flow-builder-branch-node__content,
+.flow-builder-loop-node__content {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.flow-builder-loop-node__content {
+  z-index: 5;
+}
+
+.flow-builder-node__content-wrap,
+.flow-builder-node__content {
+  cursor: pointer;
+}
+
+.flow-builder-branch-node {
+  &__add-button {
+    position: absolute;
+    cursor: pointer;
+    z-index: 1;
+    .flow-builder-drop-button {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .branch-add-disabled {
+    position: absolute;
+  }
+  &__conditions {
+    display: flex;
+  }
+  &__dashed,
+  &__sorting__dashed {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  &__sorting__dashed {
+    display: none;
+  }
+}
+
+.flow-builder-vertical {
+  margin: 0 auto;
+  flex-direction: column;
+
+  .flow-builder-node,
+  .flow-builder-node__content-wrap,
+  .flow-builder-node__content,
+  .flow-builder-branch-node__content,
+  .flow-builder-loop-node__content {
+    flex-direction: column;
+  }
+
+  .flow-builder-start-node {
+    padding-top: 16px;
+  }
+  .flow-builder-end-node {
+    padding-bottom: 16px;
+  }
+
+  .flow-builder-branch-node {
+    .flow-builder-branch-node__content {
+      margin-top: 10px;
+    }
+    &__add-button {
+      top: -10px;
+    }
+    &__conditions {
+      flex-direction: row;
+    }
+  }
+}
+
+.flow-builder-horizontal {
+  margin: auto 0;
+  flex-direction: row;
+
+  .flow-builder-node,
+  .flow-builder-node__content-wrap,
+  .flow-builder-node__content,
+  .flow-builder-branch-node__content {
+    flex-direction: row;
+  }
+
+  .flow-builder-start-node {
+    padding-left: 16px;
+  }
+  .flow-builder-end-node {
+    padding-right: 16px;
+  }
+
+  .flow-builder-branch-node {
+    .flow-builder-branch-node__content {
+      margin-left: 10px;
+    }
+    &__add-button {
+      left: -10px;
+    }
+    &__conditions {
+      flex-direction: column;
+    }
+  }
+}
+
+.flow-builder-sortable-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  cursor: move;
+  opacity: 0;
+  position: absolute;
+}
