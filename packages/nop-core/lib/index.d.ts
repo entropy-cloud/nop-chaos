@@ -83,8 +83,6 @@ export declare function ajaxFetch(options: FetcherRequest): Promise<FetcherResul
 
 export declare function ajaxRequest(options: FetcherRequest): Promise<any>;
 
-export declare type AjaxResponse = NonNullable<FetcherResult['data']>;
-
 export declare interface ApiObject extends BaseApiObject {
     config?: {
         withCredentials?: boolean;
@@ -97,6 +95,27 @@ export declare interface ApiObject extends BaseApiObject {
     adaptor?: (payload: object, response: FetcherResult, api: ApiObject) => any;
     requestAdaptor?: (api: ApiObject) => ApiObject;
 }
+
+/**
+ * 后端服务返回的标准结果类型，一般情况下http响应码都是200.
+ * 后台出错时status不为0，且code和msg字段有值.
+ * 成功时status==0, 此时data字段用于传输返回数据
+ */
+export declare type ApiResponse<T = any> = {
+    status: number;
+    code?: string;
+    msg?: string;
+    msgTimeout?: number;
+    data: any;
+    bizFatal?: boolean;
+    errors?: {
+        [propName: string]: string;
+    };
+    headers?: {
+        [name: string]: any;
+    };
+    [propName: string]: any;
+};
 
 export declare type ArgumentDefinition = {
     name: string;
@@ -292,7 +311,16 @@ declare function DevTool__clearComponentCache(): Promise<any>;
 
 declare function DictProvider__getDict(dictName: string, silent: boolean): Promise<any>;
 
-export declare type ExecutorType = (api: FetcherRequest, ctx: any) => Promise<FetcherResult>;
+export declare type EventCallbacks = {
+    [source: string]: OnEventType[];
+};
+
+export declare type EventCleanup = () => void;
+
+/**
+ * 如果不满足执行条件，则返回undefined
+ */
+export declare type ExecutorType = (api: ApiObject, data: any, ctx: any) => Promise<ApiResponse>;
 
 export declare function fetcherOk(data: any): FetcherResult;
 
@@ -309,19 +337,9 @@ export declare type FetcherRequest = ApiObject & {
 };
 
 export declare type FetcherResult = {
-    data?: {
-        data: object;
-        status: number;
-        msg: string;
-        msgTimeout?: number;
-        errors?: {
-            [propName: string]: string;
-        };
-        type?: string;
-        [propName: string]: any;
-    };
+    data?: ApiResponse;
     status: number;
-    headers: object;
+    headers: any;
 };
 
 export declare function format(msg: string, placeholderStart: string, placeholdeEnd: string, resolver: ResolveFunction): string;
@@ -403,6 +421,20 @@ export declare const PageApis: {
     PageProvider__rollbackPageSource: typeof PageProvider__rollbackPageSource;
     PageProvider__savePageSource: typeof PageProvider__savePageSource;
     DictProvider__getDict: typeof DictProvider__getDict;
+};
+
+/**
+ * 分页数据
+ */
+export declare type PageBean<T> = {
+    items: T[];
+    total: number;
+    limit: number;
+    offset: number;
+    hasPrev?: Boolean;
+    hasNext?: Boolean;
+    prevCursor: string;
+    nextCursor: string;
 };
 
 /**
@@ -509,7 +541,7 @@ export declare type RenderContext = {
      * @param source 兄弟节点或者父节点的标识
      * @param handler 回调函数
      */
-    observeEvent: (source: string, handler: OnEventType) => void;
+    observeEvent: (source: string, handler: OnEventType) => EventCleanup;
 };
 
 export declare type RenderType = (name: string, schema: SchemaType, props: OptionsType, ctx: any) => VDomType;
@@ -518,7 +550,9 @@ declare type ResolveFunction = (name: string) => any;
 
 export declare function resolveXuiComponent(type: string, json: any): any;
 
-export declare function responseOk(data: any): AjaxResponse;
+export declare function responseOk(data: any): ApiResponse;
+
+export declare type SchemaCollectionType = SchemaType | Array<SchemaType>;
 
 export declare type SchemaProcessorType = {
     componentType: Component;

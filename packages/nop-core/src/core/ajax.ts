@@ -6,7 +6,7 @@ import { handleGraphQL } from './graphql';
 
 import { parse as qsparse } from 'qs'
 
-import { AjaxResponse, FetcherRequest, FetcherResult } from "./types";
+import { ApiResponse, FetcherRequest, FetcherResult } from "./types";
 import { useAdapter } from '../adapter';
 import { HEADER_ACCESS_TOKEN, HEADER_APP_ID, HEADER_TENANT_ID, HEADER_TIMESTAMP, HEADER_VERSION } from './consts';
 import { splitPrefixUrl } from '../page';
@@ -47,7 +47,7 @@ export function fetcherOk(data: any): FetcherResult {
 	}
 }
 
-export function responseOk(data: any): AjaxResponse {
+export function responseOk(data: any): ApiResponse {
 	return {
 		status: 0,
 		msg: '',
@@ -121,7 +121,15 @@ export function ajaxFetch(options: FetcherRequest): Promise<FetcherResult> {
 		url = `${globSetting.apiUrl}${url}`;
 	}
 
-	const data = options.data && Object.assign({}, options.data)
+	function normalizeData(data:any){
+		if(!data)
+			return data
+		if(data instanceof FormData || data instanceof ArrayBuffer)
+			return data
+		return Object.assign({}, data)
+	}
+
+	const data = normalizeData(options.data)
 
 	const config: AxiosRequestConfig<any> = {
 		withCredentials: options.config.withCredentials ?? true,

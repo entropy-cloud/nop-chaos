@@ -3,7 +3,7 @@
 </template>
   
 <script lang="ts" setup>
-import { useAdapter,getSchemaType } from '@nop-chaos/nop-core';
+import { useAdapter,getSchemaProcessorType } from '@nop-chaos/nop-core';
 import { defineComponent, ref, watchEffect,markRaw } from 'vue';
 import AmisPageEditor from './AmisPageEditor.vue';
 
@@ -30,7 +30,7 @@ watchEffect(() => {
         if (!schemaTypeName) {
             componentType.value = markRaw(AmisPageEditor)
         } else {
-            const schemaType = getSchemaType(schemaTypeName)
+            const schemaType = getSchemaProcessorType(schemaTypeName)
             if (!schemaType) {
                 const { t } = useI18n()
                 useAdapter().notify("error", t("nop.err.unknown-schema-type"));

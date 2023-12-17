@@ -1,5 +1,5 @@
 {
-  "name": "@nop-chaos/nop-flow-builder",
+  "name": "@nop-chaos/nop-react-core",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@7.1.0",

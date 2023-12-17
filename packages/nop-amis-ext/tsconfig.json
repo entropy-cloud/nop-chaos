@@ -4,7 +4,12 @@
     "rootDir": "./",
     "module": "ESNext",
     "target": "ES2017",
-    "lib": ["ES6", "DOM", "ES2015", "ES2021"],
+    "lib": [
+      "ES6",
+      "DOM",
+      "ES2015",
+      "ES2021"
+    ],
     "jsx": "react",
     "moduleResolution": "node",
     "declaration": true,
@@ -23,12 +28,11 @@
     "composite": true,
     "allowJs": true,
     "baseUrl": "./",
-    "paths": {
-     
-    }
+    "paths": {}
   },
- 
-  "types": ["typePatches"],
+  "types": [
+    "typePatches"
+  ],
   "references": [],
   "include": [
     "src"

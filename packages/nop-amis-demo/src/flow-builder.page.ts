@@ -30,13 +30,13 @@ export default {
         },
 
         subEditors: {
-            "main":{
-                "default":{
+            "main": {
+                "default": {
                     type: "form",
                     className: "h-full",
                     title: "属性编辑",
                     submitOnChange: true,
-                    body:[
+                    body: [
                         {
                             "type": "input-text",
                             label: "wfName",
@@ -60,9 +60,15 @@ export default {
         },
 
         value: {
-            wfName: "aaa",
-            steps: {
-                
+            diagram:{
+
+            },
+            
+            data: {
+                wfName: "aaa",
+                steps: {
+
+                }
             }
         }
     }

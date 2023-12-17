@@ -5514,6 +5514,7 @@ const FlowBuilderControl = (props) => {
       } else if (event == "remove-node") {
         props.onEditorEvent("removeElement", { groupName: "steps", elementType: "step", elementId: node.id });
       }
+      props.onEditorEvent("graphChange", { nodes: nodes2 });
     }
   };
   return /* @__PURE__ */ jsx(

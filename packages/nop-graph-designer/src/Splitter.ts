@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react'
+import { useCallback, useRef } from 'react';
 
 export type SplitterOptions = {
     alignRight: boolean,
@@ -40,7 +40,7 @@ export function useSplitter(options: SplitterOptions) {
         document.addEventListener("mouseup", handleResizeMouseUp);
         start.current.startX = e.clientX;
         start.current.startWidth = current.offsetWidth;
-    }, []);
+    }, [start]);
 
 
     return [handleResizeMouseDown];

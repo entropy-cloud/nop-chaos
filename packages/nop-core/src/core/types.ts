@@ -19,21 +19,43 @@ export type TreeBean = {
     [name: string]: any
 }
 
+/**
+ * 分页数据
+ */
+export type PageBean<T> = {
+    items: T[],
+    total: number,
+    limit: number,
+    offset: number,
+    hasPrev? : Boolean,
+    hasNext? : Boolean,
+    prevCursor: string,
+    nextCursor: string
+}
+
+/**
+ * 后端服务返回的标准结果类型，一般情况下http响应码都是200.
+ * 后台出错时status不为0，且code和msg字段有值.
+ * 成功时status==0, 此时data字段用于传输返回数据
+ */
+export type ApiResponse<T = any> = {
+    status: number;
+    code?: string,
+    msg?: string;
+    msgTimeout?: number;
+    data: any;
+    bizFatal?: boolean,
+    errors?: {
+        [propName: string]: string;
+    };
+    headers?: { [name: string]: any }
+    [propName: string]: any;
+}
 
 export type FetcherResult = {
-    data?: {
-        data: object;
-        status: number;
-        msg: string;
-        msgTimeout?: number;
-        errors?: {
-            [propName: string]: string;
-        };
-        type?: string;
-        [propName: string]: any;
-    };
+    data?: ApiResponse
     status: number;
-    headers: object;
+    headers: any;
 }
 
 export type FetcherRequest = ApiObject & {
@@ -43,13 +65,13 @@ export type FetcherRequest = ApiObject & {
     labelField?: string,
     filter?: TreeBean,
     responseKey?: string // 如果返回的数据不是对象类型，可以用这个属性将它包装为{[responseKey]:data}
-    "gql:selection"?:string
+    "gql:selection"?: string
 
     _page?: BasePage
     _scoped?: any
 }
 
-export type AjaxResponse = NonNullable<FetcherResult['data']>
+// export type AjaxResponse = NonNullable<FetcherResult['data']>
 
 export type AjaxConfig = {
     silent?: boolean,
@@ -63,8 +85,8 @@ export type AjaxConfig = {
 }
 
 export type BasePage = {
-    getAction(actionName:string):Function
-    registerAction(actionName:string,fn:Function):void
+    getAction(actionName: string): Function
+    registerAction(actionName: string, fn: Function): void
     resetActions()
 }
 

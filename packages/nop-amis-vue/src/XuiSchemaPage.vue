@@ -7,7 +7,7 @@
 import { PropType, defineComponent, watchEffect, ref,markRaw } from 'vue'
 import AmisSchemaPage from './AmisSchemaPage';
 
-import { getSchemaType, useAdapter, RegisterPage } from '@nop-chaos/nop-core'
+import { getSchemaProcessorType, useAdapter, RegisterPage } from '@nop-chaos/nop-core'
 
 /**
  * 嵌入到vue中的amis页面。每个AmisSchemaPage都对应一个ReactRooot。schema发生变化时会重新创建react组件
@@ -30,7 +30,7 @@ export default defineComponent({
       if (!schemaTypeName) {
         componentType.value = markRaw(AmisSchemaPage)
       } else {
-        const schemaType = getSchemaType(schemaTypeName)
+        const schemaType = getSchemaProcessorType(schemaTypeName)
         if (!schemaType) {
           const { t } = useI18n()
           useAdapter().notify("error", t("nop.err.unknown-schema-type"));

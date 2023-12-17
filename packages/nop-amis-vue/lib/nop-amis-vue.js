@@ -1,6 +1,6 @@
 import * as Vue from "vue";
 import { defineComponent, ref, onMounted, onUnmounted, openBlock, createElementBlock, watchEffect, onBeforeUnmount, h, markRaw, createBlock, resolveDynamicComponent, shallowRef, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
-import { deletePageCache, ajaxFetch, PageApis, useDebug, useAdapter, providePage, default_jumpTo, isCancel, default_isCurrentUrl, default_updateLocation, createPage, transformPageJson, bindActions, getSchemaType, registerAdapter, registerModule } from "@nop-chaos/nop-core";
+import { deletePageCache, ajaxFetch, PageApis, useDebug, useAdapter, providePage, default_jumpTo, isCancel, default_isCurrentUrl, default_updateLocation, createPage, transformPageJson, bindActions, getSchemaProcessorType, registerAdapter, registerModule } from "@nop-chaos/nop-core";
 import { isString, cloneDeep } from "lodash-es";
 import { toast, clearStoresCache, setDefaultLocale, render, ToastComponent, ScopedContext, Renderer, FormItem, dataMapping, alert, confirm } from "amis";
 import copy from "copy-to-clipboard";
@@ -412,7 +412,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
         if (!schemaTypeName) {
           componentType.value = markRaw(AmisPageEditor);
         } else {
-          const schemaType = getSchemaType(schemaTypeName);
+          const schemaType = getSchemaProcessorType(schemaTypeName);
           if (!schemaType) {
             const { t } = useI18n();
             useAdapter().notify("error", t("nop.err.unknown-schema-type"));
@@ -587,7 +587,7 @@ const _sfc_main$1 = defineComponent({
       if (!schemaTypeName) {
         componentType.value = markRaw(AmisSchemaPage);
       } else {
-        const schemaType = getSchemaType(schemaTypeName);
+        const schemaType = getSchemaProcessorType(schemaTypeName);
         if (!schemaType) {
           const { t } = useI18n();
           useAdapter().notify("error", t("nop.err.unknown-schema-type"));

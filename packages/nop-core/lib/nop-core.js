@@ -1250,7 +1250,14 @@ function ajaxFetch(options) {
   if (globSetting.apiUrl && options.config.useApiUrl !== false) {
     url = `${globSetting.apiUrl}${url}`;
   }
-  const data = options.data && Object.assign({}, options.data);
+  function normalizeData2(data2) {
+    if (!data2)
+      return data2;
+    if (data2 instanceof FormData || data2 instanceof ArrayBuffer)
+      return data2;
+    return Object.assign({}, data2);
+  }
+  const data = normalizeData2(options.data);
   const config = {
     withCredentials: options.config.withCredentials ?? true,
     url,

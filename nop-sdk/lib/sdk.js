@@ -1262,7 +1262,14 @@ function ajaxFetch(options) {
   if (globSetting.apiUrl && options.config.useApiUrl !== false) {
     url = `${globSetting.apiUrl}${url}`;
   }
-  const data = options.data && Object.assign({}, options.data);
+  function normalizeData2(data2) {
+    if (!data2)
+      return data2;
+    if (data2 instanceof FormData || data2 instanceof ArrayBuffer)
+      return data2;
+    return Object.assign({}, data2);
+  }
+  const data = normalizeData2(options.data);
   const config = {
     withCredentials: options.config.withCredentials ?? true,
     url,
@@ -1658,12 +1665,12 @@ function clearScoped() {
   s_scoped = void 0;
   s_scopedStore = void 0;
 }
-const schemaTypes = {};
-function registerSchemaType(typeName, schemaType) {
-  schemaTypes[typeName] = schemaType;
+const schemaProcessorTypes = {};
+function registerSchemaProcessorType(typeName, schemaProcessorType) {
+  schemaProcessorTypes[typeName] = schemaProcessorType;
 }
-function getSchemaType(typeName) {
-  return schemaTypes[typeName];
+function getSchemaProcessorType(typeName) {
+  return schemaProcessorTypes[typeName];
 }
 const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
@@ -1690,7 +1697,7 @@ const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   deletePageCache,
   fetcherOk,
   format,
-  getSchemaType,
+  getSchemaProcessorType,
   handleGraphQL,
   importModule,
   isCancel,
@@ -1705,7 +1712,7 @@ const NopCore = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   registerAdapter,
   registerModule,
   registerOperation,
-  registerSchemaType,
+  registerSchemaProcessorType,
   registerXuiComponent,
   resolveXuiComponent,
   responseOk,
@@ -2272,7 +2279,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
         if (!schemaTypeName) {
           componentType.value = markRaw(AmisPageEditor);
         } else {
-          const schemaType = getSchemaType(schemaTypeName);
+          const schemaType = getSchemaProcessorType(schemaTypeName);
           if (!schemaType) {
             const { t } = useI18n();
             useAdapter().notify("error", t("nop.err.unknown-schema-type"));
@@ -2446,7 +2453,7 @@ const _sfc_main$1 = defineComponent({
       if (!schemaTypeName) {
         componentType.value = markRaw(AmisSchemaPage);
       } else {
-        const schemaType = getSchemaType(schemaTypeName);
+        const schemaType = getSchemaProcessorType(schemaTypeName);
         if (!schemaType) {
           const { t } = useI18n();
           useAdapter().notify("error", t("nop.err.unknown-schema-type"));
@@ -2652,7 +2659,7 @@ const SdkLib = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   deletePageCache,
   fetcherOk,
   format,
-  getSchemaType,
+  getSchemaProcessorType,
   handleGraphQL,
   importModule,
   isCancel,
@@ -2667,7 +2674,7 @@ const SdkLib = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   registerAdapter,
   registerModule,
   registerOperation,
-  registerSchemaType,
+  registerSchemaProcessorType,
   registerXuiComponent,
   resolveXuiComponent,
   responseOk,
@@ -2719,7 +2726,7 @@ export {
   deletePageCache,
   fetcherOk,
   format,
-  getSchemaType,
+  getSchemaProcessorType,
   handleGraphQL,
   importModule,
   isCancel,
@@ -2734,7 +2741,7 @@ export {
   registerAdapter,
   registerModule,
   registerOperation,
-  registerSchemaType,
+  registerSchemaProcessorType,
   registerXuiComponent,
   resolveXuiComponent,
   responseOk,
