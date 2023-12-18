@@ -21,7 +21,7 @@ export default defineConfig({
       },
       // Do not bundle third-party dependencies,
       // since server packages can get them via npm install
-      external: ['react', 'amis', 'amis-ui', 'amis-core'],
+      external: ['react', 'amis', 'amis-ui', 'amis-core','@nop-chaos/nop-core'],
     },
   },
 })

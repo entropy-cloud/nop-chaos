@@ -11,7 +11,7 @@
     "all": "pnpm -r all",
     "dev": "pnpm -F nop-site dev",
     "build": "pnpm -r build",
-    "build-sdk": "pnpm --filter @nop-chaos/nop-core build & pnpm --filter @nop-chaos/nop-amis-ext build & pnpm --filter @nop-chaos/nop-amis-vue build & pnpm --filter @nop-chaos/sdk build",
+    "build-sdk": "pnpm -F nop-core build & pnpm -F nop-react-core build & pnpm -F nop-graph-designer build & pnpm -F nop-flow-builder build & pnpm -F nop-amis-ext build & pnpm -F nop-amis-vue build & pnpm -F sdk build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "pnpm -F nop-site preview",

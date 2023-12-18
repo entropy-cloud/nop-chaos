@@ -41,6 +41,9 @@ importers:
       '@nop-chaos/nop-flow-builder':
         specifier: workspace:*
         version: link:../nop-flow-builder
+      '@nop-chaos/nop-graph-designer':
+        specifier: workspace:*
+        version: link:../nop-graph-designer
       amis:
         specifier: ^3.6.1
         version: registry.npmmirror.com/amis@3.6.1(@types/react@18.2.14)(amis-core@3.6.1)(amis-ui@3.6.1)(office-viewer@0.1.5)(react-dom@18.2.0)(react@18.2.0)
@@ -199,6 +202,18 @@ importers:
 
   packages/nop-amis-ext:
     dependencies:
+      '@nop-chaos/nop-core':
+        specifier: workspace:*
+        version: link:../nop-core
+      '@nop-chaos/nop-flow-builder':
+        specifier: workspace:*
+        version: link:../nop-flow-builder
+      '@nop-chaos/nop-graph-designer':
+        specifier: workspace:*
+        version: link:../nop-graph-designer
+      '@nop-chaos/nop-react-core':
+        specifier: workspace:*
+        version: link:../nop-react-core
       amis:
         specifier: ^3.6.1
         version: registry.npmmirror.com/amis@3.6.1(@types/react@18.2.14)(amis-core@3.6.1)(amis-ui@3.6.1)(office-viewer@0.1.5)(react-dom@18.2.0)(react@18.2.0)
@@ -403,9 +418,12 @@ importers:
 
   packages/nop-flow-builder:
     dependencies:
-      amis:
-        specifier: ^3.6.1
-        version: registry.npmmirror.com/amis@3.6.1(@types/react@18.2.14)(amis-core@3.6.1)(amis-ui@3.6.1)(office-viewer@0.1.5)(react-dom@18.2.0)(react@18.2.0)
+      '@nop-chaos/nop-core':
+        specifier: workspace:*
+        version: link:../nop-core
+      '@nop-chaos/nop-react-core':
+        specifier: workspace:*
+        version: link:../nop-react-core
       antd:
         specifier: ^5.0
         version: registry.npmmirror.com/antd@5.0.0(react-dom@18.2.0)(react@18.2.0)

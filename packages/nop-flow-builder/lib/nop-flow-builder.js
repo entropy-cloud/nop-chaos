@@ -3,7 +3,7 @@ import React, { createContext, createRef, createElement, Component, useContext, 
 import { Drawer, Popover, Popconfirm } from "antd";
 import "systemjs/dist/system.js";
 import { findDOMNode } from "react-dom";
-import { unRegisterRenderer, registerRenderer } from "amis";
+const RenderContextKey = createContext(null);
 var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
@@ -5241,8 +5241,8 @@ var Builder = /* @__PURE__ */ forwardRef(function(props, ref) {
     hasMounted && (onZoomChange === null || onZoomChange === void 0 ? void 0 : onZoomChange(zoomValue === minZoom, zoomValue, zoomValue === maxZoom));
   }, [zoomValue, minZoom, maxZoom]);
   useEffect(function() {
-    var defaultNodes2 = _toConsumableArray(nodes);
-    if (defaultNodes2.length === 0) {
+    var defaultNodes = _toConsumableArray(nodes);
+    if (defaultNodes.length === 0) {
       var _registerNodes$find, _registerNodes$find2;
       var startNodeType = (_registerNodes$find = registerNodes2.find(function(item) {
         return item.isStart;
@@ -5250,10 +5250,10 @@ var Builder = /* @__PURE__ */ forwardRef(function(props, ref) {
       var endNodeType = (_registerNodes$find2 = registerNodes2.find(function(item) {
         return item.isEnd;
       })) === null || _registerNodes$find2 === void 0 ? void 0 : _registerNodes$find2.type;
-      defaultNodes2 = [createNewNode(registerNodes2, startNodeType, createUuid3), createNewNode(registerNodes2, endNodeType, createUuid3)];
-      onChange(defaultNodes2, "init-builder");
+      defaultNodes = [createNewNode(registerNodes2, startNodeType, createUuid3), createNewNode(registerNodes2, endNodeType, createUuid3)];
+      onChange(defaultNodes, "init-builder");
     }
-    pushHistory(defaultNodes2);
+    pushHistory(defaultNodes);
     setHasMounted(true);
   }, []);
   return /* @__PURE__ */ React.createElement("div", {
@@ -5301,7 +5301,7 @@ var SortableBuilder = sortableContainer(function(props) {
     ref: props.builderRef
   });
 });
-var FlowBuilder = /* @__PURE__ */ forwardRef(function(props, ref) {
+var FlowBuilder$1 = /* @__PURE__ */ forwardRef(function(props, ref) {
   var zoomTool = props.zoomTool, nodes = props.nodes, onChange = props.onChange, sortable = props.sortable;
   var _useState = useState((zoomTool === null || zoomTool === void 0 ? void 0 : zoomTool.initialValue) || 100), _useState2 = _slicedToArray(_useState, 2), zoomValue = _useState2[0], setZoomValue = _useState2[1];
   var _useState3 = useState([]), _useState4 = _slicedToArray(_useState3, 2), historyRecords = _useState4[0], setHistoryRecords = _useState4[1];
@@ -5454,71 +5454,24 @@ const registerNodes = [
     conditionNodeType: "condition"
   }
 ];
-const defaultNodes = [
-  {
-    id: "node-0d9d4733-e48c-41fd-a41f-d93cc4718d97",
-    type: "start",
-    name: "start",
-    path: ["0"]
-  },
-  {
-    id: "node-b2ffe834-c7c2-4f29-a370-305adc03c010",
-    type: "branch",
-    name: "分支节点",
-    children: [
-      {
-        id: "node-cf9c8f7e-26dd-446c-b3fa-b2406fc7821a",
-        type: "condition",
-        name: "条件节点",
-        children: [
-          {
-            id: "node-f227cd08-a503-48b7-babf-b4047fc9dfa5",
-            type: "node",
-            name: "普通节点",
-            path: ["1", "children", "0", "children", "0"]
-          }
-        ],
-        path: ["1", "children", "0"]
-      },
-      {
-        id: "node-9d393627-24c0-469f-818a-319d9a678707",
-        type: "condition",
-        name: "条件节点",
-        children: [],
-        path: ["1", "children", "1"]
-      }
-    ],
-    path: ["1"]
-  },
-  {
-    id: "node-972401ca-c4db-4268-8780-5607876d8372",
-    type: "node",
-    name: "普通节点",
-    path: ["2"]
-  },
-  {
-    id: "node-b106675a-5148-4a2e-aa86-8e06abd692d1",
-    type: "end",
-    name: "end",
-    path: ["3"]
-  }
-];
-const FlowBuilderControl = (props) => {
-  const [nodes, setNodes] = useState(defaultNodes);
+function FlowBuilder(props) {
+  const [nodes, setNodes] = useState(props.graphDiagram.nodes);
+  const renderContext = useContext(RenderContextKey);
+  const { onEvent } = renderContext;
   const handleChange = (nodes2, event, node) => {
     console.log("nodes change", nodes2, "event=", event);
     setNodes(nodes2);
-    if (props.onEditorEvent) {
+    if (onEvent) {
       if (event == "click-node") {
-        props.onEditorEvent("selectElement", { groupName: "steps", elementType: "step", elementId: node.id });
+        onEvent("designer:selectElement", { groupName: "steps", elementType: "step", elementId: node.id }, props);
       } else if (event == "remove-node") {
-        props.onEditorEvent("removeElement", { groupName: "steps", elementType: "step", elementId: node.id });
+        onEvent("designer:removeElement", { groupName: "steps", elementType: "step", elementId: node.id }, props);
       }
-      props.onEditorEvent("graphChange", { nodes: nodes2 });
+      onEvent("designer:graphChange", { nodes: nodes2 }, props);
     }
   };
   return /* @__PURE__ */ jsx(
-    FlowBuilder,
+    FlowBuilder$1,
     {
       className: "nop-flow-builder",
       historyTool: true,
@@ -5531,17 +5484,7 @@ const FlowBuilderControl = (props) => {
       PopconfirmComponent
     }
   );
-};
-class FlowBuilderRenderer extends React.Component {
-  render() {
-    return React.createElement(FlowBuilderControl, this.props);
-  }
 }
-unRegisterRenderer("nop-flow-builder");
-registerRenderer({
-  type: "nop-flow-builder",
-  component: FlowBuilderRenderer
-});
 export {
-  FlowBuilderControl as default
+  FlowBuilder
 };

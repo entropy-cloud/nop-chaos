@@ -5,7 +5,7 @@ import dts from 'vite-plugin-dts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],// , dts({ rollupTypes: true, logLevel: 'info', outDir: "lib" })],
+  plugins: [dts({ rollupTypes: true,outDir:"lib" })],
 
   build: {
     lib: {

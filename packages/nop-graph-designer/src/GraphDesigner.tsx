@@ -3,6 +3,8 @@ import { useCallback, useState } from 'react';
 
 import { useSplitter } from './Splitter';
 
+import './designer.css'
+
 import { ApiObject, OnEventType, EventCallbacks, RenderContext, SchemaCollectionType, SchemaType } from '@nop-chaos/nop-core'
 import { RenderContextKey } from '@nop-chaos/nop-react-core';
 
@@ -96,10 +98,13 @@ type SelectedElement = {
 
 export interface GraphDesignerProps
     extends Omit<GraphDesignerSchema, 'type'> {
-    className: string,
-    value: any,
-    data: any,
-    onChange: (value: any) => void
+    className?: any, // AMIS声明className类型为any
+    value?: any,
+    data:  {
+        [propName: string]: any;
+    }
+    onChange?: (value: any) => void
+    [propName: string]: any
 }
 
 function cleanData(data: any) {
@@ -158,7 +163,7 @@ export function GraphDesigner(props: GraphDesignerProps) {
         setCurrentElement({ groupName: "main", elementType: "default", elementId: "default" })
     }
 
-    const handleEvent = (event: string, data: any){
+    const handleEvent = (event: string, data: any) => {
         if (event == 'designer:save') {
             const data = { data: graphData, diagram: graphDiagram }
             if (onChange && (graphData != value?.data || graphDiagram != value?.diagram))
@@ -170,26 +175,19 @@ export function GraphDesigner(props: GraphDesignerProps) {
             }
         } else if (event == 'designer:selectMain') {
             selectMain()
+        } else if (event == 'designer:selectElement') {
+            setCurrentElement(data)
+            setShowRightPanel(data != null)
+        } else if (event == 'designer:removeElement') {
+            if (data.elementId == currentElement.elementId) {
+                selectMain()
+            }
+            let newData = removeElement(graphData, data)
+            setGraphData(newData)
         } else {
             console.log("unknown-event:", event, data)
         }
     }
-
-    const handleEditorEvent = useCallback((
-        e: React.UIEvent<any> | void,
-        action: ActionObject,
-        ctx: object,
-        throwErrors: boolean = false,
-        delegate?: IScopedContext) => {
-        if (action.actionType == 'submit') {
-            if (currentElement && currentElement.groupName != 'main') {
-                let group = graphData[currentElement.groupName] || (graphData[currentElement.groupName] = {})
-                group[currentElement.elementId] = action.payload
-            }
-            return
-        }
-        onAction && onAction(e, action, ctx, throwErrors, delegate)
-    }, [currentElement, graphData])
 
     const handleEditorChange = useCallback((values: any) => {
         if (currentElement && currentElement.groupName != 'main') {
@@ -199,40 +197,25 @@ export function GraphDesigner(props: GraphDesignerProps) {
             let data = updateMainData(graphData, values)
             setGraphData(data)
         }
-    }, [currentElement, graphData])
-
-    const handleEditorEvent = useCallback((event: string, data: any) => {
-        if (event == 'selectElement') {
-            setCurrentElement(data)
-            setShowRightPanel(data != null)
-        } else if (event == 'selectMain') {
-            selectMain()
-        } else if (event == 'removeElement') {
-            if (data.elementId == currentElement.elementId) {
-                selectMain()
-            }
-            let newData = removeElement(graphData, data)
-            setGraphData(newData)
+        const callbacks = editorCallbacks.current['subEditorChange']
+        if (callbacks) {
+            callbacks.forEach(callback => {
+                callback("subEditor:onChange", values, props)
+            })
         }
-        editorCallbacks.current.forEach(callback => {
-            callback(event, data)
-        })
-    }, [editorCallbacks])
+    }, [currentElement, graphData])
 
     const registerEditorCallback = useCallback((source: string, callback: OnEventType) => {
         let callbacks = editorCallbacks.current[source]
-        if(!callbacks){
+        if (!callbacks) {
             callbacks = []
             editorCallbacks.current[source] = callbacks
         }
         callbacks.push(callback)
-        return ()=>{}
+        return () => { }
     }, [editorCallbacks])
 
     const subProps = {
-        onAction: handleAction,
-        onEditorEvent: handleEditorEvent,
-        registerEditorCallback
     }
 
     function renderToolbar() {
@@ -263,22 +246,25 @@ export function GraphDesigner(props: GraphDesignerProps) {
             ></div>
 
             {render('subEditor', schema || '', {
-                ...subProps, data,
-                onAction: handleEditorAction, onChange: handleEditorChange
-            })}
+                ...subProps, data, onChange: handleEditorChange
+            }, props)}
         </div>
     }
 
     return (
-        <div className={'nop-graph-designer ' + (className || '')}>
-            {toolbar ? renderToolbar() : null}
-            <div className={'nop-graph-designer-inner'}>
-                <div className={'nop-graph-designer-main'}>
-                    <RenderContextKey.Provider value={{ ...renderContext, onEvent: handleEvent }}>
+        <RenderContextKey.Provider value={{
+            ...renderContext,
+            onEvent: handleEvent, observeEvent: registerEditorCallback
+        }}>
+            <div className={'nop-graph-designer ' + (className || '')}>
+                {toolbar ? renderToolbar() : null}
+                <div className={'nop-graph-designer-inner'}>
+                    <div className={'nop-graph-designer-main'}>
                         {render('main', props.mainEditor, subProps, props)}
-                    </RenderContextKey.Provider>
+                    </div>
+                    {showRightPanel ? renderRightPanel() : null}
                 </div>
-                {showRightPanel ? renderRightPanel() : null}
             </div>
-        </div>)
+        </RenderContextKey.Provider>
+    )
 }

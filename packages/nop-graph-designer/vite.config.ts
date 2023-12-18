@@ -3,7 +3,7 @@ import dts from 'vite-plugin-dts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [dts({ rollupTypes: true,logDiagnostics: true,outDir:"lib" })],
+  plugins: [dts({ rollupTypes: true,outDir:"lib" })],
 
   build: {
     lib: {

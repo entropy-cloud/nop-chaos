@@ -18,6 +18,8 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@nop-chaos/nop-amis-ext": "workspace:*",
     "@nop-chaos/nop-flow-builder": "workspace:*",
+    "@nop-chaos/nop-graph-designer": "workspace:*",
+
     "systemjs": "^6.13.0",
     "amis": "^3.6.1",
     "amis-core": "^3.6.1",

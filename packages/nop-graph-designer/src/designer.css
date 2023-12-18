@@ -1,0 +1,51 @@
+.nop-graph-designer-panel-resizor {
+    position: absolute;
+    left: -0.375rem;
+    top: 50%;
+    cursor: ew-resize;
+    writing-mode: vertical-lr;
+    width: 0.75rem;
+    height: 1.5rem;
+    margin-top: -0.75rem;
+    border: 0.0625rem solid #dee2e6;
+    background-color: #fff;
+    border-radius: 0.142rem;
+    font-size: 12px;
+    line-height: 0.625rem;
+    text-align: center;
+    user-select: none;
+    color: #666;
+}
+
+.nop-graph-designer-panel-resizor:hover {
+    color: #000;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.12),
+        0 2px 4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.nop-graph-designer-panel-resizor:after {
+    content: '···';
+}
+
+.nop-graph-designer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.nop-graph-designer-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.nop-graph-designer-main {
+    flex: 1;
+    display: flex;
+}
+
+.nop-graph-designer-right-panel {
+    padding-left: 10px;
+    position:relative;
+}

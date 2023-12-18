@@ -5,7 +5,7 @@
   "packageManager": "pnpm@7.1.0",
   "description": "FlowBuilder Designer",
   "type": "module",
-  "types": "src/index.ts",
+  "types": "lib/index.d.ts",
   "main": "lib/nop-flow-builder.js",
   "files": [
     "assets",
@@ -26,10 +26,11 @@
   "dependencies": {
     "antd": "^5.0",
     "react-flow-builder": "^2.5.0",
-    "amis": "^3.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tslib": "^2.3.1"
+    "tslib": "^2.3.1",
+    "@nop-chaos/nop-react-core": "workspace:*",
+    "@nop-chaos/nop-core": "workspace:*"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",

@@ -1,1 +1,1 @@
-import GraphDesigner from ./GraphDesigner'
+export * from './GraphDesigner'
