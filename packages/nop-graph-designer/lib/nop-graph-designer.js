@@ -159,9 +159,11 @@ function GraphDesigner(props) {
     return () => {
     };
   }, [editorCallbacks]);
-  const subProps = {};
+  const subProps = {
+    graphDiagram
+  };
   function renderToolbar() {
-    return /* @__PURE__ */ React.createElement("div", { className: "nop-graph-designer-toolbar " + toolbarClassName }, render("toolbar", toolbar || "", subProps, props));
+    return /* @__PURE__ */ React.createElement("div", { className: "nop-graph-designer-toolbar " + (toolbarClassName || "") }, render("toolbar", toolbar || "", subProps, props));
   }
   function renderRightPanel() {
     var _a2, _b, _c;

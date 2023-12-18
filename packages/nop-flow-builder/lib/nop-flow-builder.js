@@ -1,9 +1,9 @@
 import { jsx, Fragment } from "react/jsx-runtime";
 import React, { createContext, createRef, createElement, Component, useContext, forwardRef, useState, useMemo, useRef, useImperativeHandle, useEffect } from "react";
 import { Drawer, Popover, Popconfirm } from "antd";
+import { RenderContextKey } from "@nop-chaos/nop-react-core";
 import "systemjs/dist/system.js";
 import { findDOMNode } from "react-dom";
-const RenderContextKey = createContext(null);
 var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
@@ -5455,7 +5455,8 @@ const registerNodes = [
   }
 ];
 function FlowBuilder(props) {
-  const [nodes, setNodes] = useState(props.graphDiagram.nodes);
+  var _a;
+  const [nodes, setNodes] = useState(((_a = props.graphDiagram) == null ? void 0 : _a.nodes) || []);
   const renderContext = useContext(RenderContextKey);
   const { onEvent } = renderContext;
   const handleChange = (nodes2, event, node) => {

@@ -26,7 +26,7 @@ export default defineConfig({
       // since server packages can get them via npm install
       external: ['vue', '@vue/shared', 'vue-router', 'axios', 'systemjs', 'systemjs/dist/system.js', 'lru-cache', 'lodash-es',
         'qs', 'path-to-regexp', 'pinia', 'urql', 'react', 'react-dom', 'react/jsx-runtime', 'antd',
-      "amis","amis-ui","amis-core","amis-formula"],
+      "amis","amis-ui","amis-core","amis-formula","@nop-chaos/nop-core","@nop-chaos/nop-react-core"],
     },
   },
 })

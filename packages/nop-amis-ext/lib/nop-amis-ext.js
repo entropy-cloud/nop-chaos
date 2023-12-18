@@ -1,8 +1,9 @@
 import { noop as noop$3, themeable, localeable, uncontrollable, autobind, FormItem } from "amis-core";
 import * as React from "react";
-import React__default, { createContext, useState, useCallback, useRef, useMemo as useMemo$1, useContext, useEffect, useLayoutEffect as useLayoutEffect$1, forwardRef, useImperativeHandle, createElement, createRef, Component } from "react";
+import React__default, { useState, useCallback, useRef, createContext, useMemo as useMemo$1, useContext, useEffect, useLayoutEffect as useLayoutEffect$1, forwardRef, useImperativeHandle, createElement, createRef, Component } from "react";
 import { PickerContainer, ResultBox } from "amis-ui";
 import { unRegisterRenderer, Renderer, isEffectiveApi } from "amis";
+import { RenderContextKey } from "@nop-chaos/nop-react-core";
 var __defProp$3 = Object.defineProperty;
 var __getOwnPropDesc$3 = Object.getOwnPropertyDescriptor;
 var __decorateClass$3 = (decorators, target, key, kind) => {
@@ -136,7 +137,6 @@ PopupEditorRenderer = __decorateClass$2([
     strictMode: false
   })
 ], PopupEditorRenderer);
-const RenderContextKey$1 = createContext(null);
 function useSplitter(options) {
   const codeWrapRef = useRef(null);
   const start = useRef({ startX: 0, startWidth: 0 });
@@ -230,7 +230,7 @@ function GraphDesigner(props) {
     asideMinWidth: minPanelWidth || 50,
     asideMaxWidth: maxPanelWidth || 800
   });
-  const renderContext = React.useContext(RenderContextKey$1);
+  const renderContext = React.useContext(RenderContextKey);
   const { render, executor } = renderContext;
   if (!inited) {
     setInited(true);
@@ -294,9 +294,11 @@ function GraphDesigner(props) {
     return () => {
     };
   }, [editorCallbacks]);
-  const subProps = {};
+  const subProps = {
+    graphDiagram
+  };
   function renderToolbar() {
-    return /* @__PURE__ */ React.createElement("div", { className: "nop-graph-designer-toolbar " + toolbarClassName }, render("toolbar", toolbar || "", subProps, props));
+    return /* @__PURE__ */ React.createElement("div", { className: "nop-graph-designer-toolbar " + (toolbarClassName || "") }, render("toolbar", toolbar || "", subProps, props));
   }
   function renderRightPanel() {
     var _a2, _b, _c;
@@ -325,7 +327,7 @@ function GraphDesigner(props) {
       onChange: handleEditorChange
     }, props));
   }
-  return /* @__PURE__ */ React.createElement(RenderContextKey$1.Provider, { value: {
+  return /* @__PURE__ */ React.createElement(RenderContextKey.Provider, { value: {
     ...renderContext,
     onEvent: handleEvent,
     observeEvent: registerEditorCallback
@@ -346,7 +348,8 @@ unRegisterRenderer("nop-graph-designer");
 let GraphDesignerRenderer = class extends React__default.Component {
   render() {
     const props = this.props;
-    function amisRender(name, schema, props2, ctx) {
+    function amisRender(name, schema, opts, ctx) {
+      return props.render(name, schema, opts);
     }
     function amisExecutor(api, data, ctx) {
       const store = props.store;
@@ -357,7 +360,7 @@ let GraphDesignerRenderer = class extends React__default.Component {
       }
       return;
     }
-    return /* @__PURE__ */ React__default.createElement(React__default.Fragment, null, /* @__PURE__ */ React__default.createElement(RenderContextKey$1.Provider, { value: { render: amisRender, executor: amisExecutor } }, /* @__PURE__ */ React__default.createElement(GraphDesigner, { ...props })));
+    return /* @__PURE__ */ React__default.createElement(React__default.Fragment, null, /* @__PURE__ */ React__default.createElement(RenderContextKey.Provider, { value: { render: amisRender, executor: amisExecutor } }, /* @__PURE__ */ React__default.createElement(GraphDesigner, { ...props })));
   }
 };
 GraphDesignerRenderer = __decorateClass$1([
@@ -45882,7 +45885,6 @@ const Popconfirm$1 = Popconfirm;
     return result;
   };
 })();
-const RenderContextKey = createContext(null);
 var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
@@ -51333,7 +51335,8 @@ const registerNodes = [
   }
 ];
 function FlowBuilder(props) {
-  const [nodes, setNodes] = useState(props.graphDiagram.nodes);
+  var _a;
+  const [nodes, setNodes] = useState(((_a = props.graphDiagram) == null ? void 0 : _a.nodes) || []);
   const renderContext = useContext(RenderContextKey);
   const { onEvent } = renderContext;
   const handleChange = (nodes2, event, node2) => {

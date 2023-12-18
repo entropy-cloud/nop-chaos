@@ -18,8 +18,8 @@ export class GraphDesignerRenderer extends React.Component<GraphDesignerRenderer
     render() {
         const props = this.props;
 
-        function amisRender(name: string, schema: any, props: any, ctx: any) {
-
+        function amisRender(name: string, schema: any, opts: any, ctx: any) {
+            return props.render(name, schema,opts)
         }
 
         function amisExecutor(api: ApiObject, data: any, ctx: any): Promise<ApiResponse> | undefined {

@@ -91,13 +91,13 @@ const registerNodes: IRegisterNode[] = [
 ];
 
 export type FlowBuilderProps = {
-  graphDiagram: {
+  graphDiagram?: {
     nodes: INode[]
   }
 }
 
 export function FlowBuilder(props: FlowBuilderProps) {
-  const [nodes, setNodes] = useState<INode[]>(props.graphDiagram.nodes);
+  const [nodes, setNodes] = useState<INode[]>(props.graphDiagram?.nodes||[]);
   const renderContext = useContext(RenderContextKey)!
   const { onEvent } = renderContext
 

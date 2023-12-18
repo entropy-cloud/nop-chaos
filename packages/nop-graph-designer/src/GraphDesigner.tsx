@@ -216,10 +216,11 @@ export function GraphDesigner(props: GraphDesignerProps) {
     }, [editorCallbacks])
 
     const subProps = {
+        graphDiagram
     }
 
     function renderToolbar() {
-        return <div className={'nop-graph-designer-toolbar ' + toolbarClassName}>
+        return <div className={'nop-graph-designer-toolbar ' + (toolbarClassName || '')}>
             {render('toolbar', toolbar || '', subProps, props)}
         </div>
     }
