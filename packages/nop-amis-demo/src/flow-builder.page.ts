@@ -100,7 +100,7 @@ export default {
                     {
                         id: 'node-972401ca-c4db-4268-8780-5607876d8372',
                         type: 'node',
-                        name: '普通节点',
+                        name: '普通节点2',
                         path: ['2'],
                     },
                     {

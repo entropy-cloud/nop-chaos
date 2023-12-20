@@ -105,6 +105,7 @@ export interface GraphDesignerProps
     }
     onChange?: (value: any) => void
     [propName: string]: any
+    defaultValue:any
 }
 
 function cleanData(data: any) {
@@ -125,11 +126,11 @@ function cleanData(data: any) {
 export function GraphDesigner(props: GraphDesignerProps) {
 
     const { className, toolbarClassName, minPanelWidth, maxPanelWidth,
-        initApi, saveApi, toolbar, value, onChange } = props;
+        initApi, saveApi, toolbar, defaultValue, onChange } = props;
 
     const [showRightPanel, setShowRightPanel] = useState(true)
-    const [graphData, setGraphData] = useState<GraphData>(value?.data || {})
-    const [graphDiagram, setGraphDiagram] = useState(value?.diagram || {})
+    const [graphData, setGraphData] = useState<GraphData>(defaultValue?.data || {})
+    const [graphDiagram, setGraphDiagram] = useState(defaultValue?.diagram || {})
 
     const [inited, setInited] = useState(false)
     const [currentElement, setCurrentElement] = useState<SelectedElement>({

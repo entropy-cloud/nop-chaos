@@ -212,12 +212,12 @@ function GraphDesigner(props) {
     initApi,
     saveApi,
     toolbar,
-    value: value2,
+    defaultValue,
     onChange
   } = props;
   const [showRightPanel, setShowRightPanel] = useState(true);
-  const [graphData, setGraphData] = useState((value2 == null ? void 0 : value2.data) || {});
-  const [graphDiagram, setGraphDiagram] = useState((value2 == null ? void 0 : value2.diagram) || {});
+  const [graphData, setGraphData] = useState((defaultValue == null ? void 0 : defaultValue.data) || {});
+  const [graphDiagram, setGraphDiagram] = useState((defaultValue == null ? void 0 : defaultValue.diagram) || {});
   const [inited, setInited] = useState(false);
   const [currentElement, setCurrentElement] = useState({
     groupName: "main",
@@ -248,7 +248,7 @@ function GraphDesigner(props) {
   const handleEvent = (event, data) => {
     if (event == "designer:save") {
       const data2 = { data: graphData, diagram: graphDiagram };
-      if (onChange && (graphData != (value2 == null ? void 0 : value2.data) || graphDiagram != (value2 == null ? void 0 : value2.diagram)))
+      if (onChange && (graphData != (value == null ? void 0 : value.data) || graphDiagram != (value == null ? void 0 : value.diagram)))
         onChange(data2);
       const future = saveApi && (executor == null ? void 0 : executor(saveApi, data2, props));
       if (!future) {

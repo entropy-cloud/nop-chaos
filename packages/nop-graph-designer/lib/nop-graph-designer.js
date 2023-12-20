@@ -77,12 +77,12 @@ function GraphDesigner(props) {
     initApi,
     saveApi,
     toolbar,
-    value,
+    defaultValue,
     onChange
   } = props;
   const [showRightPanel, setShowRightPanel] = useState(true);
-  const [graphData, setGraphData] = useState((value == null ? void 0 : value.data) || {});
-  const [graphDiagram, setGraphDiagram] = useState((value == null ? void 0 : value.diagram) || {});
+  const [graphData, setGraphData] = useState((defaultValue == null ? void 0 : defaultValue.data) || {});
+  const [graphDiagram, setGraphDiagram] = useState((defaultValue == null ? void 0 : defaultValue.diagram) || {});
   const [inited, setInited] = useState(false);
   const [currentElement, setCurrentElement] = useState({
     groupName: "main",

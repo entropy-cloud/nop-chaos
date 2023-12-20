@@ -36,6 +36,7 @@ export declare interface GraphDesignerProps extends Omit<GraphDesignerSchema, 't
     };
     onChange?: (value: any) => void;
     [propName: string]: any;
+    defaultValue: any;
 }
 
 export declare interface GraphDesignerSchema extends SchemaType {
