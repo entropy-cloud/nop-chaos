@@ -96,7 +96,10 @@ function GraphDesigner(props) {
     asideMaxWidth: maxPanelWidth || 800
   });
   const renderContext = React.useContext(RenderContextKey);
-  const { render, executor } = renderContext;
+  const { render, executor, observeEvent } = renderContext;
+  React.useEffect(() => {
+    return observeEvent == null ? void 0 : observeEvent("delegate", handleEvent);
+  });
   if (!inited) {
     setInited(true);
     (_a = executor(initApi, props.data, props)) == null ? void 0 : _a.then((res) => {
@@ -113,7 +116,7 @@ function GraphDesigner(props) {
   const handleEvent = (event, data) => {
     if (event == "designer:save") {
       const data2 = { data: graphData, diagram: graphDiagram };
-      if (onChange && (graphData != (value == null ? void 0 : value.data) || graphDiagram != (value == null ? void 0 : value.diagram)))
+      if (onChange && (graphData != (defaultValue == null ? void 0 : defaultValue.data) || graphDiagram != (defaultValue == null ? void 0 : defaultValue.diagram)))
         onChange(data2);
       const future = saveApi && (executor == null ? void 0 : executor(saveApi, data2, props));
       if (!future) {
@@ -157,6 +160,8 @@ function GraphDesigner(props) {
     }
     callbacks.push(callback);
     return () => {
+      const index = callbacks.indexOf(callback);
+      index >= 0 && callbacks.splice(index, 1);
     };
   }, [editorCallbacks]);
   const subProps = {

@@ -12,6 +12,7 @@
     "dev": "pnpm -F nop-site dev",
     "build": "pnpm -r build",
     "build-sdk": "pnpm -F nop-core build & pnpm -F nop-react-core build & pnpm -F nop-graph-designer build & pnpm -F nop-flow-builder build & pnpm -F nop-amis-ext build & pnpm -F nop-amis-vue build & pnpm -F sdk build",
+    "build-designer": "pnpm -F nop-graph-designer build & pnpm -F nop-flow-builder build & pnpm -F nop-amis-ext build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "pnpm -F nop-site preview",

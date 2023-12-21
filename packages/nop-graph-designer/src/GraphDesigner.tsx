@@ -100,12 +100,12 @@ export interface GraphDesignerProps
     extends Omit<GraphDesignerSchema, 'type'> {
     className?: any, // AMIS声明className类型为any
     value?: any,
-    data:  {
+    data: {
         [propName: string]: any;
     }
     onChange?: (value: any) => void
     [propName: string]: any
-    defaultValue:any
+    defaultValue: any
 }
 
 function cleanData(data: any) {
@@ -147,7 +147,11 @@ export function GraphDesigner(props: GraphDesignerProps) {
     })
 
     const renderContext: RenderContext = React.useContext(RenderContextKey)!
-    const { render, executor } = renderContext
+    const { render, executor, observeEvent } = renderContext
+
+    React.useEffect(() => {
+        return observeEvent?.("delegate", handleEvent)
+    })
 
     if (!inited) {
         setInited(true)
@@ -167,7 +171,7 @@ export function GraphDesigner(props: GraphDesignerProps) {
     const handleEvent = (event: string, data: any) => {
         if (event == 'designer:save') {
             const data = { data: graphData, diagram: graphDiagram }
-            if (onChange && (graphData != value?.data || graphDiagram != value?.diagram))
+            if (onChange && (graphData != defaultValue?.data || graphDiagram != defaultValue?.diagram))
                 onChange(data)
 
             const future = saveApi && executor?.(saveApi, data, props)
@@ -213,7 +217,10 @@ export function GraphDesigner(props: GraphDesignerProps) {
             editorCallbacks.current[source] = callbacks
         }
         callbacks.push(callback)
-        return () => { }
+        return () => {
+            const index = callbacks.indexOf(callback)
+            index >= 0 && callbacks.splice(index, 1)
+        }
     }, [editorCallbacks])
 
     const subProps = {

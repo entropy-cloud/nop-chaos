@@ -26,6 +26,7 @@ export default {
 
         mainEditor: {
             type: "nop-flow-builder",
+            flowModel: 'simple', // 在FlowBuilderDemo.tsx中注册的流程显示模型
             label: "Edit"
         },
 
