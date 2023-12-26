@@ -1,12 +1,15 @@
 <template>
     <component :is="componentType" v-bind="props" :schema="schemaRef"
         @exit="handleExit" v-if="componentType"/>
+
+    <xui-loading v-if="!componentType" />    
 </template>
   
 <script lang="ts" setup>
 import { useAdapter, getSchemaProcessorType } from '@nop-chaos/nop-core';
 import { defineComponent, shallowRef, watchEffect, markRaw } from 'vue';
 import AmisPageEditor from './AmisPageEditor.vue';
+import XuiLoading from './XuiLoading.vue'
 
 const props = defineProps({
     rollbackPageSource: Function,
@@ -34,7 +37,7 @@ const componentType = shallowRef()
 const schemaRef = shallowRef()
 
 watchEffect(() => {
-    getPageSource().then(schema => {
+    getPageSource(false).then(schema => {
         if(!schema)
           schema = {}
         schemaRef.value = markRaw(schema)
