@@ -11,6 +11,7 @@ import XuiSchemaPage from './XuiSchemaPage.vue'
 export * from './react-adapter'
 
 import './AmisVueComponent'
+import './XuiPageEditorButton'
 
 import AmisVueComponent from './AmisVueComponent'
 import { registerAdapter, registerModule } from "@nop-chaos/nop-core"

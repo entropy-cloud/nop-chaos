@@ -20,15 +20,27 @@ import { VNode } from 'vue';
 import { VNodeProps } from 'vue';
 
 export declare const AmisPageEditor: DefineComponent<{
-    path: {
-        type: StringConstructor;
+    schema: ObjectConstructor;
+    rollbackPageSource: FunctionConstructor;
+    getPageSource: {
+        type: FunctionConstructor;
+        required: true;
+    };
+    savePageSource: {
+        type: FunctionConstructor;
         required: true;
     };
 }, {
     editorRef: Ref<null>;
 }, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, "exit"[], "exit", VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
-    path: {
-        type: StringConstructor;
+    schema: ObjectConstructor;
+    rollbackPageSource: FunctionConstructor;
+    getPageSource: {
+        type: FunctionConstructor;
+        required: true;
+    };
+    savePageSource: {
+        type: FunctionConstructor;
         required: true;
     };
 }>> & {
@@ -118,15 +130,25 @@ export declare const XuiPage: DefineComponent<{
 }>>, {}, {}>;
 
 export declare const XuiPageEditor: DefineComponent<{
-    path: {
-        type: StringConstructor;
+    rollbackPageSource: FunctionConstructor;
+    getPageSource: {
+        type: FunctionConstructor;
+        required: true;
+    };
+    savePageSource: {
+        type: FunctionConstructor;
         required: true;
     };
 }, {}, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     exit: (...args: any[]) => void;
 }, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
-    path: {
-        type: StringConstructor;
+    rollbackPageSource: FunctionConstructor;
+    getPageSource: {
+        type: FunctionConstructor;
+        required: true;
+    };
+    savePageSource: {
+        type: FunctionConstructor;
         required: true;
     };
 }>> & {

@@ -3,16 +3,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
-import { PageApis, deletePageCache } from '@nop-chaos/nop-core';
+import { defineComponent, onUnmounted, ref } from 'vue';
 import { ajaxFetch } from '@nop-chaos/nop-core';
 import { isString } from 'lodash-es'
 
 export default defineComponent({
   props: {
-    path: {
-      type: String,
-      required: true,
+    schema: Object,
+    rollbackPageSource: Function,
+    getPageSource: {
+      type: Function,
+      required: true
+    },
+    savePageSource: {
+      type: Function,
+      required:true
     }
   },
 
@@ -20,45 +25,49 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const editorRef = ref(null);
-    let inited = false;
     let fetched = false;
 
-    const { PageProvider__rollbackPageSource: rollbackPageSource, PageProvider__getPageSource: getPageSource,
-      PageProvider__savePageSource: savePageSource } = PageApis
+    const { savePageSource, rollbackPageSource, getPageSource } = props
 
     function handleEvent(event: MessageEvent) {
       if (event.data == 'amis-editor-inited') {
         if (fetched) return;
+        
+        var msg = {
+          type: 'setSchema',
+          data: props.schema,
+        };
+        postMsg(msg);
 
-        inited = true;
-        startFetch()
       } else if (event.data === 'amis-editor-reload') {
         fetched = false;
         startFetch()
       } else if (event.data === 'amis-editor-exit') {
         emit('exit');
       } else if (event.data === 'amis-editor-rollback') {
-        deletePageCache(props.path)
-        rollbackPageSource(props.path, true).then(() => {
-          postMsg({
-            type: 'toast',
-            level: 'info',
-            message: '回滚成功'
-          })
-        }).catch(e => {
-          postMsg({
-            type: 'toast',
-            level: 'error',
-            message: e.message || e.toString()
-          })
-        }).then(() => {
-          fetched = false
-          return startFetch()
-        });
+        //deletePageCache(props.path)
+        if (rollbackPageSource) {
+          rollbackPageSource().then(() => {
+            postMsg({
+              type: 'toast',
+              level: 'info',
+              message: '回滚成功'
+            })
+          }).catch(e => {
+            postMsg({
+              type: 'toast',
+              level: 'error',
+              message: e.message || e.toString()
+            })
+          }).then(() => {
+            fetched = false
+            return startFetch()
+          });
+        }
       } else if (isString(event.data) && event.data.startsWith('{')) {
         var data = JSON.parse(event.data);
         if (data.type == 'save') {
-          savePageSource(props.path, data.data, true).then(() => {
+          savePageSource(data.data).then(() => {
             postMsg({
               type: 'toast',
               message: '保存成功'
@@ -93,9 +102,9 @@ export default defineComponent({
 
     function startFetch() {
       const frame: any = editorRef.value;
-      if (!frame || !props.path) return;
+      if (!frame) return;
       fetched = true
-      return getPageSource(props.path, true).then((page) => {
+      return getPageSource().then((page) => {
         postMsg({
           type: 'toast',
           level: 'info',
@@ -119,12 +128,12 @@ export default defineComponent({
 
     window.addEventListener('message', handleEvent);
 
-    onMounted(() => {
-      console.log("editor mounted:" + editorRef.value)
-      if (inited) {
-        startFetch();
-      }
-    })
+    // onMounted(() => {
+    //   console.log("editor mounted:" + editorRef.value)
+    //   if (inited) {
+    //     startFetch();
+    //   }
+    // })
 
     onUnmounted(() => {
       console.log("editor unmounted")

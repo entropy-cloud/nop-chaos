@@ -1,7 +1,7 @@
 import qs, { parse as parse$1 } from "qs";
 import { match } from "path-to-regexp";
 import * as Vue from "vue";
-import { ref, shallowRef, toRaw, defineComponent, onMounted, onUnmounted, markRaw, watchEffect, onBeforeUnmount, h, openBlock, createElementBlock, createBlock, resolveDynamicComponent, Fragment as Fragment$1, createElementVNode, createVNode, unref, withCtx, createTextVNode, createCommentVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
+import { ref, shallowRef, toRaw, defineComponent, onUnmounted, markRaw, watchEffect, onBeforeUnmount, h, onMounted, openBlock, createElementBlock, createBlock, resolveDynamicComponent, mergeProps, createCommentVNode, unref, withCtx, createVNode, Fragment as Fragment$1, createElementVNode, createTextVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
 import LRUCache from "lru-cache";
 import { cloneDeep as cloneDeep$2, isNumber, isInteger, isBoolean, omit as omit$2, isString as isString$2 } from "lodash-es";
 import axios from "axios";
@@ -16,7 +16,7 @@ import * as ReactDOM from "react-dom";
 import ReactDOM__default, { createPortal, findDOMNode as findDOMNode$1 } from "react-dom";
 import copy from "copy-to-clipboard";
 import { createRoot } from "react-dom/client";
-import { ElButton, ElDialog } from "element-plus";
+import { ElDialog, ElButton } from "element-plus";
 import yaml from "js-yaml";
 import { applyPureVueInReact } from "veaury";
 function default_jumpTo(router, to) {
@@ -21790,67 +21790,67 @@ function _createForOfIteratorHelper(o, allowArrayLike) {
 var createUuid = function createUuid2(prefix) {
   return "".concat(prefix || "node", "-").concat(v4());
 };
-var getRegisterNode = function getRegisterNode2(registerNodes2, type4) {
-  return registerNodes2.find(function(node2) {
+var getRegisterNode = function getRegisterNode2(registerNodes, type4) {
+  return registerNodes.find(function(node2) {
     return type4 && node2.type === type4;
   });
 };
-var getIsStartNode = function getIsStartNode2(registerNodes2, type4) {
+var getIsStartNode = function getIsStartNode2(registerNodes, type4) {
   var _registerNodes$find;
-  return (_registerNodes$find = registerNodes2.find(function(item) {
+  return (_registerNodes$find = registerNodes.find(function(item) {
     return item.type === type4;
   })) === null || _registerNodes$find === void 0 ? void 0 : _registerNodes$find.isStart;
 };
-var getIsEndNode = function getIsEndNode2(registerNodes2, type4) {
+var getIsEndNode = function getIsEndNode2(registerNodes, type4) {
   var _registerNodes$find2;
-  return (_registerNodes$find2 = registerNodes2.find(function(item) {
+  return (_registerNodes$find2 = registerNodes.find(function(item) {
     return item.type === type4;
   })) === null || _registerNodes$find2 === void 0 ? void 0 : _registerNodes$find2.isEnd;
 };
-var getIsLoopNode = function getIsLoopNode2(registerNodes2, type4) {
+var getIsLoopNode = function getIsLoopNode2(registerNodes, type4) {
   var _registerNodes$find3;
-  return (_registerNodes$find3 = registerNodes2.find(function(item) {
+  return (_registerNodes$find3 = registerNodes.find(function(item) {
     return item.type === type4;
   })) === null || _registerNodes$find3 === void 0 ? void 0 : _registerNodes$find3.isLoop;
 };
-var getIsConditionNode = function getIsConditionNode2(registerNodes2, type4) {
-  var conditionNode = getRegisterNode(registerNodes2, type4);
-  var branchNode = registerNodes2.find(function(item) {
+var getIsConditionNode = function getIsConditionNode2(registerNodes, type4) {
+  var conditionNode = getRegisterNode(registerNodes, type4);
+  var branchNode = registerNodes.find(function(item) {
     return type4 && item.conditionNodeType === type4;
   });
   return conditionNode && branchNode && (branchNode === null || branchNode === void 0 ? void 0 : branchNode.type) !== (branchNode === null || branchNode === void 0 ? void 0 : branchNode.conditionNodeType);
 };
-var getIsBranchNode = function getIsBranchNode2(registerNodes2, type4) {
-  var branchNode = getRegisterNode(registerNodes2, type4);
-  var conditionNode = getRegisterNode(registerNodes2, branchNode === null || branchNode === void 0 ? void 0 : branchNode.conditionNodeType);
+var getIsBranchNode = function getIsBranchNode2(registerNodes, type4) {
+  var branchNode = getRegisterNode(registerNodes, type4);
+  var conditionNode = getRegisterNode(registerNodes, branchNode === null || branchNode === void 0 ? void 0 : branchNode.conditionNodeType);
   return branchNode && conditionNode && (branchNode === null || branchNode === void 0 ? void 0 : branchNode.type) !== (branchNode === null || branchNode === void 0 ? void 0 : branchNode.conditionNodeType);
 };
-var getAbstractNodeType = function getAbstractNodeType2(registerNodes2, type4) {
-  if (getIsStartNode(registerNodes2, type4)) {
+var getAbstractNodeType = function getAbstractNodeType2(registerNodes, type4) {
+  if (getIsStartNode(registerNodes, type4)) {
     return "start";
-  } else if (getIsEndNode(registerNodes2, type4)) {
+  } else if (getIsEndNode(registerNodes, type4)) {
     return "end";
-  } else if (getIsLoopNode(registerNodes2, type4)) {
+  } else if (getIsLoopNode(registerNodes, type4)) {
     return "loop";
-  } else if (getIsBranchNode(registerNodes2, type4)) {
+  } else if (getIsBranchNode(registerNodes, type4)) {
     return "branch";
-  } else if (getIsConditionNode(registerNodes2, type4)) {
+  } else if (getIsConditionNode(registerNodes, type4)) {
     return "condition";
   } else {
     return "common";
   }
 };
-var createNewNode = function createNewNode2(registerNodes2, type4) {
+var createNewNode = function createNewNode2(registerNodes, type4) {
   var customCreateUuid = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : createUuid;
-  var registerNode = getRegisterNode(registerNodes2, type4);
+  var registerNode = getRegisterNode(registerNodes, type4);
   if (!registerNode)
     return;
-  var isBranchNode = getIsBranchNode(registerNodes2, type4);
-  var isConditionNode = getIsConditionNode(registerNodes2, type4);
-  var isLoopNode = getIsLoopNode(registerNodes2, type4);
+  var isBranchNode = getIsBranchNode(registerNodes, type4);
+  var isConditionNode = getIsConditionNode(registerNodes, type4);
+  var isLoopNode = getIsLoopNode(registerNodes, type4);
   var initialNodeData = cloneDeep((registerNode === null || registerNode === void 0 ? void 0 : registerNode.initialNodeData) || {});
   var extraProps = isBranchNode ? _objectSpread2({
-    children: [createNewNode2(registerNodes2, registerNode.conditionNodeType, customCreateUuid), createNewNode2(registerNodes2, registerNode.conditionNodeType, customCreateUuid)]
+    children: [createNewNode2(registerNodes, registerNode.conditionNodeType, customCreateUuid), createNewNode2(registerNodes, registerNode.conditionNodeType, customCreateUuid)]
   }, initialNodeData) : isConditionNode || isLoopNode ? _objectSpread2({
     children: []
   }, initialNodeData) : initialNodeData;
@@ -21984,13 +21984,13 @@ var useZoom = function useZoom2() {
   };
 };
 var useAction = function useAction2() {
-  var _useContext = useContext(BuilderContext), registerNodes2 = _useContext.registerNodes, nodes = _useContext.nodes, readonly = _useContext.readonly, drawerVisibleWhenAddNode = _useContext.drawerVisibleWhenAddNode, onChange = _useContext.onChange, setSelectedNode = _useContext.setSelectedNode, setDrawerTitle = _useContext.setDrawerTitle, createUuid3 = _useContext.createUuid;
+  var _useContext = useContext(BuilderContext), registerNodes = _useContext.registerNodes, nodes = _useContext.nodes, readonly = _useContext.readonly, drawerVisibleWhenAddNode = _useContext.drawerVisibleWhenAddNode, onChange = _useContext.onChange, setSelectedNode = _useContext.setSelectedNode, setDrawerTitle = _useContext.setDrawerTitle, createUuid3 = _useContext.createUuid;
   var currentNode = useContext(NodeContext);
   var _useHistory = useHistory(), pushHistory = _useHistory.pushHistory;
   var _useDrawer = useDrawer(), closeDrawer = _useDrawer.closeDrawer;
   var clickNode = function clickNode2() {
     var node2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : currentNode;
-    var registerNode = getRegisterNode(registerNodes2, node2.type);
+    var registerNode = getRegisterNode(registerNodes, node2.type);
     if (!readonly && (registerNode === null || registerNode === void 0 ? void 0 : registerNode.configComponent)) {
       var allNodes = DFS(nodes);
       var _iterator = _createForOfIteratorHelper(allNodes), _step;
@@ -22019,15 +22019,15 @@ var useAction = function useAction2() {
   var addNode = function addNode2(_node, _newNodeType) {
     var node2 = !!_newNodeType ? _node : currentNode;
     var newNodeType = !!_newNodeType ? _newNodeType : _node;
-    var registerNode = getRegisterNode(registerNodes2, newNodeType);
-    var newNode = createNewNode(registerNodes2, newNodeType, createUuid3);
+    var registerNode = getRegisterNode(registerNodes, newNodeType);
+    var newNode = createNewNode(registerNodes, newNodeType, createUuid3);
     if (!newNode) {
       return;
     }
-    if (getIsConditionNode(registerNodes2, newNodeType)) {
+    if (getIsConditionNode(registerNodes, newNodeType)) {
       node2.children = node2.children || [];
       node2.children.push(newNode);
-    } else if (getIsConditionNode(registerNodes2, node2.type)) {
+    } else if (getIsConditionNode(registerNodes, node2.type)) {
       node2.children = node2.children || [];
       node2.children.unshift(newNode);
     } else {
@@ -22041,7 +22041,7 @@ var useAction = function useAction2() {
     onChange(_toConsumableArray(nodes), "add-node__".concat(newNodeType), newNode);
     pushHistory();
     if (drawerVisibleWhenAddNode) {
-      if (getIsBranchNode(registerNodes2, newNodeType) && (!(registerNode === null || registerNode === void 0 ? void 0 : registerNode.showPracticalBranchNode) || !(registerNode === null || registerNode === void 0 ? void 0 : registerNode.configComponent))) {
+      if (getIsBranchNode(registerNodes, newNodeType) && (!(registerNode === null || registerNode === void 0 ? void 0 : registerNode.showPracticalBranchNode) || !(registerNode === null || registerNode === void 0 ? void 0 : registerNode.configComponent))) {
         clickNode(newNode.children[0]);
       } else {
         clickNode(newNode);
@@ -22051,8 +22051,8 @@ var useAction = function useAction2() {
   };
   var addNodeInLoop = function addNodeInLoop2(newNodeType) {
     var node2 = currentNode;
-    var registerNode = getRegisterNode(registerNodes2, newNodeType);
-    var newNode = createNewNode(registerNodes2, newNodeType, createUuid3);
+    var registerNode = getRegisterNode(registerNodes, newNodeType);
+    var newNode = createNewNode(registerNodes, newNodeType, createUuid3);
     if (!newNode) {
       return;
     }
@@ -22061,7 +22061,7 @@ var useAction = function useAction2() {
     onChange(_toConsumableArray(nodes), "add-node-in-loop__".concat(newNodeType), newNode);
     pushHistory();
     if (drawerVisibleWhenAddNode) {
-      if (getIsBranchNode(registerNodes2, newNodeType) && (!(registerNode === null || registerNode === void 0 ? void 0 : registerNode.showPracticalBranchNode) || !(registerNode === null || registerNode === void 0 ? void 0 : registerNode.configComponent))) {
+      if (getIsBranchNode(registerNodes, newNodeType) && (!(registerNode === null || registerNode === void 0 ? void 0 : registerNode.showPracticalBranchNode) || !(registerNode === null || registerNode === void 0 ? void 0 : registerNode.configComponent))) {
         clickNode(newNode.children[0]);
       } else {
         clickNode(newNode);
@@ -22090,7 +22090,7 @@ var useAction = function useAction2() {
   };
   var filterEmptyBranch = function filterEmptyBranch2(allNodes) {
     var restNodes = allNodes.filter(function(item) {
-      return !(getIsBranchNode(registerNodes2, item.type) && Array.isArray(item.children) && item.children.length === 0);
+      return !(getIsBranchNode(registerNodes, item.type) && Array.isArray(item.children) && item.children.length === 0);
     });
     var _iterator3 = _createForOfIteratorHelper(restNodes), _step3;
     try {
@@ -22275,17 +22275,17 @@ var css_248z$4 = ".flow-builder-addable-nodes .flow-builder-addable-node-item {\
 styleInject(css_248z$4);
 var AddNodeButton = function AddNodeButton2(props) {
   var inLoop = props.inLoop;
-  var _useContext = useContext(BuilderContext), registerNodes2 = _useContext.registerNodes, nodes = _useContext.nodes, readonly = _useContext.readonly, dragType = _useContext.dragType, _useContext$DropCompo = _useContext.DropComponent, DropComponent = _useContext$DropCompo === void 0 ? DropButton : _useContext$DropCompo, PopoverComponent2 = _useContext.PopoverComponent, onDropNodeSuccess = _useContext.onDropNodeSuccess, onAddNodeSuccess = _useContext.onAddNodeSuccess;
+  var _useContext = useContext(BuilderContext), registerNodes = _useContext.registerNodes, nodes = _useContext.nodes, readonly = _useContext.readonly, dragType = _useContext.dragType, _useContext$DropCompo = _useContext.DropComponent, DropComponent = _useContext$DropCompo === void 0 ? DropButton : _useContext$DropCompo, PopoverComponent2 = _useContext.PopoverComponent, onDropNodeSuccess = _useContext.onDropNodeSuccess, onAddNodeSuccess = _useContext.onAddNodeSuccess;
   var node2 = useContext(NodeContext);
   var _useAction = useAction(), addNode = _useAction.addNode, addNodeInLoop = _useAction.addNodeInLoop;
   var handleAdd = inLoop ? addNodeInLoop : addNode;
   var _useState = useState(false), _useState2 = _slicedToArray(_useState, 2), visible = _useState2[0], setVisible = _useState2[1];
-  var registerNode = getRegisterNode(registerNodes2, node2.type);
+  var registerNode = getRegisterNode(registerNodes, node2.type);
   var AddableComponent = registerNode === null || registerNode === void 0 ? void 0 : registerNode.addableComponent;
   var addableNodeTypes = registerNode === null || registerNode === void 0 ? void 0 : registerNode.addableNodeTypes;
-  var droppable = dragType && !getIsConditionNode(registerNodes2, dragType) && (Array.isArray(addableNodeTypes) ? addableNodeTypes.includes(dragType) : true);
-  var options = registerNodes2.filter(function(item) {
-    return !getIsStartNode(registerNodes2, item.type) && !getIsEndNode(registerNodes2, item.type) && !getIsConditionNode(registerNodes2, item.type) && (Array.isArray(addableNodeTypes) ? addableNodeTypes.includes(item.type) : true);
+  var droppable = dragType && !getIsConditionNode(registerNodes, dragType) && (Array.isArray(addableNodeTypes) ? addableNodeTypes.includes(dragType) : true);
+  var options = registerNodes.filter(function(item) {
+    return !getIsStartNode(registerNodes, item.type) && !getIsEndNode(registerNodes, item.type) && !getIsConditionNode(registerNodes, item.type) && (Array.isArray(addableNodeTypes) ? addableNodeTypes.includes(item.type) : true);
   });
   var handleAddNode = function handleAddNode2(newNodeType) {
     var newNode = handleAdd(newNodeType);
@@ -22301,8 +22301,8 @@ var AddNodeButton = function AddNodeButton2(props) {
     nodes,
     add: handleAddNode
   }) : /* @__PURE__ */ React__default.createElement(React__default.Fragment, null, options.map(function(item) {
-    var registerNode2 = getRegisterNode(registerNodes2, item.type);
-    var defaultIcon = getIsBranchNode(registerNodes2, item.type) ? AddBranchIcon : AddNormalIcon;
+    var registerNode2 = getRegisterNode(registerNodes, item.type);
+    var defaultIcon = getIsBranchNode(registerNodes, item.type) ? AddBranchIcon : AddNormalIcon;
     return /* @__PURE__ */ React__default.createElement("div", {
       className: "flow-builder-addable-node-item",
       key: item.type,
@@ -22334,9 +22334,9 @@ var AddNodeButton = function AddNodeButton2(props) {
   }))) : null : null, /* @__PURE__ */ React__default.createElement(SplitLine, null));
 };
 var StartNode = function StartNode2() {
-  var _useContext = useContext(BuilderContext), registerNodes2 = _useContext.registerNodes, nodes = _useContext.nodes, beforeNodeClick = _useContext.beforeNodeClick, allowStartConfig = _useContext.allowStartConfig;
+  var _useContext = useContext(BuilderContext), registerNodes = _useContext.registerNodes, nodes = _useContext.nodes, beforeNodeClick = _useContext.beforeNodeClick, allowStartConfig = _useContext.allowStartConfig;
   var node2 = useContext(NodeContext);
-  var registerNode = getRegisterNode(registerNodes2, node2.type);
+  var registerNode = getRegisterNode(registerNodes, node2.type);
   var Component2 = (registerNode === null || registerNode === void 0 ? void 0 : registerNode.displayComponent) || DefaultDisplayComponent;
   var _useAction = useAction(), clickNode = _useAction.clickNode;
   var handleNodeClick = /* @__PURE__ */ function() {
@@ -22404,9 +22404,9 @@ var Arrow = function Arrow2() {
   }))) : null;
 };
 var EndNode = function EndNode2() {
-  var _useContext = useContext(BuilderContext), registerNodes2 = _useContext.registerNodes, nodes = _useContext.nodes, beforeNodeClick = _useContext.beforeNodeClick, allowEndConfig = _useContext.allowEndConfig;
+  var _useContext = useContext(BuilderContext), registerNodes = _useContext.registerNodes, nodes = _useContext.nodes, beforeNodeClick = _useContext.beforeNodeClick, allowEndConfig = _useContext.allowEndConfig;
   var node2 = useContext(NodeContext);
-  var registerNode = getRegisterNode(registerNodes2, node2.type);
+  var registerNode = getRegisterNode(registerNodes, node2.type);
   var Component2 = (registerNode === null || registerNode === void 0 ? void 0 : registerNode.displayComponent) || DefaultDisplayComponent;
   var _useAction = useAction(), clickNode = _useAction.clickNode;
   var handleNodeClick = /* @__PURE__ */ function() {
@@ -22457,10 +22457,10 @@ var RemoveIcon = "data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%
 var css_248z$6 = ".flow-builder-node .flow-builder-node__remove {\n  position: absolute;\n  top: -9px;\n  right: -9px;\n  width: 18px;\n  height: 18px;\n  cursor: pointer;\n  opacity: 0;\n  transition: opacity 0.2s;\n}\n.flow-builder-node .flow-builder-node__remove:hover {\n  opacity: 1;\n}\n.flow-builder-node .flow-builder-node__content-wrap:hover .flow-builder-node__remove,\n.flow-builder-node .flow-builder-node__content:hover .flow-builder-node__remove,\n.flow-builder-node .flow-builder-node__content-wrap:hover .flow-builder-sortable-handle,\n.flow-builder-node .flow-builder-node__content:hover .flow-builder-sortable-handle {\n  opacity: 1;\n}\n";
 styleInject(css_248z$6);
 var RemoveButton = function RemoveButton2() {
-  var _useContext = useContext(BuilderContext), registerNodes2 = _useContext.registerNodes, readonly = _useContext.readonly, PopconfirmComponent2 = _useContext.PopconfirmComponent, onRemoveNodeSuccess = _useContext.onRemoveNodeSuccess;
+  var _useContext = useContext(BuilderContext), registerNodes = _useContext.registerNodes, readonly = _useContext.readonly, PopconfirmComponent2 = _useContext.PopconfirmComponent, onRemoveNodeSuccess = _useContext.onRemoveNodeSuccess;
   var node2 = useContext(NodeContext);
   var _useAction = useAction(), removeNode = _useAction.removeNode;
-  var registerNode = getRegisterNode(registerNodes2, node2.type);
+  var registerNode = getRegisterNode(registerNodes, node2.type);
   return !readonly && !(registerNode === null || registerNode === void 0 ? void 0 : registerNode.customRemove) && PopconfirmComponent2 ? /* @__PURE__ */ React__default.createElement(PopconfirmComponent2, {
     title: (registerNode === null || registerNode === void 0 ? void 0 : registerNode.removeConfirmTitle) || "Are you sure to remove this node?",
     onConfirm: function onConfirm() {
@@ -22476,10 +22476,10 @@ var RemoveButton = function RemoveButton2() {
   })) : null;
 };
 var CommonNode = function CommonNode2() {
-  var _useContext = useContext(BuilderContext), readonly = _useContext.readonly, registerNodes2 = _useContext.registerNodes, nodes = _useContext.nodes, beforeNodeClick = _useContext.beforeNodeClick;
+  var _useContext = useContext(BuilderContext), readonly = _useContext.readonly, registerNodes = _useContext.registerNodes, nodes = _useContext.nodes, beforeNodeClick = _useContext.beforeNodeClick;
   var node2 = useContext(NodeContext);
   var _useAction = useAction(), clickNode = _useAction.clickNode, removeNode = _useAction.removeNode;
-  var registerNode = getRegisterNode(registerNodes2, node2.type);
+  var registerNode = getRegisterNode(registerNodes, node2.type);
   var Component2 = (registerNode === null || registerNode === void 0 ? void 0 : registerNode.displayComponent) || DefaultDisplayComponent;
   var handleNodeClick = /* @__PURE__ */ function() {
     var _ref = _asyncToGenerator(/* @__PURE__ */ _regeneratorRuntime().mark(function _callee() {
@@ -22554,11 +22554,11 @@ var SortableItem = sortableElement(function(props) {
 var BranchNode = function BranchNode2(props) {
   var _registerNode$showPra, _registerNode$showPra2;
   var renderConditionNode = props.renderConditionNode;
-  var _useContext3 = useContext(BuilderContext), nodes = _useContext3.nodes, layout = _useContext3.layout, spaceX = _useContext3.spaceX, spaceY = _useContext3.spaceY, readonly = _useContext3.readonly, registerNodes2 = _useContext3.registerNodes, beforeNodeClick = _useContext3.beforeNodeClick, beforeAddConditionNode = _useContext3.beforeAddConditionNode, dragType = _useContext3.dragType, _useContext3$DropComp = _useContext3.DropComponent, DropComponent = _useContext3$DropComp === void 0 ? DropButton : _useContext3$DropComp, showPracticalBranchNode = _useContext3.showPracticalBranchNode, showPracticalBranchRemove = _useContext3.showPracticalBranchRemove, sortable = _useContext3.sortable, onDropNodeSuccess = _useContext3.onDropNodeSuccess, onAddNodeSuccess = _useContext3.onAddNodeSuccess;
+  var _useContext3 = useContext(BuilderContext), nodes = _useContext3.nodes, layout = _useContext3.layout, spaceX = _useContext3.spaceX, spaceY = _useContext3.spaceY, readonly = _useContext3.readonly, registerNodes = _useContext3.registerNodes, beforeNodeClick = _useContext3.beforeNodeClick, beforeAddConditionNode = _useContext3.beforeAddConditionNode, dragType = _useContext3.dragType, _useContext3$DropComp = _useContext3.DropComponent, DropComponent = _useContext3$DropComp === void 0 ? DropButton : _useContext3$DropComp, showPracticalBranchNode = _useContext3.showPracticalBranchNode, showPracticalBranchRemove = _useContext3.showPracticalBranchRemove, sortable = _useContext3.sortable, onDropNodeSuccess = _useContext3.onDropNodeSuccess, onAddNodeSuccess = _useContext3.onAddNodeSuccess;
   var node2 = useContext(NodeContext);
   var _useAction = useAction(), addNode = _useAction.addNode, removeNode = _useAction.removeNode, clickNode = _useAction.clickNode;
   var children = node2.children;
-  var registerNode = getRegisterNode(registerNodes2, node2.type);
+  var registerNode = getRegisterNode(registerNodes, node2.type);
   var conditionCount = Array.isArray(children) ? children.length : 0;
   var disabled = typeof (registerNode === null || registerNode === void 0 ? void 0 : registerNode.conditionMaxNum) === "number" ? conditionCount === (registerNode === null || registerNode === void 0 ? void 0 : registerNode.conditionMaxNum) : false;
   var droppable = dragType && (registerNode === null || registerNode === void 0 ? void 0 : registerNode.conditionNodeType) === dragType;
@@ -22700,11 +22700,11 @@ var BranchNode = function BranchNode2(props) {
 };
 var ConditionNode = function ConditionNode2(props) {
   var parentNode = props.parentNode, conditionIndex = props.conditionIndex, renderNext = props.renderNext;
-  var _useContext = useContext(BuilderContext), layout = _useContext.layout, spaceX = _useContext.spaceX, spaceY = _useContext.spaceY, readonly = _useContext.readonly, registerNodes2 = _useContext.registerNodes, nodes = _useContext.nodes, beforeNodeClick = _useContext.beforeNodeClick, sortable = _useContext.sortable, sortableAnchor = _useContext.sortableAnchor;
+  var _useContext = useContext(BuilderContext), layout = _useContext.layout, spaceX = _useContext.spaceX, spaceY = _useContext.spaceY, readonly = _useContext.readonly, registerNodes = _useContext.registerNodes, nodes = _useContext.nodes, beforeNodeClick = _useContext.beforeNodeClick, sortable = _useContext.sortable, sortableAnchor = _useContext.sortableAnchor;
   var node2 = useContext(NodeContext);
   var _useAction = useAction(), clickNode = _useAction.clickNode, removeNode = _useAction.removeNode;
   var conditionCount = Array.isArray(parentNode === null || parentNode === void 0 ? void 0 : parentNode.children) ? (parentNode === null || parentNode === void 0 ? void 0 : parentNode.children.length) || 0 : 0;
-  var registerNode = getRegisterNode(registerNodes2, node2.type);
+  var registerNode = getRegisterNode(registerNodes, node2.type);
   var Component2 = (registerNode === null || registerNode === void 0 ? void 0 : registerNode.displayComponent) || DefaultDisplayComponent;
   var ConditionDragHandle = useMemo$1(function() {
     return sortableHandle(function() {
@@ -22779,10 +22779,10 @@ var ConditionNode = function ConditionNode2(props) {
 var LoopNode = function LoopNode2(props) {
   var renderNext = props.renderNext;
   var ref2 = useRef(null);
-  var _useContext = useContext(BuilderContext), readonly = _useContext.readonly, registerNodes2 = _useContext.registerNodes, nodes = _useContext.nodes, beforeNodeClick = _useContext.beforeNodeClick, layout = _useContext.layout, spaceX = _useContext.spaceX, spaceY = _useContext.spaceY, lineColor = _useContext.lineColor;
+  var _useContext = useContext(BuilderContext), readonly = _useContext.readonly, registerNodes = _useContext.registerNodes, nodes = _useContext.nodes, beforeNodeClick = _useContext.beforeNodeClick, layout = _useContext.layout, spaceX = _useContext.spaceX, spaceY = _useContext.spaceY, lineColor = _useContext.lineColor;
   var node2 = useContext(NodeContext);
   var _useAction = useAction(), clickNode = _useAction.clickNode, removeNode = _useAction.removeNode;
-  var registerNode = getRegisterNode(registerNodes2, node2.type);
+  var registerNode = getRegisterNode(registerNodes, node2.type);
   var Component2 = (registerNode === null || registerNode === void 0 ? void 0 : registerNode.displayComponent) || DefaultDisplayComponent;
   var handleNodeClick = /* @__PURE__ */ function() {
     var _ref = _asyncToGenerator(/* @__PURE__ */ _regeneratorRuntime().mark(function _callee() {
@@ -22930,7 +22930,7 @@ var LoopNode = function LoopNode2(props) {
         }
       }
     }
-  }, [nodes, registerNodes2]);
+  }, [nodes, registerNodes]);
   return /* @__PURE__ */ React__default.createElement("div", {
     className: "flow-builder-node flow-builder-loop-node ".concat((registerNode === null || registerNode === void 0 ? void 0 : registerNode.className) || "")
   }, /* @__PURE__ */ React__default.createElement(Arrow, null), /* @__PURE__ */ React__default.createElement("div", {
@@ -23011,7 +23011,7 @@ var HistoryTool = function HistoryTool2() {
 var css_248z$8 = ".flow-builder-drag-panel {\n  width: 272px;\n  margin-right: 16px;\n  padding: 16px;\n  overflow: auto;\n}\n.flow-builder-drag-panel ul {\n  padding: 0;\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 8px;\n  margin: 0;\n}\n.flow-builder-drag-panel li {\n  list-style-type: none;\n}\n.flow-builder-drag-node-item {\n  display: flex;\n  align-items: center;\n  padding: 8px 16px;\n  cursor: move;\n}\n.flow-builder-drag-node-item .flow-builder-drag-node-icon {\n  display: flex;\n  margin-right: 4px;\n}\n";
 styleInject(css_248z$8);
 var DragPanel = function DragPanel2() {
-  var _useContext = useContext(BuilderContext), lineColor = _useContext.lineColor, backgroundColor = _useContext.backgroundColor, registerNodes2 = _useContext.registerNodes, setDragType = _useContext.setDragType;
+  var _useContext = useContext(BuilderContext), lineColor = _useContext.lineColor, backgroundColor = _useContext.backgroundColor, registerNodes = _useContext.registerNodes, setDragType = _useContext.setDragType;
   var handleDragStart = function handleDragStart2(type4) {
     setDragType(type4);
   };
@@ -23023,11 +23023,11 @@ var DragPanel = function DragPanel2() {
     style: {
       border: "1px solid ".concat(lineColor)
     }
-  }, /* @__PURE__ */ React__default.createElement("ul", null, registerNodes2.filter(function(item) {
+  }, /* @__PURE__ */ React__default.createElement("ul", null, registerNodes.filter(function(item) {
     return !(item.isStart || item.isEnd);
   }).map(function(item) {
-    var registerNode = getRegisterNode(registerNodes2, item.type);
-    var defaultIcon = getIsBranchNode(registerNodes2, item.type) ? AddBranchIcon : getIsConditionNode(registerNodes2, item.type) ? AddConditionIcon : AddNormalIcon;
+    var registerNode = getRegisterNode(registerNodes, item.type);
+    var defaultIcon = getIsBranchNode(registerNodes, item.type) ? AddBranchIcon : getIsConditionNode(registerNodes, item.type) ? AddConditionIcon : AddNormalIcon;
     return /* @__PURE__ */ React__default.createElement("li", {
       key: item.type,
       className: "flow-builder-drag-node-item",
@@ -23051,21 +23051,21 @@ var css_248z$9 = ".flow-builder-wrap {\n  position: relative;\n  height: 100%;\n
 styleInject(css_248z$9);
 var Builder = /* @__PURE__ */ forwardRef(function(props, ref2) {
   var builderContext = useContext(BuilderContext);
-  var _builderContext$class = builderContext.className, className = _builderContext$class === void 0 ? "" : _builderContext$class, backgroundColor = builderContext.backgroundColor, layout = builderContext.layout, drawerProps = builderContext.drawerProps, registerNodes2 = builderContext.registerNodes, nodes = builderContext.nodes, onChange = builderContext.onChange, zoomValue = builderContext.zoomValue, onZoomChange = builderContext.onZoomChange, historyRecords = builderContext.historyRecords, activeHistoryRecordIndex = builderContext.activeHistoryRecordIndex, onHistoryChange = builderContext.onHistoryChange, selectedNode = builderContext.selectedNode, drawerTitle = builderContext.drawerTitle, draggable = builderContext.draggable, _builderContext$DragC = builderContext.DragComponent, DragComponent = _builderContext$DragC === void 0 ? DragPanel : _builderContext$DragC, setDragType = builderContext.setDragType, DrawerComponent2 = builderContext.DrawerComponent, createUuid3 = builderContext.createUuid;
+  var _builderContext$class = builderContext.className, className = _builderContext$class === void 0 ? "" : _builderContext$class, backgroundColor = builderContext.backgroundColor, layout = builderContext.layout, drawerProps = builderContext.drawerProps, registerNodes = builderContext.registerNodes, nodes = builderContext.nodes, onChange = builderContext.onChange, zoomValue = builderContext.zoomValue, onZoomChange = builderContext.onZoomChange, historyRecords = builderContext.historyRecords, activeHistoryRecordIndex = builderContext.activeHistoryRecordIndex, onHistoryChange = builderContext.onHistoryChange, selectedNode = builderContext.selectedNode, drawerTitle = builderContext.drawerTitle, draggable = builderContext.draggable, _builderContext$DragC = builderContext.DragComponent, DragComponent = _builderContext$DragC === void 0 ? DragPanel : _builderContext$DragC, setDragType = builderContext.setDragType, DrawerComponent2 = builderContext.DrawerComponent, createUuid3 = builderContext.createUuid;
   var _useZoom = useZoom(), minZoom = _useZoom.minZoom, maxZoom = _useZoom.maxZoom, zoom = _useZoom.zoom;
   var _useHistory = useHistory(), pushHistory = _useHistory.pushHistory, history = _useHistory.history;
   var _useAction = useAction(), addNode = _useAction.addNode, removeNode = _useAction.removeNode;
   var _useDrawer = useDrawer(), closeDrawer = _useDrawer.closeDrawer, saveDrawer = _useDrawer.saveDrawer;
   var _useState = useState(false), _useState2 = _slicedToArray(_useState, 2), hasMounted = _useState2[0], setHasMounted = _useState2[1];
-  var ConfigComponent2 = useMemo$1(function() {
+  var ConfigComponent = useMemo$1(function() {
     var _getRegisterNode;
-    return (_getRegisterNode = getRegisterNode(registerNodes2, selectedNode === null || selectedNode === void 0 ? void 0 : selectedNode.type)) === null || _getRegisterNode === void 0 ? void 0 : _getRegisterNode.configComponent;
-  }, [registerNodes2, selectedNode]);
+    return (_getRegisterNode = getRegisterNode(registerNodes, selectedNode === null || selectedNode === void 0 ? void 0 : selectedNode.type)) === null || _getRegisterNode === void 0 ? void 0 : _getRegisterNode.configComponent;
+  }, [registerNodes, selectedNode]);
   var configComponentRef = useRef();
   var renderNode = function renderNode2(_ref) {
     var node2 = _ref.node, nodeIndex = _ref.nodeIndex, parentNode = _ref.parentNode;
     var id2 = node2.id, type4 = node2.type;
-    var abstractNodeType = getAbstractNodeType(registerNodes2, type4);
+    var abstractNodeType = getAbstractNodeType(registerNodes, type4);
     var renderAbstractNode = function renderAbstractNode2() {
       switch (abstractNodeType) {
         case "start":
@@ -23129,13 +23129,13 @@ var Builder = /* @__PURE__ */ forwardRef(function(props, ref2) {
     var defaultNodes = _toConsumableArray(nodes);
     if (defaultNodes.length === 0) {
       var _registerNodes$find, _registerNodes$find2;
-      var startNodeType = (_registerNodes$find = registerNodes2.find(function(item) {
+      var startNodeType = (_registerNodes$find = registerNodes.find(function(item) {
         return item.isStart;
       })) === null || _registerNodes$find === void 0 ? void 0 : _registerNodes$find.type;
-      var endNodeType = (_registerNodes$find2 = registerNodes2.find(function(item) {
+      var endNodeType = (_registerNodes$find2 = registerNodes.find(function(item) {
         return item.isEnd;
       })) === null || _registerNodes$find2 === void 0 ? void 0 : _registerNodes$find2.type;
-      defaultNodes = [createNewNode(registerNodes2, startNodeType, createUuid3), createNewNode(registerNodes2, endNodeType, createUuid3)];
+      defaultNodes = [createNewNode(registerNodes, startNodeType, createUuid3), createNewNode(registerNodes, endNodeType, createUuid3)];
       onChange(defaultNodes, "init-builder");
     }
     pushHistory(defaultNodes);
@@ -23171,7 +23171,7 @@ var Builder = /* @__PURE__ */ forwardRef(function(props, ref2) {
     onClose: closeDrawer
   }, drawerProps), {}, {
     configComponentRef
-  }), ConfigComponent2 && selectedNode ? /* @__PURE__ */ React__default.createElement(ConfigComponent2, {
+  }), ConfigComponent && selectedNode ? /* @__PURE__ */ React__default.createElement(ConfigComponent, {
     ref: configComponentRef,
     key: selectedNode.id,
     node: selectedNode,
@@ -23194,7 +23194,7 @@ var FlowBuilder$1 = /* @__PURE__ */ forwardRef(function(props, ref2) {
   var _useState7 = useState(), _useState8 = _slicedToArray(_useState7, 2), selectedNode = _useState8[0], setSelectedNode = _useState8[1];
   var _useState9 = useState(""), _useState10 = _slicedToArray(_useState9, 2), drawerTitle = _useState10[0], setDrawerTitle = _useState10[1];
   var _useState11 = useState(""), _useState12 = _slicedToArray(_useState11, 2), dragType = _useState12[0], setDragType = _useState12[1];
-  var _useState13 = useState(props.registerNodes || []), _useState14 = _slicedToArray(_useState13, 2), registerNodes2 = _useState14[0], setRegisterNodes = _useState14[1];
+  var _useState13 = useState(props.registerNodes || []), _useState14 = _slicedToArray(_useState13, 2), registerNodes = _useState14[0], setRegisterNodes = _useState14[1];
   var defaultProps2 = useMemo$1(function() {
     return {
       backgroundColor: "#F7F7F7",
@@ -23248,7 +23248,7 @@ var FlowBuilder$1 = /* @__PURE__ */ forwardRef(function(props, ref2) {
   }, [props.registerNodes, props.registerRemoteNodes]);
   return /* @__PURE__ */ React__default.createElement(BuilderContext.Provider, {
     value: _objectSpread2(_objectSpread2(_objectSpread2({}, defaultProps2), props), {}, {
-      registerNodes: registerNodes2,
+      registerNodes,
       nodes: computeNodesPath(nodes),
       onChange: handleChange,
       zoomValue,
@@ -23275,10 +23275,9 @@ var FlowBuilder$1 = /* @__PURE__ */ forwardRef(function(props, ref2) {
     ref: ref2
   }));
 });
-class ConfigComponent extends React__default.Component {
-  render() {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, {});
-  }
+const flowModelRegistry = {};
+function getFlowModel(flowModel) {
+  return flowModelRegistry[flowModel];
 }
 const DrawerComponent = (props) => {
   const { visible, children, ...restProps } = props;
@@ -23292,57 +23291,14 @@ const PopconfirmComponent = (props) => {
   const { children, ...restProps } = props;
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Popconfirm$1, { ...restProps, children });
 };
-const StartNodeDisplay = () => {
-  const node2 = useContext(NodeContext);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "start-node", children: node2.name });
-};
-const EndNodeDisplay = () => {
-  const node2 = useContext(NodeContext);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "end-node", children: node2.name });
-};
-const NodeDisplay = () => {
-  const node2 = useContext(NodeContext);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "other-node", children: node2.name });
-};
-const ConditionNodeDisplay = () => {
-  const node2 = useContext(NodeContext);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "condition-node", children: node2.name });
-};
-const registerNodes = [
-  {
-    type: "start",
-    name: "开始节点",
-    displayComponent: StartNodeDisplay,
-    isStart: true
-  },
-  {
-    type: "end",
-    name: "结束节点",
-    displayComponent: EndNodeDisplay,
-    isEnd: true
-  },
-  {
-    type: "node",
-    name: "普通节点",
-    displayComponent: NodeDisplay,
-    configComponent: ConfigComponent
-  },
-  {
-    type: "condition",
-    name: "条件节点",
-    displayComponent: ConditionNodeDisplay
-  },
-  {
-    type: "branch",
-    name: "分支节点",
-    conditionNodeType: "condition"
-  }
-];
 function FlowBuilder(props) {
   var _a;
   const [nodes, setNodes] = useState(((_a = props.graphDiagram) == null ? void 0 : _a.nodes) || []);
   const renderContext = useContext(RenderContextKey);
   const { onEvent } = renderContext;
+  const nodeModels = getFlowModel(props.flowModel);
+  if (!nodeModels)
+    throw new Error("nop.err.unknown-flow-model:" + props.flowModel);
   const handleChange = (nodes2, event, node2) => {
     console.log("nodes change", nodes2, "event=", event);
     setNodes(nodes2);
@@ -23363,7 +23319,7 @@ function FlowBuilder(props) {
       zoomTool: true,
       nodes,
       onChange: handleChange,
-      registerNodes,
+      registerNodes: nodeModels,
       DrawerComponent,
       PopoverComponent,
       PopconfirmComponent
@@ -23520,12 +23476,12 @@ let GraphDesignerRenderer = class extends React__default.Component {
     super(props);
     this.eventCallbacks = {};
     this.state = {};
-    this.handleAction = this.handleAction.bind(this);
+    this.handleAmisAction = this.handleAmisAction.bind(this);
     this.amisRender = this.amisRender.bind(this);
     this.amisExecutor = this.amisExecutor.bind(this);
     this.registerEventCallback = this.registerEventCallback.bind(this);
   }
-  handleAction(e, action, ctx, throwErrors = false, delegate) {
+  handleAmisAction(e, action, ctx, throwErrors = false, delegate) {
     var _a, _b, _c;
     if ((_a = action.actionType) == null ? void 0 : _a.startsWith("designer:")) {
       const list = this.eventCallbacks["delegate"];
@@ -23539,7 +23495,7 @@ let GraphDesignerRenderer = class extends React__default.Component {
     return (_c = (_b = this.props).onAction) == null ? void 0 : _c.call(_b, e, action, ctx, throwErrors, delegate);
   }
   amisRender(name, schema, opts, ctx) {
-    return this.props.render(name, schema, opts);
+    return this.props.render(name, schema, { ...opts, onAction: this.handleAmisAction });
   }
   amisExecutor(api, data, ctx) {
     const store = this.props.store;
@@ -23556,7 +23512,7 @@ let GraphDesignerRenderer = class extends React__default.Component {
       list.push(callback);
       return () => {
         const index2 = list.indexOf(callback);
-        index2 && list.splice(index2, 1);
+        index2 >= 0 && list.splice(index2, 1);
       };
     }
     return () => {
@@ -23568,7 +23524,7 @@ let GraphDesignerRenderer = class extends React__default.Component {
       render: this.amisRender,
       executor: this.amisExecutor,
       observeEvent: this.registerEventCallback
-    } }, /* @__PURE__ */ React__default.createElement(GraphDesigner, { ...props, onAction: this.handleAction })));
+    } }, /* @__PURE__ */ React__default.createElement(GraphDesigner, { ...props, onAction: this.handleAmisAction })));
   }
 };
 GraphDesignerRenderer = __decorateClass$1([
@@ -23599,56 +23555,61 @@ FlowBulderRenderer = __decorateClass([
     type: "nop-flow-builder"
   })
 ], FlowBulderRenderer);
-const _sfc_main$5 = defineComponent({
+const _sfc_main$6 = defineComponent({
   props: {
-    path: {
-      type: String,
+    schema: Object,
+    rollbackPageSource: Function,
+    getPageSource: {
+      type: Function,
+      required: true
+    },
+    savePageSource: {
+      type: Function,
       required: true
     }
   },
   emits: ["exit"],
   setup(props, { emit }) {
     const editorRef = ref(null);
-    let inited = false;
     let fetched = false;
-    const {
-      PageProvider__rollbackPageSource: rollbackPageSource,
-      PageProvider__getPageSource: getPageSource,
-      PageProvider__savePageSource: savePageSource
-    } = PageApis;
+    const { savePageSource, rollbackPageSource, getPageSource } = props;
     function handleEvent(event) {
       if (event.data == "amis-editor-inited") {
         if (fetched)
           return;
-        inited = true;
-        startFetch();
+        var msg = {
+          type: "setSchema",
+          data: props.schema
+        };
+        postMsg(msg);
       } else if (event.data === "amis-editor-reload") {
         fetched = false;
         startFetch();
       } else if (event.data === "amis-editor-exit") {
         emit("exit");
       } else if (event.data === "amis-editor-rollback") {
-        deletePageCache(props.path);
-        rollbackPageSource(props.path, true).then(() => {
-          postMsg({
-            type: "toast",
-            level: "info",
-            message: "回滚成功"
+        if (rollbackPageSource) {
+          rollbackPageSource().then(() => {
+            postMsg({
+              type: "toast",
+              level: "info",
+              message: "回滚成功"
+            });
+          }).catch((e) => {
+            postMsg({
+              type: "toast",
+              level: "error",
+              message: e.message || e.toString()
+            });
+          }).then(() => {
+            fetched = false;
+            return startFetch();
           });
-        }).catch((e) => {
-          postMsg({
-            type: "toast",
-            level: "error",
-            message: e.message || e.toString()
-          });
-        }).then(() => {
-          fetched = false;
-          return startFetch();
-        });
+        }
       } else if (isString$2(event.data) && event.data.startsWith("{")) {
         var data = JSON.parse(event.data);
         if (data.type == "save") {
-          savePageSource(props.path, data.data, true).then(() => {
+          savePageSource(data.data).then(() => {
             postMsg({
               type: "toast",
               message: "保存成功"
@@ -23682,10 +23643,10 @@ const _sfc_main$5 = defineComponent({
     }
     function startFetch() {
       const frame = editorRef.value;
-      if (!frame || !props.path)
+      if (!frame)
         return;
       fetched = true;
-      return getPageSource(props.path, true).then((page) => {
+      return getPageSource().then((page) => {
         postMsg({
           type: "toast",
           level: "info",
@@ -23706,12 +23667,6 @@ const _sfc_main$5 = defineComponent({
       });
     }
     window.addEventListener("message", handleEvent);
-    onMounted(() => {
-      console.log("editor mounted:" + editorRef.value);
-      if (inited) {
-        startFetch();
-      }
-    });
     onUnmounted(() => {
       console.log("editor unmounted");
       window.removeEventListener("message", handleEvent);
@@ -23728,15 +23683,15 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _hoisted_1$1 = {
+const _hoisted_1$2 = {
   style: { "width": "100%", "height": "100%", "border": "none" },
   ref: "editorRef",
   src: "/amis-editor/index.html"
 };
 function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("iframe", _hoisted_1$1, null, 512);
+  return openBlock(), createElementBlock("iframe", _hoisted_1$2, null, 512);
 }
-const AmisPageEditor = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$2]]);
+const AmisPageEditor = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$2]]);
 function createEnv(page) {
   const { debug: debug2 } = useDebug();
   const adapter2 = useAdapter();
@@ -23897,7 +23852,7 @@ const AmisSchemaPage = defineReactPageComponent((props) => {
     }
   }
 });
-const _sfc_main$4 = /* @__PURE__ */ defineComponent({
+const _sfc_main$5 = /* @__PURE__ */ defineComponent({
   __name: "AmisToast",
   setup(__props) {
     const domRef = ref();
@@ -23977,24 +23932,32 @@ const debuggerSchema = {
     ]
   }
 };
-const _sfc_main$3 = /* @__PURE__ */ defineComponent({
+const _sfc_main$4 = /* @__PURE__ */ defineComponent({
   __name: "XuiPageEditor",
   props: {
-    path: {
-      type: String,
+    rollbackPageSource: Function,
+    getPageSource: {
+      type: Function,
+      required: true
+    },
+    savePageSource: {
+      type: Function,
       required: true
     }
   },
   emits: ["exit"],
   setup(__props, { emit }) {
     const props = __props;
+    const { getPageSource } = props;
+    const { useI18n } = useAdapter();
     function handleExit() {
       emit("exit");
     }
-    const componentType = ref(markRaw(AmisPageEditor));
-    const { useI18n } = useAdapter();
+    const componentType = ref();
+    const schemaRef = ref();
     watchEffect(() => {
-      useAdapter().getPage(props.path).then((schema) => {
+      getPageSource().then((schema) => {
+        schemaRef.value = markRaw(schema);
         const schemaTypeName = schema["xui:schema-type"];
         if (!schemaTypeName) {
           componentType.value = markRaw(AmisPageEditor);
@@ -24010,15 +23973,67 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
       });
     });
     return (_ctx, _cache) => {
-      return openBlock(), createBlock(resolveDynamicComponent(componentType.value), {
-        path: __props.path,
+      return componentType.value ? (openBlock(), createBlock(resolveDynamicComponent(componentType.value), mergeProps({ key: 0 }, props, {
+        schema: schemaRef.value,
         onExit: handleExit
-      }, null, 40, ["path"]);
+      }), null, 16, ["schema"])) : createCommentVNode("", true);
+    };
+  }
+});
+const _hoisted_1$1 = /* @__PURE__ */ createElementVNode("header", null, null, -1);
+const _sfc_main$3 = /* @__PURE__ */ defineComponent({
+  __name: "XuiPageEditorDialog",
+  props: {
+    modelValue: Boolean,
+    rollbackPageSource: Function,
+    getPageSource: {
+      type: Function,
+      required: true
+    },
+    savePageSource: {
+      type: Function,
+      required: true
+    }
+  },
+  emits: ["update:modelValue", "exit"],
+  setup(__props, { emit }) {
+    function handleEditorExit() {
+      emit("update:modelValue", false);
+    }
+    function handleChange(value2) {
+      emit("update:modelValue", value2);
+    }
+    return (_ctx, _cache) => {
+      return openBlock(), createBlock(unref(ElDialog), {
+        destroyOnClose: true,
+        class: "page-full-screen",
+        modelValue: __props.modelValue,
+        maskClosable: false,
+        "append-to-body": true,
+        width: "100%",
+        height: "100%",
+        "align-center": true,
+        fullscreen: true,
+        footer: null,
+        closable: false,
+        keyboard: false,
+        "onUpdate:modelValue": handleChange
+      }, {
+        default: withCtx(() => [
+          _hoisted_1$1,
+          createVNode(_sfc_main$4, {
+            onExit: handleEditorExit,
+            savePageSource: __props.savePageSource,
+            rollbackPageSource: __props.rollbackPageSource,
+            getPageSource: __props.getPageSource
+          }, null, 8, ["savePageSource", "rollbackPageSource", "getPageSource"])
+        ]),
+        _: 1
+      }, 8, ["modelValue"]);
     };
   }
 });
 const _hoisted_1 = { class: "page-debugger" };
-const _hoisted_2 = /* @__PURE__ */ createElementVNode("header", null, null, -1);
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "XuiDebugger",
   props: {
@@ -24036,6 +24051,17 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       schema: "",
       lang: "json"
     });
+    const { PageProvider__getPageSource: PageProvider__getPageSource2, PageProvider__rollbackPageSource: PageProvider__rollbackPageSource2, PageProvider__savePageSource: PageProvider__savePageSource2 } = PageApis;
+    function getPageSource() {
+      return PageProvider__getPageSource2(props.path, true);
+    }
+    function savePageSource(data) {
+      deletePageCache(props.path);
+      PageProvider__savePageSource2(props.path, data, true);
+    }
+    function rollbackPageSource() {
+      PageProvider__rollbackPageSource2(props.path, true);
+    }
     function openSchemaEditor() {
       schemaData.value = { schema: yaml.dump(props.schema), lang: "yaml" };
       schemaVisible.value = true;
@@ -24073,9 +24099,6 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     const designerVisible = ref(false);
     function openXuiPageEditor() {
       designerVisible.value = true;
-    }
-    function handleEditorExit() {
-      designerVisible.value = false;
     }
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock(Fragment$1, null, [
@@ -24129,30 +24152,13 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
           ]),
           _: 1
         }, 8, ["modelValue"]),
-        createVNode(unref(ElDialog), {
-          destroyOnClose: true,
-          class: "page-full-screen",
+        createVNode(_sfc_main$3, {
           modelValue: designerVisible.value,
           "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => designerVisible.value = $event),
-          maskClosable: false,
-          "append-to-body": true,
-          width: "100%",
-          height: "100%",
-          "align-center": true,
-          fullscreen: true,
-          footer: null,
-          closable: false,
-          keyboard: false
-        }, {
-          default: withCtx(() => [
-            _hoisted_2,
-            createVNode(_sfc_main$3, {
-              path: __props.path,
-              onExit: handleEditorExit
-            }, null, 8, ["path"])
-          ]),
-          _: 1
-        }, 8, ["modelValue"])
+          savePageSource,
+          rollbackPageSource,
+          getPageSource
+        }, null, 8, ["modelValue"])
       ], 64);
     };
   }
@@ -24330,6 +24336,65 @@ FormItem$1({
   type: "vue-form-item",
   autoVar: false
 })(VueFormItem);
+class XuiPageEditorButton extends React__default.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dialogVisible: false
+    };
+    this.dialogComponent = applyPureVueInReact(_sfc_main$3);
+    this.handleAction = this.handleAction.bind(this);
+    const store = props.store;
+    this.getPageSource = () => {
+      return store.fetchData(props.initApi, {}).then((res) => res.data);
+    };
+    this.savePageSource = (data) => {
+      return store.fetchData(props.api, { data }).then((res) => res.data);
+    };
+    this.rollbackPageSource = () => {
+      if (!props.rollbackApi)
+        return Promise.resolve(null);
+      return store.fetchData(props.rollbackApi).then((res) => res.data);
+    };
+  }
+  handleAction(e, action) {
+    const actionType = action.actionType;
+    if (actionType == "popEditor") {
+      this.setState({ dialogVisible: true });
+    } else {
+      return this.props.onAction(e, action);
+    }
+  }
+  render() {
+    const props = this.props;
+    const actionSchema = {
+      ...props,
+      type: "action",
+      actionType: "popEditor"
+    };
+    const body = [
+      props.render(
+        "button",
+        actionSchema,
+        { onAction: this.handleAction }
+      ),
+      React__default.createElement(this.dialogComponent, {
+        modelValue: this.state.dialogVisible,
+        savePageSource: this.savePageSource,
+        getPageSource: this.getPageSource,
+        rollbackPageSource: this.rollbackPageSource,
+        "onUpdate:value": () => this.setState(
+          { dialogVisible: false }
+        )
+      })
+    ];
+    return React__default.createElement(Fragment, null, body);
+  }
+}
+Renderer({
+  type: "xui-page-editor-button",
+  autoVar: false
+})(XuiPageEditorButton);
 registerAdapter({
   dataMapping,
   alert,
@@ -24349,13 +24414,13 @@ const SdkLib = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   __proto__: null,
   AmisPageEditor,
   AmisSchemaPage,
-  AmisToast: _sfc_main$4,
+  AmisToast: _sfc_main$5,
   AmisVueComponent: VueControl,
   PageApis,
   PopupEditor: PopupEditor$1,
   UserApis,
   XuiPage,
-  XuiPageEditor: _sfc_main$3,
+  XuiPageEditor: _sfc_main$4,
   XuiSchemaPage,
   absolutePath,
   addSystemImportMap,
@@ -24416,13 +24481,13 @@ registerModule("@nop-chaos/sdk", SdkLib);
 export {
   AmisPageEditor,
   AmisSchemaPage,
-  _sfc_main$4 as AmisToast,
+  _sfc_main$5 as AmisToast,
   VueControl as AmisVueComponent,
   PageApis,
   PopupEditor$1 as PopupEditor,
   UserApis,
   XuiPage,
-  _sfc_main$3 as XuiPageEditor,
+  _sfc_main$4 as XuiPageEditor,
   XuiSchemaPage,
   absolutePath,
   addSystemImportMap,

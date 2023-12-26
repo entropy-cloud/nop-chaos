@@ -29,25 +29,11 @@
     <AmisSchemaPage :schema="debuggerSchema" :actions="schemaActions" :data="schemaData" />
   </el-dialog>
 
-  <el-dialog :destroyOnClose="true" class="page-full-screen" v-model="designerVisible" :maskClosable="false"
-    :append-to-body="true" width="100%" height="100%" :align-center="true" :fullscreen="true" :footer="null"
-    :closable="false" :keyboard="false">
-    <header></header>
-    <XuiPageEditor :path="path" @exit="handleEditorExit" />
-  </el-dialog>
+  <xui-page-editor-dialog v-model="designerVisible" :savePageSource="savePageSource"
+    :rollbackPageSource="rollbackPageSource" :getPageSource="getPageSource" />
 </template>
 
 <style>
-.page-full-screen .el-dialog__body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.page-full-screen .el-dialog__header {
-  display: none
-}
-
 .page-debugger {
   position: absolute;
   top: 0px;
@@ -64,12 +50,14 @@ import AmisSchemaPage from './AmisSchemaPage';
 import debuggerSchema from './debugger';
 import yaml from 'js-yaml';
 
-import XuiPageEditor from './XuiPageEditor.vue';
+import XuiPageEditorDialog from './XuiPageEditorDialog.vue';
+
+import { PageApis, deletePageCache } from '@nop-chaos/nop-core';
 
 const props = defineProps({
   path: {
     type: String,
-    required:true,
+    required: true,
   },
   schema: Object,
 });
@@ -82,6 +70,21 @@ const schemaData = shallowRef({
   schema: '',
   lang: 'json',
 });
+
+const { PageProvider__getPageSource, PageProvider__rollbackPageSource, PageProvider__savePageSource } = PageApis
+
+function getPageSource() {
+  return PageProvider__getPageSource(props.path, true)
+}
+
+function savePageSource(data: any) {
+  deletePageCache(props.path)
+  PageProvider__savePageSource(props.path, data, true)
+}
+
+function rollbackPageSource() {
+  PageProvider__rollbackPageSource(props.path, true)
+}
 
 function openSchemaEditor() {
   schemaData.value = { schema: yaml.dump(props.schema), lang: 'yaml' };
@@ -128,10 +131,6 @@ const designerVisible = ref(false);
 
 function openXuiPageEditor() {
   designerVisible.value = true;
-}
-
-function handleEditorExit() {
-  designerVisible.value = false;
 }
 
 </script>

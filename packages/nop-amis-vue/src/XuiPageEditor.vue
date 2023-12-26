@@ -1,18 +1,28 @@
 <template>
-    <component :is="componentType" :path="path" @exit="handleExit" />
+    <component :is="componentType" v-bind="props" :schema="schemaRef"
+        @exit="handleExit" v-if="componentType"/>
 </template>
   
 <script lang="ts" setup>
-import { useAdapter,getSchemaProcessorType } from '@nop-chaos/nop-core';
-import { defineComponent, ref, watchEffect,markRaw } from 'vue';
+import { useAdapter, getSchemaProcessorType } from '@nop-chaos/nop-core';
+import { defineComponent, shallowRef, watchEffect, markRaw } from 'vue';
 import AmisPageEditor from './AmisPageEditor.vue';
 
 const props = defineProps({
-    path: {
-        type: String,
-        required: true,
+    rollbackPageSource: Function,
+    getPageSource: {
+        type: Function,
+        required: true
     },
+    savePageSource: {
+        type: Function,
+        required: true
+    }
 });
+
+const { getPageSource} = props;
+
+const {useI18n} = useAdapter()
 
 const emit = defineEmits(['exit']);
 
@@ -20,12 +30,15 @@ function handleExit() {
     emit("exit")
 }
 
-const componentType = ref(markRaw(AmisPageEditor))
-
-const {useI18n} = useAdapter()
+const componentType = shallowRef()
+const schemaRef = shallowRef()
 
 watchEffect(() => {
-    useAdapter().getPage(props.path).then(schema => {
+    getPageSource().then(schema => {
+        if(!schema)
+          schema = {}
+        schemaRef.value = markRaw(schema)
+
         const schemaTypeName = schema['xui:schema-type']
         if (!schemaTypeName) {
             componentType.value = markRaw(AmisPageEditor)
