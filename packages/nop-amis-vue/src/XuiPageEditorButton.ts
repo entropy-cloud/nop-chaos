@@ -54,17 +54,17 @@ export class XuiPageEditorButton extends React.Component<XuiPageEditorButtonProp
         const store = getPageStore(this.props.store) as IServiceStore
 
         this.getPageSource = () => {
-            return store.fetchData(this.props.initApi, {}).then(res => res.data)
+            return store.fetchData(this.props.initApi, this.props.data).then(res => res.data)
         }
 
         this.savePageSource = (data: any) => {
-            return store.fetchData(this.props.api, { data }).then(res => res.data)
+            return store.fetchData(this.props.api, { ...this.props.data, data }).then(res => res.data)
         }
 
         this.rollbackPageSource = () => {
             if (!this.props.rollbackApi)
                 return Promise.resolve(null)
-            return store.fetchData(this.props.rollbackApi).then(res => res.data)
+            return store.fetchData(this.props.rollbackApi, this.props.data).then(res => res.data)
         }
     }
 
@@ -93,7 +93,7 @@ export class XuiPageEditorButton extends React.Component<XuiPageEditorButtonProp
                 savePageSource: this.savePageSource,
                 getPageSource: this.getPageSource,
                 rollbackPageSource: this.rollbackPageSource,
-                "onUpdate:value": () => this.setState({ dialogVisible: false },
+                "onUpdate:modelValue": (value:boolean) => this.setState({ dialogVisible: value },
                 )
             })
         ]

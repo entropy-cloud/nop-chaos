@@ -97,6 +97,8 @@ declare interface VueControlProps extends FormControlProps {
     props: Record<string, any>;
 }
 
+export declare const XuiLoading: DefineComponent<{}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{}>>, {}, {}>;
+
 /**
  * 在AmisSchemaPage的基础上增加AmisDebugger调试功能，以及根据path动态加载schema的功能
  */

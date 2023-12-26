@@ -40,16 +40,6 @@
     "vite": "^4.0.0",
     "vite-plugin-compression": "^0.5.1"
   },
-  "resolutions": {
-   "@types/react": "^18.0.2",
-   "@types/react-dom": "^18.0.2"
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "^18.0.2",
-      "@types/react-dom": "^18.0.2"
-    }
-  },
   "eslintConfig": {
     "extends": [
       "react-app",

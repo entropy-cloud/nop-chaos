@@ -104,7 +104,7 @@ export default defineComponent({
       const frame: any = editorRef.value;
       if (!frame) return;
       fetched = true
-      return getPageSource().then((page) => {
+      return getPageSource(true).then((page) => {
         postMsg({
           type: 'toast',
           level: 'info',

@@ -73,8 +73,8 @@ const schemaData = shallowRef({
 
 const { PageProvider__getPageSource, PageProvider__rollbackPageSource, PageProvider__savePageSource } = PageApis
 
-function getPageSource() {
-  return PageProvider__getPageSource(props.path, true)
+function getPageSource(silent: boolean) {
+  return PageProvider__getPageSource(props.path, silent)
 }
 
 function savePageSource(data: any) {

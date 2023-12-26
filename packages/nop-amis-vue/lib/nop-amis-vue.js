@@ -1,5 +1,5 @@
 import * as Vue from "vue";
-import { defineComponent, ref, onUnmounted, openBlock, createElementBlock, watchEffect, onBeforeUnmount, h, onMounted, markRaw, createBlock, resolveDynamicComponent, mergeProps, createCommentVNode, unref, withCtx, createVNode, createElementVNode, shallowRef, Fragment as Fragment$1, createTextVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
+import { defineComponent, ref, onUnmounted, openBlock, createElementBlock, watchEffect, onBeforeUnmount, h, onMounted, createStaticVNode, shallowRef, markRaw, Fragment as Fragment$1, createBlock, resolveDynamicComponent, mergeProps, createCommentVNode, unref, withCtx, createVNode, createElementVNode, createTextVNode, normalizeProps, guardReactiveProps, resolveComponent } from "vue";
 import { ajaxFetch, useDebug, useAdapter, providePage, default_jumpTo, isCancel, default_isCurrentUrl, default_updateLocation, createPage, transformPageJson, bindActions, getSchemaProcessorType, deletePageCache, PageApis, registerAdapter, registerModule } from "@nop-chaos/nop-core";
 import { isString, cloneDeep } from "lodash-es";
 import { toast, clearStoresCache, setDefaultLocale, render, ToastComponent, ScopedContext, Renderer, FormItem, dataMapping, alert, confirm } from "amis";
@@ -10,9 +10,9 @@ import React__default, { createElement, Fragment } from "react";
 import { ElDialog, ElButton } from "element-plus";
 import yaml from "js-yaml";
 import { createObject, resolveVariableAndFilter } from "amis-core";
-import { applyPureVueInReact } from "veaury";
+import { applyPureVueInReact, applyVueInReact } from "veaury";
 import * as ReactDom from "react-dom";
-const _sfc_main$6 = defineComponent({
+const _sfc_main$7 = defineComponent({
   props: {
     schema: Object,
     rollbackPageSource: Function,
@@ -103,7 +103,7 @@ const _sfc_main$6 = defineComponent({
       if (!frame)
         return;
       fetched = true;
-      return getPageSource().then((page) => {
+      return getPageSource(true).then((page) => {
         postMsg({
           type: "toast",
           level: "info",
@@ -140,15 +140,15 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _hoisted_1$2 = {
+const _hoisted_1$3 = {
   style: { "width": "100%", "height": "100%", "border": "none" },
   ref: "editorRef",
   src: "/amis-editor/index.html"
 };
-function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("iframe", _hoisted_1$2, null, 512);
+function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("iframe", _hoisted_1$3, null, 512);
 }
-const AmisPageEditor = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$2]]);
+const AmisPageEditor = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$3]]);
 function createEnv(page) {
   const { debug } = useDebug();
   const adapter = useAdapter();
@@ -309,7 +309,7 @@ const AmisSchemaPage = defineReactPageComponent((props) => {
     }
   }
 });
-const _sfc_main$5 = /* @__PURE__ */ defineComponent({
+const _sfc_main$6 = /* @__PURE__ */ defineComponent({
   __name: "AmisToast",
   setup(__props) {
     const domRef = ref();
@@ -389,6 +389,18 @@ const debuggerSchema = {
     ]
   }
 };
+const _imports_0 = "/resource/img/logo.png";
+const XuiLoading_vue_vue_type_style_index_0_scoped_2668f673_lang = "";
+const _sfc_main$5 = {};
+const _hoisted_1$2 = { class: "app-loading" };
+const _hoisted_2 = /* @__PURE__ */ createStaticVNode('<div class="app-loading-wrap" data-v-2668f673><img src="' + _imports_0 + '" class="app-loading-logo" alt="Logo" data-v-2668f673><div class="app-loading-dots" data-v-2668f673><span class="dot dot-spin" data-v-2668f673><i data-v-2668f673></i><i data-v-2668f673></i><i data-v-2668f673></i><i data-v-2668f673></i></span></div><div class="app-loading-title" data-v-2668f673><b data-v-2668f673>N</b>op is n<b data-v-2668f673>o</b>t <b data-v-2668f673>P</b>rogramming </div></div>', 1);
+const _hoisted_3 = [
+  _hoisted_2
+];
+function _sfc_render$2(_ctx, _cache) {
+  return openBlock(), createElementBlock("div", _hoisted_1$2, _hoisted_3);
+}
+const XuiLoading = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$2], ["__scopeId", "data-v-2668f673"]]);
 const _sfc_main$4 = /* @__PURE__ */ defineComponent({
   __name: "XuiPageEditor",
   props: {
@@ -410,10 +422,12 @@ const _sfc_main$4 = /* @__PURE__ */ defineComponent({
     function handleExit() {
       emit("exit");
     }
-    const componentType = ref();
-    const schemaRef = ref();
+    const componentType = shallowRef();
+    const schemaRef = shallowRef();
     watchEffect(() => {
-      getPageSource().then((schema) => {
+      getPageSource(false).then((schema) => {
+        if (!schema)
+          schema = {};
         schemaRef.value = markRaw(schema);
         const schemaTypeName = schema["xui:schema-type"];
         if (!schemaTypeName) {
@@ -430,10 +444,13 @@ const _sfc_main$4 = /* @__PURE__ */ defineComponent({
       });
     });
     return (_ctx, _cache) => {
-      return componentType.value ? (openBlock(), createBlock(resolveDynamicComponent(componentType.value), mergeProps({ key: 0 }, props, {
-        schema: schemaRef.value,
-        onExit: handleExit
-      }), null, 16, ["schema"])) : createCommentVNode("", true);
+      return openBlock(), createElementBlock(Fragment$1, null, [
+        componentType.value ? (openBlock(), createBlock(resolveDynamicComponent(componentType.value), mergeProps({ key: 0 }, props, {
+          schema: schemaRef.value,
+          onExit: handleExit
+        }), null, 16, ["schema"])) : createCommentVNode("", true),
+        !componentType.value ? (openBlock(), createBlock(XuiLoading, { key: 1 })) : createCommentVNode("", true)
+      ], 64);
     };
   }
 });
@@ -510,8 +527,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       lang: "json"
     });
     const { PageProvider__getPageSource, PageProvider__rollbackPageSource, PageProvider__savePageSource } = PageApis;
-    function getPageSource() {
-      return PageProvider__getPageSource(props.path, true);
+    function getPageSource(silent) {
+      return PageProvider__getPageSource(props.path, silent);
     }
     function savePageSource(data) {
       deletePageCache(props.path);
@@ -795,25 +812,32 @@ FormItem({
   type: "vue-form-item",
   autoVar: false
 })(VueFormItem);
+function getPageStore(store) {
+  if (!store)
+    return;
+  if (store.fetchData)
+    return store;
+  return getPageStore(store.parentStore);
+}
 class XuiPageEditorButton extends React__default.Component {
   constructor(props) {
     super(props);
     this.state = {
       dialogVisible: false
     };
-    this.dialogComponent = applyPureVueInReact(_sfc_main$3);
+    this.dialogComponent = applyVueInReact(_sfc_main$3);
     this.handleAction = this.handleAction.bind(this);
-    const store = props.store;
+    const store = getPageStore(this.props.store);
     this.getPageSource = () => {
-      return store.fetchData(props.initApi, {}).then((res) => res.data);
+      return store.fetchData(this.props.initApi, this.props.data).then((res) => res.data);
     };
     this.savePageSource = (data) => {
-      return store.fetchData(props.api, { data }).then((res) => res.data);
+      return store.fetchData(this.props.api, { ...this.props.data, data }).then((res) => res.data);
     };
     this.rollbackPageSource = () => {
-      if (!props.rollbackApi)
+      if (!this.props.rollbackApi)
         return Promise.resolve(null);
-      return store.fetchData(props.rollbackApi).then((res) => res.data);
+      return store.fetchData(this.props.rollbackApi, this.props.data).then((res) => res.data);
     };
   }
   handleAction(e, action) {
@@ -842,8 +866,8 @@ class XuiPageEditorButton extends React__default.Component {
         savePageSource: this.savePageSource,
         getPageSource: this.getPageSource,
         rollbackPageSource: this.rollbackPageSource,
-        "onUpdate:value": () => this.setState(
-          { dialogVisible: false }
+        "onUpdate:modelValue": (value) => this.setState(
+          { dialogVisible: value }
         )
       })
     ];
@@ -872,8 +896,9 @@ registerModule("react-dom", ReactDom);
 export {
   AmisPageEditor,
   AmisSchemaPage,
-  _sfc_main$5 as AmisToast,
+  _sfc_main$6 as AmisToast,
   VueControl as AmisVueComponent,
+  XuiLoading,
   XuiPage,
   _sfc_main$4 as XuiPageEditor,
   XuiSchemaPage,
