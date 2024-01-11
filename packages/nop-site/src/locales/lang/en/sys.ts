@@ -8,6 +8,7 @@ export default {
     apiRequestFailed: 'The interface request failed, please try again later!',
     networkException: 'network anomaly',
     networkExceptionMsg: 'Please check if your network connection is normal! The network is abnormal',
+    downloading: "Start Downloading",
 
     errMsg401: 'The user does not have permission (token, user name, password error)!',
     errMsg403: 'The user is authorized, but access is forbidden!',

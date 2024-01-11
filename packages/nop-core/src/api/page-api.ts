@@ -28,6 +28,13 @@ function PageProvider__getPage(path: string) {
     if (import.meta.env.VITE_USE_MOCK)
         return ajaxRequest({ method: 'get', url: `/mock${path}`, config: { rawResponse: true } })
 
+    if(path.startsWith("/p/"))
+        return withPageCache(path,()=>{
+            return ajaxRequest({
+                method: "get",
+                url: path
+            })
+    })    
     return withPageCache(path, () => {
         return ajaxRequest({
             method: 'post',
