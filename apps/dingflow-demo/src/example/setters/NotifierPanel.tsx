@@ -1,30 +1,30 @@
 import { memo, useState } from "react"
+import { ButtonSelect } from "workflow-editor-example"
 import { QuestionCircleOutlined } from "@ant-design/icons"
 import { FormAuth } from "./FormAuth"
+import { useTranslate } from "workflow-editor-example"
 import { Form } from "antd"
-import { useTranslate } from "../../../../examples/workflow-editor/src/workflow-editor/react-locales"
-import { ButtonSelect } from "../../../../examples/workflow-editor/src/workflow-editor"
 
-export interface IAuditSettings {
+export interface INotifierSettings {
 
 }
 
-export const AuditPanel = memo((
+export const NotifierPanel = memo((
   props: {
-    value?: IAuditSettings
-    onChange?: (value?: IAuditSettings) => void
+    value?: INotifierSettings
+    onChange?: (value?: INotifierSettings) => void
   }
 ) => {
   const [settingsType, setSettingsType] = useState<string>("node")
   const t = useTranslate()
-  
+
   return (
     <Form layout="vertical" colon={false}>
       <ButtonSelect
         options={[
           {
             key: "node",
-            label: t("setDealer"),
+            label: t("setNotifier"),
           },
           {
             key: "formAuth",

@@ -1,8 +1,8 @@
 import { memo } from "react"
 import { WorkFlowEditorInner } from "./WorkFlowEditorInner"
 import { ILocales } from "@nop-chaos/locales"
-import { IThemeToken } from "../../../../examples/workflow-editor/src/workflow-editor"
-import { IMaterialUIs, FlowEditorScope } from "../../../../examples/workflow-editor/src/workflow-editor"
+import { IThemeToken } from "workflow-editor-example"
+import { IMaterialUIs, FlowEditorScope } from "workflow-editor-example"
 
 export type WorkflowEditorProps = {
   themeMode?: 'dark' | 'light',

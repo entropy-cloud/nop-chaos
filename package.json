@@ -6,7 +6,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "nop-dev": "turbo run dev --filter=nop-demo",
+    "nop-dingflow": "turbo run dev --filter=dingflow-demo",
     "lint": "turbo run lint",
     "test": "vitest",
     "clean": "turbo run clean && rm -rf node_modules",

@@ -1,4 +1,4 @@
-import { ContentPlaceholder, IMaterialUIs, IWorkFlowNode, NodeType } from "../../../examples/workflow-editor/src/workflow-editor";
+import { ContentPlaceholder, IMaterialUIs, IWorkFlowNode, NodeType } from "workflow-editor-example";
 import { ApproverPanel, IApproverSettings } from "./setters/ApproverPanel";
 import { AuditPanel, IAuditSettings } from "./setters/AuditPanel";
 import { ConditionPanel, IConditionSettings } from "./setters/ConditionPanel";

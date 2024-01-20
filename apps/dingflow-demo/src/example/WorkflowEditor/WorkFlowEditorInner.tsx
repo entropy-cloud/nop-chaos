@@ -3,9 +3,9 @@ import { Avatar, Button, Dropdown, MenuProps, Space } from "antd"
 import { memo, useCallback, useMemo, useState } from "react"
 import { styled } from "styled-components"
 import classNames from "classnames"
-import { NavTabs, Toolbar, FlowEditorCanvas, useImport } from "../../../../examples/workflow-editor/src/workflow-editor"
-import { useTranslate } from "../../../../examples/workflow-editor/src/workflow-editor/react-locales"
-import { useExport } from "../../../../examples/workflow-editor/src/workflow-editor"
+import { NavTabs, Toolbar, FlowEditorCanvas, useImport } from "workflow-editor-example"
+import { useTranslate } from "workflow-editor-example"
+import { useExport } from "workflow-editor-example"
 import { PublishButton } from "./PublishButton"
 
 const Container = styled.div`

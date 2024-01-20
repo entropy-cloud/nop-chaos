@@ -1,7 +1,7 @@
 import { Button, Modal, message } from "antd"
 import { memo, useState } from "react"
-import { useEditorEngine } from "../../../../examples/workflow-editor/src/workflow-editor"
-import { useTranslate } from "../../../../examples/workflow-editor/src/workflow-editor/react-locales"
+import { useEditorEngine } from "workflow-editor-example"
+import { useTranslate } from "workflow-editor-example"
 import { CloseCircleOutlined } from "@ant-design/icons"
 import { styled } from "styled-components"
 

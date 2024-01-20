@@ -1,8 +1,8 @@
 import { memo, useState } from "react"
-import { ButtonSelect } from "../../../../examples/workflow-editor/src/workflow-editor/components/ButtonSelect"
+import { ButtonSelect } from "workflow-editor-example"
 import { QuestionCircleOutlined } from "@ant-design/icons"
 import { FormAuth } from "./FormAuth"
-import { useTranslate } from "../../../../examples/workflow-editor/src/workflow-editor/react-locales"
+import { useTranslate } from "workflow-editor-example"
 import { Form, Radio } from "antd"
 import FormItem from "antd/es/form/FormItem"
 

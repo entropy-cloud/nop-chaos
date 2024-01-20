@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from "react"
 import { Form } from "antd"
-import { DefaultExpressionInput, ExpressionGroupType, ExpressionNodeType, ExpressionTreeInput, IExpressionGroup } from "../../../../examples/workflow-editor/src/workflow-editor"
-import { createUuid } from "../../../../examples/workflow-editor/src/workflow-editor/utils/create-uuid"
+import { DefaultExpressionInput, ExpressionGroupType, ExpressionNodeType, ExpressionTreeInput, IExpressionGroup } from "workflow-editor-example"
+import { createUuid } from "workflow-editor-example"
 
 export interface IConditionSettings {
 
