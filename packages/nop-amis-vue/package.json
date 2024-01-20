@@ -1,14 +1,16 @@
 {
   "name": "@nop-chaos/nop-amis-vue",
   "private": true,
-  "version": "0.1.0",
-  "type": "module",
-  "types": "lib/index.d.ts",
-  "main": "lib/nop-amis-vue.js",
+  "version": "0.1.1",
+  "module": "index.ts",
   "files": [
-    "lib",
-    "src"
+    "dist"
   ],
+  "publishConfig": {
+    "module": "dist/index.mjs",
+    "typings": "dist/index.d.ts",
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -39,7 +41,7 @@
     "@types/react-dom": "^18.2.6",
     "@vitejs/plugin-vue": "^4.2.3",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5",
+    "vite": "^4.4.6",
     "vue-tsc": "^1.8.5",
     "vite-plugin-dts": "^3.6.0"
   }

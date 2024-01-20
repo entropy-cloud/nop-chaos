@@ -1,0 +1,29 @@
+{
+  "name": "@nop-chaos/locales",
+  "version": "0.1.1",
+  "author": "Water.Li",
+  "type": "module",
+  "module": "index.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "module": "dist/index.mjs",
+    "typings": "dist/index.d.ts",
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@nop-chaos/shared": "workspace:*",
+    "@nop-chaos/schema": "workspace:*",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "@nop-chaos/eslint-config-custom": "workspace:*",
+    "@nop-chaos/tsconfig": "workspace:*"
+  }
+}

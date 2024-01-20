@@ -239,7 +239,7 @@ function prepareHeaders(config: AxiosRequestConfig, opts: ExtOptions) {
 	const token = useAuthToken();
 	let tenantid = useTenantId();
 	config.headers = config.headers || {}
-	config.headers['nop-locale'] = useLocale()?.repalce('_','-')
+	config.headers['nop-locale'] = useLocale()
 	config.headers['x-requested-with'] = 'XMLHttpRequest'
 
 	if (token && opts.withToken !== false) {

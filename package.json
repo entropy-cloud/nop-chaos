@@ -1,39 +1,53 @@
 {
   "name": "nop-chaos",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
-  "packageManager": "pnpm@7.1.0",
-  "workspaces": [
-    "packages/*"
-  ],
-  "description": "Nop Platform Frontend",
+  "description": "nop-chaos",
   "scripts": {
-    "all": "pnpm -r all",
-    "dev": "pnpm -F nop-site dev",
-    "build": "pnpm -r build",
-    "build-sdk": "pnpm -F nop-core build & pnpm -F nop-react-core build & pnpm -F nop-graph-designer build & pnpm -F nop-flow-builder build & pnpm -F nop-amis-ext build & pnpm -F nop-amis-vue build & pnpm -F sdk build",
-    "build-designer": "pnpm -F nop-graph-designer build & pnpm -F nop-flow-builder build & pnpm -F nop-amis-ext build",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "preview": "pnpm -F nop-site preview",
-    "test": "pnpm -r test",
-    "clean": "pnpm -r clean",
-    "clean:all": "pnpm --package=rimraf -s dlx rimraf pnpm-lock.yaml **/dist **/node_modules",
-    "reinstall": "pnpm clean:all && pnpm i",
-    "preinstall": "npx only-allow pnpm"
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "nop-dingflow": "turbo run dev --filter=dingflow-demo",
+    "lint": "turbo run lint",
+    "test": "vitest",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "lint-staged": "pnpm --workspace-concurrency=1 exec lint-staged",
+    "new-app": "pnpm exec plop app",
+    "new-app-ts": "pnpm exec plop app-ts",
+    "new-library": "pnpm exec plop library",
+    "new-library-ts": "pnpm exec plop library-ts",
+    "docs": "pnpm --filter \"@nop-chaos/docs\" run docs",
+    "e2e": "pnpm --filter \"@nop-chaos/e2e\" run e2e",
+    "changeset-create": "pnpm exec changeset add",
+    "changeset-save-prerelease": "pnpm exec changeset pre enter",
+    "changeset-save": "pnpm exec changeset version",
+    "changeset-tag": "pnpm exec changeset tag",
+    "changeset-tag-and-publish": "pnpm exec changeset publish"
+  },
+  "keywords": [],
+  "dependencies": {
+     "@vitejs/plugin-react-swc": "^3.0.0",
+    "vite": "^4.0.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.27.0",
-    "esbuild": "^0.17.11",
-    "eslint": "^8.31.0",
-    "eslint-plugin-cypress": "^2.12.1",
-    "typescript": "^4.9.4",
-    "vite": "^4.4.9"
+    "@changesets/cli": "^2.26.0",
+    "@nop-chaos/eslint-config-custom": "workspace:*",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@types/node": "^18.11.13",
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.7",
+    "@types/react-router-dom": "^5.3.3",
+    "jsdom": "latest",
+    "lint-staged": "^13.1.0",
+    "plop": "^3.1.1",
+    "prettier": "^2.8.1",
+    "turbo": "^1.10.12",
+    "typescript": "^5",
+    "vitest": "^0.25.8"
   },
-  "//": "use bin-wrapper-china to install gifslice package when network issue occurs",
-  "pnpm": {
-    "overrides": {
-      "bin-wrapper": "npm:bin-wrapper-china"
-    }
-  }
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": "eslint --ext .js,.jsx,.ts,.tsx --fix --max-warnings=0",
+    "**/*.{js,jsx,json,yml,yaml,css,less,scss,ts,tsx,md,graphql}": "prettier --write"
+  },
+  "packageManager": "pnpm@7.18.2"
 }
