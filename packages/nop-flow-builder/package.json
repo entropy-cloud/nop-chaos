@@ -1,13 +1,15 @@
 {
   "name": "@nop-chaos/nop-flow-builder",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
-  "packageManager": "pnpm@7.1.0",
-  "description": "FlowBuilder Designer",
-  "type": "module",
-  "types": "lib/index.d.ts",
-  "main": "lib/nop-flow-builder.js",
+  "module": "index.ts",
+  "publishConfig": {
+    "module": "dist/index.mjs",
+    "typings": "dist/index.d.ts",
+    "access": "public"
+  },
   "files": [
+    "dist",
     "assets",
     "src"
   ],
