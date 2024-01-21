@@ -21,7 +21,7 @@ export default defineConfig({
         entryFileNames: 'js/[name]-[hash].js', // 包的入口文件名称
         manualChunks(id) {
           // console.log("id="+id)
-          const libs = ["amis-editor", "monaco-editor", "tinymce", "codemirror",
+          const libs = ["monaco-editor", "tinymce", "codemirror",
             "froala-editor", "exceljs", "xlsx", "office-viewer", "ant-design-vue"];
           for (let lib of libs) {
             if (id.includes("node_modules/" + lib + '/'))
@@ -41,7 +41,8 @@ export default defineConfig({
           if (include_any(["echarts", "zrender"]))
             return "echarts"
 
-          if (include_any(["amis", "amis-ui", "amis-formula", "amis-core", "video-react"]))
+          if (include_any(["amis", "amis-ui", "amis-formula", "amis-core", 
+                 "video-react","amis-editor","amis-editor-core"]))
             return "amis";
 
           if (id.includes('node_modules/@nop-chaos')) {

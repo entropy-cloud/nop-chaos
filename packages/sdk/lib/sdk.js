@@ -1351,11 +1351,12 @@ function ajaxFetch(options) {
   return processResponse(res);
 }
 function prepareHeaders(config, opts) {
+  var _a;
   const { useAuthToken, useTenantId, useLocale, useAppId, globalVersion } = useAdapter();
   const token2 = useAuthToken();
   let tenantid = useTenantId();
   config.headers = config.headers || {};
-  config.headers["nop-locale"] = useLocale();
+  config.headers["nop-locale"] = (_a = useLocale()) == null ? void 0 : _a.replace("_", "-");
   config.headers["x-requested-with"] = "XMLHttpRequest";
   if (token2 && opts.withToken !== false) {
     config.headers.Authorization = `Bearer ${token2}`;
@@ -1528,6 +1529,13 @@ function DevTool__clearComponentCache() {
 function PageProvider__getPage(path) {
   if ({}.VITE_USE_MOCK)
     return ajaxRequest({ method: "get", url: `/mock${path}`, config: { rawResponse: true } });
+  if (path.startsWith("/p/"))
+    return withPageCache(path, () => {
+      return ajaxRequest({
+        method: "get",
+        url: path
+      });
+    });
   return withPageCache(path, () => {
     return ajaxRequest({
       method: "post",
