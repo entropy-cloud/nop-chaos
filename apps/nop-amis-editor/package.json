@@ -1,10 +1,12 @@
 {
   "name": "@nop-chaos/nop-amis-editor",
-  "version": "0.1.0",
+  "version": "0.1.0",  
+  "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm -rf build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
@@ -17,9 +19,9 @@
     "amis-widget": "3.2.0",
     "bootstrap": "3.4.1",
     "copy-to-clipboard": "^3.2.0",
-    "mobx": "^4.5.0",
-    "mobx-react": "^6.3.1",
-    "mobx-state-tree": "^3.17.3",
+    "mobx": "^6.12.0",
+    "mobx-react": "^9.1.0",
+    "mobx-state-tree": "^5.4.0",
     "qs": "6.5.1",
     "axios": "^0.27.2",
     "react": "^18.2.0",
@@ -28,6 +30,8 @@
   },
   "homepage": "./",
   "devDependencies": {
+    "@nop-chaos/eslint-config-custom": "workspace:*",
+    "@nop-chaos/tsconfig": "workspace:*",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",

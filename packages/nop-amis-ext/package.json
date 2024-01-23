@@ -22,19 +22,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nop-chaos/nop-core": "workspace:*",
+    "@nop-chaos/nop-flow-builder": "workspace:*",
+    "@nop-chaos/nop-graph-designer": "workspace:*",
+    "@nop-chaos/nop-react-core": "workspace:*",
     "amis": "^3.6.1",
     "amis-core": "^3.6.1",
+    "amis-formula": "^3.6.1",
     "amis-ui": "^3.6.1",
-	  "amis-formula": "^3.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tslib": "^2.3.1",
-    "@nop-chaos/nop-graph-designer": "workspace:*",
-    "@nop-chaos/nop-flow-builder": "workspace:*",
-    "@nop-chaos/nop-react-core": "workspace:*",
-    "@nop-chaos/nop-core": "workspace:*"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-decorators": "^7.23.3",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-decorators": "^7.23.7",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@typescript-eslint/eslint-plugin": "^5.61.0",

@@ -1,8 +1,8 @@
-import React from "react";
-import { FormItem, Renderer } from "../../../src/index";
+import React from 'react';
+import { FormItem, Renderer } from '../../../src/index';
 
 @FormItem({
-  type: "my-custom",
+  type: 'my-custom',
 })
 class MyFormItem extends React.Component {
   render() {
