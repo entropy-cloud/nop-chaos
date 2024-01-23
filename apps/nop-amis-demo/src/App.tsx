@@ -5,8 +5,8 @@ import FlowDemo from './FlowDemo'
 import FlowBuilderDemo from './FlowBuilderDemo'
 
 //import '@nop-chaos/nop-amis-ext/lib/style.css'
-import '@nop-chaos/nop-flow-builder/lib/style.css'
-import '@nop-chaos/nop-graph-designer/lib/style.css'
+// import '@nop-chaos/nop-flow-builder/lib/style.css'
+// import '@nop-chaos/nop-graph-designer/lib/style.css'
 
 function App() {
   return (
