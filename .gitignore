@@ -94,10 +94,6 @@ out
 .env.test.local
 .env.production.local
 
-cypress/integration/examples
-cypress/integration/videos
-cypress.env.json
-
 # Storybook
 .out
 
@@ -111,8 +107,6 @@ yarn.lock
 
 storybook-static
 vite.config.js.timestamp-*.mjs
-
-apps/core/stats.*
 
 pnpm-lock.yaml
 .VSCodeCounter
