@@ -110,4 +110,3 @@ vite.config.js.timestamp-*.mjs
 
 pnpm-lock.yaml
 .VSCodeCounter
-examples/
