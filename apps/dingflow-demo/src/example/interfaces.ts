@@ -1,4 +1,4 @@
-import { IWorkFlowNode } from "../../../examples/workflow-editor/src/workflow-editor";
+import { IWorkFlowNode } from "workflow-editor-example";
 
 //后端需要的扩展，增加一些冗余配置项
 export interface IExtWorkflowNode extends IWorkFlowNode {

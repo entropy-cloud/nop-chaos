@@ -19,9 +19,9 @@
     "types": ["vitest/globals"],
     "baseUrl": ".",
     "paths": {
-      "@nop-chaos/*": ["packages/*/src/index", "apps/*/src/App"],
+      "@nop-chaos/*": ["packages/*/src/index", "examples/*/src/index", "apps/*/src/App"],
       "tsconfig": ["packages/tsconfig/*"]
     }
   },
-  "include": ["apps", "packages"]
+  "include": ["apps", "packages", "examples"]
 }

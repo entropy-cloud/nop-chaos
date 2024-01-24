@@ -8,6 +8,8 @@ import { useTranslate } from "workflow-editor-example"
 import { useExport } from "workflow-editor-example"
 import { PublishButton } from "./PublishButton"
 
+import page from './flow-builder-new.page'
+
 const Container = styled.div`
   flex:1;
   display: flex;
@@ -101,7 +103,7 @@ export const WorkFlowEditorInner = memo((props: {
       </Toolbar>
       {
         selectedTab === TabType.flowDesign &&
-        <FlowEditorCanvas />
+        <FlowEditorCanvas flowModel="simple" graphDiagram={page.body.value.diagram}/>
       }
     </Container>
   )
