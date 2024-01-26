@@ -20,8 +20,7 @@
     "experimentalDecorators": true,
     "types": [
       "vite/client",
-      "reflect-metadata",
-      "mocha"
+      "reflect-metadata"
     ]
   },
   

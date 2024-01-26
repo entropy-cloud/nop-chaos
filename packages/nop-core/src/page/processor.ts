@@ -15,8 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { isObject, isArray,isString } from "@vue/shared"
-import {isPromise} from '@vue/shared'
+import { isObject, isArray,isString,isPromise } from "../shared/is-type"
 
 /**
  * 如果返回undefined，表示该节点需要被删除

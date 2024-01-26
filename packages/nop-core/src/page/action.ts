@@ -16,8 +16,7 @@
  * limitations under the License.
  */
 
-import { isArray, isPlainObject, isPromise, isString } from "@vue/shared";
-import { v4 as uuid } from "uuid";
+import { isArray, isPlainObject, isPromise, isString } from "../shared/is-type";
 import { BasePage, importModule } from "../core";
 import { absolutePath } from "../shared";
 import { processXuiDirective, processXuiValue } from "./processor";

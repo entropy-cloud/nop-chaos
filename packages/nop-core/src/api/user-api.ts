@@ -1,7 +1,6 @@
 import { useAdapter } from '../adapter'
-import { ajaxRequest, useDebug } from '../core'
+import { ajaxRequest} from '../core'
 
-const { supportDebug, debug } = useDebug()
 
 export const UserApis = {
     SiteMapApi__getSiteMap,
@@ -11,16 +10,14 @@ export const UserApis = {
     LoginApi__generateVerifyCode
 }
 
-function SiteMapApi__getSiteMap() {
+function SiteMapApi__getSiteMap(siteId?: string) {
     return ajaxRequest({
         url: '/r/SiteMapApi__getSiteMap',
         data: {
-            siteId: 'main'
+            siteId: siteId || 'main'
         }
     }).then(data => {
-        supportDebug.value = data.supportDebug
-        debug.value = data.supportDebug
-
+        useAdapter().useDebug().setDebug(data.supportDebug)
         return data
     })
 };
@@ -33,12 +30,12 @@ export type LoginRequest = {
     verifySecret?: string
 }
 
-function LoginApi__login(req: LoginRequest) {
+function LoginApi__login(req: LoginRequest, silent?: boolean) {
     return ajaxRequest({
         url: `/r/LoginApi__login?@selection=token:accessToken`,
         data: req,
         // 登录页面发现异常时会自己弹出错误提示信息，这里禁用ajaxRequest内部的提示框
-        silent: true
+        silent
     })
 }
 

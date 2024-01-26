@@ -1,6 +1,6 @@
 import qs from "qs"
 import { match } from 'path-to-regexp';
-import { Router } from "vue-router";
+import { Router } from "./types";
 
 export function default_jumpTo(router: Router, to: string) {
     if (to.startsWith("open://")) {
@@ -24,7 +24,7 @@ export function default_jumpTo(router: Router, to: string) {
         if (replace) {
             router.push(to)
         } else {
-            router.replace(to)
+            router.replace({ path: to, replace: true })
         }
     }
 
@@ -34,9 +34,9 @@ export function default_jumpTo(router: Router, to: string) {
     }
     if (isPageUrl(to)) {
         const pos = to.indexOf('?')
-        const query = pos > 0 ? to.substring(pos+1) : null
+        const query = pos > 0 ? to.substring(pos + 1) : null
         const data = query ? qs.parse(query) : null
-        const page = { name: 'jsonPage', params: { path: to, data} }
+        const page = { name: 'jsonPage', params: { path: to, data } }
         go(page as any, replace)
     } else {
         go(to, replace)
@@ -61,7 +61,7 @@ export function isPageUrl(url: string) {
     return url.endsWith(".page.json5") || url.endsWith(".page.yaml") || url.endsWith(".page.json")
 }
 
-function normalizeLink(to) {
+function normalizeLink(to: any) {
     if (/^\/api\//.test(to)) {
         return to
     }
@@ -100,7 +100,7 @@ function normalizeLink(to) {
 }
 
 export function default_updateLocation(to: any, replace: boolean) {
-    if (to === 'goBack') {
+    if (to === '__back') {
         return window.history.back();
     }
 

@@ -1,4 +1,4 @@
-import { ajaxRequest, useDebug } from '../core'
+import { ajaxRequest } from '../core'
 
 import { omit } from 'lodash-es'
 import { deletePageCache, withDictCache, withPageCache } from './cache'
@@ -14,8 +14,8 @@ export const PageApis = {
 }
 
 function DevTool__clearComponentCache() {
-    const { debug } = useDebug()
-    if (debug) {
+    const { getDebug } = useDebug()
+    if (getDebug()) {
         return ajaxRequest({
             method: 'post',
             url: '@mutation:DevTool__clearComponentCache'

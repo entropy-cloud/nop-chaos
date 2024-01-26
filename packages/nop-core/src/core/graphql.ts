@@ -1,6 +1,5 @@
-import { isArray, isPlainObject, isString } from "@vue/shared"
+import { isArray, isPlainObject, isString,isBoolean,isNumber } from "../shared/is-type"
 import { AxiosRequestConfig } from 'axios'
-import { isBoolean, isInteger, isNumber } from "lodash-es"
 import { FetcherRequest } from "./types"
 import type { OrderFieldBean, QueryBean, TreeBean } from "./types"
 import { splitPrefixUrl } from "../page"

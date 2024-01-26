@@ -1,8 +1,7 @@
-import { Pinia, Store } from "pinia";
-import { Router } from "vue-router";
+import { Router, Store } from "./types";
 import { FetcherResult, FetcherRequest } from "../core/types";
 
-import { default_jumpTo,default_isCurrentUrl,default_updateLocation } from "./link";
+import { default_jumpTo, default_isCurrentUrl, default_updateLocation } from "./link";
 
 export * from "./link"
 
@@ -12,6 +11,11 @@ export type Settings = {
 
 export type I18nOperation = {
     t(msg: string): string
+}
+
+export type DebugOperation = {
+    getDebug(): boolean
+    setDebug(b: boolean):void
 }
 
 export type ToastLevel = 'info' | 'success' | 'error' | 'warning';
@@ -53,14 +57,10 @@ const adapter = {
         throw new Error("not-impl")
     },
 
-    usePinia():Pinia{
-        throw new Error("not-impl")
-    },
-
     /**
      * 返回指定的Store
      */
-    useStore(name:string): Store{
+    useStore(name: string): Store {
         throw new Error("not-impl")
     },
 
@@ -97,6 +97,10 @@ const adapter = {
         return "nop-chaos"
     },
 
+    useDebug(): DebugOperation{
+        throw new Error("not-impl");
+    },
+
     /**
      * 自动退出时执行的回调
      */
@@ -119,28 +123,28 @@ const adapter = {
         return response
     },
 
-    compileFunction(code: string,page:any): Function {
-        return new Function("page", "return " + code).call(null,page)
+    compileFunction(code: string, page: any): Function {
+        return new Function("page", "return " + code).call(null, page)
     },
-    
-    jumpTo(to: string, action?: any, ctx?: object){
+
+    jumpTo(to: string, action?: any, ctx?: object) {
         const router = adapter.useRouter()
-        return default_jumpTo(router,to)
+        return default_jumpTo(router, to)
     },
 
     isCurrentUrl: default_isCurrentUrl,
 
     updateLocation: default_updateLocation,
 
-    notify(type: ToastLevel, msg: any, conf?: ToastConf):void{
+    notify(type: ToastLevel, msg: any, conf?: ToastConf): void {
         throw new Error("not-impl")
     },
 
-    alert(msg: string, title?: string):Promise<void>{
+    alert(msg: string, title?: string): Promise<void> {
         throw new Error("not-impl")
     },
 
-    confirm(msg: string, title?: string): Promise<boolean>{
+    confirm(msg: string, title?: string): Promise<boolean> {
         throw new Error("not-impl")
     },
 
@@ -150,19 +154,19 @@ const adapter = {
         ignoreFunction: boolean | ((key: string, value: any) => boolean) = false,
         convertKeyToPath?: boolean,
         ignoreIfNotMatch = false
-      ):any{
+    ): any {
         throw new Error("not-impl")
     },
 
-    fetchDict(dictName:string, options:FetcherRequest): Promise<FetcherResult>{
+    fetchDict(dictName: string, options: FetcherRequest): Promise<FetcherResult> {
         throw new Error("not-impl")
     },
 
-    fetchPageAndTransform(pageName:string, options:FetcherRequest): Promise<FetcherResult>{
+    fetchPageAndTransform(pageName: string, options: FetcherRequest): Promise<FetcherResult> {
         throw new Error("not-impl")
     },
 
-    getPage(pageUrl:string): Promise<any>{
+    getPage(pageUrl: string): Promise<any> {
         throw new Error("not-impl")
     }
 }

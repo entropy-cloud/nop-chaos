@@ -42,16 +42,16 @@ function definePackageConfig(defineOptions: DefineOptions = {}) {
           external: [
             ...Object.keys(dependencies),
             ...Object.keys(peerDependencies),
-            'vue', 
+            'vue',
             '@vue/reactivity',
             '@vue/shared',
-            'vue-router', 
+            'vue-router',
             '@nop-chaos/nop-core',
             'systemjs',
             'systemjs/dist/system.js',
             'lru-cache',
             'lodash-es',
-            'axios', 
+            'axios',
             'amis',
             'react',
             'react-dom',
@@ -76,9 +76,9 @@ function definePackageConfig(defineOptions: DefineOptions = {}) {
         react({
           babel: {
             plugins: [
-              ["@babel/plugin-proposal-decorators", { version: "2018-09", loose: true}],
+              ["@babel/plugin-proposal-decorators", { version: "2018-09", loose: true, 'decoratorsBeforeExport': true }],
               ["@babel/plugin-proposal-class-properties", { loose: true }],
-              ["@babel/plugin-syntax-decorators", {  version: "2018-09" }],
+              ["@babel/plugin-syntax-decorators", { version: "2018-09" ,'decoratorsBeforeExport': true}],
             ],
           },
         }),

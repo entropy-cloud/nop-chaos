@@ -1,4 +1,4 @@
-export const HEADER_TENANT_ID = "x-tenant-id"
+export const HEADER_TENANT_ID = "nop-tenant"
 
 export const HEADER_ACCESS_TOKEN = "x-access-token"
 

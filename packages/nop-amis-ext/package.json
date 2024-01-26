@@ -26,13 +26,13 @@
     "@nop-chaos/nop-flow-builder": "workspace:*",
     "@nop-chaos/nop-graph-designer": "workspace:*",
     "@nop-chaos/nop-react-core": "workspace:*",
-    "amis": "^3.6.1",
-    "amis-core": "^3.6.1",
-    "amis-formula": "^3.6.1",
-    "amis-ui": "^3.6.1",
+    "amis": "^3.6.4",
+    "amis-core": "^3.6.4",
+    "amis-formula": "^3.6.4",
+    "amis-ui": "^3.6.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tslib": "^2.3.1"
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@babel/plugin-syntax-decorators": "^7.23.3",

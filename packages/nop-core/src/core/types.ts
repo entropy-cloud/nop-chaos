@@ -29,8 +29,8 @@ export type PageBean<T> = {
     offset: number,
     hasPrev? : Boolean,
     hasNext? : Boolean,
-    prevCursor: string,
-    nextCursor: string
+    prevCursor?: string,
+    nextCursor?: string
 }
 
 /**
@@ -87,7 +87,7 @@ export type AjaxConfig = {
 export type BasePage = {
     getAction(actionName: string): Function
     registerAction(actionName: string, fn: Function): void
-    resetActions()
+    resetActions():void
 }
 
 //=================== 以下为从AMIS项目拷贝的类型定义 ===============================

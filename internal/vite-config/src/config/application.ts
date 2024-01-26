@@ -64,7 +64,9 @@ function defineApplicationConfig(defineOptions: DefineOptions = {}) {
       plugins,
     };
 
-    return mergeConfig(applicationConfig, overrides);
+    const config = mergeConfig(applicationConfig, overrides);
+    console.log("vite config:", config)
+    return config
   });
 }
 
