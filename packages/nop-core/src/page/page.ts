@@ -41,7 +41,7 @@ export type PageObject = BasePage & {
 
   getState(name:string):any
 
-  setState(name:string, value:any)
+  setState(name:string, value:any):void
 };
 
 export type PageOptions = {
@@ -55,7 +55,7 @@ export type PageOptions = {
 
   getState(name:string):any
 
-  setState(name:string, value:any)
+  setState(name:string, value:any):void
 
   actions?: Record<string,Function>
 }

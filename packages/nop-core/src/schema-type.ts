@@ -1,18 +1,36 @@
-import { Component } from "vue";
+import { VDomType } from "./lib"
+import { RegisterPage } from "./page"
+
+
+export type SchemaComponentProps = {
+    schema: any,
+    data: any,
+    registerPage: RegisterPage,
+    actions: Record<string, Function>
+}
+
+export type EditorComponentProps = {
+    rollbackPageSource(path: string, silent?: boolean): Promise<any>
+
+    getPageSource(path: string, silent?: boolean): Promise<any>,
+
+    savePageSource(path: string, data: any, silent?: boolean): Promise<any>
+}
 
 export type SchemaProcessorType = {
-    componentType: Component,
-    editorComponentType: Component,
-    transformSchemaIn?(schema:any):any
-    transformSchemaOut?(schema:any):any
+    renderSchema(props: SchemaComponentProps): Promise<VDomType> | VDomType,
+    renderEditor(props: EditorComponentProps): Promise<VDomType> | VDomType,
+
+    transformSchemaIn?(schema: any): any
+    transformSchemaOut?(schema: any): any
 }
 
 const schemaProcessorTypes: Record<string, SchemaProcessorType> = {}
 
-export function registerSchemaProcessorType(typeName:string, schemaProcessorType: SchemaProcessorType){
+export function registerSchemaProcessorType(typeName: string, schemaProcessorType: SchemaProcessorType) {
     schemaProcessorTypes[typeName] = schemaProcessorType
 }
 
-export function getSchemaProcessorType(typeName:string){
+export function getSchemaProcessorType(typeName: string) {
     return schemaProcessorTypes[typeName]
 }

@@ -1,4 +1,5 @@
 import { ajaxRequest } from '../core'
+import { useAdapter } from '../adapter'
 
 import { omit } from 'lodash-es'
 import { deletePageCache, withDictCache, withPageCache } from './cache'
@@ -14,7 +15,7 @@ export const PageApis = {
 }
 
 function DevTool__clearComponentCache() {
-    const { getDebug } = useDebug()
+    const { getDebug } = useAdapter().useDebug()
     if (getDebug()) {
         return ajaxRequest({
             method: 'post',
