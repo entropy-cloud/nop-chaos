@@ -1,5 +1,5 @@
 {
-  "name": "@nop-chaos/nop-react-core",
+  "name": "@nop-chaos/nop-vue-core",
   "private": true,
   "version": "0.1.1",
   "module": "index.ts",
@@ -17,13 +17,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tslib": "^2.6.2",
-    "@nop-chaos/nop-core": "workspace:*"
+    "@nop-chaos/nop-core": "workspace:*",
+    "element-plus": "^2.5.3",
+    "vue": "^3.3.11"
   },
   "devDependencies": {
-    "@types/react": "^18.2.0",
+    "@vitejs/plugin-vue": "^4.5.2",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vue-tsc": "^1.8.25",

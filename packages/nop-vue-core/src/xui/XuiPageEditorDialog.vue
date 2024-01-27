@@ -1,10 +1,11 @@
 <template>
-    <el-dialog :destroyOnClose="true" class="page-full-screen" :modelValue="modelValue" :maskClosable="false" :append-to-body="true"
+    <el-dialog :destroyOnClose="true" class="page-full-screen" :modelValue="props.modelValue" :maskClosable="false" :append-to-body="true"
         width="100%" height="100%" :align-center="true" :fullscreen="true" :footer="null" :closable="false"
         :keyboard="false" @update:modelValue="handleChange">
         <header></header>
-        <XuiPageEditor @exit="handleEditorExit" :savePageSource="savePageSource" :rollbackPageSource="rollbackPageSource"
-            :getPageSource="getPageSource" />
+        <XuiPageEditor @exit="handleEditorExit" :savePageSource="props.savePageSource" 
+            :rollbackPageSource="props.rollbackPageSource"
+            :getPageSource="props.getPageSource" />
     </el-dialog>
 </template>
 
@@ -21,21 +22,14 @@
 </style>
 
 <script setup lang="ts">
+import {defineProps} from 'vue';
 import { ElDialog } from 'element-plus';
-import XuiPageEditor  from './XuiPageEditor.vue';
+import XuiPageEditor  from './XuiPageEditor';
+import {EditorComponentProps} from '@nop-chaos/nop-core'
 
-defineProps({
-    modelValue: Boolean,
-    rollbackPageSource: Function,
-    getPageSource: {
-        type: Function,
-        required: true
-    },
-    savePageSource: {
-        type: Function,
-        required: true
-    }
-})
+const props = defineProps<{
+    modelValue: string
+} |EditorComponentProps>()
 
 const emit = defineEmits(["update:modelValue", "exit"])
 

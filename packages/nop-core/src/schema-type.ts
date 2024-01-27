@@ -10,6 +10,7 @@ export type SchemaComponentProps = {
 }
 
 export type EditorComponentProps = {
+    path: string,
     rollbackPageSource(path: string, silent?: boolean): Promise<any>
 
     getPageSource(path: string, silent?: boolean): Promise<any>,
@@ -19,7 +20,7 @@ export type EditorComponentProps = {
 
 export type SchemaProcessorType = {
     renderSchema(props: SchemaComponentProps): Promise<VDomType> | VDomType,
-    renderEditor(props: EditorComponentProps): Promise<VDomType> | VDomType,
+    renderEditor(props: EditorComponentProps, onExit: () => void): Promise<VDomType> | VDomType,
 
     transformSchemaIn?(schema: any): any
     transformSchemaOut?(schema: any): any

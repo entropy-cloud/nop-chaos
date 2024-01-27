@@ -1,0 +1,40 @@
+{
+  "name": "@nop-chaos/nop-vue-react",
+  "private": true,
+  "version": "0.1.1",
+  "type": "module",
+  "types": "lib/index.d.ts",
+  "main": "lib/nop-amis-vue.js",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@nop-chaos/nop-core": "workspace:*",
+    "@nop-chaos/nop-vue-core": "workspace:*",
+    "amis": "^3.6.4",
+    "amis-core": "^3.6.4",
+    "amis-formula": "^3.6.4",
+    "amis-ui": "^3.6.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "veaury": "^2.3.8",
+    "js-yaml": "^4.1.0",
+    "vue": "^3.3.11"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-vue": "^4.5.2",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8",
+    "vue-tsc": "^1.8.25",
+    "vite-plugin-dts": "^3.7.2"
+  }
+}

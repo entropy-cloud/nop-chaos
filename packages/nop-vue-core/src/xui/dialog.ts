@@ -15,11 +15,11 @@ export function showDialog({ component, props, onOk, onCancel }: DialogOptions) 
 
     let dialogInstance: any = createApp(component, { ...props, handleOk, handleCancel });
 
-    function update(newConfig) {
+    function update(newConfig: any) {
         if (dialogInstance) Object.assign(dialogInstance, newConfig || {});
     }
 
-    function handleOk(...args) {
+    function handleOk(...args: any) {
         if (onOk) {
             if (onOk.apply(null, args) === false) return false;
         }

@@ -4,6 +4,8 @@ packages:
   - 'packages/locales/*'
   - 'apps/*'
   - 'examples/*'
+  - 'plugins/*'  
+  - 'shells/*'  
   - 'internal/vite-config'
   # exclude packages that are inside test directories
   - '!**/test/**'

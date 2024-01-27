@@ -1709,60 +1709,24 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
       tslib:
-        specifier: ^2.3.1
-        version: 2.3.1
+        specifier: ^2.6.2
+        version: 2.6.2
     devDependencies:
-      '@types/lodash-es':
-        specifier: ^4.17.6
-        version: 4.17.8
-      '@types/node':
-        specifier: ^20.5.1
-        version: 20.5.1
       '@types/react':
-        specifier: ^18.2.14
+        specifier: ^18.2.0
         version: 18.2.22
-      '@types/splitpanes':
-        specifier: ^2.2.1
-        version: 2.2.1
-      '@vitejs/plugin-react':
-        specifier: ^4.2.0
-        version: 4.2.0(vite@4.4.9)
-      '@vitejs/plugin-vue':
-        specifier: ^3.1.2
-        version: 3.1.2(vite@4.4.9)(vue@3.4.15)
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
-      rimraf:
-        specifier: ^3.0.2
-        version: 3.0.2
-      rollup:
-        specifier: ^2.79.1
-        version: 2.79.1
-      rollup-plugin-visualizer:
-        specifier: ^5.8.2
-        version: 5.9.2(rollup@2.79.1)
-      systemjs:
-        specifier: ^6.13.0
-        version: 6.13.0
       typescript:
-        specifier: ^5.0.2
-        version: 5.0.2
-      unplugin-vue-components:
-        specifier: ^0.22.8
-        version: 0.22.8(vue@3.4.15)
+        specifier: ^5.2.2
+        version: 5.3.3
       vite:
-        specifier: ^4.4.6
-        version: 4.4.9(@types/node@20.5.1)(less@4.1.3)
+        specifier: ^5.0.8
+        version: 5.0.8(@types/node@18.11.13)
       vite-plugin-dts:
-        specifier: ^3.6.0
-        version: 3.6.0(@types/node@20.5.1)(rollup@2.79.1)(typescript@5.0.2)(vite@4.4.9)
-      vite-plugin-resolve-externals:
-        specifier: ^0.2.2
-        version: 0.2.2
-      vite-plugin-style-import:
-        specifier: ^2.0.0
-        version: 2.0.0(vite@4.4.9)
+        specifier: ^3.7.2
+        version: 3.7.2(@types/node@18.11.13)(typescript@5.3.3)(vite@5.0.8)
+      vue-tsc:
+        specifier: ^1.8.25
+        version: 1.8.27(typescript@5.3.3)
 
   packages/nop-server-tool:
     dependencies:
@@ -1830,6 +1794,92 @@ importers:
       rimraf:
         specifier: ^3.0.2
         version: 3.0.2
+
+  packages/nop-vue-core:
+    dependencies:
+      '@nop-chaos/nop-core':
+        specifier: workspace:*
+        version: link:../nop-core
+      element-plus:
+        specifier: ^2.5.3
+        version: 2.5.3(vue@3.4.15)
+      vue:
+        specifier: ^3.3.11
+        version: 3.4.15(typescript@5.3.3)
+    devDependencies:
+      '@vitejs/plugin-vue':
+        specifier: ^4.5.2
+        version: 4.5.2(vite@5.0.8)(vue@3.4.15)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.8
+        version: 5.0.8(@types/node@18.11.13)
+      vite-plugin-dts:
+        specifier: ^3.7.2
+        version: 3.7.2(@types/node@18.11.13)(typescript@5.3.3)(vite@5.0.8)
+      vue-tsc:
+        specifier: ^1.8.25
+        version: 1.8.27(typescript@5.3.3)
+
+  packages/nop-vue-react:
+    dependencies:
+      '@nop-chaos/nop-core':
+        specifier: workspace:*
+        version: link:../nop-core
+      '@nop-chaos/nop-vue-core':
+        specifier: workspace:*
+        version: link:../nop-vue-core
+      amis:
+        specifier: ^3.6.4
+        version: 3.6.4(@types/react@18.2.22)(amis-core@3.6.4)(amis-ui@3.6.4)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
+      amis-core:
+        specifier: ^3.6.4
+        version: 3.6.4(@types/react@18.2.22)(amis-formula@3.6.4)(react-dom@18.2.0)(react@18.2.0)
+      amis-formula:
+        specifier: ^3.6.4
+        version: 3.6.4
+      amis-ui:
+        specifier: ^3.6.4
+        version: 3.6.4(@types/react@18.2.22)(amis-core@3.6.4)(amis-formula@3.6.4)(react-dom@18.2.0)(react@18.2.0)
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.0
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      veaury:
+        specifier: ^2.3.8
+        version: 2.3.8(react-dom@18.2.0)(react@18.2.0)
+      vue:
+        specifier: ^3.3.11
+        version: 3.4.15(typescript@5.3.3)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.2.22
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.2.7
+      '@vitejs/plugin-vue':
+        specifier: ^4.5.2
+        version: 4.5.2(vite@5.0.8)(vue@3.4.15)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.8
+        version: 5.0.8(@types/node@18.11.13)
+      vite-plugin-dts:
+        specifier: ^3.7.2
+        version: 3.7.2(@types/node@18.11.13)(typescript@5.3.3)(vite@5.0.8)
+      vue-tsc:
+        specifier: ^1.8.25
+        version: 1.8.27(typescript@5.3.3)
 
   packages/schema:
     devDependencies:
@@ -6075,6 +6125,14 @@ packages:
       vue: 3.3.4
     dev: false
 
+  /@element-plus/icons-vue@2.3.1(vue@3.4.15):
+    resolution: {integrity: sha512-XxVUZv48RZAd87ucGS48jPf6pKu0yV5UCg9f4FFwtrYxXOwWuVJo6wOvSLKEoMQKjv8GsX/mhP6UsC1lRwbUWg==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      vue: 3.4.15(typescript@5.3.3)
+    dev: false
+
   /@emotion/hash@0.8.0:
     resolution: {integrity: sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==}
 
@@ -8220,16 +8278,6 @@ packages:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor-model@7.28.4(@types/node@20.5.1):
-    resolution: {integrity: sha512-vucgyPmgHrJ/D4/xQywAmjTmSfxAx2/aDmD6TkIoLu51FdsAfuWRbijWA48AePy60OO+l+mmy9p2P/CEeBZqig==}
-    dependencies:
-      '@microsoft/tsdoc': 0.14.2
-      '@microsoft/tsdoc-config': 0.16.2
-      '@rushstack/node-core-library': 3.63.0(@types/node@20.5.1)
-    transitivePeerDependencies:
-      - '@types/node'
-    dev: true
-
   /@microsoft/api-extractor@7.39.0(@types/node@18.11.13):
     resolution: {integrity: sha512-PuXxzadgnvp+wdeZFPonssRAj/EW4Gm4s75TXzPk09h3wJ8RS3x7typf95B4vwZRrPTQBGopdUl+/vHvlPdAcg==}
     hasBin: true
@@ -8278,26 +8326,6 @@ packages:
       '@microsoft/tsdoc': 0.14.2
       '@microsoft/tsdoc-config': 0.16.2
       '@rushstack/node-core-library': 3.63.0(@types/node@18.11.13)
-      '@rushstack/rig-package': 0.5.1
-      '@rushstack/ts-command-line': 4.17.1
-      colors: 1.2.5
-      lodash: 4.17.21
-      resolve: 1.22.8
-      semver: 7.5.4
-      source-map: 0.6.1
-      typescript: 5.3.3
-    transitivePeerDependencies:
-      - '@types/node'
-    dev: true
-
-  /@microsoft/api-extractor@7.39.1(@types/node@20.5.1):
-    resolution: {integrity: sha512-V0HtCufWa8hZZvSmlEzQZfINcJkHAU/bmpyJQj6w+zpI87EkR8DuBOW6RWrO9c7mUYFZoDaNgUTyKo83ytv+QQ==}
-    hasBin: true
-    dependencies:
-      '@microsoft/api-extractor-model': 7.28.4(@types/node@20.5.1)
-      '@microsoft/tsdoc': 0.14.2
-      '@microsoft/tsdoc-config': 0.16.2
-      '@rushstack/node-core-library': 3.63.0(@types/node@20.5.1)
       '@rushstack/rig-package': 0.5.1
       '@rushstack/ts-command-line': 4.17.1
       colors: 1.2.5
@@ -9116,24 +9144,6 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.11.13
-      colors: 1.2.5
-      fs-extra: 7.0.1
-      import-lazy: 4.0.0
-      jju: 1.4.0
-      resolve: 1.22.8
-      semver: 7.5.4
-      z-schema: 5.0.5
-    dev: true
-
-  /@rushstack/node-core-library@3.63.0(@types/node@20.5.1):
-    resolution: {integrity: sha512-Q7B3dVpBQF1v+mUfxNcNZh5uHVR8ntcnkN5GYjbBLrxUYHBGKbnCM+OdcN+hzCpFlLBH6Ob0dEHhZ0spQwf24A==}
-    peerDependencies:
-      '@types/node': '*'
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-    dependencies:
-      '@types/node': 20.5.1
       colors: 1.2.5
       fs-extra: 7.0.1
       import-lazy: 4.0.0
@@ -11079,7 +11089,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.7)
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.4.9(@types/node@18.11.13)(less@3.8.1)
+      vite: 4.4.9(@types/node@16.18.39)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -11163,6 +11173,17 @@ packages:
     dependencies:
       vite: 4.4.9(@types/node@18.11.13)(less@3.8.1)
       vue: 3.3.4
+    dev: true
+
+  /@vitejs/plugin-vue@4.5.2(vite@5.0.8)(vue@3.4.15):
+    resolution: {integrity: sha512-UGR3DlzLi/SaVBPX0cnSyE37vqxU3O6chn8l0HJNzQzDia6/Au2A4xKv+iIJW8w2daf80G7TYHhi1pAUjdZ0bQ==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.0.0 || ^5.0.0
+      vue: ^3.2.25
+    dependencies:
+      vite: 5.0.8(@types/node@18.11.13)
+      vue: 3.4.15(typescript@5.3.3)
     dev: true
 
   /@volar/language-core@1.10.10:
@@ -11533,6 +11554,18 @@ packages:
       - vue
     dev: false
 
+  /@vueuse/core@9.13.0(vue@3.4.15):
+    resolution: {integrity: sha512-pujnclbeHWxxPRqXWmdkKV5OX4Wk4YeK7wusHqRwU0Q7EFusHoqNA/aPhB6KCh9hEqJkLAJo7bb0Lh9b+OIVzw==}
+    dependencies:
+      '@types/web-bluetooth': 0.0.16
+      '@vueuse/metadata': 9.13.0
+      '@vueuse/shared': 9.13.0(vue@3.4.15)
+      vue-demi: 0.14.6(vue@3.4.15)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
   /@vueuse/metadata@10.4.1:
     resolution: {integrity: sha512-2Sc8X+iVzeuMGHr6O2j4gv/zxvQGGOYETYXEc41h0iZXIRnRbJZGmY/QP8dvzqUelf8vg0p/yEA5VpCEu+WpZg==}
     dev: false
@@ -11554,6 +11587,15 @@ packages:
     resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==}
     dependencies:
       vue-demi: 0.14.6(vue@3.3.4)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
+  /@vueuse/shared@9.13.0(vue@3.4.15):
+    resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==}
+    dependencies:
+      vue-demi: 0.14.6(vue@3.4.15)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -16923,6 +16965,31 @@ packages:
       memoize-one: 6.0.0
       normalize-wheel-es: 1.2.0
       vue: 3.3.4
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+    dev: false
+
+  /element-plus@2.5.3(vue@3.4.15):
+    resolution: {integrity: sha512-wmtstxaMkD6UinIgD+45CjrhbRh4u0vt+/GgxfPeMLt5pDpIVwZFjkUaVcWqqxcxd5a80HP3XlDF74fW7wim9A==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@ctrl/tinycolor': 3.6.1
+      '@element-plus/icons-vue': 2.3.1(vue@3.4.15)
+      '@floating-ui/dom': 1.5.4
+      '@popperjs/core': /@sxzz/popperjs-es@2.11.7
+      '@types/lodash': 4.14.202
+      '@types/lodash-es': 4.17.12
+      '@vueuse/core': 9.13.0(vue@3.4.15)
+      async-validator: 4.2.5
+      dayjs: 1.11.10
+      escape-html: 1.0.3
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      lodash-unified: 1.0.3(@types/lodash-es@4.17.12)(lodash-es@4.17.21)(lodash@4.17.21)
+      memoize-one: 6.0.0
+      normalize-wheel-es: 1.2.0
+      vue: 3.4.15(typescript@5.3.3)
     transitivePeerDependencies:
       - '@vue/composition-api'
     dev: false
@@ -32345,7 +32412,6 @@ packages:
     resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
     engines: {node: '>=14.17'}
     hasBin: true
-    dev: true
 
   /ua-parser-js@1.0.37:
     resolution: {integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==}
@@ -33106,30 +33172,6 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-dts@3.6.0(@types/node@20.5.1)(rollup@2.79.1)(typescript@5.0.2)(vite@4.4.9):
-    resolution: {integrity: sha512-doxhDRFJCZD2sGjIp4V800nm8Y19GvmwckjG5vYPuiqJ7OBjc9NlW1Vp9Gkyh2aXlUs1jTDRH/lxWfcsPLOQHg==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    peerDependencies:
-      typescript: '*'
-      vite: '*'
-    peerDependenciesMeta:
-      vite:
-        optional: true
-    dependencies:
-      '@microsoft/api-extractor': 7.39.1(@types/node@20.5.1)
-      '@rollup/pluginutils': 5.1.0(rollup@2.79.1)
-      '@vue/language-core': 1.8.27(typescript@5.0.2)
-      debug: 4.3.4(supports-color@5.5.0)
-      kolorist: 1.8.0
-      typescript: 5.0.2
-      vite: 4.4.9(@types/node@20.5.1)(less@4.1.3)
-      vue-tsc: 1.8.27(typescript@5.0.2)
-    transitivePeerDependencies:
-      - '@types/node'
-      - rollup
-      - supports-color
-    dev: true
-
   /vite-plugin-dts@3.7.2(@types/node@18.11.13)(typescript@5.3.3)(vite@5.0.8):
     resolution: {integrity: sha512-kg//1nDA01b8rufJf4TsvYN8LMkdwv0oBYpiQi6nRwpHyue+wTlhrBiqgipdFpMnW1oOYv6ywmzE5B0vg6vSEA==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -33617,6 +33659,21 @@ packages:
       vue: 3.3.4
     dev: false
 
+  /vue-demi@0.14.6(vue@3.4.15):
+    resolution: {integrity: sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.4.15(typescript@5.3.3)
+    dev: false
+
   /vue-eslint-parser@9.3.1(eslint@8.47.0):
     resolution: {integrity: sha512-Clr85iD2XFZ3lJ52/ppmUDG/spxQu6+MAeHXjjyI4I1NUYZ9xmenQp4N0oaHJhrA8OOxltCVxMRfANGa70vU0g==}
     engines: {node: ^14.17.0 || >=16.0.0}
@@ -33813,6 +33870,21 @@ packages:
       '@vue/server-renderer': 3.4.15(vue@3.4.15)
       '@vue/shared': 3.4.15
       typescript: 5.0.2
+
+  /vue@3.4.15(typescript@5.3.3):
+    resolution: {integrity: sha512-jC0GH4KkWLWJOEQjOpkqU1bQsBwf4R1rsFtw5GQJbjHVKWDzO6P0nWWBTmjp1xSemAioDFj1jdaK1qa3DnMQoQ==}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/compiler-dom': 3.4.15
+      '@vue/compiler-sfc': 3.4.15
+      '@vue/runtime-dom': 3.4.15
+      '@vue/server-renderer': 3.4.15(vue@3.4.15)
+      '@vue/shared': 3.4.15
+      typescript: 5.3.3
 
   /vuedraggable@4.1.0(vue@3.3.4):
     resolution: {integrity: sha512-FU5HCWBmsf20GpP3eudURW3WdWTKIbEIQxh9/8GE806hydR9qZqRRxRE3RjqX7PkuLuMQG/A7n3cfj9rCEchww==}

@@ -26,7 +26,7 @@
 
   <el-dialog v-model="schemaVisible" title="Page Schema" width="600px" :height="500" :center="true" class="debug-modal"
     :mask="false" :maskClosable="false" :draggable="true" :footer="null" :append-to-body="true" destroyOnClose>
-    <AmisSchemaPage :schema="debuggerSchema" :actions="schemaActions" :data="schemaData" />
+    <XuiSchemaPage :schema="debuggerSchema" :actions="schemaActions" :data="schemaData" />
   </el-dialog>
 
   <xui-page-editor-dialog v-model="designerVisible" :savePageSource="savePageSource"
@@ -43,10 +43,10 @@
 </style>
 
 <script lang="ts" setup>
-import { shallowRef, ref } from 'vue';
+import { shallowRef, ref,defineProps } from 'vue';
 import { ElDialog, ElButton } from 'element-plus';
 
-import AmisSchemaPage from './AmisSchemaPage';
+import XuiSchemaPage from './XuiSchemaPage';
 import debuggerSchema from './debugger';
 import yaml from 'js-yaml';
 
@@ -54,13 +54,7 @@ import XuiPageEditorDialog from './XuiPageEditorDialog.vue';
 
 import { PageApis, deletePageCache } from '@nop-chaos/nop-core';
 
-const props = defineProps({
-  path: {
-    type: String,
-    required: true,
-  },
-  schema: Object,
-});
+const props = defineProps<{path:string,schema:any}>();
 
 const emit = defineEmits(['update:schema', 'rebuild']);
 
