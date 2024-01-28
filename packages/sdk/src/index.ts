@@ -1,6 +1,6 @@
 export * from './lib'
 
-import '@nop-chaos/nop-amis-vue/lib/style.css'
+import '@nop-chaos/nop-vue-core/dist/style.css'
 
 import './fix.css'
 

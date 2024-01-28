@@ -19,7 +19,8 @@
   "dependencies": {
     "@nop-chaos/nop-core": "workspace:*",
     "element-plus": "^2.5.3",
-    "vue": "^3.3.11"
+    "vue": "^3.3.11",
+    "lodash-es": "^4.17.12"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",

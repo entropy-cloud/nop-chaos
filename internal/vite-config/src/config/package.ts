@@ -1,7 +1,9 @@
 import { readPackageJSON } from 'pkg-types';
-import { defineConfig, mergeConfig, type UserConfig } from 'vite';
+import { defineConfig, type UserConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import react from '@vitejs/plugin-react';
+
+import { mergeConfig } from './helper';
 
 interface DefineOptions {
   overrides?: UserConfig;
@@ -10,7 +12,11 @@ interface DefineOptions {
   };
 }
 
-function definePackageConfig(defineOptions: DefineOptions = {}) {
+type ExtDefineOptions = DefineOptions | {
+  [name:string]:any
+}
+
+function definePackageConfig(defineOptions: ExtDefineOptions = {}) {
   const { overrides = {
     // plugins: [ react() ],
     // test: {
@@ -55,7 +61,8 @@ function definePackageConfig(defineOptions: DefineOptions = {}) {
             'amis',
             'react',
             'react-dom',
-            'react/react-jsx-runtime',
+            'react/jsx-runtime',
+            'react/jsx-dev-runtime',
             'react-dom/client',
             'amis-ui',
             'amis-formula',
@@ -91,9 +98,11 @@ function definePackageConfig(defineOptions: DefineOptions = {}) {
       ],
     };
 
-    return mergeConfig(packageConfig, {
+    const config = mergeConfig(packageConfig, {
       ...overrides
     });
+    console.log("merged-config=", JSON.stringify(config,null,"  "))
+    return config
   });
 }
 
