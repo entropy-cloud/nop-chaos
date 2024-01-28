@@ -3,12 +3,15 @@
   "private": true,
   "version": "0.1.1",
   "type": "module",
-  "types": "lib/index.d.ts",
-  "main": "lib/nop-amis-vue.js",
+  "module": "index.ts",
   "files": [
-    "lib",
-    "src"
+    "dist"
   ],
+  "publishConfig": {
+    "module": "dist/index.mjs",
+    "typings": "dist/index.d.ts",
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

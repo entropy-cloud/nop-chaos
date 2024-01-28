@@ -163,9 +163,7 @@
     "vue-tsc": "^1.8.8",
     "@vitejs/plugin-react": "^3.1.0"
   },
-  "resolutions": {
-    "bin-wrapper": "npm:bin-wrapper-china"
-  },
+
   "repository": {
     "type": "git",
     "url": "git+https://gitee.com/canonical-entropy/nop-chaos.git"

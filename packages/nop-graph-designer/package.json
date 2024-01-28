@@ -2,6 +2,7 @@
   "name": "@nop-chaos/nop-graph-designer",
   "private": true,
   "version": "0.1.1",
+  "type": "module",
   "module": "index.ts",
   "files": [
     "dist"
@@ -21,7 +22,8 @@
     "react-dom": "^18.2.0",
     "tslib": "^2.3.1",
     "@nop-chaos/nop-core": "workspace:*",
-    "@nop-chaos/nop-react-core": "workspace:*"
+    "@nop-chaos/nop-react-core": "workspace:*",
+    "@nop-chaos/tsconfig": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

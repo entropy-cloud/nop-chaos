@@ -18,8 +18,7 @@
   },
   "dependencies": {
     "@nop-chaos/nop-core": "workspace:*",
-    "@nop-chaos/nop-amis-ext": "workspace:*",
-    "@nop-chaos/nop-amis-vue": "workspace:*",
+    "@nop-chaos/nop-vue-react": "workspace:*",
     "axios": "^0.26.1",
     "lru-cache": "^7.14.0",
     "qs": "^6.9.7",

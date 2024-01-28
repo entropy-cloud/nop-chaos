@@ -55,6 +55,7 @@ function definePackageConfig(defineOptions: DefineOptions = {}) {
             'amis',
             'react',
             'react-dom',
+            'react/react-jsx-runtime',
             'react-dom/client',
             'amis-ui',
             'amis-formula',
