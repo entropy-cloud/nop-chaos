@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@nop-chaos/nop-core": "workspace:*",
+    "@nop-chaos/nop-vue-core": "workspace:*",
+    "@nop-chaos/nop-vue-react": "workspace:*",
     "@vue/shared": "^3.3.4",
     "amis": "^3.6.1",
     "amis-core": "^3.6.1",
@@ -36,9 +38,9 @@
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "@vitejs/plugin-vue": "^4.2.3",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-vue": "^4.5.2",
     "typescript": "^5.0.2",
     "vite": "^4.4.6",
     "vue-tsc": "^1.8.5",

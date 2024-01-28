@@ -20,12 +20,12 @@ import type { RenderOptions } from "amis-core/lib/factory";
 import { toast,ActionObject } from 'amis'
 import copy from 'copy-to-clipboard'
 import type { PageObject, FetcherRequest, FetcherResult } from "@nop-chaos/nop-core"
-import { useDebug,  default_jumpTo, isCancel, useAdapter,default_isCurrentUrl ,ajaxFetch, default_updateLocation, providePage} from "@nop-chaos/nop-core";
+import { default_jumpTo, isCancel, useAdapter,default_isCurrentUrl ,ajaxFetch, default_updateLocation, providePage} from "@nop-chaos/nop-core";
 
 
 export function createEnv(page: PageObject): RenderOptions {
-  const {debug} = useDebug()
   const adapter = useAdapter()
+  const debug = adapter.useDebug().getDebug()
 
   let env: RenderOptions = {
     session: page.id,
@@ -34,7 +34,7 @@ export function createEnv(page: PageObject): RenderOptions {
     fetcher(options: FetcherRequest): Promise<FetcherResult> {
       providePage(page)
       options._page = page
-      return ajaxFetch(options)
+      return ajaxFetch(options) as any
     },
 
     jumpTo(to: string, action?:ActionObject, ctx?: object) {
@@ -55,7 +55,7 @@ export function createEnv(page: PageObject): RenderOptions {
 
     notify: adapter.notify,
 
-    enableAMISDebug: debug.value,
+    enableAMISDebug: debug,
 
     alert: adapter.alert,
     confirm: adapter.confirm,

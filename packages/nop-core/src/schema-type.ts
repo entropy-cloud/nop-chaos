@@ -10,12 +10,13 @@ export type SchemaComponentProps = {
 }
 
 export type EditorComponentProps = {
-    path: string,
-    rollbackPageSource(path: string, silent?: boolean): Promise<any>
+    schema?: any,
 
-    getPageSource(path: string, silent?: boolean): Promise<any>,
+    rollbackPageSource(silent?: boolean): Promise<any>
 
-    savePageSource(path: string, data: any, silent?: boolean): Promise<any>
+    getPageSource(silent?: boolean): Promise<any>,
+
+    savePageSource(data: any, silent?: boolean): Promise<any>
 }
 
 export type SchemaProcessorType = {

@@ -1499,14 +1499,14 @@ importers:
         specifier: ^4.17.6
         version: 4.17.8
       '@types/react':
-        specifier: ^18.2.14
+        specifier: ^18.2.0
         version: 18.2.22
       '@types/react-dom':
-        specifier: ^18.2.6
+        specifier: ^18.2.0
         version: 18.2.7
       '@vitejs/plugin-vue':
-        specifier: ^4.2.3
-        version: 4.3.3(vite@4.4.9)(vue@3.3.4)
+        specifier: ^4.5.2
+        version: 4.5.2(vite@4.4.9)(vue@3.3.4)
       typescript:
         specifier: ^5.0.2
         version: 5.0.2
@@ -1853,8 +1853,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
       veaury:
-        specifier: ^2.3.8
-        version: 2.3.8(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^2.3.12
+        version: 2.3.12(react-dom@18.2.0)(react@18.2.0)
       vue:
         specifier: ^3.3.11
         version: 3.4.15(typescript@5.3.3)
@@ -11169,6 +11169,17 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0
+      vue: ^3.2.25
+    dependencies:
+      vite: 4.4.9(@types/node@18.11.13)(less@3.8.1)
+      vue: 3.3.4
+    dev: true
+
+  /@vitejs/plugin-vue@4.5.2(vite@4.4.9)(vue@3.3.4):
+    resolution: {integrity: sha512-UGR3DlzLi/SaVBPX0cnSyE37vqxU3O6chn8l0HJNzQzDia6/Au2A4xKv+iIJW8w2daf80G7TYHhi1pAUjdZ0bQ==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.0.0 || ^5.0.0
       vue: ^3.2.25
     dependencies:
       vite: 4.4.9(@types/node@18.11.13)(less@3.8.1)
@@ -33048,6 +33059,16 @@ packages:
     resolution: {integrity: sha512-yRFyEOoJ0GQGAjfzDBV9ZKemCleqspSf3Jg3XtKVj8RwnjnF6oScLQCAwSgRzCamYl+F+rIX9at0c3tEsatY/A==}
     dependencies:
       diff-match-patch: 1.0.5
+    dev: false
+
+  /veaury@2.3.12(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-RC1WwpVMDrXgEDTU4p3FGVtlmzob0EBBGejJYmBVyYm+yGFkjMWLjn9i8q9ep2i2W15G1az6pvjCTEBBiwgUgw==}
+    peerDependencies:
+      react: '>= 16.4.0'
+      react-dom: '>= 16.4.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /veaury@2.3.8(react-dom@18.2.0)(react@18.2.0):

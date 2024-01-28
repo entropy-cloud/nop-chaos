@@ -18,14 +18,9 @@
   "dependencies": {
     "@nop-chaos/nop-core": "workspace:*",
     "@nop-chaos/nop-vue-core": "workspace:*",
-    "amis": "^3.6.4",
-    "amis-core": "^3.6.4",
-    "amis-formula": "^3.6.4",
-    "amis-ui": "^3.6.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "veaury": "^2.3.8",
-    "js-yaml": "^4.1.0",
+    "veaury": "^2.3.12",
     "vue": "^3.3.11"
   },
   "devDependencies": {

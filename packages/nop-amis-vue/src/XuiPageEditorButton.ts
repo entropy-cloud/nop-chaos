@@ -1,9 +1,9 @@
-import { ActionObject, ButtonSchema, IServiceStore, Renderer, RendererProps, Schema, SchemaApi } from 'amis';
+import { ActionObject, ButtonSchema, IServiceStore, Renderer, RendererProps, Schema, SchemaApi, unRegisterRenderer } from 'amis';
 import { FeedbackDialog, SchemaReload } from 'amis/lib/Schema';
 import React, { Fragment } from 'react';
 import { applyVueInReact } from 'veaury';
 
-import XuiPageEditorDialog from './XuiPageEditorDialog.vue';
+import {XuiPageEditorDialog} from '@nop-chaos/nop-vue-core';
 
 interface XuiPageEditorButtonSchema extends ButtonSchema {
     actionType: 'popEditor',
@@ -101,6 +101,8 @@ export class XuiPageEditorButton extends React.Component<XuiPageEditorButtonProp
         return React.createElement(Fragment, null, body)
     }
 }
+
+unRegisterRenderer("xui-page-editor-button")
 
 Renderer({
     type: 'xui-page-editor-button',

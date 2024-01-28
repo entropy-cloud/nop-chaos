@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormItem, FormControlProps,Renderer,ScopedContext, IScopedContext } from 'amis';
-import { createObject, resolveVariableAndFilter,ActionObject, RendererData} from 'amis-core';
+import { createObject, resolveVariableAndFilter,ActionObject, RendererData, unRegisterRenderer, RendererProps} from 'amis-core';
 
 import {useAdapter} from '@nop-chaos/nop-core'
 import  {applyPureVueInReact} from 'veaury'
@@ -10,10 +10,10 @@ export interface VueControlProps extends FormControlProps {
     props: Record<string,any>;
 }
 
-export default class VueControl extends React.Component<VueControlProps, any> {
+export default class VueControl extends React.Component<VueControlProps & RendererProps, any> {
     vueComponent: any;
 
-    constructor(props) {
+    constructor(props:VueControlProps) {
         super(props)
         const {resolveVueComponent} = useAdapter()
         this.vueComponent = applyPureVueInReact(resolveVueComponent(props.vueComponent))
@@ -74,14 +74,10 @@ export default class VueControl extends React.Component<VueControlProps, any> {
     }
 }
 
-// @Renderer({
-//     type: 'vue-renderer',
-//     autoVar:true
-// })
 class VueRenderer extends VueControl { 
     static contextType = ScopedContext;
 
-    constructor(props) {
+    constructor(props:VueControlProps) {
       super(props)
       const scoped = this.context as IScopedContext;
       if(scoped) scoped.registerComponent(this);
@@ -93,46 +89,18 @@ class VueRenderer extends VueControl {
     }
 }
 
+unRegisterRenderer("vue-renderer")
+unRegisterRenderer("vue-form-item")
+
 // autoVar只对最顶层的string字符串属性有效
 Renderer({
     type: 'vue-renderer',
     autoVar:false
 })(VueRenderer)
 
-// @FormItem({
-//     type: 'vue-form-item',
-//     autoVar:true
-// })
 class VueFormItem extends VueControl { }
 
 FormItem({
   type: 'vue-form-item',
   autoVar:false
 })(VueFormItem)
-
-
-// export default class WebComponent extends React.Component<RendererProps> {
-//     renderBody(): JSX.Element | null {
-//       const {body, render} = this.props;
-//       return body ? (render('body', body) as JSX.Element) : null;
-//     }
-  
-//     render() {
-//       const {tag, props, data} = this.props;
-  
-//       const propsValues = mapValues(props, s => {
-//         if (typeof s === 'string') {
-//           return resolveVariableAndFilter(s, data, '| raw') || s;
-//         } else {
-//           return s;
-//         }
-//       });
-//       const Component = (tag as keyof JSX.IntrinsicElements) || 'div';
-//       return <Component {...propsValues}>{this.renderBody()}</Component>;
-//     }
-//   }
-  
-//   @Renderer({
-//     type: 'web-component'
-//   })
-//   export class WebComponentRenderer extends WebComponent {}

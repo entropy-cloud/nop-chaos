@@ -24,12 +24,12 @@
 <script lang="ts" setup>
 import { onMounted, Ref, ref, onBeforeUnmount } from 'vue';
 import { ToastComponent } from 'amis';
-import { createRoot } from 'react-dom/client';
+import { createRoot, Root } from 'react-dom/client';
 import { createElement, Fragment } from 'react';
 
 const domRef: Ref<HTMLElement | undefined> = ref();
 
-let root;
+let root: Root|undefined;
 
 onMounted(() => {
   root = createRoot(domRef.value!);

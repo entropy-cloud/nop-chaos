@@ -6,11 +6,11 @@ import { Root, createRoot } from 'react-dom/client'
 import { cloneDeep } from 'lodash-es'
 
 export type ReactPageOptions = PageOptions & {
-    onRenderPage(schema, data:any, page: PageObject): Promise<JSX.Element>|JSX.Element
+    onRenderPage(schema: any, data: any, page: PageObject): Promise<JSX.Element> | JSX.Element
     onDestroyPage?(page: PageObject): void
 }
 
-export function defineReactPageComponent(builder: (props: {actions?:Record<string,Function>})=> ReactPageOptions) {
+export function defineReactPageComponent(builder: (props: { actions?: Record<string, Function> }) => ReactPageOptions) {
     return defineComponent({
         props: {
             schema: Object,
@@ -23,7 +23,7 @@ export function defineReactPageComponent(builder: (props: {actions?:Record<strin
             const domRef = ref<HTMLElement>()
             let root: Root | undefined;
 
-            const options = builder({actions: props.actions})
+            const options = builder({ actions: props.actions })
             let page = createPage(options);
 
             props.registerPage?.(page)
@@ -47,22 +47,18 @@ export function defineReactPageComponent(builder: (props: {actions?:Record<strin
             }
 
             watchEffect(() => {
-                destroyPage()
                 if (props.schema && domRef.value) {
+                    destroyPage()
                     renderPage();
                 }
             });
 
             onBeforeUnmount(() => {
                 destroyPage()
-
-                return {
-                    domRef,
-                };
             })
 
 
-            return ()=> h('div', {
+            return () => h('div', {
                 ref: domRef,
                 style: {
                     width: '100%',

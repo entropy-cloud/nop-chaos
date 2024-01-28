@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PageObject, bindActions, useAdapter,transformPageJson } from '@nop-chaos/nop-core';
+import { PageObject, bindActions, useAdapter, transformPageJson } from '@nop-chaos/nop-core';
 import { clearStoresCache, render as renderAmis, setDefaultLocale } from 'amis';
 import { RootRenderProps } from 'amis-core/lib/Root';
 import { createEnv } from './env';
-import { defineReactPageComponent } from './react-adapter';
+import { defineReactPageComponent } from '@nop-chaos/nop-react-core';
 
-export default defineReactPageComponent((props: {actions?: Record<string,Function>})=>{
-  let amisScoped:any
+export default defineReactPageComponent((props: { actions?: Record<string, Function> }) => {
+  let amisScoped: any
 
   return {
     actions: props.actions,
@@ -53,14 +53,14 @@ export default defineReactPageComponent((props: {actions?: Record<string,Functio
       let opts: RootRenderProps = {
         data: data,
         onConfirm: page.getAction('ok') || function () { },
-        onClose: function (b) {
+        onClose: function (b: boolean) {
           if (b) {
             page.getAction('ok')?.()
           } else {
             page.getAction('cancel')?.()
           }
         },
-        scopeRef: scoped => { amisScoped = scoped },
+        scopeRef: (scoped: any) => { amisScoped = scoped },
         locale: locale, // amis内部会自动替换zh_CN为zh-CN
         theme: 'cxd'
       };
@@ -94,15 +94,5 @@ export default defineReactPageComponent((props: {actions?: Record<string,Functio
       return get_root()?.context.getComponentByName(name);
     }
   }
-
-  // function get_form() {
-  //   let root = get_root()
-  //   let comps = root?.context.getComponents()
-  //   for (let i = 0, n = comps.length; i < n; i++) {
-  //     if (comps[i].props.type == 'form')
-  //       return comps[i]
-  //   }
-  //   return null
-  // }
 
 })

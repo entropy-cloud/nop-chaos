@@ -1,36 +1,8 @@
 {
+  "extends": "../tsconfig/base.json",
   "compilerOptions": {
-    "outDir": "lib",
-    "rootDir": "./",
-    "module": "ESNext",
-    "target": "ES2017",
-    "lib": ["ES6", "DOM", "ES2015", "ES2021"],
-    "jsx": "preserve",
-    "moduleResolution": "node",
-    "declaration": true,
-    "importHelpers": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceRoot": "",
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": false,
-    "strictNullChecks": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "downlevelIteration": true,
-    "composite": true,
-    "allowJs": true,
-    "baseUrl": "./",
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    //"noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "lib": ["ESNEXT","DOM"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["node_modules", "tests/server/**/*.ts", "dist", "**/*.js"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [".", "../nop-vue-react/src/react-page.ts"],
+  "exclude": ["dist", "build", "node_modules"]
 }
