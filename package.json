@@ -4,6 +4,10 @@
   "private": true,
   "description": "nop-chaos",
   "scripts": {
+    "bootstrap": "pnpm install",
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "turbo run stub",
+
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "nop-dingflow": "turbo run dev --filter=dingflow-demo",
@@ -26,11 +30,10 @@
   "keywords": [],
   "dependencies": {
      "@vitejs/plugin-react-swc": "^3.0.0",
-    "vite": "^5.0.8"
+    "vite": "^5.0.10"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",
-    "@nop-chaos/eslint-config-custom": "workspace:*",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@types/node": "^18.11.13",
@@ -41,13 +44,23 @@
     "lint-staged": "^13.1.0",
     "plop": "^3.1.1",
     "prettier": "^2.8.1",
-    "turbo": "^1.10.12",
-    "typescript": "^5",
-    "vitest": "^0.25.8"
+    "vitest": "^0.25.8",
+    "cross-env": "^7.0.3",
+    "rimraf": "^5.0.5",
+    "turbo": "^1.11.3",
+    "typescript": "^5.3.3",
+    "unbuild": "^2.0.0",
+    "vite": "^5.0.10",
+    "vite-plugin-mock": "^2.9.6",
+    "vue-tsc": "^1.8.27"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "eslint --ext .js,.jsx,.ts,.tsx --fix --max-warnings=0",
     "**/*.{js,jsx,json,yml,yaml,css,less,scss,ts,tsx,md,graphql}": "prettier --write"
   },
-  "packageManager": "pnpm@7.18.2"
+  "packageManager": "pnpm@8.10.0",
+  "engines": {
+    "node": ">=18.12.0",
+    "pnpm": ">=8.10.0"
+  }
 }

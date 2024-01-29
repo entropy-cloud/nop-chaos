@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "*",
-    "@nop-chaos/eslint-config-custom": "workspace:*",
-    "@nop-chaos/tsconfig": "workspace:*"
+    "@nop-chaos/eslint-config-react": "workspace:*",
+    "@nop-chaos/ts-config": "workspace:*"
   }
 }

@@ -1,21 +1,12 @@
 @import './pagination.less';
 @import './input.less';
 @import './btn.less';
-// @import './table.less';
-
-// TODO beta.11 fix
-.ant-col {
-  width: 100%;
-}
+@import './popconfirm.less';
 
 .ant-image-preview-root {
   img {
     display: unset;
   }
-}
-
-span.anticon:not(.app-iconify) {
-  vertical-align: 0.125em !important;
 }
 
 .ant-back-top {
@@ -30,12 +21,12 @@ span.anticon:not(.app-iconify) {
 }
 
 .ant-image-preview-operations {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgb(0 0 0 / 30%);
 }
 
 .ant-popover {
   &-content {
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
   }
 }
 
@@ -62,4 +53,12 @@ span.anticon:not(.app-iconify) {
 .ant-tree-checkbox-checked .ant-tree-checkbox-inner::after {
   border-top: 0 !important;
   border-left: 0 !important;
+}
+
+.ant-form-item-control-input-content {
+  > div {
+    > div {
+      max-width: 100%;
+    }
+  }
 }

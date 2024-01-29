@@ -3,7 +3,7 @@ import { FeedbackDialog, SchemaReload } from 'amis/lib/Schema';
 import React, { Fragment } from 'react';
 import { applyVueInReact } from 'veaury';
 
-import {XuiPageEditorDialog} from '@nop-chaos/nop-vue-core';
+import {XuiPageEditorDialog} from '@nop-chaos/sdk';
 
 interface XuiPageEditorButtonSchema extends ButtonSchema {
     actionType: 'popEditor',

@@ -1,9 +1,9 @@
 import { readPackageJSON } from 'pkg-types';
-import { defineConfig, type UserConfig } from 'vite';
+import { defineConfig, mergeConfig, type UserConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-import react from '@vitejs/plugin-react';
 
-import { mergeConfig } from './helper';
+import { commonConfig } from './common';
+import { mergeConfigEx } from './helper';
 
 interface DefineOptions {
   overrides?: UserConfig;
@@ -12,42 +12,20 @@ interface DefineOptions {
   };
 }
 
-type ExtDefineOptions = DefineOptions | {
-  [name:string]:any
-}
-
-function definePackageConfig(defineOptions: ExtDefineOptions = {}) {
-  const { overrides = {
-    // plugins: [ react() ],
-    // test: {
-    //   globals: true,
-    //   environment: 'jsdom',
-    //   coverage: {
-    //     reporter: [ 'text', 'json', 'html' ]
-    //   }
-    // }
-  } } = defineOptions;
+function definePackageConfig(defineOptions: DefineOptions = {}) {
+  const { overrides = {} } = defineOptions;
   const root = process.cwd();
-  return defineConfig(async () => {
-    const { dependencies = {}, peerDependencies = {} } = await readPackageJSON(
-      root
-    );
+  return defineConfig(async ({ mode }) => {
+    const { dependencies = {}, peerDependencies = {} } = await readPackageJSON(root);
     const packageConfig: UserConfig = {
-      define: {
-        'process.env': {}
-      },
       build: {
-        sourcemap: true,
-        minify: false,
         lib: {
           entry: 'src/index.ts',
           formats: ['es'],
-          fileName: () => 'index.mjs'
+          fileName: () => 'index.mjs',
         },
         rollupOptions: {
-          external: [
-            ...Object.keys(dependencies),
-            ...Object.keys(peerDependencies),
+          external: [...Object.keys(dependencies), ...Object.keys(peerDependencies),
             'vue',
             '@vue/reactivity',
             '@vue/shared',
@@ -77,32 +55,18 @@ function definePackageConfig(defineOptions: ExtDefineOptions = {}) {
             'urql',
             'veaury',
             'js-yaml'
-          ]
-        }
+          ],
+        },
       },
       plugins: [
-        react({
-          babel: {
-            plugins: [
-              ["@babel/plugin-proposal-decorators", { version: "2018-09", loose: true, 'decoratorsBeforeExport': true }],
-              ["@babel/plugin-proposal-class-properties", { loose: true }],
-              ["@babel/plugin-syntax-decorators", { version: "2018-09" ,'decoratorsBeforeExport': true}],
-            ],
-          },
-        }),
         dts({
-          entryRoot: 'src',
-          logLevel: 'error'
-        })
-        // configVisualizerConfig(),
+          logLevel: 'error',
+        }),
       ],
     };
+    const mergedConfig = mergeConfig(commonConfig(mode), packageConfig);
 
-    const config = mergeConfig(packageConfig, {
-      ...overrides
-    });
-    console.log("merged-config=", JSON.stringify(config,null,"  "))
-    return config
+    return mergeConfigEx(mergedConfig, overrides);
   });
 }
 

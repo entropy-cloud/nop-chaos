@@ -16,11 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PageObject, bindActions, useAdapter, transformPageJson } from '@nop-chaos/nop-core';
+import { PageObject, bindActions, useAdapter, transformPageJson } from '@nop-chaos/sdk';
 import { clearStoresCache, render as renderAmis, setDefaultLocale } from 'amis';
 import { RootRenderProps } from 'amis-core/lib/Root';
 import { createEnv } from './env';
-import { defineReactPageComponent } from '@nop-chaos/nop-react-core';
+import { defineReactPageComponent } from '@nop-chaos/sdk';
 
 export default defineReactPageComponent((props: { actions?: Record<string, Function> }) => {
   let amisScoped: any

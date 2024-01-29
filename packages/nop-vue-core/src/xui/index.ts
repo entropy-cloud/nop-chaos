@@ -6,9 +6,12 @@ import XuiSchemaPage from './XuiSchemaPage'
 
 import XuiLoading from './XuiLoading.vue'
 
+import XuiPageEditorDialog from './XuiPageEditorDialog.vue'
+
 export {
     XuiPage,
     XuiPageEditor,
     XuiSchemaPage,
-    XuiLoading
+    XuiLoading,
+    XuiPageEditorDialog
 }

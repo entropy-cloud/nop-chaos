@@ -14,8 +14,20 @@ export function getStorageShortName() {
   return `${getCommonStoragePrefix()}${`__${pkg.version}`}__`.toUpperCase();
 }
 
+const getVariableName = (title: string) => {
+  function strToHex(str: string) {
+    const result: string[] = [];
+    for (let i = 0; i < str.length; ++i) {
+      const hex = str.charCodeAt(i).toString(16);
+      result.push(('000' + hex).slice(-4));
+    }
+    return result.join('').toUpperCase();
+  }
+  return `__PRODUCTION__${strToHex(title) || '__APP'}__CONF__`.toUpperCase().replace(/\s/g, '');
+};
+
 export function getAppEnvConfig() {
-  const ENV_NAME = getConfigFileName(import.meta.env);
+  const ENV_NAME = getVariableName(import.meta.env.VITE_GLOB_APP_TITLE);
 
   const ENV = (import.meta.env.DEV
     ? // Get the global configuration (the configuration will be extracted independently when packaging)

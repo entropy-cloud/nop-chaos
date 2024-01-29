@@ -2,11 +2,15 @@ import { resolve } from 'node:path';
 
 import dayjs from 'dayjs';
 import { readPackageJSON } from 'pkg-types';
-import { defineConfig, loadEnv, type UserConfig } from 'vite';
+import { defineConfig, loadEnv, mergeConfig, type UserConfig } from 'vite';
 
 import { createPlugins } from '../plugins';
+import { generateModifyVars } from '../utils/modifyVars';
+import { commonConfig } from './common';
 
-import { mergeConfig } from './helper';
+import { mergeConfigEx } from './helper';
+import { createProxy} from './proxy'
+
 
 interface DefineOptions {
   overrides?: UserConfig;
@@ -21,7 +25,12 @@ function defineApplicationConfig(defineOptions: DefineOptions = {}) {
   return defineConfig(async ({ command, mode }) => {
     const root = process.cwd();
     const isBuild = command === 'build';
-    const { VITE_USE_MOCK, VITE_BUILD_COMPRESS, VITE_ENABLE_ANALYZE } = loadEnv(mode, root);
+    const { VITE_PUBLIC_PATH, VITE_USE_MOCK, VITE_BUILD_COMPRESS, VITE_ENABLE_ANALYZE,VITE_PROXY } = loadEnv(
+      mode,
+      root,
+    );
+
+    const proxyList = JSON.parse(VITE_PROXY || []) || []
 
     const defineData = await createDefineData(root);
     const plugins = await createPlugins({
@@ -33,10 +42,15 @@ function defineApplicationConfig(defineOptions: DefineOptions = {}) {
     });
 
     const pathResolve = (pathname: string) => resolve(root, '.', pathname);
-
+    const timestamp = new Date().getTime();
     const applicationConfig: UserConfig = {
+      base: VITE_PUBLIC_PATH,
       resolve: {
         alias: [
+          {
+            find: 'vue-i18n',
+            replacement: 'vue-i18n/dist/vue-i18n.cjs.js',
+          },
           // @/xxxx => src/xxxx
           {
             find: /@\//,
@@ -55,20 +69,34 @@ function defineApplicationConfig(defineOptions: DefineOptions = {}) {
         cssTarget: 'chrome80',
         rollupOptions: {
           output: {
+            // 入口文件名
+            entryFileNames: `assets/entry/[name]-[hash]-${timestamp}.js`,
             manualChunks: {
-              react: ['react', 'react-dom', 'react-router-dom'],
-              antd: ['antd', '@ant-design/icons'],
-              // libs: ['lodash', 'axios'],
+              vue: ['vue', 'pinia', 'vue-router'],
+              antd: ['ant-design-vue', '@ant-design/icons-vue'],
+              react: ['react', 'react-dom'],
+             // "antd-react": ['antd', '@ant-design/icons']
             },
           },
         },
       },
+      css: {
+        preprocessorOptions: {
+          less: {
+            modifyVars: generateModifyVars(),
+            javascriptEnabled: true,
+          },
+        },
+      },
       plugins,
+      server:{
+        proxy: createProxy(proxyList)
+      }
     };
 
-    const config = mergeConfig(applicationConfig, overrides);
-    console.log("vite config:", config)
-    return config
+    const mergedConfig = mergeConfig(commonConfig(mode), applicationConfig);
+
+    return mergeConfigEx(mergedConfig, overrides);
   });
 }
 

@@ -142,6 +142,4 @@
 </script>
 <style lang="less">
   @import './index.less';
-  @import './tabs.theme.card.less';
-  @import './tabs.theme.smooth.less';
 </style>

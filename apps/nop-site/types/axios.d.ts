@@ -1,32 +1,40 @@
 export type ErrorMessageMode = 'none' | 'modal' | 'message' | undefined;
-export type SuccessMessageMode = 'none' | 'success' | 'error' | undefined;
+export type SuccessMessageMode = ErrorMessageMode;
 
 export interface RequestOptions {
-  // 将请求参数拼接到url
+  // Splicing request parameters to url
   joinParamsToUrl?: boolean;
-  // 格式化请求参数时间
+  // Format request parameter time
   formatDate?: boolean;
-  // 是否处理请求结果
+  // Whether to process the request result
   isTransformResponse?: boolean;
-  // 是否返回本地响应头,需要获取响应头时使用此属性
+  // Whether to return native response headers
+  // For example: use this attribute when you need to get the response headers
   isReturnNativeResponse?: boolean;
   // Whether to join url
   joinPrefix?: boolean;
-  // 接口地址，如果保留为空，则使用默认值
+  // Interface address, use the default apiUrl if you leave it blank
   apiUrl?: string;
   // 请求拼接路径
   urlPrefix?: string;
-  // 错误消息提示类型
+  // Error message prompt type
   errorMessageMode?: ErrorMessageMode;
-  // 成功消息提示类型
+  // Success message prompt type
   successMessageMode?: SuccessMessageMode;
-  // 是否添加时间戳
+  // Whether to add a timestamp
   joinTime?: boolean;
   ignoreCancelToken?: boolean;
-  //是否在标头中发送令牌
+  // Whether to send token in header
   withToken?: boolean;
+  // 请求重试机制
+  retryRequest?: RetryRequest;
 }
 
+export interface RetryRequest {
+  isOpenRetry: boolean;
+  count: number;
+  waitTime: number;
+}
 export interface Result<T = any> {
   code: number;
   type: 'success' | 'error' | 'warning';
@@ -34,22 +42,15 @@ export interface Result<T = any> {
   result: T;
 }
 
-//文件上传参数
+// multipart/form-data: upload file
 export interface UploadFileParams {
-  // 其他参数
+  // Other parameters
   data?: Recordable;
-  // 文件参数接口字段名
+  // File parameter interface field name
   name?: string;
-  // 文件
+  // file name
   file: File | Blob;
-  // 文件名
+  // file name
   filename?: string;
   [key: string]: any;
-}
-//文件返回参数
-export interface UploadFileCallBack {
-  // 成功回调方法
-  success?: any;
-  // 是否返回响应头,需要获取响应头时使用此属性
-  isReturnResponse?: boolean;
 }

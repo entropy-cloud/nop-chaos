@@ -19,8 +19,8 @@
 import type { RenderOptions } from "amis-core/lib/factory";
 import { toast,ActionObject } from 'amis'
 import copy from 'copy-to-clipboard'
-import type { PageObject, FetcherRequest, FetcherResult } from "@nop-chaos/nop-core"
-import { default_jumpTo, isCancel, useAdapter,default_isCurrentUrl ,ajaxFetch, default_updateLocation, providePage} from "@nop-chaos/nop-core";
+import type { PageObject, FetcherRequest, FetcherResult } from "@nop-chaos/sdk"
+import { default_jumpTo, isCancel, useAdapter,default_isCurrentUrl ,ajaxFetch, default_updateLocation, providePage} from "@nop-chaos/sdk";
 
 
 export function createEnv(page: PageObject): RenderOptions {

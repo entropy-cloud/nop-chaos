@@ -17,7 +17,7 @@ import { useLocaleStore } from '/@/store/modules/locale';
 
 import { getCommonStoragePrefix, getStorageShortName } from '/@/utils/env';
 
-import { primaryColor } from '../../build/config/themeConfig';
+//import { primaryColor } from '../../build/config/themeConfig';
 import { Persistent } from '/@/utils/cache/persistent';
 import { deepMerge } from '/@/utils';
 import { ThemeEnum } from '/@/enums/appEnum';
@@ -38,9 +38,9 @@ export function initAppConfigStore() {
     menuSetting: { bgColor } = {},
   } = projCfg;
   try {
-    if (themeColor && themeColor !== primaryColor) {
-      changeTheme(themeColor);
-    }
+    //if (themeColor && themeColor !== primaryColor) {
+    //  changeTheme(themeColor);
+    //}
 
     grayMode && updateGrayMode(grayMode);
     colorWeak && updateColorWeak(colorWeak);

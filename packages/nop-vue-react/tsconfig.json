@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig/base.json",
+  "extends": "@nop-chaos/ts-config/base.json",
   "compilerOptions": {
     "lib": ["ESNEXT","DOM"]
   },

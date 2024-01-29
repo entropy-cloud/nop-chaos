@@ -2,7 +2,7 @@ import React from 'react';
 import { FormItem, FormControlProps,Renderer,ScopedContext, IScopedContext } from 'amis';
 import { createObject, resolveVariableAndFilter,ActionObject, RendererData, unRegisterRenderer, RendererProps} from 'amis-core';
 
-import {useAdapter} from '@nop-chaos/nop-core'
+import {useAdapter} from '@nop-chaos/sdk'
 import  {applyPureVueInReact} from 'veaury'
 
 export interface VueControlProps extends FormControlProps {

@@ -16,11 +16,13 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", "build/**", "public/build/**"]
+      "outputs": ["dist/**"]
     },
     "dev": {
-      "cache": false
+      "cache": false,
+      "persistent": true
     },
+    "stub": {},
     "lint": {
       "outputs": []
     },

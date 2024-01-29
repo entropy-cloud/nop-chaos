@@ -31,8 +31,8 @@
   },
   "homepage": "./",
   "devDependencies": {
-    "@nop-chaos/eslint-config-custom": "workspace:*",
-    "@nop-chaos/tsconfig": "workspace:*",
+    "@nop-chaos/eslint-config-react": "workspace:*",
+    "@nop-chaos/ts-config": "workspace:*",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",

@@ -12,7 +12,7 @@
   import { AppProvider } from '/@/components/Application';
   import { useTitle } from '/@/hooks/web/useTitle';
   import { useLocale } from '/@/locales/useLocale';
-  import {AmisToast} from '@nop-chaos/sdk'
+  import {AmisToast} from '@nop-chaos/plugin-amis'
 
   // 解决日期时间国际化问题
   import 'dayjs/locale/zh-cn';

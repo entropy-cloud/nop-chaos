@@ -12,7 +12,9 @@ import 'amis/lib/themes/cxd.css';
 import 'amis-ui/lib/locale/en-US';
 import 'amis-ui/lib/locale/zh-CN';
 
-import '@nop-chaos/sdk/lib/style.css'
+import '@nop-chaos/sdk/dist/style.css'
+
+import {useDebug} from '@nop-chaos/sdk'
 
 import type { App } from 'vue';
 
@@ -54,8 +56,8 @@ function initAdapter(app: App) {
             }
         },
 
-        usePinia(){
-            return store
+        useDebug(){
+            return useDebug
         },
 
         getPage(path:string){

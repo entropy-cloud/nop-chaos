@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import { onUnmounted, ref } from 'vue';
-import { EditorComponentProps, ajaxFetch } from '@nop-chaos/nop-core';
+import { EditorComponentProps, ajaxFetch } from '@nop-chaos/sdk';
 import { isString } from 'lodash-es'
 
 const props = defineProps<EditorComponentProps>()

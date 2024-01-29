@@ -23,10 +23,7 @@ import {initNopApp} from './nop/initNopApp'
 // 这个css必须放在amis引入的css后面，它的优先级才能覆盖amis的样式
 import 'uno.css';
 
-// 在本地开发中引入的,以提高浏览器响应速度
-if (import.meta.env.DEV) {
-  import('ant-design-vue/dist/antd.less');
-}
+
 async function bootstrap() {
   // 创建应用实例
   const app = createApp(App);

@@ -53,9 +53,11 @@ function mergeConfigRecursively(defaults: Record<string, any>, overrides: Record
     return merged;
 }
 
-export function mergeConfig(defaults: Record<string, any>, overrides: Record<string, any>, isRoot:boolean = true) {
+export function mergeConfigEx(defaults: Record<string, any>, overrides: Record<string, any>, isRoot:boolean = true) {
     if (typeof defaults === 'function' || typeof overrides === 'function') {
         throw new Error(`Cannot merge config in form of callback`);
     }
-    return mergeConfigRecursively(defaults, overrides, isRoot ? '' : '.');
+    const config = mergeConfigRecursively(defaults, overrides, isRoot ? '' : '.');
+    //console.log("merged-vite-config:", JSON.stringify(config,null,"  "))
+    return config
 }

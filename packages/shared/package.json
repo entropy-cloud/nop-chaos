@@ -16,8 +16,9 @@
     "build": "vite build"
   },
   "devDependencies": {
-    "@nop-chaos/eslint-config-custom": "workspace:*",
-    "@nop-chaos/tsconfig": "workspace:*",
+    "@nop-chaos/eslint-config-react": "workspace:*",
+    "@nop-chaos/ts-config": "workspace:*",
+    "@nop-chaos/vite-config": "workspace:*",
     "@types/lodash": "^4.14.191",
     "@types/node": "*"
   },

@@ -5,8 +5,11 @@ import AmisToast from "./AmisToast.vue"
 import { XuiPageEditorButton } from "./XuiPageEditorButton"
 
 import AmisVueComponent from './AmisVueComponent'
-import { registerAdapter, registerModule } from "@nop-chaos/nop-core"
+import { registerAdapter, registerModule, registerSchemaProcessorType } from "@nop-chaos/sdk"
 import { alert, confirm, toast, ToastLevel, ToastConf, dataMapping } from 'amis'
+
+import { createElement } from 'react'
+import type { SchemaProcessorType } from "@nop-chaos/sdk"
 
 registerAdapter({
     dataMapping,
@@ -21,6 +24,19 @@ registerAdapter({
         console.log("[notify]", type, msg);
     },
 })
+
+const AmisSchemaType: SchemaProcessorType = {
+    renderSchema(props: SchemaComponentProps) {
+        return createElement(AmisSchemaPage, props)
+    },
+
+    renderEditor(props: EditorComponentProps, onExit: () => void) {
+        return createElement(AmisPageEditor, { ...props, "onExit": onExit })
+    }
+}
+
+registerSchemaProcessorType("amis", AmisSchemaType)
+registerSchemaProcessorType("default", AmisSchemaType)
 
 export {
     AmisPageEditor,

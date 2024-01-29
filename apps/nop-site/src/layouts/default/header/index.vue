@@ -28,7 +28,7 @@
       <!-- <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" /> -->
 
       <!-- <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" /> -->
-      <a-switch v-if="supportDebug" :checked="debug" @update:checked="toggleDebug" title="Debug" />
+      <a-switch v-if="getDebug" @update:checked="toggleDebug" title="Debug" />
 
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
 
@@ -73,7 +73,7 @@
   import LoginSelect from '/@/views/sys/login/LoginSelect.vue';
   import { useUserStore } from '/@/store/modules/user';
 
-  import {useDebug} from '@nop-chaos/sdk'
+  import {useAdapter} from '@nop-chaos/sdk'
 
   export default defineComponent({
     name: 'LayoutHeader',
@@ -185,7 +185,11 @@
         showLoginSelect();
       });
 
-      const {debug, supportDebug,toggleDebug} = useDebug()
+      const {getDebug,setDebug} = useAdapter().useDebug()
+      
+      function toggleDebug(){
+        setDebug(!getDebug())
+      }
 
       return {
         prefixCls,
@@ -214,8 +218,7 @@
         loginSelectOk,
         loginSelectRef,
 	title,
-        debug,
-        supportDebug,
+        getDebug,
         toggleDebug
       };
     },

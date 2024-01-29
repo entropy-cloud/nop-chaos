@@ -1,6 +1,6 @@
 import { unRegisterRenderer, Renderer, register, ActionObject, IScopedContext , 
     IServiceStore, isEffectiveApi} from "amis-core";
-import { RenderContextKey , OnEventType, ApiObject, ApiResponse} from '@nop-chaos/nop-react-core'
+import { RenderContextKey , OnEventType, ApiObject, ApiResponse} from '@nop-chaos/sdk'
 import * as React from 'react'
 
 export type RendererConfig = {

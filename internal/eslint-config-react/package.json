@@ -1,0 +1,24 @@
+{
+  "name": "@nop-chaos/eslint-config-react",
+  "author": "Water.Li",
+  "version": "0.1.1",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "dependencies": {
+    "eslint": "^7.32.0",
+    "prettier": "^2.5.1",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-turbo": "latest",
+    "eslint-plugin-cypress": "^2.12.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

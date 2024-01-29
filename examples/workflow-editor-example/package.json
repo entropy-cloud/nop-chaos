@@ -41,8 +41,8 @@
     "web-vitals": "^3.3.0"
   },
   "devDependencies": {
-    "@nop-chaos/eslint-config-custom": "workspace:*",
-    "@nop-chaos/tsconfig": "workspace:*",
+    "@nop-chaos/eslint-config-react": "workspace:*",
+    "@nop-chaos/ts-config": "workspace:*",
     "@types/styled-components": "^5.1.26",
     "@types/uuid": "^9.0.2"
   },

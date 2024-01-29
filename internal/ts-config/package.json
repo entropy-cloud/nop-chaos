@@ -1,0 +1,28 @@
+{
+  "name": "@nop-chaos/ts-config",
+  "version": "0.1.1",
+  "private": true,
+  "homepage": "https://gitee.com/canonical-entropy/nop-chaos",
+  "bugs": {
+    "url": "https://gitee.com/canonical-entropy/nop-chaos/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitee.com/canonical-entropy/nop-chaos.git",
+    "directory": "internal/ts-config"
+  },
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "base.json",
+    "node.json",
+    "vue-app.json",
+    "node-server.json",
+    "react-library.json",
+    "vite.json"
+  ],
+  "dependencies": {
+    "@types/node": "^20.10.6",
+    "vite": "^5.0.10"
+  }
+}

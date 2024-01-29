@@ -1,5 +1,5 @@
 {
-  "extends": "@nop-chaos/tsconfig/react-library.json",
+  "extends": "@nop-chaos/ts-config/react-library.json",
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"]
 }

@@ -38,10 +38,10 @@ System.register(['@nop-chaos/sdk','vue','react'], (function (exports) {
 				}
 			})
 
-			sdk.registerSchemaProcessorType('plain',{
-				componentType,
-				editorComponentType: componentType
-			})
+			//sdk.registerSchemaProcessorType('plain',{
+			//	componentType,
+			//	editorComponentType: componentType
+			//})
 		})
 	};
 }));

@@ -1,8 +1,6 @@
 import { PageEnum } from '/@/enums/pageEnum';
-import { ajaxRequest, useDebug } from '@nop-chaos/sdk';
+import { ajaxRequest, useAdapter } from '@nop-chaos/sdk';
 import { URL_HASH_TAB } from '/@/utils';
-
-const {supportDebug,debug} = useDebug()
 
 /**
  * @description: Get user menu based on id
@@ -11,8 +9,7 @@ const {supportDebug,debug} = useDebug()
 export const getMenuList = () => {
   if (import.meta.env.VITE_USE_MOCK) {
     // mock模式下总是开启调试功能
-    supportDebug.value = true
-    debug.value = true
+    setDebug(true)
     return import("../../../public/mock/get-menu-result.json").then(d => d.default.menu)
   }
 
@@ -22,8 +19,8 @@ export const getMenuList = () => {
       siteId: 'main'
     }
   }).then(data => {
-    supportDebug.value = data.supportDebug
-    debug.value = data.supportDebug
+    const {setDebug} = useAdapter().useDebug()
+    setDebug(data.supportDebug)
     const menus = transformMenu(data.resources || [])
     fixHomePath(menus)
     return menus

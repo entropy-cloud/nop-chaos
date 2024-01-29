@@ -1,1 +1,1 @@
-export * from './GraphDesigner'
+export * from './GraphDesigner.tsx'
