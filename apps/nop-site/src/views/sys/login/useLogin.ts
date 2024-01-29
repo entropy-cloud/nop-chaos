@@ -1,9 +1,11 @@
-import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
-import type { RuleObject } from 'ant-design-vue/lib/form/interface';
+import type { FormInstance } from 'ant-design-vue/lib/form/Form';
+import type {
+  RuleObject,
+  NamePath,
+  Rule as ValidationRule,
+} from 'ant-design-vue/lib/form/interface';
 import { ref, computed, unref, Ref } from 'vue';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { checkOnlyUser } from '/@/api/sys/user';
-import { defHttp } from '/@/utils/http/axios';
+import { useI18n } from '@/hooks/web/useI18n';
 
 export enum LoginStateEnum {
   LOGIN,
@@ -13,12 +15,10 @@ export enum LoginStateEnum {
   QR_CODE,
 }
 
-export enum SmsEnum {
-  LOGIN = '0',
-  REGISTER = '1',
-  FORGET_PASSWORD = '2',
-}
 const currentState = ref(LoginStateEnum.LOGIN);
+
+// 这里也可以优化
+// import { createGlobalState } from '@vueuse/core'
 
 export function useLoginState() {
   function setLoginState(state: LoginStateEnum) {
@@ -34,7 +34,12 @@ export function useLoginState() {
   return { setLoginState, getLoginState, handleBackLogin };
 }
 
-export function useFormValid<T extends Object = any>(formRef: Ref<any>) {
+export function useFormValid<T extends Object = any>(formRef: Ref<FormInstance>) {
+  const validate = computed(() => {
+    const form = unref(formRef);
+    return form?.validate ?? ((_nameList?: NamePath) => Promise.resolve());
+  });
+
   async function validForm() {
     const form = unref(formRef);
     if (!form) return;
@@ -42,7 +47,7 @@ export function useFormValid<T extends Object = any>(formRef: Ref<any>) {
     return data as T;
   }
 
-  return { validForm };
+  return { validate, validForm };
 }
 
 export function useFormRules(formData?: Recordable) {
@@ -52,9 +57,6 @@ export function useFormRules(formData?: Recordable) {
   const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
   const getSmsFormRule = computed(() => createRule(t('sys.login.smsPlaceholder')));
   const getMobileFormRule = computed(() => createRule(t('sys.login.mobilePlaceholder')));
-
-  const getRegisterAccountRule = computed(() => createRegisterAccountRule('account'));
-  const getRegisterMobileRule = computed(() => createRegisterAccountRule('mobile'));
 
   const validatePolicy = async (_: RuleObject, value: boolean) => {
     return !value ? Promise.reject(t('sys.login.policyPlaceholder')) : Promise.resolve();
@@ -78,9 +80,6 @@ export function useFormRules(formData?: Recordable) {
     const smsFormRule = unref(getSmsFormRule);
     const mobileFormRule = unref(getMobileFormRule);
 
-    const registerAccountRule = unref(getRegisterAccountRule);
-    const registerMobileRule = unref(getRegisterMobileRule);
-
     const mobileRule = {
       sms: smsFormRule,
       mobile: mobileFormRule,
@@ -89,19 +88,19 @@ export function useFormRules(formData?: Recordable) {
       // register form rules
       case LoginStateEnum.REGISTER:
         return {
-          account: registerAccountRule,
+          account: accountFormRule,
           password: passwordFormRule,
-          mobile: registerMobileRule,
-          sms: smsFormRule,
-          confirmPassword: [{ validator: validateConfirmPassword(formData?.password), trigger: 'change' }],
+          confirmPassword: [
+            { validator: validateConfirmPassword(formData?.password), trigger: 'change' },
+          ],
           policy: [{ validator: validatePolicy, trigger: 'change' }],
+          ...mobileRule,
         };
 
       // reset password form rules
       case LoginStateEnum.RESET_PASSWORD:
         return {
-          username: accountFormRule,
-          confirmPassword: [{ validator: validateConfirmPassword(formData?.password), trigger: 'change' }],
+          account: accountFormRule,
           ...mobileRule,
         };
 
@@ -120,7 +119,7 @@ export function useFormRules(formData?: Recordable) {
   return { getFormRules };
 }
 
-function createRule(message: string) {
+function createRule(message: string): ValidationRule[] {
   return [
     {
       required: true,
@@ -129,56 +128,3 @@ function createRule(message: string) {
     },
   ];
 }
-function createRegisterAccountRule(type) {
-  return [
-    {
-      validator: type == 'account' ? checkUsername : checkPhone,
-      trigger: 'change',
-    },
-  ];
-}
-
-function checkUsername(rule, value, callback) {
-  const { t } = useI18n();
-  if (!value) {
-    return Promise.reject(t('sys.login.accountPlaceholder'));
-  } else {
-    return new Promise((resolve, reject) => {
-      checkOnlyUser({ username: value }).then((res) => {
-        res.success ? resolve() : reject('用户名已存在!');
-      });
-    });
-  }
-}
-async function checkPhone(rule, value, callback) {
-  const { t } = useI18n();
-  var reg = /^1[3456789]\d{9}$/;
-  if (!reg.test(value)) {
-    return Promise.reject(new Error('请输入正确手机号'));
-  } else {
-    return new Promise((resolve, reject) => {
-      checkOnlyUser({ phone: value }).then((res) => {
-        res.success ? resolve() : reject('手机号已存在!');
-      });
-    });
-  }
-}
-
-//update-begin---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------
-/**
- * 判断是否是OAuth2APP环境
- */
-export function isOAuth2AppEnv() {
-  return /wxwork|dingtalk/i.test(navigator.userAgent);
-}
-
-/**
- * 后台构造oauth2登录地址
- * @param source
- */
-export function sysOAuth2Login(source) {
-  let url = `${window._CONFIG['domianURL']}/sys/thirdLogin/oauth2/${source}/login`;
-  url += `?state=${encodeURIComponent(window.location.origin)}`;
-  window.location.href = url;
-}
-//update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------

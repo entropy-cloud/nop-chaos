@@ -39,25 +39,6 @@ export const mainOutRoutes: AppRouteModule[] = [
     }
   },
 
-  // {
-  //   path: '/test1',
-  //   name: 'test1',
-  //   component: () => import('../../nop/amis/AmisTest'),
-  //   meta: {
-  //     title: 'Test',
-  //     hideMenu: true,
-  //     hideBreadcrumb: true
-  //   }
-  // }
-  // {
-  //   path: '/main-out',
-  //   name: 'MainOut',
-  //   component: () => import('/@/views/demo/main-out/index.vue'),
-  //   meta: {
-  //     title: 'MainOut',
-  //     ignoreAuth: true,
-  //   },
-  // },
 ];
 
 export const mainOutRouteNames = mainOutRoutes.map((item) => item.name);

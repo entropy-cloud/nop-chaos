@@ -1,8 +1,11 @@
 import type { RouteRecordRaw, RouteMeta } from 'vue-router';
-import { RoleEnum } from '/@/enums/roleEnum';
+import { RoleEnum } from '@/enums/roleEnum';
 import { defineComponent } from 'vue';
 
-export type Component<T extends any = any> = ReturnType<typeof defineComponent> | (() => Promise<typeof import('*.vue')>) | (() => Promise<T>);
+export type Component<T = any> =
+  | ReturnType<typeof defineComponent>
+  | (() => Promise<typeof import('*.vue')>)
+  | (() => Promise<T>);
 
 // @ts-ignore
 export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
@@ -13,7 +16,6 @@ export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
   children?: AppRouteRecordRaw[];
   props?: Recordable;
   fullPath?: string;
-  alwaysShow?: boolean;
 }
 
 export interface MenuTag {
@@ -26,6 +28,8 @@ export interface Menu {
   name: string;
 
   icon?: string;
+
+  img?: string;
 
   path: string;
 
@@ -45,9 +49,6 @@ export interface Menu {
   tag?: MenuTag;
 
   hideMenu?: boolean;
-  
-  alwaysShow?: boolean;
-  
 }
 
 export interface MenuModule {

@@ -2,21 +2,21 @@
   import type { PropType } from 'vue';
   import { Result, Button } from 'ant-design-vue';
   import { defineComponent, ref, computed, unref } from 'vue';
-  import { ExceptionEnum } from '/@/enums/exceptionEnum';
-  import notDataSvg from '/@/assets/svg/no-data.svg';
-  import netWorkSvg from '/@/assets/svg/net-error.svg';
+  import { ExceptionEnum } from '@/enums/exceptionEnum';
+  import notDataSvg from '@/assets/svg/no-data.svg';
+  import netWorkSvg from '@/assets/svg/net-error.svg';
   import { useRoute } from 'vue-router';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { useI18n } from '/@/hooks/web/useI18n';
-  import { useGo, useRedo } from '/@/hooks/web/usePage';
-  import { PageEnum } from '/@/enums/pageEnum';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { useI18n } from '@/hooks/web/useI18n';
+  import { useGo, useRedo } from '@/hooks/web/usePage';
+  import { PageEnum } from '@/enums/pageEnum';
 
   interface MapValue {
     title: string;
     subTitle: string;
     btnText?: string;
     icon?: string;
-    handler?: Fn;
+    handler?: any;
     status?: string;
   }
 
@@ -109,7 +109,12 @@
       return () => {
         const { title, subTitle, btnText, icon, handler, status } = unref(getMapValue) || {};
         return (
-          <Result class={prefixCls} status={status as any} title={props.title || title} sub-title={props.subTitle || subTitle}>
+          <Result
+            class={prefixCls}
+            status={status as any}
+            title={props.title || title}
+            sub-title={props.subTitle || subTitle}
+          >
             {{
               extra: () =>
                 btnText && (
@@ -130,8 +135,8 @@
 
   .@{prefix-cls} {
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
 
     .ant-result-icon {
       img {

@@ -18,38 +18,32 @@
     </template>
   </div>
 </template>
-<script lang="ts">
-  import { defineComponent, PropType } from 'vue';
+<script lang="ts" setup>
+  import type { PropType } from 'vue';
 
   import { Tooltip } from 'ant-design-vue';
-  import { useDesign } from '/@/hooks/web/useDesign';
+  import { useDesign } from '@/hooks/web/useDesign';
 
-  import { menuTypeList } from '../enum';
-  export default defineComponent({
-    name: 'MenuTypePicker',
-    components: { Tooltip },
-    props: {
-      menuTypeList: {
-        type: Array as PropType<typeof menuTypeList>,
-        defualt: () => [],
-      },
-      handler: {
-        type: Function as PropType<Fn>,
-        default: () => ({}),
-      },
-      def: {
-        type: String,
-        default: '',
-      },
+  import { menuTypeListEnum } from '../enum';
+
+  defineOptions({ name: 'MenuTypePicker' });
+
+  defineProps({
+    menuTypeList: {
+      type: Array as PropType<typeof menuTypeListEnum>,
+      default: () => [],
     },
-    setup() {
-      const { prefixCls } = useDesign('setting-menu-type-picker');
-
-      return {
-        prefixCls,
-      };
+    handler: {
+      type: Function,
+      default: () => ({}),
+    },
+    def: {
+      type: String,
+      default: '',
     },
   });
+
+  const { prefixCls } = useDesign('setting-menu-type-picker');
 </script>
 <style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-setting-menu-type-picker';
@@ -63,27 +57,27 @@
       height: 48px;
       margin-right: 16px;
       overflow: hidden;
-      cursor: pointer;
-      background-color: #f0f2f5;
       border-radius: 4px;
-      box-shadow: 0 1px 2.5px 0 rgba(0, 0, 0, 0.18);
+      background-color: #f0f2f5;
+      box-shadow: 0 1px 2.5px 0 rgb(0 0 0 / 18%);
+      cursor: pointer;
 
       &::before,
       &::after {
-        position: absolute;
         content: '';
+        position: absolute;
       }
 
       &--sidebar,
       &--light {
         &::before {
+          z-index: 1;
           top: 0;
           left: 0;
-          z-index: 1;
           width: 33%;
           height: 100%;
-          background-color: #273352;
           border-radius: 4px 0 0 4px;
+          background-color: #273352;
         }
 
         &::after {
@@ -101,14 +95,14 @@
           left: 0;
           width: 33%;
           height: 100%;
-          background-color: #fff;
           border-radius: 4px 0 0 4px;
+          background-color: #fff;
         }
 
         &::after {
+          z-index: 1;
           top: 0;
           left: 0;
-          z-index: 1;
           width: 100%;
           height: 25%;
           background-color: #273352;
@@ -131,13 +125,13 @@
 
       &--mix-sidebar {
         &::before {
+          z-index: 1;
           top: 0;
           left: 0;
-          z-index: 1;
           width: 25%;
           height: 100%;
-          background-color: #273352;
           border-radius: 4px 0 0 4px;
+          background-color: #273352;
         }
 
         &::after {

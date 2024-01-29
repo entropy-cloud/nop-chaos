@@ -1,8 +1,8 @@
-import type { LockInfo, UserInfo, LoginInfo } from '/#/store';
-import type { ProjectConfig } from '/#/config';
+import type { LockInfo, UserInfo, TableSetting } from '#/store';
+import type { ProjectConfig } from '#/config';
 import type { RouteLocationNormalized } from 'vue-router';
 
-import { createLocalStorage, createSessionStorage } from '/@/utils/cache';
+import { createLocalStorage, createSessionStorage } from '@/utils/cache';
 import { Memory } from './memory';
 import {
   TOKEN_KEY,
@@ -13,11 +13,9 @@ import {
   APP_LOCAL_CACHE_KEY,
   APP_SESSION_CACHE_KEY,
   MULTIPLE_TABS_KEY,
-  DB_DICT_DATA_KEY,
-  TENANT_ID,
-  LOGIN_INFO_KEY,
-} from '/@/enums/cacheEnum';
-import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
+  TABLE_SETTING_KEY,
+} from '@/enums/cacheEnum';
+import { DEFAULT_CACHE_TIME } from '@/settings/encryptionSetting';
 import { toRaw } from 'vue';
 import { pick, omit } from 'lodash-es';
 
@@ -28,9 +26,7 @@ interface BasicStore {
   [LOCK_INFO_KEY]: LockInfo;
   [PROJ_CFG_KEY]: ProjectConfig;
   [MULTIPLE_TABS_KEY]: RouteLocationNormalized[];
-  [DB_DICT_DATA_KEY]: string;
-  [TENANT_ID]: string;
-  [LOGIN_INFO_KEY]: LoginInfo;
+  [TABLE_SETTING_KEY]: Partial<TableSetting>;
 }
 
 type LocalStore = BasicStore;
@@ -56,12 +52,6 @@ function initPersistentMemory() {
 
 export class Persistent {
   static getLocal<T>(key: LocalKeys) {
-    //update-begin---author:scott ---date:2022-10-27  for：token过期退出重新登录，online菜单还是提示token过期----------
-    const globalCache = ls.get(APP_LOCAL_CACHE_KEY);
-    if(globalCache){
-      localMemory.setCache(globalCache);
-    }
-    //update-end---author:scott ---date::2022-10-27  for：token过期退出重新登录，online菜单还是提示token过期----------
     return localMemory.get(key)?.value as Nullable<T>;
   }
 

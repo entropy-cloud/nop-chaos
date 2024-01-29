@@ -1,100 +1,80 @@
-import type { AppRouteRecordRaw, Menu } from '/@/router/types';
+import type { AppRouteRecordRaw, Menu } from '@/router/types';
 
 import { defineStore } from 'pinia';
-import { store } from '/@/store';
-import { useI18n } from '/@/hooks/web/useI18n';
+import { store } from '@/store';
+import { useI18n } from '@/hooks/web/useI18n';
 import { useUserStore } from './user';
 import { useAppStoreWithOut } from './app';
 import { toRaw } from 'vue';
-import { transformObjToRoute, flatMultiLevelRoutes, addSlashToRouteComponent } from '/@/router/helper/routeHelper';
-import { transformRouteToMenu } from '/@/router/helper/menuHelper';
+import { transformObjToRoute, flatMultiLevelRoutes } from '@/router/helper/routeHelper';
+import { transformRouteToMenu } from '@/router/helper/menuHelper';
 
-import projectSetting from '/@/settings/projectSetting';
+import projectSetting from '@/settings/projectSetting';
 
-import { PermissionModeEnum } from '/@/enums/appEnum';
+import { PermissionModeEnum } from '@/enums/appEnum';
 
-import { asyncRoutes } from '/@/router/routes';
-import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
+import { asyncRoutes } from '@/router/routes';
+import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
 
-import { filter } from '/@/utils/helper/treeHelper';
+import { filter } from '@/utils/helper/treeHelper';
 
-import { getMenuList,switchVue3Menu } from '/@/api/sys/menu';
-import { getPermCode } from '/@/api/sys/user';
+import { getMenuList } from '@/api/sys/menu';
+import { getPermCode } from '@/api/sys/user';
 
-import { useMessage } from '/@/hooks/web/useMessage';
-import { PageEnum } from '/@/enums/pageEnum';
-
-// 系统权限
-interface AuthItem {
-  // 菜单权限编码，例如：“sys:schedule:list,sys:schedule:info”,多个逗号隔开
-  action: string;
-  // 权限策略1显示2禁用
-  type: string | number;
-  // 权限状态(0无效1有效)
-  status: string | number;
-  // 权限名称
-  describe?: string;
-  isAuth?: boolean;
-}
+import { useMessage } from '@/hooks/web/useMessage';
+import { PageEnum } from '@/enums/pageEnum';
 
 interface PermissionState {
   // Permission code list
+  // 权限代码列表
   permCodeList: string[] | number[];
   // Whether the route has been dynamically added
+  // 路由是否动态添加
   isDynamicAddedRoute: boolean;
   // To trigger a menu update
+  // 触发菜单更新
   lastBuildMenuTime: number;
   // Backstage menu list
+  // 后台菜单列表
   backMenuList: Menu[];
+  // 菜单列表
   frontMenuList: Menu[];
-  // 用户所拥有的权限
-  authList: AuthItem[];
-  // 全部权限配置
-  allAuthList: AuthItem[];
-  // 系统安全模式
-  sysSafeMode: boolean;
-  // online子表按钮权限
-  onlineSubTableAuthMap: object;
 }
+
 export const usePermissionStore = defineStore({
   id: 'app-permission',
   state: (): PermissionState => ({
+    // 权限代码列表
     permCodeList: [],
     // Whether the route has been dynamically added
+    // 路由是否动态添加
     isDynamicAddedRoute: false,
     // To trigger a menu update
+    // 触发菜单更新
     lastBuildMenuTime: 0,
     // Backstage menu list
+    // 后台菜单列表
     backMenuList: [],
     // menu List
+    // 菜单列表
     frontMenuList: [],
-    authList: [],
-    allAuthList: [],
-    sysSafeMode: false,
-    onlineSubTableAuthMap: {},
   }),
   getters: {
-    getPermCodeList(): string[] | number[] {
-      return this.permCodeList;
+    getPermCodeList(state): string[] | number[] {
+      return state.permCodeList;
     },
-    getBackMenuList(): Menu[] {
-      return this.backMenuList;
+    getBackMenuList(state): Menu[] {
+      return state.backMenuList;
     },
-    getFrontMenuList(): Menu[] {
-      return this.frontMenuList;
+    getFrontMenuList(state): Menu[] {
+      return state.frontMenuList;
     },
-    getLastBuildMenuTime(): number {
-      return this.lastBuildMenuTime;
+    getLastBuildMenuTime(state): number {
+      return state.lastBuildMenuTime;
     },
-    getIsDynamicAddedRoute(): boolean {
-      return this.isDynamicAddedRoute;
+    getIsDynamicAddedRoute(state): boolean {
+      return state.isDynamicAddedRoute;
     },
-
-    //update-begin-author:taoyan date:2022-6-1 for: VUEN-1162 子表按钮没控制
-    getOnlineSubTableAuth: (state) => {
-      return (code) => state.onlineSubTableAuthMap[code];
-    },
-    //update-end-author:taoyan date:2022-6-1 for: VUEN-1162 子表按钮没控制
   },
   actions: {
     setPermCodeList(codeList: string[]) {
@@ -124,11 +104,11 @@ export const usePermissionStore = defineStore({
       this.lastBuildMenuTime = 0;
     },
     async changePermissionCode() {
-      const systemPermission = await getPermCode();
-      const codeList = systemPermission.codeList;
+      const codeList = await getPermCode();
       this.setPermCodeList(codeList);
-      this.setAuthData(systemPermission);
     },
+
+    // 构建路由
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
       const userStore = useUserStore();
@@ -138,16 +118,21 @@ export const usePermissionStore = defineStore({
       const roleList = toRaw(userStore.getRoleList) || [];
       const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig;
 
+      // 路由过滤器 在 函数filter 作为回调传入遍历使用
       const routeFilter = (route: AppRouteRecordRaw) => {
         const { meta } = route;
+        // 抽出角色
         const { roles } = meta || {};
         if (!roles) return true;
+        // 进行角色权限判断
         return roleList.some((role) => roles.includes(role));
       };
 
       const routeRemoveIgnoreFilter = (route: AppRouteRecordRaw) => {
         const { meta } = route;
+        // ignoreRoute 为true 则路由仅用于菜单生成，不会在实际的路由表中出现
         const { ignoreRoute } = meta || {};
+        // arr.filter 返回 true 表示该元素通过测试
         return !ignoreRoute;
       };
 
@@ -157,6 +142,7 @@ export const usePermissionStore = defineStore({
       const patchHomeAffix = (routes: AppRouteRecordRaw[]) => {
         if (!routes || routes.length === 0) return;
         let homePath: string = userStore.getUserInfo.homePath || PageEnum.BASE_HOME;
+
         function patcher(routes: AppRouteRecordRaw[], parentPath = '') {
           if (parentPath) parentPath = parentPath + '/';
           routes.forEach((route: AppRouteRecordRaw) => {
@@ -173,6 +159,7 @@ export const usePermissionStore = defineStore({
             children && children.length > 0 && patcher(children, currentPath);
           });
         }
+
         try {
           patcher(routes);
         } catch (e) {
@@ -182,91 +169,75 @@ export const usePermissionStore = defineStore({
       };
 
       switch (permissionMode) {
+        // 角色权限
         case PermissionModeEnum.ROLE:
+          // 对非一级路由进行过滤
           routes = filter(asyncRoutes, routeFilter);
+          // 对一级路由根据角色权限过滤
           routes = routes.filter(routeFilter);
-          //  将多级路由转换为二级
+          // Convert multi-level routing to level 2 routing
+          // 将多级路由转换为 2 级路由
           routes = flatMultiLevelRoutes(routes);
           break;
 
+        // 路由映射， 默认进入该case
         case PermissionModeEnum.ROUTE_MAPPING:
+          // 对非一级路由进行过滤
           routes = filter(asyncRoutes, routeFilter);
+          // 对一级路由再次根据角色权限过滤
           routes = routes.filter(routeFilter);
+          // 将路由转换成菜单
           const menuList = transformRouteToMenu(routes, true);
+          // 移除掉 ignoreRoute: true 的路由 非一级路由
           routes = filter(routes, routeRemoveIgnoreFilter);
+          // 移除掉 ignoreRoute: true 的路由 一级路由；
           routes = routes.filter(routeRemoveIgnoreFilter);
+          // 对菜单进行排序
           menuList.sort((a, b) => {
             return (a.meta?.orderNo || 0) - (b.meta?.orderNo || 0);
           });
 
+          // 设置菜单列表
           this.setFrontMenuList(menuList);
-          // 将多级路由转换为二级
+
+          // Convert multi-level routing to level 2 routing
+          // 将多级路由转换为 2 级路由
           routes = flatMultiLevelRoutes(routes);
           break;
 
-        // 后台菜单构建
+        //  If you are sure that you do not need to do background dynamic permissions, please comment the entire judgment below
+        //  如果确定不需要做后台动态权限，请在下方注释整个判断
         case PermissionModeEnum.BACK:
-          const { createMessage, createWarningModal } = useMessage();
-          // 菜单加载提示
-          // createMessage.loading({
-          //   content: t('sys.app.menuLoading'),
-          //   duration: 1,
-          // });
+          const { createMessage } = useMessage();
 
-          // 从后台获取权限码，
-          // 这个函数可能只需要执行一次，并且实际的项目可以在正确的时间被放置
+          createMessage.loading({
+            content: t('sys.app.menuLoading'),
+            duration: 1,
+          });
+
+          // !Simulate to obtain permission codes from the background,
+          // 模拟从后台获取权限码，
+          // this function may only need to be executed once, and the actual project can be put at the right time by itself
+          // 这个功能可能只需要执行一次，实际项目可以自己放在合适的时间
           let routeList: AppRouteRecordRaw[] = [];
           try {
-            this.changePermissionCode();
+            await this.changePermissionCode();
             routeList = (await getMenuList()) as AppRouteRecordRaw[];
-            // update-begin----author:sunjianlei---date:20220315------for: 判断是否是 vue3 版本的菜单 ---
-            let hasIndex: boolean = false;
-            let hasIcon: boolean = false;
-            for (let menuItem of routeList) {
-              // 条件1：判断组件是否是 layouts/default/index
-              if (!hasIndex) {
-                hasIndex = menuItem.component === 'layouts/default/index';
-              }
-              // 条件2：判断图标是否带有 冒号
-              if (!hasIcon) {
-                hasIcon = !!menuItem.meta?.icon?.includes(':');
-              }
-              // 满足任何一个条件都直接跳出循环
-              if (hasIcon || hasIndex) {
-                break;
-              }
-            }
-            // 两个条件都不满足，就弹出提示框
-            // if (!hasIcon && !hasIndex) {
-            //   // 延迟1.5秒之后再出现提示，否则提示框出不来
-            //   setTimeout(
-            //     () =>
-            //       createWarningModal({
-            //         title: '检测提示',
-            //         content:
-            //           '当前菜单表是 <b>Vue2版本</b>，导致菜单加载异常!<br>点击确认，切换到Vue3版菜单！',
-            //         onOk:function () {
-            //           switchVue3Menu();
-            //           location.reload();
-            //         }
-            //       }),
-            //     100
-            //   );
-            // }
-            // update-end----author:sunjianlei---date:20220315------for: 判断是否是 vue3 版本的菜单 ---
           } catch (error) {
             console.error(error);
           }
-          // 组件地址前加斜杠处理  author: lsq date:2021-09-08
-          routeList = addSlashToRouteComponent(routeList);
+
+          // Dynamically introduce components
           // 动态引入组件
           routeList = transformObjToRoute(routeList);
 
-          // 构建后台路由菜单
+          //  Background routing to menu structure
+          //  后台路由到菜单结构
           const backMenuList = transformRouteToMenu(routeList);
           this.setBackMenuList(backMenuList);
 
-          // 删除meta.ignoreRoute项
+          // remove meta.ignoreRoute item
+          // 删除 meta.ignoreRoute 项
           routeList = filter(routeList, routeRemoveIgnoreFilter);
           routeList = routeList.filter(routeRemoveIgnoreFilter);
 
@@ -279,26 +250,10 @@ export const usePermissionStore = defineStore({
       patchHomeAffix(routes);
       return routes;
     },
-    setAuthData(systemPermission) {
-      this.authList = systemPermission.auth;
-      this.allAuthList = systemPermission.allAuth;
-      this.sysSafeMode = systemPermission.sysSafeMode;
-    },
-    setAuthList(authList: AuthItem[]) {
-      this.authList = authList;
-    },
-    setAllAuthList(authList: AuthItem[]) {
-      this.allAuthList = authList;
-    },
-
-    //update-begin-author:taoyan date:2022-6-1 for: VUEN-1162 子表按钮没控制
-    setOnlineSubTableAuth(code, hideBtnList) {
-      this.onlineSubTableAuthMap[code] = hideBtnList;
-    },
-    //update-end-author:taoyan date:2022-6-1 for: VUEN-1162 子表按钮没控制
   },
 });
 
+// Need to be used outside the setup
 // 需要在设置之外使用
 export function usePermissionStoreWithOut() {
   return usePermissionStore(store);

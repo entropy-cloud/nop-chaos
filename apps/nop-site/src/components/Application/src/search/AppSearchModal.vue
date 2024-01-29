@@ -4,7 +4,13 @@
       <div :class="getClass" @click.stop v-if="visible">
         <div :class="`${prefixCls}-content`" v-click-outside="handleClose">
           <div :class="`${prefixCls}-input__wrapper`">
-            <a-input :class="`${prefixCls}-input`" :placeholder="t('common.searchText')" ref="inputRef" allow-clear @change="handleSearch">
+            <a-input
+              :class="`${prefixCls}-input`"
+              :placeholder="t('common.searchText')"
+              ref="inputRef"
+              allow-clear
+              @change="handleSearch"
+            >
               <template #prefix>
                 <SearchOutlined />
               </template>
@@ -55,14 +61,13 @@
   import { computed, unref, ref, watch, nextTick } from 'vue';
   import { SearchOutlined } from '@ant-design/icons-vue';
   import AppSearchFooter from './AppSearchFooter.vue';
-  import Icon from '/@/components/Icon';
-  // @ts-ignore
-  import vClickOutside from '/@/directives/clickOutside';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { useRefs } from '/@/hooks/core/useRefs';
+  import Icon from '@/components/Icon/Icon.vue';
+  import vClickOutside from '@/directives/clickOutside';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { useRefs } from '@/hooks/useRefs';
   import { useMenuSearch } from './useMenuSearch';
-  import { useI18n } from '/@/hooks/web/useI18n';
-  import { useAppInject } from '/@/hooks/web/useAppInject';
+  import { useI18n } from '@/hooks/web/useI18n';
+  import { useAppInject } from '@/hooks/web/useAppInject';
 
   const props = defineProps({
     visible: { type: Boolean },
@@ -71,14 +76,15 @@
   const emit = defineEmits(['close']);
 
   const scrollWrap = ref(null);
-  const inputRef = ref<Nullable<HTMLElement>>(null);
+  const inputRef = ref<HTMLElement | null>(null);
 
   const { t } = useI18n();
   const { prefixCls } = useDesign('app-search-modal');
-  const [refs, setRefs] = useRefs();
+  const { refs, setRefs } = useRefs();
   const { getIsMobile } = useAppInject();
 
-  const { handleSearch, searchResult, keyword, activeIndex, handleEnter, handleMouseenter } = useMenuSearch(refs, scrollWrap, emit);
+  const { handleSearch, searchResult, keyword, activeIndex, handleEnter, handleMouseenter } =
+    useMenuSearch(refs, scrollWrap, emit);
 
   const getIsNotData = computed(() => !keyword || unref(searchResult).length === 0);
 
@@ -98,7 +104,7 @@
         nextTick(() => {
           unref(inputRef)?.focus();
         });
-    }
+    },
   );
 
   function handleClose() {
@@ -110,16 +116,16 @@
   @prefix-cls: ~'@{namespace}-app-search-modal';
   @footer-prefix-cls: ~'@{namespace}-app-search-footer';
   .@{prefix-cls} {
+    display: flex;
     position: fixed;
+    z-index: 800;
     top: 0;
     left: 0;
-    z-index: 800;
-    display: flex;
+    justify-content: center;
     width: 100%;
     height: 100%;
     padding-top: 50px;
-    background-color: rgba(0, 0, 0, 0.25);
-    justify-content: center;
+    background-color: rgb(0 0 0 / 25%);
 
     &--mobile {
       padding: 0;
@@ -160,27 +166,27 @@
 
     &-content {
       position: relative;
-      width: 632px;
-      margin: 0 auto auto auto;
-      background-color: @component-background;
-      border-radius: 16px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       flex-direction: column;
+      width: 632px;
+      margin: 0 auto auto;
+      border-radius: 16px;
+      background-color: @component-background;
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
     }
 
     &-input__wrapper {
       display: flex;
-      padding: 14px 14px 0 14px;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      padding: 14px 14px 0;
     }
 
     &-input {
       width: 100%;
       height: 48px;
-      font-size: 1.5em;
-      color: #1c1e21;
       border-radius: 6px;
+      color: #1c1e21;
+      font-size: 1.5em;
 
       span[role='img'] {
         color: #999;
@@ -189,43 +195,43 @@
 
     &-cancel {
       display: none;
-      font-size: 1em;
       color: #666;
+      font-size: 1em;
     }
 
     &-not-data {
       display: flex;
-      width: 100%;
-      height: 100px;
-      font-size: 0.9;
-      color: rgb(150 159 175);
       align-items: center;
       justify-content: center;
+      width: 100%;
+      height: 100px;
+      color: rgb(150 159 175);
+      font-size: 0.9;
     }
 
     &-list {
       max-height: 472px;
-      padding: 0 14px;
-      padding-bottom: 20px;
       margin: 0 auto;
       margin-top: 14px;
+      padding: 0 14px;
+      padding-bottom: 20px;
       overflow: auto;
 
       &__item {
-        position: relative;
         display: flex;
+        position: relative;
+        align-items: center;
         width: 100%;
         height: 56px;
+        margin-top: 8px;
         padding-bottom: 4px;
         padding-left: 14px;
-        margin-top: 8px;
-        font-size: 14px;
-        color: @text-color-base;
-        cursor: pointer;
-        background-color: @component-background;
         border-radius: 4px;
+        background-color: @component-background;
         box-shadow: 0 1px 3px 0 #d4d9e1;
-        align-items: center;
+        color: @text-color-base;
+        font-size: 14px;
+        cursor: pointer;
 
         > div:first-child,
         > div:last-child {
@@ -234,8 +240,8 @@
         }
 
         &--active {
-          color: #fff;
           background-color: @primary-color;
+          color: #fff;
 
           .@{prefix-cls}-list__item-enter {
             opacity: 1;

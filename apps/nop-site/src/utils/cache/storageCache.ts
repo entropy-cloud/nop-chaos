@@ -1,10 +1,6 @@
-import { cacheCipher } from '/@/settings/encryptionSetting';
-
-import type { EncryptionParams } from '/@/utils/cipher';
-
-import { AesEncryption } from '/@/utils/cipher';
-
-import { isNullOrUnDef } from '/@/utils/is';
+import { cacheCipher } from '@/settings/encryptionSetting';
+import { isNil } from '@/utils/is';
+import { Encryption, EncryptionFactory, EncryptionParams } from '@/utils/cipher';
 
 export interface CreateStorageParams extends EncryptionParams {
   prefixKey: string;
@@ -12,6 +8,7 @@ export interface CreateStorageParams extends EncryptionParams {
   hasEncrypt: boolean;
   timeout?: Nullable<number>;
 }
+// TODO 移除此文件夹下全部代码
 export const createStorage = ({
   prefixKey = '',
   storage = sessionStorage,
@@ -24,18 +21,20 @@ export const createStorage = ({
     throw new Error('When hasEncrypt is true, the key or iv must be 16 bits!');
   }
 
-  const encryption = new AesEncryption({ key, iv });
-
+  const persistEncryption: Encryption = EncryptionFactory.createAesEncryption({
+    key: cacheCipher.key,
+    iv: cacheCipher.iv,
+  });
   /**
-   *Cache class
-   *Construction parameters can be passed into sessionStorage, localStorage,
+   * Cache class
+   * Construction parameters can be passed into sessionStorage, localStorage,
    * @class Cache
    * @example
    */
   const WebStorage = class WebStorage {
     private storage: Storage;
     private prefixKey?: string;
-    private encryption: AesEncryption;
+    private encryption: Encryption;
     private hasEncrypt: boolean;
     /**
      *
@@ -44,7 +43,7 @@ export const createStorage = ({
     constructor() {
       this.storage = storage;
       this.prefixKey = prefixKey;
-      this.encryption = encryption;
+      this.encryption = persistEncryption;
       this.hasEncrypt = hasEncrypt;
     }
 
@@ -53,26 +52,26 @@ export const createStorage = ({
     }
 
     /**
-     *
-     *  Set cache
+     * Set cache
      * @param {string} key
      * @param {*} value
-     * @expire Expiration time in seconds
+     * @param {*} expire Expiration time in seconds
      * @memberof Cache
      */
     set(key: string, value: any, expire: number | null = timeout) {
       const stringData = JSON.stringify({
         value,
         time: Date.now(),
-        expire: !isNullOrUnDef(expire) ? new Date().getTime() + expire * 1000 : null,
+        expire: !isNil(expire) ? new Date().getTime() + expire * 1000 : null,
       });
-      const stringifyValue = this.hasEncrypt ? this.encryption.encryptByAES(stringData) : stringData;
+      const stringifyValue = this.hasEncrypt ? this.encryption.encrypt(stringData) : stringData;
       this.storage.setItem(this.getKey(key), stringifyValue);
     }
 
     /**
-     *Read cache
+     * Read cache
      * @param {string} key
+     * @param {*} def
      * @memberof Cache
      */
     get(key: string, def: any = null): any {
@@ -80,10 +79,10 @@ export const createStorage = ({
       if (!val) return def;
 
       try {
-        const decVal = this.hasEncrypt ? this.encryption.decryptByAES(val) : val;
+        const decVal = this.hasEncrypt ? this.encryption.decrypt(val) : val;
         const data = JSON.parse(decVal);
         const { value, expire } = data;
-        if (isNullOrUnDef(expire) || expire >= new Date().getTime()) {
+        if (isNil(expire) || expire >= new Date().getTime()) {
           return value;
         }
         this.remove(key);

@@ -1,22 +1,25 @@
 <template>
-  <a-dropdown :class="[prefixCls]" :trigger="trigger" v-bind="$attrs">
+  <a-dropdown :trigger="trigger" v-bind="$attrs">
     <span>
       <slot></slot>
     </span>
     <template #overlay>
-      <a-menu :class="[`${prefixCls}-menu`]" :selectedKeys="selectedKeys">
+      <a-menu :selectedKeys="selectedKeys">
         <template v-for="item in dropMenuList" :key="`${item.event}`">
           <a-menu-item
             v-bind="getAttr(item.event)"
             @click="handleClickMenu(item)"
             :disabled="item.disabled"
-            :class="[{ 'is-pop-confirm': item.popConfirm }, (item.class ?? [])]"
           >
-            <a-popconfirm v-if="popconfirm && item.popConfirm" v-bind="getPopConfirmAttrs(item.popConfirm)">
+            <a-popconfirm
+              v-if="popconfirm && item.popConfirm"
+              v-bind="getPopConfirmAttrs(item.popConfirm)"
+              :disabled="item.disabled"
+            >
               <template #icon v-if="item.popConfirm.icon">
                 <Icon :icon="item.popConfirm.icon" />
               </template>
-              <div class="dropdown-event-area">
+              <div>
                 <Icon :icon="item.icon" v-if="item.icon" />
                 <span class="ml-1">{{ item.text }}</span>
               </div>
@@ -35,12 +38,12 @@
 
 <script lang="ts" setup>
   import { computed, PropType } from 'vue';
-  import type { DropMenu } from './typing';
+  import { type Recordable } from '@/hooks/types';
+  import { type DropMenu } from './typing';
   import { Dropdown, Menu, Popconfirm } from 'ant-design-vue';
-  import { Icon } from '/@/components/Icon';
+  import Icon from '@/components/Icon/Icon.vue';
   import { omit } from 'lodash-es';
-  import { isFunction } from '/@/utils/is';
-  import { useDesign } from '/@/hooks/web/useDesign';
+  import { isFunction } from '@/utils/is';
 
   const ADropdown = Dropdown;
   const AMenu = Menu;
@@ -48,7 +51,6 @@
   const AMenuDivider = Menu.Divider;
   const APopconfirm = Popconfirm;
 
-  const { prefixCls } = useDesign('basic-dropdown');
   const props = defineProps({
     popconfirm: Boolean,
     /**
@@ -57,13 +59,13 @@
      * @type string[]
      */
     trigger: {
-      type: [Array] as PropType<('contextmenu' | 'click' | 'hover')[]>,
+      type: Array as PropType<('contextmenu' | 'click' | 'hover')[]>,
       default: () => {
         return ['contextmenu'];
       },
     },
     dropMenuList: {
-      type: Array as PropType<(DropMenu & Recordable)[]>,
+      type: Array as PropType<(DropMenu & Recordable<any>)[]>,
       default: () => [],
     },
     selectedKeys: {
@@ -84,27 +86,13 @@
   const getPopConfirmAttrs = computed(() => {
     return (attrs) => {
       const originAttrs = omit(attrs, ['confirm', 'cancel', 'icon']);
-      if (!attrs.onConfirm && attrs.confirm && isFunction(attrs.confirm)) originAttrs['onConfirm'] = attrs.confirm;
-      if (!attrs.onCancel && attrs.cancel && isFunction(attrs.cancel)) originAttrs['onCancel'] = attrs.cancel;
+      if (!attrs.onConfirm && attrs.confirm && isFunction(attrs.confirm))
+        originAttrs['onConfirm'] = attrs.confirm;
+      if (!attrs.onCancel && attrs.cancel && isFunction(attrs.cancel))
+        originAttrs['onCancel'] = attrs.cancel;
       return originAttrs;
     };
   });
 
   const getAttr = (key: string | number) => ({ key });
 </script>
-
-<style lang="less">
-  @prefix-cls: ~'@{namespace}-basic-dropdown';
-
-  .@{prefix-cls} {
-    // update-begin--author:sunjianlei---date:20220322---for: 【VUEN-180】更多下拉菜单，只有点到字上才有效，点到空白处什么都不会发生，体验不好
-    &-menu .ant-dropdown-menu-item.is-pop-confirm {
-      padding: 0;
-
-      .dropdown-event-area {
-        padding: 5px 12px;
-      }
-    }
-    // update-end--author:sunjianlei---date:20220322---for: 【VUEN-180】更多下拉菜单，只有点到字上才有效，点到空白处什么都不会发生，体验不好
-  }
-</style>

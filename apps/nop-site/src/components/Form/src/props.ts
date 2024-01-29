@@ -1,18 +1,16 @@
 import type { FieldMapToTime, FormSchema } from './types/form';
 import type { CSSProperties, PropType } from 'vue';
 import type { ColEx } from './types';
-import type { TableActionType } from '/@/components/Table';
-import type { ButtonProps } from 'ant-design-vue/es/button/buttonTypes';
+import type { TableActionType } from '@/components/Table';
 import type { RowProps } from 'ant-design-vue/lib/grid/Row';
-import dayjs from "dayjs";
-import { propTypes } from '/@/utils/propTypes';
-import componentSetting from '/@/settings/componentSetting';
+import { propTypes } from '@/utils/propTypes';
 
-const { form } = componentSetting;
+import { ButtonProps } from '@/components/Button';
+
 export const basicProps = {
   model: {
     type: Object as PropType<Recordable>,
-    default: {},
+    default: () => ({}),
   },
   // 标签宽度  固定宽度
   labelWidth: {
@@ -23,14 +21,10 @@ export const basicProps = {
     type: Array as PropType<FieldMapToTime>,
     default: () => [],
   },
-  fieldMapToNumber: {
-    type: Array as PropType<FieldMapToTime>,
-    default: () => [],
-  },
   compact: propTypes.bool,
   // 表单配置规则
   schemas: {
-    type: [Array] as PropType<FormSchema[]>,
+    type: Array as PropType<FormSchema[]>,
     default: () => [],
   },
   mergeDynamicData: {
@@ -47,11 +41,12 @@ export const basicProps = {
   // 在INPUT组件上单击回车时，是否自动提交
   autoSubmitOnEnter: propTypes.bool.def(false),
   submitOnReset: propTypes.bool,
+  submitOnChange: propTypes.bool,
   size: propTypes.oneOf(['default', 'small', 'large']).def('default'),
   // 禁用表单
   disabled: propTypes.bool,
   emptySpan: {
-    type: [Number, Object] as PropType<number>,
+    type: [Number, Object] as PropType<number | Recordable>,
     default: 0,
   },
   // 是否显示收起展开按钮
@@ -60,13 +55,10 @@ export const basicProps = {
   transformDateFunc: {
     type: Function as PropType<Fn>,
     default: (date: any) => {
-      // 判断是否是dayjs实例
-      return dayjs.isDayjs(date) ? date?.format('YYYY-MM-DD HH:mm:ss') : date;
+      return date?.format?.('YYYY-MM-DD HH:mm:ss') ?? date;
     },
   },
   rulesMessageJoinLabel: propTypes.bool.def(true),
-  // 【jeecg】超过3列自动折叠
-  autoAdvancedCol: propTypes.number.def(3),
   // 超过3行自动折叠
   autoAdvancedLine: propTypes.number.def(3),
   // 不受折叠影响的行数
@@ -95,22 +87,16 @@ export const basicProps = {
   // 以下为默认props
   hideRequiredMark: propTypes.bool,
 
-  labelCol: {
-    type: Object as PropType<Partial<ColEx>>,
-    default: form.labelCol,
-  },
+  labelCol: Object as PropType<Partial<ColEx>>,
 
   layout: propTypes.oneOf(['horizontal', 'vertical', 'inline']).def('horizontal'),
   tableAction: {
     type: Object as PropType<TableActionType>,
   },
 
-  wrapperCol: {
-    type: Object as PropType<Partial<ColEx>>,
-    default: form.wrapperCol,
-  },
+  wrapperCol: Object as PropType<Partial<ColEx>>,
 
-  colon: propTypes.bool.def(form.colon),
+  colon: propTypes.bool,
 
   labelAlign: propTypes.string,
 

@@ -1,88 +1,97 @@
-// 用于配置某些组件的常规配置，而无需修改组件
+// Used to configure the general configuration of some components without modifying the components
 
 import type { SorterResult } from '../components/Table';
 
 export default {
-  // 表格配置
+  // basic-table setting
   table: {
-    // 表格接口请求通用配置，可在组件prop覆盖
-    // 支持 xxx.xxx.xxx格式
+    // Form interface request general configuration
+    // support xxx.xxx.xxx
     fetchSetting: {
-      // 传给后台的当前页字段
-      pageField: 'pageNo',
-      // 传给后台的每页显示多少条的字段
+      // The field name of the current page passed to the background
+      pageField: 'page',
+      // The number field name of each page displayed in the background
       sizeField: 'pageSize',
-      // 接口返回表格数据的字段
-      listField: 'records',
-      // 接口返回表格总数的字段
+      // Field name of the form data returned by the interface
+      listField: 'items',
+      // Total number of tables returned by the interface field name
       totalField: 'total',
     },
-    // 可选的分页选项
+    // Number of pages that can be selected
     pageSizeOptions: ['10', '50', '80', '100'],
-    // 表格默认尺寸
-    defaultSize: 'middle',
-    //默认每页显示多少条
+    // Default display quantity on one page
     defaultPageSize: 10,
-    // 默认排序方法
+    // Default Size
+    defaultSize: 'middle',
+    // Custom general sort function
     defaultSortFn: (sortInfo: SorterResult) => {
-      //update-begin-author:taoyan date:2022-10-21 for: VUEN-2199【表单设计器】多字段排序
-      if(sortInfo instanceof Array){
-        let sortInfoArray:any[] = []
-        for(let item of sortInfo){
-          let info = getSort(item);
-          if(info){
-            sortInfoArray.push(info)
-          }
-        }
+      const { field, order } = sortInfo;
+      if (field && order) {
         return {
-          sortInfoString: JSON.stringify(sortInfoArray)
-        }
-      }else{
-        let info = getSort(sortInfo)
-        return info || {}
+          // The sort field passed to the backend you
+          field,
+          // Sorting method passed to the background asc/desc
+          order,
+        };
+      } else {
+        return {};
       }
-      //update-end-author:taoyan date:2022-10-21 for: VUEN-2199【表单设计器】多字段排序
     },
-    // 自定义过滤方法
+    // Custom general filter function
     defaultFilterFn: (data: Partial<Recordable<string[]>>) => {
       return data;
     },
   },
-  // 滚动组件配置
+  vxeTable: {
+    table: {
+      border: true,
+      stripe: true,
+      columnConfig: {
+        resizable: true,
+        isCurrent: true,
+        isHover: true,
+      },
+      rowConfig: {
+        isCurrent: true,
+        isHover: true,
+      },
+      emptyRender: {
+        name: 'AEmpty',
+      },
+      printConfig: {},
+      exportConfig: {},
+      customConfig: {
+        storage: true,
+      },
+    },
+    grid: {
+      toolbarConfig: {
+        enabled: true,
+        export: true,
+        zoom: true,
+        print: true,
+        refresh: true,
+        custom: true,
+      },
+      pagerConfig: {
+        pageSizes: [20, 50, 100, 500],
+        pageSize: 20,
+        autoHidden: true,
+      },
+      proxyConfig: {
+        form: true,
+        props: {
+          result: 'items',
+          total: 'total',
+        },
+      },
+      zoomConfig: {},
+    },
+  },
+  // scrollbar setting
   scrollbar: {
-    // 是否使用原生滚动样式
-    // 开启后，菜单，弹窗，抽屉会使用原生滚动条组件
+    // Whether to use native scroll bar
+    // After opening, the menu, modal, drawer will change the pop-up scroll bar to native
     native: false,
   },
-  //表单配置
-  form: {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 4 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 18 },
-    },
-    //表单默认冒号
-    colon: true,
-  },
 };
-
-/**
- * 获取排序信息
- * @param item
- */
-function getSort(item){
-  const { field, order } = item;
-  if (field && order) {
-    let sortType = 'ascend' == order ? 'asc' : 'desc';
-    return {
-      // 排序字段
-      column: field,
-      // 排序方式 asc/desc
-      order: sortType,
-    };
-  }
-  return ''
-}

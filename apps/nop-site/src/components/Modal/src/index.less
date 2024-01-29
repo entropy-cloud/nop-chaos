@@ -2,23 +2,19 @@
   overflow: hidden;
 
   .ant-modal {
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
+    inset: 0 !important;
     width: 100% !important;
-    height: 100% !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
+    max-width: 100%;
+    height: 100%;
 
     &-content {
       height: 100%;
+      overflow: hidden;
     }
+  }
 
-    .ant-modal-header,
-    .@{namespace}-basic-title {
-      cursor: default !important;
-    }
+  .ant-modal-footer {
+    margin-top: 0;
   }
 }
 
@@ -33,7 +29,6 @@
   &-title {
     font-size: 16px;
     font-weight: bold;
-    line-height: 16px;
 
     .base-title {
       cursor: move !important;
@@ -58,35 +53,43 @@
 
   &-header {
     padding: 16px;
+    border-bottom: 1px solid @border-color-base;
   }
 
   &-content {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 0 !important;
+    box-shadow:
+      0 4px 8px 0 rgb(0 0 0 / 20%),
+      0 6px 20px 0 rgb(0 0 0 / 19%);
   }
 
   &-footer {
+    padding: 10px 16px;
+    border-top: 1px solid @border-color-base;
+
     button + button {
       margin-left: 10px;
     }
   }
 
   &-close {
-    font-weight: normal;
+    top: 0 !important;
+    right: 0 !important;
+    width: auto !important;
     outline: none;
+    background: transparent !important;
+    font-weight: normal;
   }
 
   &-close-x {
     display: inline-block;
     width: 96px;
-/*    width: auto;*/
     height: 56px;
-    line-height: 56px;
+    line-height: 56px !important;
   }
 
   &-confirm-body {
     .ant-modal-confirm-content {
-      // color: #fff;
-
       > * {
         color: @text-color-help-dark;
       }
@@ -119,16 +122,19 @@
 .ant-modal-confirm .ant-modal-body {
   padding: 24px !important;
 }
+
 @media screen and (max-height: 600px) {
   .ant-modal {
     top: 60px;
   }
 }
+
 @media screen and (max-height: 540px) {
   .ant-modal {
     top: 30px;
   }
 }
+
 @media screen and (max-height: 480px) {
   .ant-modal {
     top: 10px;

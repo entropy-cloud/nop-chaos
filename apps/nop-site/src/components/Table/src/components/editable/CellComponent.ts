@@ -1,6 +1,6 @@
-import type { FunctionalComponent, defineComponent } from 'vue';
+import type { defineComponent } from 'vue';
 import type { ComponentType } from '../../types/componentType';
-import { componentMap } from '/@/components/Table/src/componentMap';
+import { componentMap } from '@/components/Table/src/componentMap';
 
 import { Popover } from 'ant-design-vue';
 import { h } from 'vue';
@@ -13,9 +13,15 @@ export interface ComponentProps {
   getPopupContainer?: Fn;
 }
 
-export const CellComponent: FunctionalComponent = (
-  { component = 'Input', rule = true, ruleMessage, popoverVisible, getPopupContainer }: ComponentProps,
-  { attrs }
+export const CellComponent = (
+  {
+    component = 'Input',
+    rule = true,
+    ruleMessage,
+    popoverVisible,
+    getPopupContainer,
+  }: ComponentProps,
+  { attrs },
 ) => {
   const Comp = componentMap.get(component) as typeof defineComponent;
 
@@ -27,12 +33,12 @@ export const CellComponent: FunctionalComponent = (
     Popover,
     {
       overlayClassName: 'edit-cell-rule-popover',
-      visible: !!popoverVisible,
+      open: !!popoverVisible,
       ...(getPopupContainer ? { getPopupContainer } : {}),
     },
     {
       default: () => DefaultComp,
       content: () => ruleMessage,
-    }
+    },
   );
 };

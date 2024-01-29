@@ -1,19 +1,29 @@
 import type { BasicTableProps, FetchParams, SorterResult } from '../types/table';
 import type { PaginationProps } from '../types/pagination';
-import { ref, unref, ComputedRef, computed, onMounted, watch, reactive, Ref, watchEffect } from 'vue';
-import { useTimeoutFn } from '/@/hooks/core/useTimeout';
-import { buildUUID } from '/@/utils/uuid';
-import { isFunction, isBoolean } from '/@/utils/is';
-import { get, cloneDeep } from 'lodash-es';
+import {
+  ref,
+  unref,
+  ComputedRef,
+  computed,
+  onMounted,
+  watch,
+  reactive,
+  Ref,
+  watchEffect,
+} from 'vue';
+import { useTimeoutFn } from '@/hooks';
+import { buildUUID } from '@/utils/uuid';
+import { isFunction, isBoolean, isObject } from '@/utils/is';
+import { get, cloneDeep, merge } from 'lodash-es';
 import { FETCH_SETTING, ROW_KEY, PAGE_SIZE } from '../const';
+import { parseRowKeyValue } from '../helper';
+import type { Key } from 'ant-design-vue/lib/table/interface';
 
 interface ActionType {
   getPaginationInfo: ComputedRef<boolean | PaginationProps>;
   setPagination: (info: Partial<PaginationProps>) => void;
   setLoading: (loading: boolean) => void;
-  // update-begin--author:sunjianlei---date:220220419---for：由于 getFieldsValue 返回的不是逗号分割的数据，所以改用 validate
-  validate: () => Recordable;
-  // update-end--author:sunjianlei---date:220220419---for：由于 getFieldsValue 返回的不是逗号分割的数据，所以改用 validate
+  getFieldsValue: () => Recordable;
   clearSelectedRowKeys: () => void;
   tableData: Ref<Recordable[]>;
 }
@@ -24,8 +34,15 @@ interface SearchState {
 }
 export function useDataSource(
   propsRef: ComputedRef<BasicTableProps>,
-  { getPaginationInfo, setPagination, setLoading, validate, clearSelectedRowKeys, tableData }: ActionType,
-  emit: EmitType
+  {
+    getPaginationInfo,
+    setPagination,
+    setLoading,
+    getFieldsValue,
+    clearSelectedRowKeys,
+    tableData,
+  }: ActionType,
+  emit: EmitType,
 ) {
   const searchState = reactive<SearchState>({
     sortInfo: {},
@@ -46,10 +63,14 @@ export function useDataSource(
     },
     {
       immediate: true,
-    }
+    },
   );
 
-  function handleTableChange(pagination: PaginationProps, filters: Partial<Recordable<string[]>>, sorter: SorterResult) {
+  function handleTableChange(
+    pagination: PaginationProps,
+    filters: Partial<Recordable<string[]>>,
+    sorter: SorterResult,
+  ) {
     const { clearSelectOnPageChange, sortFn, filterFn } = unref(propsRef);
     if (clearSelectOnPageChange) {
       clearSelectedRowKeys();
@@ -119,7 +140,7 @@ export function useDataSource(
     return unref(dataSourceRef);
   });
 
-  async function updateTableData(index: number, key: string, value: any) {
+  async function updateTableData(index: number, key: Key, value: any) {
     const record = dataSourceRef.value[index];
     if (record) {
       dataSourceRef.value[index][key] = value;
@@ -127,8 +148,8 @@ export function useDataSource(
     return dataSourceRef.value[index];
   }
 
-  function updateTableDataRecord(rowKey: string | number, record: Recordable): Recordable | undefined {
-    const row = findTableDataRecord(rowKey);
+  function updateTableDataRecord(keyValue: Key, record: Recordable): Recordable | undefined {
+    const row = findTableDataRecord(keyValue);
 
     if (row) {
       for (const field in row) {
@@ -137,90 +158,96 @@ export function useDataSource(
       return row;
     }
   }
-  function deleteTableDataRecord(rowKey: string | number | string[] | number[]) {
+
+  function deleteTableDataRecord(keyValues: Key | Key[]) {
     if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
-    const rowKeyName = unref(getRowKey);
-    if (!rowKeyName) return;
-    const rowKeys = !Array.isArray(rowKey) ? [rowKey] : rowKey;
-    for (const key of rowKeys) {
-      let index: number | undefined = dataSourceRef.value.findIndex((row) => {
-        let targetKeyName: string;
-        if (typeof rowKeyName === 'function') {
-          targetKeyName = rowKeyName(row);
-        } else {
-          targetKeyName = rowKeyName as string;
-        }
-        return row[targetKeyName] === key;
-      });
-      if (index >= 0) {
-        dataSourceRef.value.splice(index, 1);
+    const delKeyValues = !Array.isArray(keyValues) ? [keyValues] : keyValues;
+
+    function deleteRow(data, keyValue) {
+      const row: { index: number; data: [] } = findRow(data, keyValue);
+      if (row === null || row.index === -1) {
+        return;
       }
-      index = unref(propsRef).dataSource?.findIndex((row) => {
-        let targetKeyName: string;
-        if (typeof rowKeyName === 'function') {
-          targetKeyName = rowKeyName(row);
-        } else {
-          targetKeyName = rowKeyName as string;
+      row.data.splice(row.index, 1);
+
+      function findRow(data, keyValue) {
+        if (data === null || data === undefined) {
+          return null;
         }
-        return row[targetKeyName] === key;
-      });
-      if (typeof index !== 'undefined' && index !== -1) unref(propsRef).dataSource?.splice(index, 1);
+        for (let i = 0; i < data.length; i++) {
+          const row = data[i];
+          if (parseRowKeyValue(unref(getRowKey), row) === keyValue) {
+            return { index: i, data };
+          }
+          if (row.children?.length > 0) {
+            const result = findRow(row.children, keyValue);
+            if (result != null) {
+              return result;
+            }
+          }
+        }
+        return null;
+      }
+    }
+
+    for (const keyValue of delKeyValues) {
+      deleteRow(dataSourceRef.value, keyValue);
+      deleteRow(unref(propsRef).dataSource, keyValue);
     }
     setPagination({
       total: unref(propsRef).dataSource?.length,
     });
   }
 
-  function insertTableDataRecord(record: Recordable, index: number): Recordable | undefined {
-    //【issues/136】同步Vben：BasicTable 调用插入函数异常插入两条记录]
+  function insertTableDataRecord(
+    record: Recordable | Recordable[],
+    index?: number,
+  ): Recordable[] | undefined {
     // if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
     index = index ?? dataSourceRef.value?.length;
-    unref(dataSourceRef).splice(index, 0, record);
+    const _record = isObject(record) ? [record as Recordable] : (record as Recordable[]);
+    unref(dataSourceRef).splice(index, 0, ..._record);
     return unref(dataSourceRef);
   }
-  function findTableDataRecord(rowKey: string | number) {
+
+  function findTableDataRecord(keyValue: Key) {
     if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
-
-    const rowKeyName = unref(getRowKey);
-    if (!rowKeyName) return;
-
     const { childrenColumnName = 'children' } = unref(propsRef);
 
     const findRow = (array: any[]) => {
       let ret;
       array.some(function iter(r) {
-        if (typeof rowKeyName === 'function') {
-          if ((rowKeyName(r) as string) === rowKey) {
-            ret = r;
-            return true;
-          }
-        } else {
-          if (Reflect.has(r, rowKeyName) && r[rowKeyName] === rowKey) {
-            ret = r;
-            return true;
-          }
+        if (parseRowKeyValue(unref(getRowKey), r) === keyValue) {
+          ret = r;
+          return true;
         }
         return r[childrenColumnName] && r[childrenColumnName].some(iter);
       });
       return ret;
     };
 
-    // const row = dataSourceRef.value.find(r => {
-    //   if (typeof rowKeyName === 'function') {
-    //     return (rowKeyName(r) as string) === rowKey
-    //   } else {
-    //     return Reflect.has(r, rowKeyName) && r[rowKeyName] === rowKey
-    //   }
-    // })
     return findRow(dataSourceRef.value);
   }
 
   async function fetch(opt?: FetchParams) {
-    const { api, searchInfo, defSort, fetchSetting, beforeFetch, afterFetch, useSearchForm, pagination } = unref(propsRef);
+    const {
+      api,
+      searchInfo,
+      defSort,
+      fetchSetting,
+      beforeFetch,
+      afterFetch,
+      useSearchForm,
+      pagination,
+    } = unref(propsRef);
     if (!api || !isFunction(api)) return;
     try {
       setLoading(true);
-      const { pageField, sizeField, listField, totalField } = Object.assign({}, FETCH_SETTING, fetchSetting);
+      const { pageField, sizeField, listField, totalField } = Object.assign(
+        {},
+        FETCH_SETTING,
+        fetchSetting,
+      );
       let pageParams: Recordable = {};
 
       const { current = 1, pageSize = PAGE_SIZE } = unref(getPaginationInfo) as PaginationProps;
@@ -234,18 +261,17 @@ export function useDataSource(
 
       const { sortInfo = {}, filterInfo } = searchState;
 
-      let params: Recordable = {
-        ...pageParams,
-        // 由于 getFieldsValue 返回的不是逗号分割的数据，所以改用 validate
-        ...(useSearchForm ? await validate() : {}),
-        ...searchInfo,
-        ...defSort,
-        ...(opt?.searchInfo ?? {}),
-        ...sortInfo,
-        ...filterInfo,
-        ...(opt?.sortInfo ?? {}),
-        ...(opt?.filterInfo ?? {}),
-      };
+      let params: Recordable = merge(
+        pageParams,
+        useSearchForm ? getFieldsValue() : {},
+        searchInfo,
+        opt?.searchInfo ?? {},
+        defSort,
+        sortInfo,
+        filterInfo,
+        opt?.sortInfo ?? {},
+        opt?.filterInfo ?? {},
+      );
       if (beforeFetch && isFunction(beforeFetch)) {
         params = (await beforeFetch(params)) || params;
       }
@@ -256,11 +282,11 @@ export function useDataSource(
       const isArrayResult = Array.isArray(res);
 
       let resultItems: Recordable[] = isArrayResult ? res : get(res, listField);
-      const resultTotal: number = isArrayResult ? 0 : get(res, totalField);
+      const resultTotal: number = isArrayResult ? res.length : get(res, totalField);
 
       // 假如数据变少，导致总页数变少并小于当前选中页码，通过getPaginationRef获取到的页码是不正确的，需获取正确的页码再次执行
-      if (resultTotal) {
-        const currentTotalPage = Math.ceil(Number(resultTotal) / pageSize);
+      if (Number(resultTotal)) {
+        const currentTotalPage = Math.ceil(resultTotal / pageSize);
         if (current > currentTotalPage) {
           setPagination({
             current: currentTotalPage,
@@ -274,7 +300,7 @@ export function useDataSource(
       }
       dataSourceRef.value = resultItems;
       setPagination({
-        total: Number(resultTotal) || 0,
+        total: resultTotal || 0,
       });
       if (opt && opt.page) {
         setPagination({
@@ -283,7 +309,7 @@ export function useDataSource(
       }
       emit('fetch-success', {
         items: unref(resultItems),
-        total: Number(resultTotal),
+        total: resultTotal,
       });
       return resultItems;
     } catch (error) {
@@ -298,7 +324,7 @@ export function useDataSource(
   }
 
   function setTableData<T = Recordable>(values: T[]) {
-    dataSourceRef.value = values;
+    dataSourceRef.value = values as Recordable[];
   }
 
   function getDataSource<T = Recordable>() {

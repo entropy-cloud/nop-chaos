@@ -1,69 +1,66 @@
 <template>
   <section
     class="full-loading"
-    :class="{ absolute, [theme]: !!theme }"
+    :class="{ absolute, [`${theme}`]: !!theme }"
     :style="[background ? `background-color: ${background}` : '']"
     v-show="loading"
   >
     <Spin v-bind="$attrs" :tip="tip" :size="size" :spinning="loading" />
   </section>
 </template>
-<script lang="ts">
-  import { PropType } from 'vue';
-  import { defineComponent } from 'vue';
+<script lang="ts" setup>
+  import type { PropType } from 'vue';
   import { Spin } from 'ant-design-vue';
-  import { SizeEnum } from '/@/enums/sizeEnum';
+  import { SizeEnum } from '@/enums/sizeEnum';
 
-  export default defineComponent({
-    name: 'Loading',
-    components: { Spin },
-    props: {
-      tip: {
-        type: String as PropType<string>,
-        default: '',
+  defineOptions({ name: 'Loading' });
+
+  defineProps({
+    tip: {
+      type: String as PropType<string>,
+      default: '',
+    },
+    size: {
+      type: String as PropType<SizeEnum>,
+      default: SizeEnum.LARGE,
+      validator: (v: SizeEnum): boolean => {
+        return [SizeEnum.DEFAULT, SizeEnum.SMALL, SizeEnum.LARGE].includes(v);
       },
-      size: {
-        type: String as PropType<SizeEnum>,
-        default: SizeEnum.LARGE,
-        validator: (v: SizeEnum): boolean => {
-          return [SizeEnum.DEFAULT, SizeEnum.SMALL, SizeEnum.LARGE].includes(v);
-        },
-      },
-      absolute: {
-        type: Boolean as PropType<boolean>,
-        default: false,
-      },
-      loading: {
-        type: Boolean as PropType<boolean>,
-        default: false,
-      },
-      background: {
-        type: String as PropType<string>,
-      },
-      theme: {
-        type: String as PropType<'dark' | 'light'>,
-      },
+    },
+    absolute: {
+      type: Boolean as PropType<boolean>,
+      default: false,
+    },
+    loading: {
+      type: Boolean as PropType<boolean>,
+      default: false,
+    },
+    background: {
+      type: String as PropType<string>,
+    },
+    theme: {
+      type: String as PropType<'dark' | 'light'>,
     },
   });
 </script>
 <style lang="less" scoped>
   .full-loading {
+    display: flex;
     position: fixed;
+    z-index: 200;
     top: 0;
     left: 0;
-    z-index: 200;
-    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(240, 242, 245, 0.4);
+    background-color: rgb(240 242 245 / 40%);
 
     &.absolute {
       position: absolute;
+      z-index: 300;
       top: 0;
       left: 0;
-      z-index: 300;
     }
   }
 

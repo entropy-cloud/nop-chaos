@@ -1,11 +1,15 @@
-import type { FormProps, FormActionType, UseFormReturnType, FormSchema } from '../types/form';
+import type {
+  FormProps,
+  FormActionType,
+  UseFormReturnType,
+  FormSchemaInner as FormSchema,
+} from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
-import type { DynamicProps } from '/#/utils';
-import { handleRangeValue } from '../utils/formUtils';
+import type { DynamicProps } from '#/utils';
 import { ref, onUnmounted, unref, nextTick, watch } from 'vue';
-import { isProdMode } from '/@/utils/env';
-import { error } from '/@/utils/log';
-import { getDynamicProps, getValueType } from '/@/utils';
+import { isProdMode } from '@/utils/env';
+import { error } from '@/utils/log';
+import { getDynamicProps } from '@/utils';
 
 export declare type ValidateFields = (nameList?: NamePath[]) => Promise<Recordable>;
 
@@ -18,7 +22,9 @@ export function useForm(props?: Props): UseFormReturnType {
   async function getForm() {
     const form = unref(formRef);
     if (!form) {
-      error('The form instance has not been obtained, please make sure that the form has been rendered when performing the form operation!');
+      error(
+        'The form instance has not been obtained, please make sure that the form has been rendered when performing the form operation!',
+      );
     }
     await nextTick();
     return form as FormActionType;
@@ -43,7 +49,7 @@ export function useForm(props?: Props): UseFormReturnType {
       {
         immediate: true,
         deep: true,
-      }
+      },
     );
   }
 
@@ -78,31 +84,25 @@ export function useForm(props?: Props): UseFormReturnType {
       });
     },
 
-    removeSchemaByFiled: async (field: string | string[]) => {
-      unref(formRef)?.removeSchemaByFiled(field);
+    removeSchemaByField: async (field: string | string[]) => {
+      unref(formRef)?.removeSchemaByField(field);
     },
 
     // TODO promisify
     getFieldsValue: <T>() => {
-      //update-begin-author:taoyan date:2022-7-5 for: VUEN-1341【流程】编码方式 流程节点编辑表单时，填写数据报错 包括用户组件、部门组件、省市区
-      let values = unref(formRef)?.getFieldsValue() as T;
-      if(values){
-        Object.keys(values).map(key=>{
-          if (values[key] instanceof Array) {
-            values[key] = values[key].join(',');
-          }
-        });
-      }
-      return values;
-      //update-end-author:taoyan date:2022-7-5 for: VUEN-1341【流程】编码方式 流程节点编辑表单时，填写数据报错 包括用户组件、部门组件、省市区
+      return unref(formRef)?.getFieldsValue() as T;
     },
 
-    setFieldsValue: async <T>(values: T) => {
+    setFieldsValue: async <T extends Recordable<any>>(values: T) => {
       const form = await getForm();
-      form.setFieldsValue<T>(values);
+      form.setFieldsValue(values);
     },
 
-    appendSchemaByField: async (schema: FormSchema, prefixField: string | undefined, first: boolean) => {
+    appendSchemaByField: async (
+      schema: FormSchema | FormSchema[],
+      prefixField: string | undefined,
+      first?: boolean,
+    ) => {
       const form = await getForm();
       form.appendSchemaByField(schema, prefixField, first);
     },
@@ -112,30 +112,11 @@ export function useForm(props?: Props): UseFormReturnType {
       return form.submit();
     },
 
-    /**
-     * 表单验证并返回表单值
-     * @update:添加表单值转换逻辑
-     * @updateBy:zyf
-     * @updateDate:2021-09-02
-     */
-    validate: async (nameList?: NamePath[]): Promise<Recordable> => {
+    validate: async <T = Recordable>(nameList?: NamePath[] | false): Promise<T> => {
       const form = await getForm();
-      let getProps = props || form.getProps;
-      let values = form.validate(nameList).then((values) => {
-        for (let key in values) {
-          if (values[key] instanceof Array) {
-            let valueType = getValueType(getProps, key);
-            if (valueType === 'string') {
-              values[key] = values[key].join(',');
-            }
-          }
-        }
-        //--@updateBy-begin----author:liusq---date:20210916------for:处理区域事件字典信息------
-        return handleRangeValue(getProps, values);
-        //--@updateBy-end----author:liusq---date:20210916------for:处理区域事件字典信息------
-      });
-      return values;
+      return form.validate(nameList);
     },
+
     validateFields: async (nameList?: NamePath[]): Promise<Recordable> => {
       const form = await getForm();
       return form.validateFields(nameList);

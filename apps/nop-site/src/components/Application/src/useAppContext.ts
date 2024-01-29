@@ -1,5 +1,5 @@
-import { InjectionKey, reactive, Ref } from 'vue';
-import { createContext, useContext } from '/@/hooks/core/useContext';
+import { InjectionKey, Ref } from 'vue';
+import { createContext, useContext } from '@/hooks/core/useContext';
 
 export interface AppProviderContextProps {
   prefixCls: Ref<string>;
@@ -8,12 +8,10 @@ export interface AppProviderContextProps {
 
 const key: InjectionKey<AppProviderContextProps> = Symbol();
 
-let g_ctx:any 
-
 export function createAppProviderContext(context: AppProviderContextProps) {
-    g_ctx = reactive(context)
+  return createContext<AppProviderContextProps>(context, key);
 }
 
 export function useAppProviderContext() {
-  return g_ctx;
+  return useContext<AppProviderContextProps>(key);
 }

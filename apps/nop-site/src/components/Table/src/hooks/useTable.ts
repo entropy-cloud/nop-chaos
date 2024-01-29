@@ -1,12 +1,13 @@
 import type { BasicTableProps, TableActionType, FetchParams, BasicColumn } from '../types/table';
 import type { PaginationProps } from '../types/pagination';
-import type { DynamicProps } from '/#/utils';
-import type { FormActionType } from '/@/components/Form';
+import type { DynamicProps } from '#/utils';
+import type { FormActionType } from '@/components/Form';
 import type { WatchStopHandle } from 'vue';
-import { getDynamicProps } from '/@/utils';
+import { getDynamicProps } from '@/utils';
 import { ref, onUnmounted, unref, watch, toRaw } from 'vue';
-import { isProdMode } from '/@/utils/env';
-import { error } from '/@/utils/log';
+import { isProdMode } from '@/utils/env';
+import { error } from '@/utils/log';
+import type { Key } from 'ant-design-vue/lib/table/interface';
 
 type Props = Partial<DynamicProps<BasicTableProps>>;
 
@@ -18,7 +19,7 @@ export function useTable(tableProps?: Props): [
   (instance: TableActionType, formInstance: UseTableMethod) => void,
   TableActionType & {
     getForm: () => FormActionType;
-  }
+  },
 ] {
   const tableRef = ref<Nullable<TableActionType>>(null);
   const loadedRef = ref<Nullable<boolean>>(false);
@@ -50,26 +51,22 @@ export function useTable(tableProps?: Props): [
       {
         immediate: true,
         deep: true,
-      }
+      },
     );
   }
 
   function getTableInstance(): TableActionType {
     const table = unref(tableRef);
     if (!table) {
-      error('The table instance has not been obtained yet, please make sure the table is presented when performing the table operation!');
+      error(
+        'The table instance has not been obtained yet, please make sure the table is presented when performing the table operation!',
+      );
     }
     return table as TableActionType;
-  }
-  
-  function getTableRef(){
-    return tableRef;
   }
 
   const methods: TableActionType & {
     getForm: () => FormActionType;
-  } & {
-    getTableRef: () => any;
   } = {
     reload: async (opt?: FetchParams) => {
       return await getTableInstance().reload(opt);
@@ -79,6 +76,9 @@ export function useTable(tableProps?: Props): [
     },
     redoHeight: () => {
       getTableInstance().redoHeight();
+    },
+    setSelectedRows: (rows: Recordable[]) => {
+      return toRaw(getTableInstance().setSelectedRows(rows));
     },
     setLoading: (loading: boolean) => {
       getTableInstance().setLoading(loading);
@@ -93,7 +93,7 @@ export function useTable(tableProps?: Props): [
       const columns = getTableInstance().getColumns({ ignoreIndex }) || [];
       return toRaw(columns);
     },
-    setColumns: (columns: BasicColumn[]) => {
+    setColumns: (columns: BasicColumn[] | string[]) => {
       getTableInstance().setColumns(columns);
     },
     setTableData: (values: any[]) => {
@@ -102,8 +102,8 @@ export function useTable(tableProps?: Props): [
     setPagination: (info: Partial<PaginationProps>) => {
       return getTableInstance().setPagination(info);
     },
-    deleteSelectRowByKey: (key: string) => {
-      getTableInstance().deleteSelectRowByKey(key);
+    deleteSelectRowByKey: (keyValue: Key) => {
+      getTableInstance().deleteSelectRowByKey(keyValue);
     },
     getSelectRowKeys: () => {
       return toRaw(getTableInstance().getSelectRowKeys());
@@ -114,8 +114,8 @@ export function useTable(tableProps?: Props): [
     clearSelectedRowKeys: () => {
       getTableInstance().clearSelectedRowKeys();
     },
-    setSelectedRowKeys: (keys: string[] | number[]) => {
-      getTableInstance().setSelectedRowKeys(keys);
+    setSelectedRowKeys: (keyValues: Key[]) => {
+      getTableInstance().setSelectedRowKeys(keyValues);
     },
     getPaginationRef: () => {
       return getTableInstance().getPaginationRef();
@@ -126,17 +126,17 @@ export function useTable(tableProps?: Props): [
     updateTableData: (index: number, key: string, value: any) => {
       return getTableInstance().updateTableData(index, key, value);
     },
-    deleteTableDataRecord: (rowKey: string | number | string[] | number[]) => {
-      return getTableInstance().deleteTableDataRecord(rowKey);
+    deleteTableDataRecord: (keyValues: Key | Key[]) => {
+      return getTableInstance().deleteTableDataRecord(keyValues);
     },
     insertTableDataRecord: (record: Recordable | Recordable[], index?: number) => {
       return getTableInstance().insertTableDataRecord(record, index);
     },
-    updateTableDataRecord: (rowKey: string | number, record: Recordable) => {
-      return getTableInstance().updateTableDataRecord(rowKey, record);
+    updateTableDataRecord: (keyValue: Key, record: Recordable) => {
+      return getTableInstance().updateTableDataRecord(keyValue, record);
     },
-    findTableDataRecord: (rowKey: string | number) => {
-      return getTableInstance().findTableDataRecord(rowKey);
+    findTableDataRecord: (keyValue: Key) => {
+      return getTableInstance().findTableDataRecord(keyValue);
     },
     getRowSelection: () => {
       return toRaw(getTableInstance().getRowSelection());
@@ -159,9 +159,15 @@ export function useTable(tableProps?: Props): [
     collapseAll: () => {
       getTableInstance().collapseAll();
     },
-    getTableRef: () => {
-      return getTableRef();
-    }
+    expandRows: (keyValues: Key[]) => {
+      getTableInstance().expandRows(keyValues);
+    },
+    collapseRows: (keyValues: Key[]) => {
+      getTableInstance().collapseRows(keyValues);
+    },
+    scrollTo: (pos: string) => {
+      getTableInstance().scrollTo(pos);
+    },
   };
 
   return [register, methods];

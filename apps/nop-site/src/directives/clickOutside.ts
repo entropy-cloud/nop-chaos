@@ -1,5 +1,5 @@
-import { on } from '/@/utils/domUtils';
-import { isServer } from '/@/utils/is';
+import { on } from '@/utils/domUtils';
+import { isServer } from '@/utils/is';
 import type { ComponentPublicInstance, DirectiveBinding, ObjectDirective } from 'vue';
 
 type DocumentHandler = <T extends MouseEvent>(mouseup: T, mousedown: T) => void;
@@ -17,10 +17,10 @@ const nodeList: FlushList = new Map();
 let startClick: MouseEvent;
 
 if (!isServer) {
-  on(document, 'mousedown', (e: MouseEvent) => (startClick = e));
-  on(document, 'mouseup', (e: MouseEvent) => {
+  on(document, 'mousedown', (e: Event) => (startClick = e as MouseEvent));
+  on(document, 'mouseup', (e: Event) => {
     for (const { documentHandler } of nodeList.values()) {
-      documentHandler(e, startClick);
+      documentHandler(e as MouseEvent, startClick);
     }
   });
 }
@@ -49,8 +49,16 @@ function createDocumentHandler(el: HTMLElement, binding: DirectiveBinding): Docu
     const isTargetExcluded =
       (excludes.length && excludes.some((item) => item?.contains(mouseUpTarget))) ||
       (excludes.length && excludes.includes(mouseDownTarget as HTMLElement));
-    const isContainedByPopper = popperRef && (popperRef.contains(mouseUpTarget) || popperRef.contains(mouseDownTarget));
-    if (isBound || isTargetExists || isContainedByEl || isSelf || isTargetExcluded || isContainedByPopper) {
+    const isContainedByPopper =
+      popperRef && (popperRef.contains(mouseUpTarget) || popperRef.contains(mouseDownTarget));
+    if (
+      isBound ||
+      isTargetExists ||
+      isContainedByEl ||
+      isSelf ||
+      isTargetExcluded ||
+      isContainedByPopper
+    ) {
       return;
     }
     binding.value();

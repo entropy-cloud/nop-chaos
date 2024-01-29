@@ -1,95 +1,97 @@
 @prefix-cls: ~'@{namespace}-multiple-tabs';
-
-html[data-theme='dark'] {
-  .@{prefix-cls} {
-    .ant-tabs-tab {
-      border-bottom: 1px solid @border-color-base;
-    }
-  }
-}
+@prefix-cls-default-layout: ~'@{namespace}-default-layout';
 
 html[data-theme='light'] {
   .@{prefix-cls} {
     .ant-tabs-tab:not(.ant-tabs-tab-active) {
-      border: 1px solid #e6e6e6;
+      border: 1px solid #d9d9d9 !important;
+      border-bottom-color: #f0f0f0 !important;
     }
+  }
+}
+
+.@{prefix-cls-default-layout}-out {
+  &.ant-layout-auto-collapse-tabs {
+    .@{prefix-cls} {
+      margin-top: -(@multiple-height + 2);
+      opacity: 0.1;
+
+      &:hover,
+      &--hover {
+        margin-top: 0;
+        transition-delay: 0s;
+        opacity: 1;
+      }
+    }
+  }
+  .@{prefix-cls} {
+    transition:
+      margin 0.2s ease-in-out 0.6s,
+      opacity 0.2s ease-in-out 0.6s;
   }
 }
 
 .@{prefix-cls} {
   z-index: 10;
   height: @multiple-height + 2;
-  line-height: @multiple-height + 2;
-  background-color: @component-background;
   border-bottom: 1px solid @border-color-base;
-  box-shadow: 0 4px 4px rgb(0 21 41 / 8%);
+  background-color: @component-background;
+  line-height: @multiple-height + 2;
 
   .ant-tabs-small {
-    height: calc(@multiple-height + 4px);
+    height: @multiple-height;
   }
 
   .ant-tabs.ant-tabs-card {
-    padding-left: 10px;
-
     .ant-tabs-nav {
-      height: calc(@multiple-height);
+      height: @multiple-height + 2;
       margin: 0;
-      background-color: @component-background;
+      padding-top: 2px;
       border: 0;
+      background-color: @component-background;
       box-shadow: none;
 
-      .ant-tabs-nav-wrap {
+      .ant-tabs-nav-container {
         height: @multiple-height;
-        margin-top: 2px;
+        padding-top: 2px;
       }
 
       .ant-tabs-tab {
-        height: calc(@multiple-height - 4px);
+        height: calc(@multiple-height);
         padding-right: 12px;
-        line-height: calc(@multiple-height - 4px);
-        color: @text-color-base;
-        background-color: @component-background;
         transition: none;
-
-        .ant-tabs-tab-btn {
-          color: @text-color-base;
-          transition: none;
-        }
+        background-color: @component-background;
+        color: @text-color-base;
+        line-height: calc(@multiple-height);
 
         &:hover {
-          .ant-tabs-tab-remove .anticon-close {
+          .ant-tabs-tab-remove {
             opacity: 1;
           }
         }
 
         .ant-tabs-tab-remove {
-          margin: 0;
-          padding: 0;
-          position: relative;
-          top: 0;
-          left: 4px;
+          width: 8px;
+          height: 30px;
+          margin-right: -4px;
+          margin-left: 2px;
+          transition: none;
+          opacity: 0;
+          color: inherit;
+          font-size: 12px;
 
-          .anticon-close {
-            width: 8px;
-            height: 12px;
-            font-size: 12px;
-            color: inherit;
-            opacity: 0;
-            transition: none;
-
-            &:hover {
-              svg {
-                width: 0.8em;
-              }
+          &:hover {
+            svg {
+              width: 0.8em;
             }
           }
         }
 
-        > div {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
+        // > div {
+        //   display: flex;
+        //   justify-content: center;
+        //   align-items: center;
+        // }
 
         svg {
           fill: @text-color-base;
@@ -98,25 +100,22 @@ html[data-theme='light'] {
 
       .ant-tabs-tab:not(.ant-tabs-tab-active) {
         &:hover {
-          background-color: #ecf5ff;
           color: @primary-color;
-          border-color: #b3d8ff;
         }
       }
 
       .ant-tabs-tab-active {
         position: relative;
         padding-left: 18px;
-        color: @white !important;
-        background: @primary-color;
-        border: 1px solid transparent;
         transition: none;
+        border: 0;
+        background: @primary-color;
 
-        .ant-tabs-tab-btn {
-          color: @white;
+        span {
+          color: @white !important;
         }
 
-        .ant-tabs-tab-remove .anticon-close {
+        .ant-tabs-tab-remove {
           opacity: 1;
         }
 
@@ -131,13 +130,13 @@ html[data-theme='light'] {
       padding: 0 6px;
 
       .ant-tabs-tab {
-        margin-right: 6px !important;
+        margin-right: 3px !important;
       }
     }
   }
 
   .ant-tabs-tab:not(.ant-tabs-tab-active) {
-    .ant-tabs-tab-remove .anticon-close {
+    .anticon-close {
       font-size: 12px;
 
       svg {
@@ -146,17 +145,12 @@ html[data-theme='light'] {
     }
   }
 
-  .ant-tabs-extra-content {
-    margin-top: 2px;
-    line-height: @multiple-height !important;
-  }
-
   .ant-dropdown-trigger {
     display: inline-flex;
   }
 
   &--hide-close {
-    .ant-tabs-tab-remove .anticon-close {
+    .ant-tabs-tab-remove {
       opacity: 0 !important;
     }
   }
@@ -168,11 +162,11 @@ html[data-theme='light'] {
       display: inline-block;
       width: 36px;
       height: @multiple-height;
-      line-height: @multiple-height;
+      border-left: 1px solid @border-color-base;
       color: @text-color-secondary;
+      line-height: @multiple-height;
       text-align: center;
       cursor: pointer;
-      border-left: 1px solid @border-color-base;
 
       &:hover {
         color: @text-color-base;
@@ -193,8 +187,8 @@ html[data-theme='light'] {
       display: inline-block;
       width: 100%;
       height: @multiple-height - 2;
-      padding-left: 0;
       margin-left: -10px;
+      padding-left: 0;
       font-size: 12px;
       cursor: pointer;
       user-select: none;

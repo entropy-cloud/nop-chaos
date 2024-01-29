@@ -1,6 +1,6 @@
-import type { ProjectConfig } from '/#/config';
-import { MenuTypeEnum, MenuModeEnum, TriggerEnum, MixSidebarTriggerEnum } from '/@/enums/menuEnum';
-import { CacheTypeEnum } from '/@/enums/cacheEnum';
+import type { ProjectConfig } from '#/config';
+import { MenuTypeEnum, MenuModeEnum, TriggerEnum, MixSidebarTriggerEnum } from '@/enums/menuEnum';
+import { CacheTypeEnum } from '@/enums/cacheEnum';
 import {
   ContentEnum,
   PermissionModeEnum,
@@ -8,184 +8,180 @@ import {
   RouterTransitionEnum,
   SettingButtonPositionEnum,
   SessionTimeoutProcessingEnum,
-  TabsThemeEnum,
-} from '/@/enums/appEnum';
-import { SIDE_BAR_BG_COLOR_LIST, HEADER_PRESET_BG_COLOR_LIST, APP_PRESET_COLOR_LIST } from './designSetting';
-//import { primaryColor } from '../../build/config/themeConfig';
+} from '@/enums/appEnum';
+import {
+  SIDE_BAR_BG_COLOR_LIST,
+  HEADER_PRESET_BG_COLOR_LIST,
+  APP_PRESET_COLOR_LIST,
+} from './designSetting';
 
-// ! 改动后需要清空浏览器缓存
+// ! You need to clear the browser cache after the change
 const setting: ProjectConfig = {
-  // 是否显示SettingButton
+  // Whether to show the configuration button
   showSettingButton: true,
 
-  // 是否显示主题切换按钮
+  // Whether to show the theme switch button
   showDarkModeToggle: true,
 
-  // 设置按钮位置 可选项
-  // SettingButtonPositionEnum.AUTO: 自动选择
-  // SettingButtonPositionEnum.HEADER: 位于头部
-  // SettingButtonPositionEnum.FIXED: 固定在右侧
+  // `Settings` button position
   settingButtonPosition: SettingButtonPositionEnum.AUTO,
 
-  // 权限模式,默认前端角色权限模式
-  // ROUTE_MAPPING: 前端模式（菜单由路由生成，默认）
-  // ROLE：前端模式（菜单路由分开）
-  // BACK：后台模式
-  permissionMode: PermissionModeEnum.BACK,
+  // Permission mode
+  permissionMode: PermissionModeEnum.ROUTE_MAPPING,
 
-  // 权限缓存存放位置。默认存放于localStorage
+  // Permission-related cache is stored in sessionStorage or localStorage
   permissionCacheType: CacheTypeEnum.LOCAL,
 
-  // 会话超时处理方案
-  // SessionTimeoutProcessingEnum.ROUTE_JUMP: 路由跳转到登录页
-  // SessionTimeoutProcessingEnum.PAGE_COVERAGE: 生成登录弹窗，覆盖当前页面
+  // Session timeout processing
   sessionTimeoutProcessing: SessionTimeoutProcessingEnum.ROUTE_JUMP,
 
-  // 项目主题色
+  // color
   themeColor: APP_PRESET_COLOR_LIST[0],
 
-  // 网站灰色模式，用于可能悼念的日期开启
+  // Website gray mode, open for possible mourning dates
   grayMode: false,
 
-  // 色弱模式
+  // Color Weakness Mode
   colorWeak: false,
 
-  // 是否取消菜单,顶部,多标签页显示, 用于可能内嵌在别的系统内
+  // Whether to cancel the menu, the top, the multi-tab page display, for possible embedded in other systems
   fullContent: false,
 
-  // 主题内容宽度
+  // content mode
   contentMode: ContentEnum.FULL,
 
-  // 是否显示logo
+  // Whether to display the logo
   showLogo: true,
 
-  // 是否显示底部信息 copyright
+  // Whether to show footer
   showFooter: false,
 
-  // 头部配置
+  // Header configuration
   headerSetting: {
-    // 背景色
+    // header bg color
     bgColor: HEADER_PRESET_BG_COLOR_LIST[0],
-    // 固定头部
+    // Fixed at the top
     fixed: true,
-    // 是否显示顶部
+    // Whether to show top
     show: true,
-    // 主题
+    // theme
     theme: ThemeEnum.LIGHT,
-    // 开启锁屏功能
+    // Whether to enable the lock screen function
     useLockPage: true,
-    // 显示全屏按钮
+    // Whether to show the full screen button
     showFullScreen: true,
-    // 显示文档按钮
+    // Whether to show the document button
     showDoc: true,
-    // 显示消息中心按钮
+    // Whether to show the notification button
     showNotice: true,
-    // 显示菜单搜索按钮
+    // Whether to display the menu search
     showSearch: true,
+    showApi: true,
   },
 
-  // 菜单配置
+  // Menu configuration
   menuSetting: {
-    // 背景色
+    // sidebar menu bg color
     bgColor: SIDE_BAR_BG_COLOR_LIST[0],
-    // 是否固定住左侧菜单
+    //  Whether to fix the left menu
     fixed: true,
-    // 菜单折叠
+    // Menu collapse
     collapsed: false,
-    // 折叠菜单时候是否显示菜单名
+    // When sider hide because of the responsive layout
+    siderHidden: false,
+    // Whether to display the menu name when folding the menu
     collapsedShowTitle: false,
-    // 是否可拖拽
+    // Whether it can be dragged
     // Only limited to the opening of the left menu, the mouse has a drag bar on the right side of the menu
     canDrag: false,
     // Whether to show no dom
     show: true,
     // Whether to show dom
     hidden: false,
-    // 菜单宽度
+    // Menu width
     menuWidth: 210,
-    // 菜单模式
+    // Menu mode
     mode: MenuModeEnum.INLINE,
-    // 菜单类型
+    // Menu type
     type: MenuTypeEnum.SIDEBAR,
-    // 菜单主题
+    // Menu theme
     theme: ThemeEnum.DARK,
-    // 分割菜单
+    // Split menu
     split: false,
-    // 顶部菜单布局
+    // Top menu layout
     topMenuAlign: 'center',
-    // 折叠触发器的位置
+    // Fold trigger position
     trigger: TriggerEnum.HEADER,
-    // 手风琴模式，只展示一个菜单
+    // Turn on accordion mode, only show a menu
     accordion: true,
-    // 在路由切换的时候关闭左侧混合菜单展开菜单
+    // Switch page to close menu
     closeMixSidebarOnChange: false,
-    // 左侧混合菜单模块切换触发方式 ‘click’ |'hover'
+    // Module opening method ‘click’ |'hover'
     mixSideTrigger: MixSidebarTriggerEnum.CLICK,
-    // 是否固定左侧混合菜单
+    // Fixed expanded menu
     mixSideFixed: false,
   },
 
-  // 多标签
+  // Multi-label
   multiTabsSetting: {
-    // 刷新后是否保留已经打开的标签页
     cache: false,
-    // 开启
+    // Turn on
     show: true,
-    // 是否可以拖拽
+    // Is it possible to drag and drop sorting tabs
     canDrag: true,
-    // 开启快速操作
+    // Turn on quick actions
     showQuick: true,
-    // 是否显示刷新按钮
+    // Whether to show the refresh button
     showRedo: true,
-    // 是否显示折叠按钮
+    // Whether to show the collapse button
     showFold: true,
-    // 标签页样式
-    theme: TabsThemeEnum.CARD,
+    // Auto collapsed
+    autoCollapse: false,
   },
 
-  // 动画配置
+  // Transition Setting
   transitionSetting: {
-    //  是否开启切换动画
-    // The disabled state will also disable pageLoadinng
+    //  Whether to open the page switching animation
+    // The disabled state will also disable pageLoading
     enable: true,
 
-    // 动画名 Route basic switching animation
+    // Route basic switching animation
     basicTransition: RouterTransitionEnum.FADE_SIDE,
 
-    // 是否打开页面切换loading
+    // Whether to open page switching loading
     // Only open when enable=true
     openPageLoading: true,
 
-    //是否打开页面切换顶部进度条
-    openNProgress: true,
+    // Whether to open the top progress bar
+    openNProgress: false,
   },
 
-  // 是否开启KeepAlive缓存  开发时候最好关闭,不然每次都需要清除缓存
+  // Whether to enable KeepAlive cache is best to close during development, otherwise the cache needs to be cleared every time
   openKeepAlive: true,
 
-  // 自动锁屏时间，为0不锁屏。 单位分钟 默认1个小时
+  // Automatic screen lock time, 0 does not lock the screen. Unit minute default 0
   lockTime: 0,
 
-  // 显示面包屑
-  showBreadCrumb: false,
+  // Whether to show breadcrumbs
+  showBreadCrumb: true,
 
-  // 显示面包屑图标
-  showBreadCrumbIcon: true,
+  // Whether to show the breadcrumb icon
+  showBreadCrumbIcon: false,
 
-  // 是否使用全局错误捕获
+  // Use error-handler-plugin
   useErrorHandle: false,
 
-  // 是否开启回到顶部
+  // Whether to open back to top
   useOpenBackTop: true,
 
-  // 是否可以嵌入iframe页面
+  //  Is it possible to embed iframe pages
   canEmbedIFramePage: true,
 
-  // 切换界面的时候是否删除未关闭的message及notify
+  // Whether to delete unclosed messages and notify when switching the interface
   closeMessageOnSwitch: true,
 
-  // 切换界面的时候是否取消已经发送但是未响应的http请求。
-  // 如果开启,想对单独接口覆盖。可以在单独接口设置
+  // Whether to cancel the http request that has been sent but not responded when switching the interface.
+  // If it is enabled, I want to overwrite a single interface. Can be set in a separate interface
   removeAllHttpPending: false,
 };
 

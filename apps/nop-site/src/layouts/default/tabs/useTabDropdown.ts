@@ -1,13 +1,13 @@
 import type { TabContentProps } from './types';
-import type { DropMenu } from '/@/components/Dropdown';
+import type { DropMenu } from '@/components/Dropdown';
 import type { ComputedRef } from 'vue';
 
 import { computed, unref, reactive } from 'vue';
 import { MenuEventEnum } from './types';
-import { useMultipleTabStore } from '/@/store/modules/multipleTab';
+import { useMultipleTabStore } from '@/store/modules/multipleTab';
 import { RouteLocationNormalized, useRouter } from 'vue-router';
-import { useTabs } from '/@/hooks/web/useTabs';
-import { useI18n } from '/@/hooks/web/useI18n';
+import { useTabs } from '@/hooks/web/useTabs';
+import { useI18n } from '@/hooks/web/useI18n';
 
 export function useTabDropdown(tabContentProps: TabContentProps, getIsTabs: ComputedRef<boolean>) {
   const state = reactive({
@@ -34,10 +34,11 @@ export function useTabDropdown(tabContentProps: TabContentProps, getIsTabs: Comp
     const { meta } = unref(getTargetTab);
     const { path } = unref(currentRoute);
 
-    // Refresh button
     const curItem = state.current;
 
     const isCurItem = curItem ? curItem.path === path : false;
+
+    // Refresh button
     const index = state.currentIndex;
     const refreshDisabled = !isCurItem;
     // Close left
@@ -46,7 +47,8 @@ export function useTabDropdown(tabContentProps: TabContentProps, getIsTabs: Comp
     const disabled = tabStore.getTabList.length === 1;
 
     // Close right
-    const closeRightDisabled = !isCurItem || (index === tabStore.getTabList.length - 1 && tabStore.getLastDragEndIndex >= 0);
+    const closeRightDisabled =
+      !isCurItem || (index === tabStore.getTabList.length - 1 && tabStore.getLastDragEndIndex >= 0);
     const dropMenuList: DropMenu[] = [
       {
         icon: 'ion:reload-sharp',

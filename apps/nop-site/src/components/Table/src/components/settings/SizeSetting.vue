@@ -1,5 +1,5 @@
 <template>
-  <Tooltip placement="top" v-bind="getBindProps">
+  <Tooltip placement="top">
     <template #title>
       <span>{{ t('component.table.settingDens') }}</span>
     </template>
@@ -8,67 +8,54 @@
       <ColumnHeightOutlined />
       <template #overlay>
         <Menu @click="handleTitleClick" selectable v-model:selectedKeys="selectedKeysRef">
-          <MenuItem key="default">
+          <Menu.Item key="default">
             <span>{{ t('component.table.settingDensDefault') }}</span>
-          </MenuItem>
-          <MenuItem key="middle">
+          </Menu.Item>
+          <Menu.Item key="middle">
             <span>{{ t('component.table.settingDensMiddle') }}</span>
-          </MenuItem>
-          <MenuItem key="small">
+          </Menu.Item>
+          <Menu.Item key="small">
             <span>{{ t('component.table.settingDensSmall') }}</span>
-          </MenuItem>
+          </Menu.Item>
         </Menu>
       </template>
     </Dropdown>
   </Tooltip>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
   import type { SizeType } from '../../types/table';
-  import { computed, defineComponent, ref } from 'vue';
-  import { Tooltip, Dropdown, Menu } from 'ant-design-vue';
+  import { ref, onMounted } from 'vue';
+  import { Tooltip, Dropdown, Menu, type MenuProps } from 'ant-design-vue';
   import { ColumnHeightOutlined } from '@ant-design/icons-vue';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useI18n } from '@/hooks/web/useI18n';
   import { useTableContext } from '../../hooks/useTableContext';
-  import { getPopupContainer } from '/@/utils';
+  import { getPopupContainer } from '@/utils';
 
-  export default defineComponent({
-    name: 'SizeSetting',
-    props: {
-      isMobile: Boolean,
-    },
-    components: {
-      ColumnHeightOutlined,
-      Tooltip,
-      Dropdown,
-      Menu,
-      MenuItem: Menu.Item,
-    },
-    setup(props) {
-      const table = useTableContext();
-      const { t } = useI18n();
+  import { useTableSettingStore } from '@/store/modules/tableSetting';
 
-      const selectedKeysRef = ref<SizeType[]>([table.getSize()]);
-      const getBindProps = computed(() => {
-        let obj = {};
-        if (props.isMobile) {
-          obj['visible'] = false;
-        }
-        return obj;
-      });
-      function handleTitleClick({ key }: { key: SizeType }) {
-        selectedKeysRef.value = [key];
-        table.setProps({
-          size: key,
-        });
-      }
+  const tableSettingStore = useTableSettingStore();
 
-      return {
-        getBindProps,
-        handleTitleClick,
-        selectedKeysRef,
-        getPopupContainer,
-        t,
-      };
-    },
+  defineOptions({ name: 'SizeSetting' });
+
+  const table = useTableContext();
+  const { t } = useI18n();
+
+  const selectedKeysRef = ref<SizeType[]>([table.getSize()]);
+
+  const handleTitleClick: MenuProps['onClick'] = ({ key }) => {
+    selectedKeysRef.value = [key as SizeType];
+
+    tableSettingStore.setTableSize(key as SizeType);
+
+    table.setProps({
+      size: key as SizeType,
+    });
+  };
+
+  onMounted(() => {
+    selectedKeysRef.value = [tableSettingStore.getTableSize];
+    table.setProps({
+      size: selectedKeysRef.value[0],
+    });
   });
 </script>

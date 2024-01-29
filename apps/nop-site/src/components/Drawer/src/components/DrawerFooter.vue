@@ -6,7 +6,14 @@
         {{ cancelText }}
       </a-button>
       <slot name="centerFooter"></slot>
-      <a-button :type="okType" @click="handleOk" v-bind="okButtonProps" class="mr-2" :loading="confirmLoading" v-if="showOkBtn">
+      <a-button
+        :type="okType"
+        @click="handleOk"
+        v-bind="okButtonProps"
+        class="mr-2"
+        :loading="confirmLoading"
+        v-if="showOkBtn"
+      >
         {{ okText }}
       </a-button>
       <slot name="appendFooter"></slot>
@@ -17,43 +24,41 @@
     </template>
   </div>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
   import type { CSSProperties } from 'vue';
-  import { defineComponent, computed } from 'vue';
-  import { useDesign } from '/@/hooks/web/useDesign';
-
+  import { computed } from 'vue';
+  import { useDesign } from '@/hooks/web/useDesign';
   import { footerProps } from '../props';
-  export default defineComponent({
-    name: 'BasicDrawerFooter',
-    props: {
-      ...footerProps,
-      height: {
-        type: String,
-        default: '60px',
-      },
-    },
-    emits: ['ok', 'close'],
-    setup(props, { emit }) {
-      const { prefixCls } = useDesign('basic-drawer-footer');
 
-      const getStyle = computed((): CSSProperties => {
-        const heightStr = `${props.height}`;
-        return {
-          height: heightStr,
-          lineHeight: heightStr,
-        };
-      });
+  defineOptions({ name: 'BasicDrawerFooter' });
 
-      function handleOk() {
-        emit('ok');
-      }
-
-      function handleClose() {
-        emit('close');
-      }
-      return { handleOk, prefixCls, handleClose, getStyle };
+  const props = defineProps({
+    ...footerProps,
+    height: {
+      type: String,
+      default: '60px',
     },
   });
+
+  const emit = defineEmits(['ok', 'close']);
+
+  const { prefixCls } = useDesign('basic-drawer-footer');
+
+  const getStyle = computed((): CSSProperties => {
+    const heightStr = `${props.height}`;
+    return {
+      height: heightStr,
+      lineHeight: `calc(${heightStr} - 1px)`,
+    };
+  });
+
+  function handleOk() {
+    emit('ok');
+  }
+
+  function handleClose() {
+    emit('close');
+  }
 </script>
 
 <style lang="less">
@@ -62,11 +67,12 @@
   .@{prefix-cls} {
     position: absolute;
     bottom: 0;
+    left: 0;
     width: 100%;
     padding: 0 12px 0 20px;
-    text-align: right;
-    background-color: @component-background;
     border-top: 1px solid @border-color-base;
+    background-color: @component-background;
+    text-align: right;
 
     > * {
       margin-right: 8px;

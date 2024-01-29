@@ -1,14 +1,29 @@
-import type { UseDrawerReturnType, DrawerInstance, ReturnMethods, DrawerProps, UseDrawerInnerReturnType } from './typing';
-import { ref, getCurrentInstance, unref, reactive, watchEffect, nextTick, toRaw, computed } from 'vue';
-import { isProdMode } from '/@/utils/env';
-import { isFunction } from '/@/utils/is';
+import type {
+  UseDrawerReturnType,
+  DrawerInstance,
+  ReturnMethods,
+  DrawerProps,
+  UseDrawerInnerReturnType,
+} from './typing';
+import {
+  ref,
+  getCurrentInstance,
+  unref,
+  reactive,
+  watchEffect,
+  nextTick,
+  toRaw,
+  computed,
+} from 'vue';
+import { isProdMode } from '@/utils/env';
+import { isFunction } from '@/utils/is';
 import { tryOnUnmounted } from '@vueuse/core';
 import { isEqual } from 'lodash-es';
-import { error } from '/@/utils/log';
+import { error } from '@/utils/log';
 
 const dataTransferRef = reactive<any>({});
 
-const visibleData = reactive<{ [key: number]: boolean }>({});
+const openData = reactive<{ [key: number]: boolean }>({});
 
 /**
  * @description: Applicable to separate drawer and call outside
@@ -19,9 +34,9 @@ export function useDrawer(): UseDrawerReturnType {
   }
   const drawer = ref<DrawerInstance | null>(null);
   const loaded = ref<Nullable<boolean>>(false);
-  const uid = ref<string>('');
+  const uid = ref<number>(0);
 
-  function register(drawerInstance: DrawerInstance, uuid: string) {
+  function register(drawerInstance: DrawerInstance, uuid: number) {
     isProdMode() &&
       tryOnUnmounted(() => {
         drawer.value = null;
@@ -36,8 +51,8 @@ export function useDrawer(): UseDrawerReturnType {
     drawer.value = drawerInstance;
     loaded.value = true;
 
-    drawerInstance.emitVisible = (visible: boolean, uid: number) => {
-      visibleData[uid] = visible;
+    drawerInstance.emitOpen = (open: boolean, uid: number) => {
+      openData[uid] = open;
     };
   }
 
@@ -54,13 +69,13 @@ export function useDrawer(): UseDrawerReturnType {
       getInstance()?.setDrawerProps(props);
     },
 
-    getVisible: computed((): boolean => {
-      return visibleData[~~unref(uid)];
+    getOpen: computed((): boolean => {
+      return openData[~~unref(uid)];
     }),
 
-    openDrawer: <T = any>(visible = true, data?: T, openOnSet = true): void => {
+    openDrawer: <T = any>(open = true, data?: T, openOnSet = true): void => {
       getInstance()?.setDrawerProps({
-        visible: visible,
+        open,
       });
       if (!data) return;
 
@@ -75,7 +90,7 @@ export function useDrawer(): UseDrawerReturnType {
       }
     },
     closeDrawer: () => {
-      getInstance()?.setDrawerProps({ visible: false });
+      getInstance()?.setDrawerProps({ open: false });
     },
   };
 
@@ -85,7 +100,7 @@ export function useDrawer(): UseDrawerReturnType {
 export const useDrawerInner = (callbackFn?: Fn): UseDrawerInnerReturnType => {
   const drawerInstanceRef = ref<Nullable<DrawerInstance>>(null);
   const currentInstance = getCurrentInstance();
-  const uidRef = ref<string>('');
+  const uidRef = ref<number>(0);
 
   if (!getCurrentInstance()) {
     throw new Error('useDrawerInner() can only be used inside setup() or functional components!');
@@ -100,7 +115,7 @@ export const useDrawerInner = (callbackFn?: Fn): UseDrawerInnerReturnType => {
     return instance;
   };
 
-  const register = (modalInstance: DrawerInstance, uuid: string) => {
+  const register = (modalInstance: DrawerInstance, uuid: number) => {
     isProdMode() &&
       tryOnUnmounted(() => {
         drawerInstanceRef.value = null;
@@ -130,12 +145,12 @@ export const useDrawerInner = (callbackFn?: Fn): UseDrawerInnerReturnType => {
       changeOkLoading: (loading = true) => {
         getInstance()?.setDrawerProps({ confirmLoading: loading });
       },
-      getVisible: computed((): boolean => {
-        return visibleData[~~unref(uidRef)];
+      getOpen: computed((): boolean => {
+        return openData[~~unref(uidRef)];
       }),
 
       closeDrawer: () => {
-        getInstance()?.setDrawerProps({ visible: false });
+        getInstance()?.setDrawerProps({ open: false });
       },
 
       setDrawerProps: (props: Partial<DrawerProps>) => {

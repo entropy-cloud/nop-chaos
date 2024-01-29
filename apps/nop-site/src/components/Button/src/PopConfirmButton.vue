@@ -2,14 +2,12 @@
   import { computed, defineComponent, h, unref } from 'vue';
   import BasicButton from './BasicButton.vue';
   import { Popconfirm } from 'ant-design-vue';
-  import { extendSlots } from '/@/utils/helper/tsxHelper';
+  import { extendSlots } from '@/utils/helper/tsxHelper';
   import { omit } from 'lodash-es';
-  import { useAttrs } from '/@/hooks/core/useAttrs';
-  import { useI18n } from '/@/hooks/web/useI18n';
-  import { propTypes } from '/@/utils/propTypes';
+  import { useAttrs } from '@/hooks/useAttrs';
+  import { useI18n } from '@/hooks/web/useI18n';
 
   const props = {
-    class: propTypes.any,
     /**
      * Whether to enable the drop-down menu
      * @default: true
@@ -35,13 +33,13 @@
             okText: t('common.okText'),
             cancelText: t('common.cancelText'),
           },
-          { ...props, ...unref(attrs) }
+          { ...props, ...unref(attrs) },
         );
       });
 
       return () => {
         const bindValues = omit(unref(getBindValues), 'icon');
-        const btnBind = omit(bindValues, 'title') as Recordable;
+        const btnBind = omit(bindValues, 'title') as any;
         if (btnBind.disabled) btnBind.color = '';
         const Button = h(BasicButton, btnBind, extendSlots(slots));
 

@@ -1,19 +1,29 @@
 <script lang="tsx">
+  import { type Recordable, type Nullable } from '@/hooks/types';
   import type { PropType, Ref } from 'vue';
-  import type { FormActionType, FormProps } from '../types/form';
-  import type { FormSchema } from '../types/form';
-  import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
-  import type { TableActionType } from '/@/components/Table';
-  import { defineComponent, computed, unref, toRefs } from 'vue';
-  import { Form, Col, Divider } from 'ant-design-vue';
+  import { computed, defineComponent, toRefs, unref } from 'vue';
+  import {
+    isComponentFormSchema,
+    type FormActionType,
+    type FormProps,
+    type FormSchemaInner as FormSchema,
+  } from '../types/form';
+  import type { Rule as ValidationRule } from 'ant-design-vue/lib/form/interface';
+  import type { TableActionType } from '@/components/Table';
+  import { Col, Divider, Form } from 'ant-design-vue';
   import { componentMap } from '../componentMap';
-  import { BasicHelp } from '/@/components/Basic';
-  import { isBoolean, isFunction, isNull } from '/@/utils/is';
-  import { getSlot } from '/@/utils/helper/tsxHelper';
-  import { createPlaceholderMessage, setComponentRuleType } from '../helper';
-  import { upperFirst, cloneDeep } from 'lodash-es';
+  import { BasicHelp, BasicTitle } from '@/components/Basic';
+  import { isBoolean, isFunction, isNull } from '@/utils/is';
+  import { getSlot } from '@/utils/helper/tsxHelper';
+  import {
+    createPlaceholderMessage,
+    isIncludeSimpleComponents,
+    NO_AUTO_LINK_COMPONENTS,
+    setComponentRuleType,
+  } from '../helper';
+  import { cloneDeep, upperFirst } from 'lodash-es';
   import { useItemLabelWidth } from '../hooks/useLabelWidth';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useI18n } from '@/hooks/web/useI18n';
 
   export default defineComponent({
     name: 'BasicFormItem',
@@ -28,15 +38,15 @@
         default: () => ({}),
       },
       allDefaultValues: {
-        type: Object as PropType<Recordable>,
+        type: Object as PropType<Recordable<any>>,
         default: () => ({}),
       },
       formModel: {
-        type: Object as PropType<Recordable>,
+        type: Object as PropType<Recordable<any>>,
         default: () => ({}),
       },
       setFormModel: {
-        type: Function as PropType<(key: string, value: any) => void>,
+        type: Function as PropType<(key: string, value: any, schema: FormSchema) => void>,
         default: null,
       },
       tableAction: {
@@ -44,6 +54,9 @@
       },
       formActionType: {
         type: Object as PropType<FormActionType>,
+      },
+      isAdvanced: {
+        type: Boolean,
       },
     },
     setup(props, { slots }) {
@@ -66,7 +79,7 @@
             ...mergeDynamicData,
             ...allDefaultValues,
             ...formModel,
-          } as Recordable,
+          } as Recordable<any>,
           schema: schema,
         };
       });
@@ -77,13 +90,17 @@
         if (isFunction(componentProps)) {
           componentProps = componentProps({ schema, tableAction, formModel, formActionType }) ?? {};
         }
-        if (schema.component === 'Divider') {
-          componentProps = Object.assign({ type: 'horizontal' }, componentProps, {
-            orientation: 'left',
-            plain: true,
-          });
+        if (isIncludeSimpleComponents(schema.component)) {
+          componentProps = Object.assign(
+            { type: 'horizontal' },
+            {
+              orientation: 'left',
+              plain: true,
+            },
+            componentProps,
+          );
         }
-        return componentProps as Recordable;
+        return componentProps as Recordable<any>;
       });
 
       const getDisable = computed(() => {
@@ -100,10 +117,29 @@
         return disabled;
       });
 
+      const getReadonly = computed(() => {
+        const { readonly: globReadonly } = props.formProps;
+        const { dynamicReadonly } = props.schema;
+        const { readonly: itemReadonly = false } = unref(getComponentsProps);
+
+        let readonly = globReadonly || itemReadonly;
+        if (isBoolean(dynamicReadonly)) {
+          readonly = dynamicReadonly;
+        }
+        if (isFunction(dynamicReadonly)) {
+          readonly = dynamicReadonly(unref(getValues));
+        }
+        return readonly;
+      });
+
       function getShow(): { isShow: boolean; isIfShow: boolean } {
         const { show, ifShow } = props.schema;
         const { showAdvancedButton } = props.formProps;
-        const itemIsAdvanced = showAdvancedButton ? (isBoolean(props.schema.isAdvanced) ? props.schema.isAdvanced : true) : true;
+        const itemIsAdvanced = showAdvancedButton
+          ? isBoolean(props.isAdvanced)
+            ? props.isAdvanced
+            : true
+          : true;
 
         let isShow = true;
         let isIfShow = true;
@@ -123,10 +159,15 @@
         isShow = isShow && itemIsAdvanced;
         return { isShow, isIfShow };
       }
-
       function handleRules(): ValidationRule[] {
-        const { rules: defRules = [], component, rulesMessageJoinLabel, label, dynamicRules, required } = props.schema;
-
+        const {
+          rules: defRules = [],
+          component,
+          rulesMessageJoinLabel,
+          label,
+          dynamicRules,
+          required,
+        } = props.schema;
         if (isFunction(dynamicRules)) {
           return dynamicRules(unref(getValues)) as ValidationRule[];
         }
@@ -134,8 +175,13 @@
         let rules: ValidationRule[] = cloneDeep(defRules) as ValidationRule[];
         const { rulesMessageJoinLabel: globalRulesMessageJoinLabel } = props.formProps;
 
-        const joinLabel = Reflect.has(props.schema, 'rulesMessageJoinLabel') ? rulesMessageJoinLabel : globalRulesMessageJoinLabel;
-        const defaultMsg = createPlaceholderMessage(component) + `${joinLabel ? label : ''}`;
+        const joinLabel = Reflect.has(props.schema, 'rulesMessageJoinLabel')
+          ? rulesMessageJoinLabel
+          : globalRulesMessageJoinLabel;
+        const assertLabel = joinLabel ? (isFunction(label) ? '' : label) : '';
+        const defaultMsg = component
+          ? createPlaceholderMessage(component) + assertLabel
+          : assertLabel;
 
         function validator(rule: any, value: any) {
           const msg = rule.message || defaultMsg;
@@ -162,14 +208,31 @@
           }
           return Promise.resolve();
         }
-
         const getRequired = isFunction(required) ? required(unref(getValues)) : required;
 
-        if ((!rules || rules.length === 0) && getRequired) {
-          rules = [{ required: getRequired, validator }];
+        /*
+         * 1、若设置了required属性，又没有其他的rules，就创建一个验证规则；
+         * 2、若设置了required属性，又存在其他的rules，则只rules中不存在required属性时，才添加验证required的规则
+         *     也就是说rules中的required，优先级大于required
+         */
+        if (getRequired) {
+          if (!rules || rules.length === 0) {
+            const trigger = NO_AUTO_LINK_COMPONENTS.includes(component || 'Input')
+              ? 'blur'
+              : 'change';
+            rules = [{ required: getRequired, validator, trigger }];
+          } else {
+            const requiredIndex: number = rules.findIndex((rule) => Reflect.has(rule, 'required'));
+
+            if (requiredIndex === -1) {
+              rules.push({ required: getRequired, validator });
+            }
+          }
         }
 
-        const requiredRuleIndex: number = rules.findIndex((rule) => Reflect.has(rule, 'required') && !Reflect.has(rule, 'validator'));
+        const requiredRuleIndex: number = rules.findIndex(
+          (rule) => Reflect.has(rule, 'required') && !Reflect.has(rule, 'validator'),
+        );
 
         if (requiredRuleIndex !== -1) {
           const rule = rules[requiredRuleIndex];
@@ -178,10 +241,6 @@
             rule.required = false;
           }
           if (component) {
-            if (!Reflect.has(rule, 'type')) {
-              rule.type = component === 'InputNumber' ? 'number' : 'string';
-            }
-
             rule.message = rule.message || defaultMsg;
 
             if (component.includes('Input') || component.includes('Textarea')) {
@@ -195,54 +254,67 @@
         // Maximum input length rule check
         const characterInx = rules.findIndex((val) => val.max);
         if (characterInx !== -1 && !rules[characterInx].validator) {
-          rules[characterInx].message = rules[characterInx].message || t('component.form.maxTip', [rules[characterInx].max] as Recordable);
+          rules[characterInx].message =
+            rules[characterInx].message ||
+            t('component.form.maxTip', [rules[characterInx].max] as Recordable<any>);
         }
         return rules;
       }
 
       function renderComponent() {
-        const { renderComponentContent, component, field, changeEvent = 'change', valueField } = props.schema;
+        if (!isComponentFormSchema(props.schema)) {
+          return null;
+        }
+        const {
+          renderComponentContent,
+          component,
+          field,
+          changeEvent = 'change',
+          valueField,
+        } = props.schema;
 
         const isCheck = component && ['Switch', 'Checkbox'].includes(component);
 
         const eventKey = `on${upperFirst(changeEvent)}`;
 
         const on = {
-          [eventKey]: (...args: Nullable<Recordable>[]) => {
+          [eventKey]: (...args: Nullable<Recordable<any>>[]) => {
             const [e] = args;
+
+            const target = e ? e.target : null;
+            const value = target ? (isCheck ? target.checked : target.value) : e;
+            props.setFormModel(field, value, props.schema);
+
             if (propsData[eventKey]) {
               propsData[eventKey](...args);
             }
-            const target = e ? e.target : null;
-            const value = target ? (isCheck ? target.checked : target.value) : e;
-            props.setFormModel(field, value);
           },
         };
         const Comp = componentMap.get(component) as ReturnType<typeof defineComponent>;
 
         const { autoSetPlaceHolder, size } = props.formProps;
-        const propsData: Recordable = {
+        const propsData: Recordable<any> = {
           allowClear: true,
-          getPopupContainer: (trigger: Element) => trigger.parentNode,
           size,
           ...unref(getComponentsProps),
           disabled: unref(getDisable),
+          readonly: unref(getReadonly),
         };
 
         const isCreatePlaceholder = !propsData.disabled && autoSetPlaceHolder;
-        // RangePicker place是一个数组
+        // RangePicker place is an array
         if (isCreatePlaceholder && component !== 'RangePicker' && component) {
-          //自动设置placeholder
-          propsData.placeholder = unref(getComponentsProps)?.placeholder || createPlaceholderMessage(component) + props.schema.label;
+          propsData.placeholder =
+            unref(getComponentsProps)?.placeholder || createPlaceholderMessage(component);
         }
         propsData.codeField = field;
         propsData.formValues = unref(getValues);
 
-        const bindValue: Recordable = {
+        const bindValue: Recordable<any> = {
           [valueField || (isCheck ? 'checked' : 'value')]: props.formModel[field],
         };
 
-        const compAttr: Recordable = {
+        const compAttr: Recordable<any> = {
           ...propsData,
           ...on,
           ...bindValue,
@@ -252,39 +324,31 @@
           return <Comp {...compAttr} />;
         }
         const compSlot = isFunction(renderComponentContent)
-          ? { ...renderComponentContent(unref(getValues)) }
+          ? {
+              ...renderComponentContent(unref(getValues), {
+                disabled: unref(getDisable),
+                readonly: unref(getReadonly),
+              }),
+            }
           : {
               default: () => renderComponentContent,
             };
         return <Comp {...compAttr}>{compSlot}</Comp>;
       }
 
-      /**
-       *渲染Label
-       * @updateBy:zyf
-       */
       function renderLabelHelpMessage() {
-        //update-begin-author:taoyan date:2022-9-7 for: VUEN-2061【样式】online表单超出4个 .. 省略显示
-        //label宽度支持自定义
-        const { label, helpMessage, helpComponentProps, subLabel, labelLength } = props.schema;
-        let showLabel:string = (label+'')
-        if(labelLength && showLabel.length>4){
-          showLabel = showLabel.substr(0, labelLength);
-        }
-        const titleObj = {title: label}
+        const { label, helpMessage, helpComponentProps, subLabel } = props.schema;
+        const getLabel = isFunction(label) ? label(unref(getValues)) : label;
         const renderLabel = subLabel ? (
           <span>
-            {label} <span class="text-secondary">{subLabel}</span>
+            {getLabel} <span class="text-secondary">{subLabel}</span>
           </span>
         ) : (
-          labelLength ? (
-            <label {...titleObj}>{showLabel}</label>
-          ) : (
-            label
-          ) 
+          getLabel
         );
-        //update-end-author:taoyan date:2022-9-7 for: VUEN-2061【样式】online表单超出4个 .. 省略显示
-        const getHelpMessage = isFunction(helpMessage) ? helpMessage(unref(getValues)) : helpMessage;
+        const getHelpMessage = isFunction(helpMessage)
+          ? helpMessage(unref(getValues))
+          : helpMessage;
         if (!getHelpMessage || (Array.isArray(getHelpMessage) && getHelpMessage.length === 0)) {
           return renderLabel;
         }
@@ -300,35 +364,58 @@
         const { itemProps, slot, render, field, suffix, component } = props.schema;
         const { labelCol, wrapperCol } = unref(itemLabelWidthProp);
         const { colon } = props.formProps;
-
+        const opts = { disabled: unref(getDisable), readonly: unref(getReadonly) };
         if (component === 'Divider') {
           return (
             <Col span={24}>
               <Divider {...unref(getComponentsProps)}>{renderLabelHelpMessage()}</Divider>
             </Col>
           );
+        } else if (component === 'BasicTitle') {
+          return (
+            <Form.Item
+              labelCol={labelCol}
+              wrapperCol={wrapperCol}
+              name={field}
+              class={{ 'suffix-item': !!suffix }}
+            >
+              <BasicTitle {...unref(getComponentsProps)}>{renderLabelHelpMessage()}</BasicTitle>
+            </Form.Item>
+          );
         } else {
           const getContent = () => {
-            return slot ? getSlot(slots, slot, unref(getValues)) : render ? render(unref(getValues)) : renderComponent();
+            return slot
+              ? getSlot(slots, slot, unref(getValues), opts)
+              : render
+                ? render(unref(getValues), opts)
+                : renderComponent();
           };
 
           const showSuffix = !!suffix;
           const getSuffix = isFunction(suffix) ? suffix(unref(getValues)) : suffix;
+
+          // TODO 自定义组件验证会出现问题，因此这里框架默认将自定义组件设置手动触发验证，如果其他组件还有此问题请手动设置autoLink=false
+          if (component && NO_AUTO_LINK_COMPONENTS.includes(component)) {
+            props.schema &&
+              (props.schema.itemProps! = {
+                autoLink: false,
+                ...props.schema.itemProps,
+              });
+          }
 
           return (
             <Form.Item
               name={field}
               colon={colon}
               class={{ 'suffix-item': showSuffix }}
-              {...(itemProps as Recordable)}
+              {...(itemProps as Recordable<any>)}
               label={renderLabelHelpMessage()}
               rules={handleRules()}
               labelCol={labelCol}
               wrapperCol={wrapperCol}
             >
               <div style="display:flex">
-                {/* author: sunjianlei for: 【VUEN-744】此处加上 width: 100%; 因为要防止组件宽度超出 FormItem */}
-                <div style="flex:1; width: 100%;">{getContent()}</div>
+                <div style="flex:1;">{getContent()}</div>
                 {showSuffix && <span class="suffix">{getSuffix}</span>}
               </div>
             </Form.Item>
@@ -337,8 +424,8 @@
       }
 
       return () => {
-        const { colProps = {}, colSlot, renderColContent, component } = props.schema;
-        if (!componentMap.has(component)) {
+        const { colProps = {}, colSlot, renderColContent, component, slot } = props.schema;
+        if (!((component && componentMap.has(component)) || slot)) {
           return null;
         }
 
@@ -346,9 +433,14 @@
         const realColProps = { ...baseColProps, ...colProps };
         const { isIfShow, isShow } = getShow();
         const values = unref(getValues);
+        const opts = { disabled: unref(getDisable), readonly: unref(getReadonly) };
 
         const getContent = () => {
-          return colSlot ? getSlot(slots, colSlot, values) : renderColContent ? renderColContent(values) : renderItem();
+          return colSlot
+            ? getSlot(slots, colSlot, values, opts)
+            : renderColContent
+              ? renderColContent(values, opts)
+              : renderItem();
         };
 
         return (

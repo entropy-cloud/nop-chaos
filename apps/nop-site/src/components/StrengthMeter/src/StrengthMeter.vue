@@ -1,68 +1,67 @@
 <template>
   <div :class="prefixCls" class="relative">
-    <InputPassword v-if="showInput" v-bind="$attrs" allowClear :value="innerValueRef" @change="handleChange" :disabled="disabled">
+    <Input.Password
+      v-if="showInput"
+      v-bind="$attrs"
+      allowClear
+      :value="innerValueRef"
+      @change="handleChange"
+      :disabled="disabled"
+    >
       <template #[item]="data" v-for="item in Object.keys($slots)">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
-    </InputPassword>
+    </Input.Password>
     <div :class="`${prefixCls}-bar`">
       <div :class="`${prefixCls}-bar--fill`" :data-score="getPasswordStrength"></div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent, computed, ref, watch, unref, watchEffect } from 'vue';
+<script lang="ts" setup>
+  import { computed, ref, watch, unref, watchEffect } from 'vue';
   import { Input } from 'ant-design-vue';
   import { zxcvbn } from '@zxcvbn-ts/core';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { propTypes } from '/@/utils/propTypes';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { propTypes } from '@/utils/propTypes';
 
-  export default defineComponent({
-    name: 'StrengthMeter',
-    components: { InputPassword: Input.Password },
-    props: {
-      value: propTypes.string,
-      showInput: propTypes.bool.def(true),
-      disabled: propTypes.bool,
-    },
-    emits: ['score-change', 'change'],
-    setup(props, { emit }) {
-      const innerValueRef = ref('');
-      const { prefixCls } = useDesign('strength-meter');
+  defineOptions({ name: 'StrengthMeter' });
 
-      const getPasswordStrength = computed(() => {
-        const { disabled } = props;
-        if (disabled) return -1;
-        const innerValue = unref(innerValueRef);
-        const score = innerValue ? zxcvbn(unref(innerValueRef)).score : -1;
-        emit('score-change', score);
-        return score;
-      });
-
-      function handleChange(e: ChangeEvent) {
-        innerValueRef.value = e.target.value;
-      }
-
-      watchEffect(() => {
-        innerValueRef.value = props.value || '';
-      });
-
-      watch(
-        () => unref(innerValueRef),
-        (val) => {
-          emit('change', val);
-        }
-      );
-
-      return {
-        getPasswordStrength,
-        handleChange,
-        prefixCls,
-        innerValueRef,
-      };
-    },
+  const props = defineProps({
+    value: propTypes.string,
+    showInput: propTypes.bool.def(true),
+    disabled: propTypes.bool,
   });
+
+  const emit = defineEmits(['score-change', 'change']);
+
+  const innerValueRef = ref('');
+  const { prefixCls } = useDesign('strength-meter');
+
+  const getPasswordStrength = computed(() => {
+    const { disabled } = props;
+    if (disabled) return -1;
+    const innerValue = unref(innerValueRef);
+    const score = innerValue ? zxcvbn(unref(innerValueRef)).score : -1;
+    emit('score-change', score);
+    return score;
+  });
+
+  function handleChange(e) {
+    emit('change', e.target.value);
+    innerValueRef.value = e.target.value;
+  }
+
+  watchEffect(() => {
+    innerValueRef.value = props.value || '';
+  });
+
+  watch(
+    () => unref(innerValueRef),
+    (val) => {
+      emit('change', val);
+    },
+  );
 </script>
 <style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-strength-meter';
@@ -72,21 +71,21 @@
       position: relative;
       height: 6px;
       margin: 10px auto 6px;
-      background-color: @disabled-color;
       border-radius: 6px;
+      background-color: @disabled-color;
 
       &::before,
       &::after {
+        content: '';
+        display: block;
         position: absolute;
         z-index: 10;
-        display: block;
         width: 20%;
         height: inherit;
-        background-color: transparent;
-        border-color: @white;
+        border-width: 0 5px;
         border-style: solid;
-        border-width: 0 5px 0 5px;
-        content: '';
+        border-color: @white;
+        background-color: transparent;
       }
 
       &::before {
@@ -101,9 +100,11 @@
         position: absolute;
         width: 0;
         height: inherit;
-        background-color: transparent;
+        transition:
+          width 0.5s ease-in-out,
+          background 0.25s;
         border-radius: inherit;
-        transition: width 0.5s ease-in-out, background 0.25s;
+        background-color: transparent;
 
         &[data-score='0'] {
           width: 20%;

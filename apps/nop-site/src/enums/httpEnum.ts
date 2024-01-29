@@ -3,7 +3,7 @@
  */
 export enum ResultEnum {
   SUCCESS = 0,
-  ERROR = 1,
+  ERROR = -1,
   TIMEOUT = 401,
   TYPE = 'success',
 }
@@ -19,7 +19,7 @@ export enum RequestEnum {
 }
 
 /**
- * @description:  contentTyp
+ * @description:  contentType
  */
 export enum ContentTypeEnum {
   // json
@@ -28,23 +28,4 @@ export enum ContentTypeEnum {
   FORM_URLENCODED = 'application/x-www-form-urlencoded;charset=UTF-8',
   // form-data  upload
   FORM_DATA = 'multipart/form-data;charset=UTF-8',
-}
-
-/**
- * 请求header
- * @description:  contentTyp
- */
-export enum ConfigEnum {
-  // TOKEN
-  TOKEN = 'x-access-token',
-  // TIMESTAMP
-  TIMESTAMP = 'x-timestamp',
-  // Sign
-  Sign = 'x-sign',
-  // 租户id
-  TENANT_ID = 'nop-tenant',
-  // 版本
-  VERSION = 'x-version',
-  // 低代码应用ID
-  X_LOW_APP_ID = 'nop-app-id',
 }

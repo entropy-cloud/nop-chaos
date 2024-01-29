@@ -2,72 +2,66 @@ import '/@/design/index.less';
 
 // 注册图标
 import 'virtual:svg-icons-register';
-import App from './App.vue';
+
 import { createApp } from 'vue';
-import { initAppConfigStore } from '/@/logics/initAppConfig';
-import { setupErrorHandle } from '/@/logics/error-handle';
-import { router, setupRouter } from '/@/router';
-import { setupRouterGuard } from '/@/router/guard';
-import { setupStore } from '/@/store';
-import { setupGlobDirectives } from '/@/directives';
-import { setupI18n } from '/@/locales/setupI18n';
-import { registerGlobComp } from '/@/components/registerGlobComp';
-import { registerThirdComp } from '/@/settings/registerThirdComp';
-import { useSso } from '/@/hooks/web/useSso';
-import { registerPackages } from '/@/utils/monorepo/registerPackages';
 
+import { registerGlobComp } from '@/components/registerGlobComp';
+import { setupI18n } from '@/locales/setupI18n';
+import { setupErrorHandle } from '@/logics/error-handle';
+import { initAppConfigStore } from '@/logics/initAppConfig';
+import { router, setupRouter } from '@/router';
+import { setupRouterGuard } from '@/router/guard';
+import { setupStore } from '@/store';
 
+import App from './App.vue';
 
 import {initNopApp} from './nop/initNopApp'
 
 // 这个css必须放在amis引入的css后面，它的优先级才能覆盖amis的样式
 import 'uno.css';
-
+import 'ant-design-vue/dist/reset.css';
 
 async function bootstrap() {
-  // 创建应用实例
   const app = createApp(App);
-
-  // 多语言配置,异步情况:语言文件可以从服务器端获得
-  await setupI18n(app);
-
-  // 配置存储
+  // Configure store
+  // 配置 store
   setupStore(app);
 
+  // Initialize internal system configuration
   // 初始化内部系统配置
   initAppConfigStore();
 
-  // 注册外部模块路由
-  registerPackages(app);
-
+  // Register global components
   // 注册全局组件
   registerGlobComp(app);
 
-  //CAS单点登录
-  await useSso().ssoLogin();
-
+  // Multilingual configuration
+  // 多语言配置
+  // Asynchronous case: language files may be obtained from the server side
+  // 异步案例：语言文件可能从服务器端获取
+  await setupI18n(app);
+  // Configure routing
   // 配置路由
   setupRouter(app);
 
-  // 路由保护
+  // router-guard
+  // 路由守卫
   setupRouterGuard(router);
 
+  // Register global directive
   // 注册全局指令
-  setupGlobDirectives(app);
+ // setupGlobDirectives(app);
 
+  // Configure global error handling
   // 配置全局错误处理
   setupErrorHandle(app);
 
   await initNopApp(app)
 
-  // 注册第三方组件
-  await registerThirdComp(app);
-
   // 当路由准备好时再执行挂载( https://next.router.vuejs.org/api/#isready)
-  await router.isReady();
+ // await router.isReady();
 
-  // 挂载应用
-  app.mount('#app', true);
+  app.mount('#app');
 }
 
 bootstrap();

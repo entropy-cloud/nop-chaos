@@ -1,5 +1,8 @@
 <template>
-  <div :class="prefixCls" class="fixed inset-0 flex h-screen w-screen bg-black items-center justify-center">
+  <div
+    :class="prefixCls"
+    class="fixed inset-0 flex h-screen w-screen bg-black items-center justify-center"
+  >
     <div
       :class="`${prefixCls}__unlock`"
       class="absolute top-0 left-1/2 flex pt-5 h-16 items-center justify-center sm:text-md xl:text-xl text-white flex-col cursor-pointer transform translate-x-1/2"
@@ -25,20 +28,36 @@
       <div :class="`${prefixCls}-entry`" v-show="!showDate">
         <div :class="`${prefixCls}-entry-content`">
           <div :class="`${prefixCls}-entry__header enter-x`">
-            <img :src="userinfo.avatar || headerImg" :class="`${prefixCls}-entry__header-img`" />
+            <img :src="userInfo.avatar || headerImg" :class="`${prefixCls}-entry__header-img`" />
             <p :class="`${prefixCls}-entry__header-name`">
-              {{ userinfo.realname }}
+              {{ userInfo.realName }}
             </p>
           </div>
-          <InputPassword :placeholder="t('sys.lock.placeholder')" class="enter-x" v-model:value="password" />
+          <InputPassword
+            :placeholder="t('sys.lock.placeholder')"
+            class="enter-x"
+            v-model:value="password"
+          />
           <span :class="`${prefixCls}-entry__err-msg enter-x`" v-if="errMsg">
             {{ t('sys.lock.alert') }}
           </span>
           <div :class="`${prefixCls}-entry__footer enter-x`">
-            <a-button type="link" size="small" class="mt-2 mr-2 enter-x" :disabled="loading" @click="handleShowForm(true)">
+            <a-button
+              type="link"
+              size="small"
+              class="mt-2 mr-2 enter-x"
+              :disabled="loading"
+              @click="handleShowForm(true)"
+            >
               {{ t('common.back') }}
             </a-button>
-            <a-button type="link" size="small" class="mt-2 mr-2 enter-x" :disabled="loading" @click="goLogin">
+            <a-button
+              type="link"
+              size="small"
+              class="mt-2 mr-2 enter-x"
+              :disabled="loading"
+              @click="goLogin"
+            >
               {{ t('sys.lock.backToLogin') }}
             </a-button>
             <a-button class="mt-2" type="link" size="small" @click="unLock()" :loading="loading">
@@ -53,20 +72,20 @@
       <div class="text-5xl mb-4 enter-x" v-show="!showDate">
         {{ hour }}:{{ minute }} <span class="text-3xl">{{ meridiem }}</span>
       </div>
-      <div class="text-2xl"> {{ year }}/{{ month }}/{{ day }} {{ week }} </div>
+      <div class="text-2xl">{{ year }}/{{ month }}/{{ day }} {{ week }}</div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
   import { ref, computed } from 'vue';
   import { Input } from 'ant-design-vue';
-  import { useUserStore } from '/@/store/modules/user';
-  import { useLockStore } from '/@/store/modules/lock';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useUserStore } from '@/store/modules/user';
+  import { useLockStore } from '@/store/modules/lock';
+  import { useI18n } from '@/hooks/web/useI18n';
   import { useNow } from './useNow';
-  import { useDesign } from '/@/hooks/web/useDesign';
+  import { useDesign } from '@/hooks/web/useDesign';
   import { LockOutlined } from '@ant-design/icons-vue';
-  import headerImg from '/@/assets/images/header.jpg';
+  import headerImg from '@/assets/images/header.jpg';
 
   const InputPassword = Input.Password;
 
@@ -83,7 +102,7 @@
 
   const { t } = useI18n();
 
-  const userinfo = computed(() => {
+  const userInfo = computed(() => {
     return userStore.getUserInfo || {};
   });
 
@@ -114,6 +133,7 @@
   }
 </script>
 <style lang="less" scoped>
+  /* stylelint-disable media-query-no-invalid */
   @prefix-cls: ~'@{namespace}-lock-page';
 
   .@{prefix-cls} {
@@ -126,12 +146,12 @@
     &__hour,
     &__minute {
       display: flex;
-      font-weight: 700;
-      color: #bababa;
-      background-color: #141313;
-      border-radius: 30px;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      border-radius: 30px;
+      background-color: #141313;
+      color: #bababa;
+      font-weight: 700;
 
       @media screen and (max-width: @screen-md) {
         span:not(.meridiem) {
@@ -150,6 +170,7 @@
           font-size: 90px;
         }
       }
+
       @media screen and (min-width: @screen-lg) {
         span:not(.meridiem) {
           font-size: 220px;
@@ -161,6 +182,7 @@
           font-size: 260px;
         }
       }
+
       @media screen and (min-width: @screen-2xl) {
         span:not(.meridiem) {
           font-size: 320px;
@@ -169,16 +191,16 @@
     }
 
     &-entry {
+      display: flex;
       position: absolute;
       top: 0;
       left: 0;
-      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgb(0 0 0 / 50%);
       backdrop-filter: blur(8px);
-      justify-content: center;
-      align-items: center;
 
       &-content {
         width: 260px;
@@ -195,8 +217,8 @@
 
         &-name {
           margin-top: 5px;
-          font-weight: 500;
           color: #bababa;
+          font-weight: 500;
         }
       }
 

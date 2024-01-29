@@ -1,117 +1,36 @@
+import type { AppRouteModule, AppRouteRecordRaw } from '@/router/types';
 import type { Router, RouteRecordNormalized } from 'vue-router';
-import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
 
+import { getParentLayout, LAYOUT, EXCEPTION_COMPONENT } from '@/router/constant';
 import { cloneDeep, omit } from 'lodash-es';
+import { warn } from '@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { getParentLayout, LAYOUT } from '/@/router/constant';
-import { URL_HASH_TAB } from '/@/utils';
-import { getTenantId, getToken } from '/@/utils/auth';
-import { warn } from '/@/utils/log';
-import { packageViews } from '/@/utils/monorepo/dynamicRouter';
-
-import {XuiPage} from '@nop-chaos/sdk'
 
 export type LayoutMapKey = 'LAYOUT';
-const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
-const LayoutContent = () => import('/@/layouts/default/content/index.vue');
+const IFRAME = () => import('@/views/sys/iframe/FrameBlank.vue');
 
-const LayoutMap = new Map<string, any>();
+const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>();
 
 LayoutMap.set('LAYOUT', LAYOUT);
 LayoutMap.set('IFRAME', IFRAME);
-//微前端qiankun
-LayoutMap.set('LayoutsContent', LayoutContent);
-
-const AMIS = XuiPage // () => import("/@/nop/amis/AmisPage.vue")
-LayoutMap.set("AMIS", AMIS)
 
 let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
 // Dynamic introduction
 function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
-  if (!dynamicViewsModules) {
-    dynamicViewsModules = import.meta.glob('../../views/**/*.{vue,tsx}');
-    // 跟模块views合并
-    dynamicViewsModules = Object.assign({}, dynamicViewsModules, packageViews);
-  }
+  dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}');
   if (!routes) return;
   routes.forEach((item) => {
-
-    //【jeecg-boot/issues/I5N2PN】左侧动态菜单怎么做国际化处理  2022-10-09
-    //菜单支持国际化翻译
-    //@canonical 取消动态执行国际化代码，国际化可以由后台直接转换，无需前台再执行js
-    // if (item?.meta?.title) {
-    //   const { t } = useI18n();
-    //   if(item.meta.title.includes('t(\'') && t){
-    //     item.meta.title = eval(item.meta.title);
-    //     //console.log('译后: ',item.meta.title)
-    //   }
-    // }
-   
-    // update-begin--author:sunjianlei---date:20210918---for:适配旧版路由选项 --------
-    // @ts-ignore 适配隐藏路由
-    if (item?.hidden) {
-      item.meta.hideMenu = true;
-      //是否隐藏面包屑
-      item.meta.hideBreadcrumb = true;
-    }
-    // @ts-ignore 添加忽略路由配置
-    if (item?.route == 0) {
-      item.meta.ignoreRoute = true;
-    }
-    // @ts-ignore 添加是否缓存路由配置
-    item.meta.ignoreKeepAlive = !item?.meta.keepAlive;
-    let token = getToken();
-    let tenantId = getTenantId();
-    // URL支持{{ window.xxx }}占位符变量
-    //update-begin---author:wangshuai ---date:20220711  for：[VUEN-1638]菜单tenantId需要动态生成------------
-    item.component = (item.component || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)).replace('${token}', token).replace('${tenantId}', tenantId);
-    //update-end---author:wangshuai ---date:20220711  for：[VUEN-1638]菜单tenantId需要动态生成------------
-    // 适配 iframe
-    if (/^\/?http(s)?/.test(item.component as string)) {
-      item.component = item.component.substring(1, item.component.length);
-    }
-    if (/^http(s)?/.test(item.component as string)) {
-      if (item.meta?.internalOrExternal) {
-        // @ts-ignore 外部打开
-        item.path = item.component;
-        // update-begin--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
-        item.path = item.path.replace('#', URL_HASH_TAB);
-        // update-end--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
-      } else {
-        // @ts-ignore 内部打开
-        item.meta.frameSrc = item.component;
-      }
-      delete item.component;
-    }
-    // update-end--author:sunjianlei---date:20210918---for:适配旧版路由选项 --------
     if (!item.component && item.meta?.frameSrc) {
       item.component = 'IFRAME';
     }
-
-    // // update-begin--author:canonical---date:20221003---for:增加Amis适配
-    if(item.component == 'AMIS'){
-      item.props = {
-        path: item.meta.url
-      }
-    }
-    // update-end--author:canonical---date:20221003---for:增加Amis适配
-
-    let { component, name } = item;
+    const { component, name } = item;
     const { children } = item;
     if (component) {
       const layoutFound = LayoutMap.get(component.toUpperCase());
       if (layoutFound) {
         item.component = layoutFound;
       } else {
-        // update-end--author:zyf---date:20220307--for:VUEN-219兼容后台返回动态首页,目的适配跟v2版本配置一致 --------
-        if (component.indexOf('dashboard/') > -1) {
-          //当数据标sys_permission中component没有拼接index时前端需要拼接
-          if (component.indexOf('/index') < 0) {
-            component = component + '/index';
-          }
-        }
-        // update-end--author:zyf---date:20220307---for:VUEN-219兼容后台返回动态首页,目的适配跟v2版本配置一致 --------
         item.component = dynamicImport(dynamicViewsModules, component as string);
       }
     } else if (name) {
@@ -121,7 +40,10 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
   });
 }
 
-function dynamicImport(dynamicViewsModules: Record<string, () => Promise<Recordable>>, component: string) {
+function dynamicImport(
+  dynamicViewsModules: Record<string, () => Promise<Recordable>>,
+  component: string,
+) {
   const keys = Object.keys(dynamicViewsModules);
   const matchKeys = keys.filter((key) => {
     const k = key.replace('../../views', '');
@@ -136,13 +58,17 @@ function dynamicImport(dynamicViewsModules: Record<string, () => Promise<Recorda
     return dynamicViewsModules[matchKey];
   } else if (matchKeys?.length > 1) {
     warn(
-      'Please do not create `.vue` and `.TSX` files with the same file name in the same hierarchical directory under the views folder. This will cause dynamic introduction failure'
+      'Please do not create `.vue` and `.TSX` files with the same file name in the same hierarchical directory under the views folder. This will cause dynamic introduction failure',
     );
     return;
+  } else {
+    warn('在src/views/下找不到`' + component + '.vue` 或 `' + component + '.tsx`, 请自行创建!');
+    return EXCEPTION_COMPONENT;
   }
 }
 
 // Turn background objects into routing objects
+// 将背景对象变成路由对象
 export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModule[]): T[] {
   routeList.forEach((route) => {
     const component = route.component as string;
@@ -152,6 +78,11 @@ export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModul
       } else {
         route.children = [cloneDeep(route)];
         route.component = LAYOUT;
+
+        //某些情况下如果name如果没有值， 多个一级路由菜单会导致页面404
+        if (!route.name) {
+          warn('找不到菜单对应的name, 请检查数据!' + JSON.stringify(route));
+        }
         route.name = `${route.name}Parent`;
         route.path = '';
         const meta = route.meta || {};
@@ -168,37 +99,52 @@ export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModul
 }
 
 /**
- *  将多级路由转换为二级
+ * Convert multi-level routing to level 2 routing
+ * 将多级路由转换为 2 级路由
  */
 export function flatMultiLevelRoutes(routeModules: AppRouteModule[]) {
   const modules: AppRouteModule[] = cloneDeep(routeModules);
+
   for (let index = 0; index < modules.length; index++) {
     const routeModule = modules[index];
+    // 判断级别是否 多级 路由
     if (!isMultipleRoute(routeModule)) {
+      // 声明终止当前循环， 即跳过此次循环，进行下一轮
       continue;
     }
+    // 路由等级提升
     promoteRouteLevel(routeModule);
   }
   return modules;
 }
 
-//提升路由级别
+// Routing level upgrade
+// 路由等级提升
 function promoteRouteLevel(routeModule: AppRouteModule) {
   // Use vue-router to splice menus
+  // 使用vue-router拼接菜单
+  // createRouter 创建一个可以被 Vue 应用程序使用的路由实例
   let router: Router | null = createRouter({
     routes: [routeModule as unknown as RouteRecordNormalized],
     history: createWebHashHistory(),
   });
-
+  // getRoutes： 获取所有 路由记录的完整列表。
   const routes = router.getRoutes();
+  // 将所有子路由添加到二级路由
   addToChildren(routes, routeModule.children || [], routeModule);
   router = null;
 
+  // omit lodash的函数 对传入的item对象的children进行删除
   routeModule.children = routeModule.children?.map((item) => omit(item, 'children'));
 }
 
 // Add all sub-routes to the secondary route
-function addToChildren(routes: RouteRecordNormalized[], children: AppRouteRecordRaw[], routeModule: AppRouteModule) {
+// 将所有子路由添加到二级路由
+function addToChildren(
+  routes: RouteRecordNormalized[],
+  children: AppRouteRecordRaw[],
+  routeModule: AppRouteModule,
+) {
   for (let index = 0; index < children.length; index++) {
     const child = children[index];
     const route = routes.find((item) => item.name === child.name);
@@ -216,7 +162,9 @@ function addToChildren(routes: RouteRecordNormalized[], children: AppRouteRecord
 }
 
 // Determine whether the level exceeds 2 levels
+// 判断级别是否超过2级
 function isMultipleRoute(routeModule: AppRouteModule) {
+  // Reflect.has 与 in 操作符 相同, 用于检查一个对象(包括它原型链上)是否拥有某个属性
   if (!routeModule || !Reflect.has(routeModule, 'children') || !routeModule.children?.length) {
     return false;
   }
@@ -232,22 +180,4 @@ function isMultipleRoute(routeModule: AppRouteModule) {
     }
   }
   return flag;
-}
-/**
- * 组件地址前加斜杠处理
- * @updateBy:lsq
- * @updateDate:2021-09-08
- */
-export function addSlashToRouteComponent(routeList: AppRouteRecordRaw[]) {
-  routeList.forEach((route) => {
-    let component = route.component as string;
-    if (component) {
-      const layoutFound = LayoutMap.get(component);
-      if (!layoutFound) {
-        route.component = component.startsWith('/') ? component : `/${component}`;
-      }
-    }
-    route.children && addSlashToRouteComponent(route.children);
-  });
-  return routeList as unknown as T[];
 }

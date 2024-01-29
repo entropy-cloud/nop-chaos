@@ -1,8 +1,7 @@
 import type { Ref } from 'vue';
-import type { FormProps, FormSchema } from '../types/form';
-
 import { computed, unref } from 'vue';
-import { isNumber } from '/@/utils/is';
+import type { FormProps, FormSchemaInner as FormSchema } from '../types/form';
+import { isNumber } from '@/utils/is';
 
 export function useItemLabelWidth(schemaItemRef: Ref<FormSchema>, propsRef: Ref<FormProps>) {
   return computed(() => {
@@ -10,16 +9,15 @@ export function useItemLabelWidth(schemaItemRef: Ref<FormSchema>, propsRef: Ref<
     const { labelCol = {}, wrapperCol = {} } = schemaItem.itemProps || {};
     const { labelWidth, disabledLabelWidth } = schemaItem;
 
-    const { labelWidth: globalLabelWidth, labelCol: globalLabelCol, wrapperCol: globWrapperCol,layout } = unref(propsRef);
-
-    // update-begin--author:sunjianlei---date:20211104---for: 禁用全局 labelWidth，不自动设置 textAlign --------
-    if (disabledLabelWidth) {
-      return { labelCol, wrapperCol };
-    }
-    // update-begin--author:sunjianlei---date:20211104---for: 禁用全局 labelWidth，不自动设置 textAlign --------
+    const {
+      labelWidth: globalLabelWidth,
+      labelCol: globalLabelCol,
+      wrapperCol: globWrapperCol,
+      layout,
+    } = unref(propsRef);
 
     // If labelWidth is set globally, all items setting
-    if (!globalLabelWidth && !labelWidth && !globalLabelCol) {
+    if ((!globalLabelWidth && !labelWidth && !globalLabelCol) || disabledLabelWidth) {
       labelCol.style = {
         textAlign: 'left',
       };
@@ -34,7 +32,7 @@ export function useItemLabelWidth(schemaItemRef: Ref<FormSchema>, propsRef: Ref<
     }
 
     return {
-      labelCol: { style: { width: width ? width : '100%' }, ...col },
+      labelCol: { style: { width }, ...col },
       wrapperCol: {
         style: { width: layout === 'vertical' ? '100%' : `calc(100% - ${width})` },
         ...wrapCol,

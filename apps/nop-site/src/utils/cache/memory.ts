@@ -1,6 +1,3 @@
-import { TOKEN_KEY, ROLES_KEY, USER_INFO_KEY, DB_DICT_DATA_KEY, TENANT_ID, LOGIN_INFO_KEY, PROJ_CFG_KEY } from '/@/enums/cacheEnum';
-import { omit } from 'lodash-es';
-
 export interface Cache<V = any> {
   value?: V;
   timeoutId?: ReturnType<typeof setTimeout>;
@@ -30,7 +27,7 @@ export class Memory<T = any, V = any> {
   // get<K extends keyof T>(key: K) {
   //   const item = this.getItem(key);
   //   const time = item?.time;
-  //   if (!isNullOrUnDef(time) && time < new Date().getTime()) {
+  //   if (!isNil(time) && time < new Date().getTime()) {
   //     this.remove(key);
   //   }
   //   return item?.value ?? undefined;
@@ -61,12 +58,17 @@ export class Memory<T = any, V = any> {
       return value;
     }
     const now = new Date().getTime();
-    item.time = now + this.alive;
+    /**
+     * Prevent overflow of the setTimeout Maximum delay value
+     * Maximum delay value 2,147,483,647 ms
+     * https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#maximum_delay_value
+     */
+    item.time = expires > now ? expires : now + expires;
     item.timeoutId = setTimeout(
       () => {
         this.remove(key);
       },
-      expires > now ? expires - now : expires
+      expires > now ? expires - now : expires,
     );
 
     return value;
@@ -96,15 +98,10 @@ export class Memory<T = any, V = any> {
   }
 
   clear() {
-    console.log('------clear------进入clear方法');
     Object.keys(this.cache).forEach((key) => {
       const item = this.cache[key];
       item.timeoutId && clearTimeout(item.timeoutId);
     });
-    //update-begin---author:liusq  Date:20220108  for：不删除登录用户的租户id，其他缓存信息都清除----
-    this.cache = {
-      ...omit(this.cache, [TOKEN_KEY, USER_INFO_KEY, ROLES_KEY, DB_DICT_DATA_KEY, TENANT_ID, LOGIN_INFO_KEY, PROJ_CFG_KEY]),
-    };
-    //update-end---author:liusq  Date:20220108  for：不删除登录用户的租户id，其他缓存信息都清除----
+    this.cache = {};
   }
 }

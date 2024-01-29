@@ -1,10 +1,10 @@
 <!--
- * @Author: Jeecg
+ * @Author: Vben
  * @Description: logo component
 -->
 <template>
   <div class="anticon" :class="getAppLogoClass" @click="goHome">
-    <img src="/resource/img/logo.png" />
+    <img src="../../../assets/images/logo.png" />
     <div class="ml-2 truncate md:opacity-100" :class="getTitleClass" v-show="showTitle">
       {{ title }}
     </div>
@@ -12,12 +12,12 @@
 </template>
 <script lang="ts" setup>
   import { computed, unref } from 'vue';
-  import { useGlobSetting } from '/@/hooks/setting';
-  import { useGo } from '/@/hooks/web/usePage';
-  import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { PageEnum } from '/@/enums/pageEnum';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useGlobSetting } from '@/hooks/setting';
+  import { useGo } from '@/hooks/web/usePage';
+  import { useMenuSetting } from '@/hooks/setting/useMenuSetting';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { PageEnum } from '@/enums/pageEnum';
+  import { useUserStore } from '@/store/modules/user';
 
   const props = defineProps({
     /**
@@ -40,7 +40,11 @@
   const { title } = useGlobSetting();
   const go = useGo();
 
-  const getAppLogoClass = computed(() => [prefixCls, props.theme, { 'collapsed-show-title': unref(getCollapsedShowTitle) }]);
+  const getAppLogoClass = computed(() => [
+    prefixCls,
+    props.theme,
+    { 'collapsed-show-title': unref(getCollapsedShowTitle) },
+  ]);
 
   const getTitleClass = computed(() => [
     `${prefixCls}__title`,
@@ -60,8 +64,8 @@
     display: flex;
     align-items: center;
     padding-left: 7px;
-    cursor: pointer;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     &.light {
       border-bottom: 1px solid @border-color-base;
@@ -80,9 +84,9 @@
     }
 
     &__title {
+      transition: all 0.5s;
       font-size: 16px;
       font-weight: 700;
-      transition: all 0.5s;
       line-height: normal;
     }
   }

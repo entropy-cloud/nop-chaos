@@ -1,5 +1,9 @@
 import type { ComputedRef, Ref } from 'vue';
-import type { FormSchema, FormActionType, FormProps } from '../types/form';
+import {
+  type FormSchemaInner as FormSchema,
+  type FormActionType,
+  type FormProps,
+} from '../types/form';
 
 import { unref, nextTick, watchEffect } from 'vue';
 
@@ -9,7 +13,12 @@ interface UseAutoFocusContext {
   isInitedDefault: Ref<boolean>;
   formElRef: Ref<FormActionType>;
 }
-export async function useAutoFocus({ getSchema, getProps, formElRef, isInitedDefault }: UseAutoFocusContext) {
+export async function useAutoFocus({
+  getSchema,
+  getProps,
+  formElRef,
+  isInitedDefault,
+}: UseAutoFocusContext) {
   watchEffect(async () => {
     if (unref(isInitedDefault) || !unref(getProps).autoFocusFirstItem) {
       return;
@@ -24,7 +33,7 @@ export async function useAutoFocus({ getSchema, getProps, formElRef, isInitedDef
 
     const firstItem = schemas[0];
     // Only open when the first form item is input type
-    if (!firstItem.component.includes('Input')) {
+    if (!firstItem.component || !firstItem.component.includes('Input')) {
       return;
     }
 

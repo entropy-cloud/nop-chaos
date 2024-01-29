@@ -1,13 +1,13 @@
-import type { Menu, MenuModule } from '/@/router/types';
+import type { Menu, MenuModule } from '@/router/types';
 import type { RouteRecordNormalized } from 'vue-router';
 
-import { useAppStoreWithOut } from '/@/store/modules/app';
-import { usePermissionStore } from '/@/store/modules/permission';
-import { transformMenuModule, getAllParentPath } from '/@/router/helper/menuHelper';
-import { filter } from '/@/utils/helper/treeHelper';
-import { isUrl } from '/@/utils/is';
-import { router } from '/@/router';
-import { PermissionModeEnum } from '/@/enums/appEnum';
+import { useAppStoreWithOut } from '@/store/modules/app';
+import { usePermissionStore } from '@/store/modules/permission';
+import { transformMenuModule, getAllParentPath } from '@/router/helper/menuHelper';
+import { filter } from '@/utils/helper/treeHelper';
+import { isHttpUrl } from '@/utils/is';
+import { router } from '@/router';
+import { PermissionModeEnum } from '@/enums/appEnum';
 import { pathToRegexp } from 'path-to-regexp';
 
 const modules = import.meta.glob('./modules/**/*.ts', { eager: true });
@@ -53,11 +53,21 @@ const staticMenus: Menu[] = [];
 
 async function getAsyncMenus() {
   const permissionStore = usePermissionStore();
+  //递归过滤所有隐藏的菜单
+  const menuFilter = (items) => {
+    return items.filter((item) => {
+      const show = !item.meta?.hideMenu && !item.hideMenu;
+      if (show && item.children) {
+        item.children = menuFilter(item.children);
+      }
+      return show;
+    });
+  };
   if (isBackMode()) {
-    return permissionStore.getBackMenuList.filter((item) => !item.meta?.hideMenu && !item.hideMenu);
+    return menuFilter(permissionStore.getBackMenuList);
   }
   if (isRouteMappingMode()) {
-    return permissionStore.getFrontMenuList.filter((item) => !item.hideMenu);
+    return menuFilter(permissionStore.getFrontMenuList);
   }
   return staticMenus;
 }
@@ -105,7 +115,7 @@ export async function getChildrenMenus(parentPath: string) {
 function basicFilter(routes: RouteRecordNormalized[]) {
   return (menu: Menu) => {
     const matchRoute = routes.find((route) => {
-      if (isUrl(menu.path)) return true;
+      if (isHttpUrl(menu.path)) return true;
 
       if (route.meta?.carryParam) {
         return pathToRegexp(route.path).test(menu.path);

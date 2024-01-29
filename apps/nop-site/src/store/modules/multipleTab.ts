@@ -2,20 +2,18 @@ import type { RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-rout
 
 import { toRaw, unref } from 'vue';
 import { defineStore } from 'pinia';
-import { store } from '/@/store';
+import { store } from '@/store';
 
-import { useGo, useRedo } from '/@/hooks/web/usePage';
-import { Persistent } from '/@/utils/cache/persistent';
+import { useGo, useRedo } from '@/hooks/web/usePage';
+import { Persistent } from '@/utils/cache/persistent';
 
-import { PageEnum } from '/@/enums/pageEnum';
-import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '/@/router/routes/basic';
-import { getRawRoute } from '/@/utils';
-import { MULTIPLE_TABS_KEY } from '/@/enums/cacheEnum';
+import { PageEnum } from '@/enums/pageEnum';
+import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '@/router/routes/basic';
+import { getRawRoute } from '@/utils';
+import { MULTIPLE_TABS_KEY } from '@/enums/cacheEnum';
 
-import projectSetting from '/@/settings/projectSetting';
-import { useUserStore } from '/@/store/modules/user'
-
-import {clearLocalCache} from '@nop-chaos/sdk'
+import projectSetting from '@/settings/projectSetting';
+import { useUserStore } from '@/store/modules/user';
 
 export interface MultipleTabState {
   cacheTabList: Set<string>;
@@ -25,8 +23,9 @@ export interface MultipleTabState {
 
 function handleGotoPage(router: Router) {
   const go = useGo(router);
-  go(unref(router.currentRoute).path, true);
+  go(unref(router.currentRoute).fullPath, true);
 }
+
 const getToTarget = (tabItem: RouteLocationNormalized) => {
   const { params, path, query } = tabItem;
   return {
@@ -49,14 +48,14 @@ export const useMultipleTabStore = defineStore({
     lastDragEndIndex: 0,
   }),
   getters: {
-    getTabList(): RouteLocationNormalized[] {
-      return this.tabList;
+    getTabList(state): RouteLocationNormalized[] {
+      return state.tabList;
     },
-    getCachedTabList(): string[] {
-      return Array.from(this.cacheTabList);
+    getCachedTabList(state): string[] {
+      return Array.from(state.cacheTabList);
     },
-    getLastDragEndIndex(): number {
-      return this.lastDragEndIndex;
+    getLastDragEndIndex(state): number {
+      return state.lastDragEndIndex;
     },
   },
   actions: {
@@ -86,8 +85,6 @@ export const useMultipleTabStore = defineStore({
       const { currentRoute } = router;
       const route = unref(currentRoute);
       const name = route.name;
-
-      clearLocalCache()
 
       const findTab = this.getCachedTabList.find((item) => item === name);
       if (findTab) {
@@ -137,9 +134,7 @@ export const useMultipleTabStore = defineStore({
       // Existing pages, do not add tabs repeatedly
       const tabHasExits = this.tabList.some((tab, index) => {
         updateIndex = index;
-        //return (tab.fullPath || tab.path) === (fullPath || path);
-        // amis翻页会修改href，导致fullPath变化产生新的tab页，因此这里做了特殊判断
-        return normalize_path(tab) == normalize_path(route)
+        return (tab.fullPath || tab.path) === (fullPath || path);
       });
 
       // If the tab already exists, perform the update operation
@@ -162,7 +157,9 @@ export const useMultipleTabStore = defineStore({
           // const realName: string = path.match(/(\S*)\//)![1];
           const realPath = meta?.realPath ?? '';
           // 获取到已经打开的动态路由数, 判断是否大于某一个值
-          if (this.tabList.filter((e) => e.meta?.realPath ?? '' === realPath).length >= dynamicLevel) {
+          if (
+            this.tabList.filter((e) => e.meta?.realPath ?? '' === realPath).length >= dynamicLevel
+          ) {
             // 关闭第一个
             const index = this.tabList.findIndex((item) => item.meta.realPath === realPath);
             index !== -1 && this.tabList.splice(index, 1);
@@ -186,17 +183,18 @@ export const useMultipleTabStore = defineStore({
 
       const { currentRoute, replace } = router;
 
-      const { path,fullPath } = unref(currentRoute);
+      const { path } = unref(currentRoute);
       if (path !== tab.path) {
         // Closed is not the activation tab
         close(tab);
+        this.updateCacheTab();
         return;
       }
 
       // Closed is activated atb
       let toTarget: RouteLocationRaw = {};
 
-      const index = this.tabList.findIndex((item) => item.fullPath === fullPath);
+      const index = this.tabList.findIndex((item) => item.path === path);
 
       // If the current is the leftmost tab
       if (index === 0) {
@@ -220,7 +218,7 @@ export const useMultipleTabStore = defineStore({
 
     // Close according to key
     async closeTabByKey(key: string, router: Router) {
-      const index = this.tabList.findIndex((item) => item.fullPath== key || item.path === key);
+      const index = this.tabList.findIndex((item) => (item.fullPath || item.path) === key);
       if (index !== -1) {
         await this.closeTab(this.tabList[index], router);
         const { currentRoute, replace } = router;
@@ -257,7 +255,7 @@ export const useMultipleTabStore = defineStore({
 
     // Close the tab on the right and jump
     async closeLeftTabs(route: RouteLocationNormalized, router: Router) {
-      const index = this.tabList.findIndex((item) => item.fullPath === route.fullPath);
+      const index = this.tabList.findIndex((item) => item.path === route.path);
 
       if (index > 0) {
         const leftTabs = this.tabList.slice(0, index);
@@ -322,6 +320,7 @@ export const useMultipleTabStore = defineStore({
       }
       this.bulkCloseTabs(pathList);
       this.updateCacheTab();
+      Persistent.setLocal(MULTIPLE_TABS_KEY, this.tabList, true);
       handleGotoPage(router);
     },
 
@@ -355,13 +354,6 @@ export const useMultipleTabStore = defineStore({
     },
   },
 });
-
-function normalize_path(route:RouteLocationNormalized){
-  // 目前AMIS翻页已经不更新location,所以不再需要进行特殊识别
-  //if(route.meta.url)
-  //  return route.path
-  return route.fullPath || route.path
-}
 
 // Need to be used outside the setup
 export function useMultipleTabWithOutStore() {

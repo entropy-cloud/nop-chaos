@@ -3,8 +3,8 @@ import type { RouteLocationNormalized, Router } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { unref } from 'vue';
 
-import { useMultipleTabStore } from '/@/store/modules/multipleTab';
-import { useAppStore } from '/@/store/modules/app';
+import { useMultipleTabStore } from '@/store/modules/multipleTab';
+import { useAppStore } from '@/store/modules/app';
 
 enum TableActionEnum {
   REFRESH,
@@ -34,7 +34,7 @@ export function useTabs(_router?: Router) {
 
   function getCurrentTab() {
     const route = unref(currentRoute);
-    return tabStore.getTabList.find((item) => item.path === route.path)!;
+    return tabStore.getTabList.find((item) => item.fullPath === route.fullPath)!;
   }
 
   async function updateTabTitle(title: string, tab?: RouteLocationNormalized) {
@@ -89,20 +89,6 @@ export function useTabs(_router?: Router) {
     }
   }
 
-  /**
-   * 关闭相同的路由
-   * @param path
-   */
-  function closeSameRoute(path) {
-    if(path.indexOf('?')>0){
-      path = path.split('?')[0];
-    }
-    let tab = tabStore.getTabList.find((item) => item.path.indexOf(path)>=0)!;
-    if(tab){
-      tabStore.closeTab(tab, router);
-    }
-  }
-
   return {
     refreshPage: () => handleTabAction(TableActionEnum.REFRESH),
     closeAll: () => handleTabAction(TableActionEnum.CLOSE_ALL),
@@ -113,6 +99,5 @@ export function useTabs(_router?: Router) {
     close: (tab?: RouteLocationNormalized) => handleTabAction(TableActionEnum.CLOSE, tab),
     setTitle: (title: string, tab?: RouteLocationNormalized) => updateTabTitle(title, tab),
     updatePath: (fullPath: string, tab?: RouteLocationNormalized) => updateTabPath(fullPath, tab),
-    closeSameRoute
   };
 }

@@ -2,11 +2,29 @@ import type { FunctionArgs } from '@vueuse/core';
 import { upperFirst } from 'lodash-es';
 
 export interface ViewportOffsetResult {
+  /**
+   * 元素左边距离 body 左边的距离（和 getBoundingClientRect 的 left 一样）
+   */
   left: number;
+  /**
+   * 元素顶边距离 body 顶边的距离（和 getBoundingClientRect 的 top 一样）
+   */
   top: number;
+  /**
+   * 元素右边距离 body 右边的距离
+   */
   right: number;
+  /**
+   * 元素底边距离 body 底边的距离
+   */
   bottom: number;
+  /**
+   * 内容宽度 + 计算后的 right
+   */
   rightIncludeBody: number;
+  /**
+   * 内容高度 + 计算后的 bottom
+   */
   bottomIncludeBody: number;
 }
 
@@ -133,14 +151,22 @@ export function hackCss(attr: string, value: string) {
 }
 
 /* istanbul ignore next */
-export function on(element: Element | HTMLElement | Document | Window, event: string, handler: EventListenerOrEventListenerObject): void {
+export function on(
+  element: Element | HTMLElement | Document | Window,
+  event: string,
+  handler: EventListenerOrEventListenerObject,
+): void {
   if (element && event && handler) {
     element.addEventListener(event, handler, false);
   }
 }
 
 /* istanbul ignore next */
-export function off(element: Element | HTMLElement | Document | Window, event: string, handler: Fn): void {
+export function off(
+  element: Element | HTMLElement | Document | Window,
+  event: string,
+  handler: Fn,
+): void {
   if (element && event && handler) {
     element.removeEventListener(event, handler, false);
   }
@@ -150,7 +176,7 @@ export function off(element: Element | HTMLElement | Document | Window, event: s
 export function once(el: HTMLElement, event: string, fn: EventListener): void {
   const listener = function (this: any, ...args: unknown[]) {
     if (fn) {
-      fn.apply(this, args);
+      fn.apply(this, args as [evt: Event]);
     }
     off(el, event, listener);
   };

@@ -1,5 +1,11 @@
 <template>
-  <BasicModal :footer="null" :title="t('layout.header.lockScreen')" v-bind="$attrs" :class="prefixCls" @register="register">
+  <BasicModal
+    :footer="null"
+    :title="t('layout.header.lockScreen')"
+    v-bind="$attrs"
+    :class="prefixCls"
+    @register="register"
+  >
     <div :class="`${prefixCls}__entry`">
       <div :class="`${prefixCls}__header`">
         <img :src="avatar" :class="`${prefixCls}__header-img`" />
@@ -18,69 +24,60 @@
     </div>
   </BasicModal>
 </template>
-<script lang="ts">
-  import { defineComponent, computed } from 'vue';
-  import { useI18n } from '/@/hooks/web/useI18n';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { BasicModal, useModalInner } from '/@/components/Modal/index';
-  import { BasicForm, useForm } from '/@/components/Form/index';
+<script lang="ts" setup>
+  import { computed } from 'vue';
+  import { useI18n } from '@/hooks/web/useI18n';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicForm, useForm } from '@/components/Form';
 
-  import { useUserStore } from '/@/store/modules/user';
-  import { useLockStore } from '/@/store/modules/lock';
-  import headerImg from '/@/assets/images/header.jpg';
-  export default defineComponent({
-    name: 'LockModal',
-    components: { BasicModal, BasicForm },
+  import { useUserStore } from '@/store/modules/user';
+  import { useLockStore } from '@/store/modules/lock';
+  import headerImg from '@/assets/images/header.jpg';
 
-    setup() {
-      const { t } = useI18n();
-      const { prefixCls } = useDesign('header-lock-modal');
-      const userStore = useUserStore();
-      const lockStore = useLockStore();
+  defineOptions({ name: 'LockModal' });
 
-      const getRealName = computed(() => userStore.getUserInfo?.realname);
-      const [register, { closeModal }] = useModalInner();
+  const { t } = useI18n();
+  const { prefixCls } = useDesign('header-lock-modal');
+  const userStore = useUserStore();
+  const lockStore = useLockStore();
 
-      const [registerForm, { validateFields, resetFields }] = useForm({
-        labelWidth: 100,
-        showActionButtonGroup: false,
-        schemas: [
-          {
-            field: 'password',
-            label: t('layout.header.lockScreenPassword'),
-            component: 'InputPassword',
-            required: true,
-          },
-        ],
-      });
+  const getRealName = computed(() => userStore.getUserInfo?.realName);
+  const [register, { closeModal }] = useModalInner();
 
-      async function handleLock() {
-        const values = (await validateFields()) as any;
-        const password: string | undefined = values.password;
-        closeModal();
+  const [registerForm, { validate, resetFields }] = useForm({
+    showActionButtonGroup: false,
+    schemas: [
+      {
+        field: 'password',
+        label: t('layout.header.lockScreenPassword'),
+        colProps: {
+          span: 24,
+        },
+        component: 'InputPassword',
+        required: true,
+      },
+    ],
+  });
 
-        lockStore.setLockInfo({
-          isLock: true,
-          pwd: password,
-        });
-        await resetFields();
-      }
+  const handleLock = async () => {
+    const { password = '' } = await validate<{
+      password: string;
+    }>();
 
-      const avatar = computed(() => {
-        const { avatar } = userStore.getUserInfo;
-        return avatar || headerImg;
-      });
+    closeModal();
 
-      return {
-        t,
-        prefixCls,
-        getRealName,
-        register,
-        registerForm,
-        handleLock,
-        avatar,
-      };
-    },
+    lockStore.setLockInfo({
+      isLock: true,
+      pwd: password,
+    });
+
+    await resetFields();
+  };
+
+  const avatar = computed(() => {
+    const { avatar } = userStore.getUserInfo;
+    return avatar || headerImg;
   });
 </script>
 <style lang="less">
@@ -90,7 +87,7 @@
     &__entry {
       position: relative;
       //height: 240px;
-      padding: 130px 30px 30px 30px;
+      padding: 130px 30px 30px;
       border-radius: 10px;
     }
 

@@ -6,11 +6,6 @@ export interface LoginParams {
   password: string;
 }
 
-export interface ThirdLoginParams {
-  token: string;
-  thirdType: string;
-}
-
 export interface RoleInfo {
   roleName: string;
   value: string;
@@ -22,7 +17,7 @@ export interface RoleInfo {
 export interface LoginResultModel {
   userId: string | number;
   token: string;
-  role: RoleInfo;
+  roles: RoleInfo[];
 }
 
 /**
@@ -35,23 +30,9 @@ export interface GetUserInfoModel {
   // 用户名
   username: string;
   // 真实名字
-  realname: string;
+  realName: string;
   // 头像
   avatar: string;
   // 介绍
   desc?: string;
-  // 用户信息
-  userInfo?: any;
-  // 缓存字典项
-  sysAllDictItems?: any;
-}
-
-/**
- * @description: Get user information return value
- */
-export interface GetResultModel {
-  code: number;
-  message: string;
-  result: object;
-  success: Boolean;
 }

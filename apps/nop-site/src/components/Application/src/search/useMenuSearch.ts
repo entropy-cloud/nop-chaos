@@ -1,12 +1,13 @@
-import type { Menu } from '/@/router/types';
+import { type Menu } from '@/router/types';
+import { type AnyFunction } from './types';
 import { ref, onBeforeMount, unref, Ref, nextTick } from 'vue';
-import { getMenus } from '/@/router/menus';
+import { getMenus } from '@/router/menus';
 import { cloneDeep } from 'lodash-es';
-import { filter, forEach } from '/@/utils/helper/treeHelper';
-import { useGo } from '/@/hooks/web/usePage';
-import { useScrollTo } from '/@/hooks/event/useScrollTo';
+import { filter, forEach } from '@/utils/helper/treeHelper';
+import { useGo } from '@/hooks/web/usePage';
+import { useScrollTo } from '@/hooks/useScrollTo';
 import { onKeyStroke, useDebounceFn } from '@vueuse/core';
-import { useI18n } from '/@/hooks/web/useI18n';
+import { useI18n } from '@/hooks/web/useI18n';
 
 export interface SearchResult {
   name: string;
@@ -26,7 +27,7 @@ function createSearchReg(key: string) {
   return new RegExp(str);
 }
 
-export function useMenuSearch(refs: Ref<HTMLElement[]>, scrollWrap: Ref<ElRef>, emit: EmitType) {
+export function useMenuSearch(refs: Ref<HTMLElement[]>, scrollWrap: Ref, emit: AnyFunction) {
   const searchResult = ref<SearchResult[]>([]);
   const keyword = ref('');
   const activeIndex = ref(-1);
@@ -55,10 +56,6 @@ export function useMenuSearch(refs: Ref<HTMLElement[]>, scrollWrap: Ref<ElRef>, 
     }
     const reg = createSearchReg(unref(keyword));
     const filterMenu = filter(menuList, (item) => {
-      // 【issues/33】包含子菜单时，不添加到搜索队列
-      if (Array.isArray(item.children)) {
-        return false;
-      }
       return reg.test(item.name) && !item.hideMenu;
     });
     searchResult.value = handlerSearchResult(filterMenu, reg);

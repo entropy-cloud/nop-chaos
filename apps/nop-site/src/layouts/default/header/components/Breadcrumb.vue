@@ -6,7 +6,7 @@
         <span v-if="!hasRedirect(routesMatched, route)">
           {{ t(route.name || route.meta.title) }}
         </span>
-        <router-link v-else to="" @click="handleClick(route, paths, $event)" style="color: inherit">
+        <router-link v-else to="" @click="handleClick(route, paths, $event as Event)">
           {{ t(route.name || route.meta.title) }}
         </router-link>
       </template>
@@ -16,25 +16,25 @@
 <script lang="ts">
   import type { RouteLocationMatched } from 'vue-router';
   import { useRouter } from 'vue-router';
-  import type { Menu } from '/@/router/types';
+  import type { Menu } from '@/router/types';
 
   import { defineComponent, ref, watchEffect } from 'vue';
 
   import { Breadcrumb } from 'ant-design-vue';
-  import Icon from '/@/components/Icon';
+  import Icon from '@/components/Icon/Icon.vue';
 
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { useRootSetting } from '/@/hooks/setting/useRootSetting';
-  import { useGo } from '/@/hooks/web/usePage';
-  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useDesign } from '@/hooks/web/useDesign';
+  import { useRootSetting } from '@/hooks/setting/useRootSetting';
+  import { useGo } from '@/hooks/web/usePage';
+  import { useI18n } from '@/hooks/web/useI18n';
 
-  import { propTypes } from '/@/utils/propTypes';
-  import { isString } from '/@/utils/is';
-  import { filter } from '/@/utils/helper/treeHelper';
-  import { getMenus } from '/@/router/menus';
+  import { propTypes } from '@/utils/propTypes';
+  import { isString } from '@/utils/is';
+  import { filter } from '@/utils/helper/treeHelper';
+  import { getMenus } from '@/router/menus';
 
-  import { REDIRECT_NAME } from '/@/router/constant';
-  import { getAllParentPath } from '/@/router/helper/menuHelper';
+  import { REDIRECT_NAME } from '@/router/constant';
+  import { getAllParentPath } from '@/router/helper/menuHelper';
 
   export default defineComponent({
     name: 'LayoutBreadcrumb',
@@ -101,8 +101,8 @@
           if (!meta) {
             return !!name;
           }
-          const { title, hideBreadcrumb } = meta;
-          if (!title || hideBreadcrumb) {
+          const { title, hideBreadcrumb, hideMenu } = meta;
+          if (!title || hideBreadcrumb || hideMenu) {
             return false;
           }
           return true;
@@ -154,8 +154,8 @@
 
   .@{prefix-cls} {
     display: flex;
-    padding: 0 8px;
     align-items: center;
+    padding: 0 8px;
 
     .ant-breadcrumb-link {
       .anticon {
@@ -169,7 +169,7 @@
         color: @breadcrumb-item-normal-color;
 
         a {
-          color: rgba(0, 0, 0, 0.65);
+          color: rgb(0 0 0 / 65%);
 
           &:hover {
             color: @primary-color;
@@ -184,10 +184,10 @@
 
     &--dark {
       .ant-breadcrumb-link {
-        color: rgba(255, 255, 255, 0.6);
+        color: rgb(255 255 255 / 60%);
 
         a {
-          color: rgba(255, 255, 255, 0.8);
+          color: rgb(255 255 255 / 80%);
 
           &:hover {
             color: @white;
@@ -197,7 +197,7 @@
 
       .ant-breadcrumb-separator,
       .anticon {
-        color: rgba(255, 255, 255, 0.8);
+        color: rgb(255 255 255 / 80%);
       }
     }
   }

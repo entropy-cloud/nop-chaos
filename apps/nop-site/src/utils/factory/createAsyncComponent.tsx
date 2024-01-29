@@ -1,9 +1,12 @@
 import {
+  AsyncComponentLoader,
+  Component,
+  ComponentPublicInstance,
   defineAsyncComponent,
   // FunctionalComponent, CSSProperties
 } from 'vue';
 import { Spin } from 'ant-design-vue';
-import { noop } from '/@/utils/index';
+import { noop } from '@/utils';
 
 // const Loading: FunctionalComponent<{ size: 'small' | 'default' | 'large' }> = (props) => {
 //   const style: CSSProperties = {
@@ -27,7 +30,11 @@ interface Options {
   retry?: boolean;
 }
 
-export function createAsyncComponent(loader: Fn, options: Options = {}) {
+export function createAsyncComponent<
+  T extends Component = {
+    new (): ComponentPublicInstance;
+  },
+>(loader: AsyncComponentLoader<T>, options: Options = {}) {
   const { size = 'small', delay = 100, timeout = 30000, loading = false, retry = true } = options;
   return defineAsyncComponent({
     loader,

@@ -1,26 +1,30 @@
 import type { Ref } from 'vue';
 
-import { computed, unref, onMounted, nextTick, ref } from 'vue';
+import { computed, unref, onMounted, nextTick } from 'vue';
 
-import { TriggerEnum } from '/@/enums/menuEnum';
+import { TriggerEnum } from '@/enums/menuEnum';
 
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
+import { useMenuSetting } from '@/hooks/setting/useMenuSetting';
 import { useDebounceFn } from '@vueuse/core';
+import { useAppStore } from '@/store/modules/app';
 
 /**
  * Handle related operations of menu events
  */
 export function useSiderEvent() {
-  const brokenRef = ref(false);
-
+  const appStore = useAppStore();
   const { getMiniWidthNumber } = useMenuSetting();
 
   const getCollapsedWidth = computed(() => {
-    return unref(brokenRef) ? 0 : unref(getMiniWidthNumber);
+    return unref(getMiniWidthNumber);
   });
 
   function onBreakpointChange(broken: boolean) {
-    brokenRef.value = broken;
+    appStore.setProjectConfig({
+      menuSetting: {
+        siderHidden: broken,
+      },
+    });
   }
 
   return { getCollapsedWidth, onBreakpointChange };
@@ -35,7 +39,11 @@ export function useTrigger(getIsMobile: Ref<boolean>) {
   const getShowTrigger = computed(() => {
     const trigger = unref(getTrigger);
 
-    return trigger !== TriggerEnum.NONE && !unref(getIsMobile) && (trigger === TriggerEnum.FOOTER || unref(getSplit));
+    return (
+      trigger !== TriggerEnum.NONE &&
+      !unref(getIsMobile) &&
+      (trigger === TriggerEnum.FOOTER || unref(getSplit))
+    );
   });
 
   const getTriggerAttr = computed(() => {
@@ -100,7 +108,9 @@ export function useDragLine(siderRef: Ref<any>, dragBarRef: Ref<any>, mix = fals
       if (!mix) {
         const miniWidth = unref(getMiniWidthNumber);
         if (!unref(getCollapsed)) {
-          width > miniWidth + 20 ? setMenuSetting({ menuWidth: width }) : setMenuSetting({ collapsed: true });
+          width > miniWidth + 20
+            ? setMenuSetting({ menuWidth: width })
+            : setMenuSetting({ collapsed: true });
         } else {
           width > miniWidth && setMenuSetting({ collapsed: false, menuWidth: width });
         }
