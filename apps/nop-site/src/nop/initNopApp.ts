@@ -22,7 +22,7 @@ import { clearLocalCache, importModule, registerAdapter, registerModule, XuiPage
 import { useUserStoreWithOut } from '../store/modules/user';
 import { isArray } from '../utils/is';
 
-import { IconPicker, Icon } from '/@/components/Icon'
+import { IconPicker, SvgIcon } from '/@/components/Icon'
 
 import { useLocale } from '/@/locales/useLocale'
 import { useI18n } from '/@/hooks/web/useI18n'
@@ -31,7 +31,7 @@ import { store } from '/@/store'
 import { useUserStore } from '/@/store/modules/user'
 import { intersection } from 'lodash-es';
 import type { RoleEnum } from '/@/enums/roleEnum';
-import { getToken, getTenantId } from '/@/utils/auth';
+import { getToken } from '/@/utils/auth';
 import { SessionTimeoutProcessingEnum } from '/@/enums/appEnum';
 import projectSetting from '/@/settings/projectSetting';
 import {Store} from 'pinia'
@@ -106,7 +106,7 @@ function initAdapter(app: App) {
         },
 
         useTenantId(): string {
-            return getTenantId()
+            return "" //getTenantId()
         },
 
         useAppId(): string {
@@ -142,7 +142,7 @@ export async function initNopApp(app: App) {
     app.component("XUI", XuiPage)
     app.component("AMIS", XuiPage)
     app.component("icon-picker", IconPicker)
-    app.component("icon", Icon)
+    app.component("icon", SvgIcon)
 
     useUserStoreWithOut().$subscribe((mutation) => {
         // 登录信息变化的时候清空页面缓存和字典缓存

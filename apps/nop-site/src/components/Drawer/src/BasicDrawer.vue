@@ -43,7 +43,7 @@
   import { ScrollContainer } from '@/components/Container';
   import { basicProps } from './props';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { useAttrs } from '@/hooks/useAttrs';
+  import { useAttrs } from '@vben/hooks';
 
   defineOptions({ inheritAttrs: false });
 

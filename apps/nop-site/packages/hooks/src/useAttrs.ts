@@ -1,6 +1,5 @@
+import { type Recordable } from '@vben/types';
 import { getCurrentInstance, reactive, shallowRef, watchEffect } from 'vue';
-
-type Recordable<T> = Record<string,T>
 
 interface UseAttrsOptions {
   excludeListeners?: boolean;

@@ -43,7 +43,7 @@
 </style>
 
 <script lang="ts" setup>
-import { shallowRef, ref,defineProps } from 'vue';
+import { shallowRef, ref } from 'vue';
 import { ElDialog, ElButton } from 'element-plus';
 
 import XuiSchemaPage from './XuiSchemaPage';

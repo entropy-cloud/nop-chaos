@@ -20,11 +20,11 @@
 <template>
   <xui-debugger v-if="debug.getDebug()" :path="props.path" :schema="pageSchema" @update:schema="updateSchema"
     @rebuild="rebuild" />
-  <XuiSchemaPage :schema="pageSchema" :registerPage="props.registerPage" :action="props.actions" />
+  <XuiSchemaPage v-if="pageSchema" :schema="pageSchema" :data="props.data" :registerPage="registerPage" :action="props.actions" />
 </template>
 
 <script lang="ts" setup>
-import { shallowRef, watchEffect, defineProps } from 'vue';
+import { shallowRef, watchEffect, markRaw } from 'vue';
 import type { PageObject, RegisterPage } from '@nop-chaos/nop-core';
 import XuiDebugger from './XuiDebugger.vue';
 import XuiSchemaPage from './XuiSchemaPage';
@@ -34,10 +34,10 @@ import { cloneDeep } from 'lodash-es';
 
 const props = defineProps<{
   path: string,
-  data: any,
-  config: any,
-  registerPage: RegisterPage,
-  actions: Record<string, Function>
+  data?: any,
+  config?: any,
+  registerPage?: RegisterPage,
+  actions?: Record<string, Function>
 }>()
 
 const { getPage } = useAdapter()
@@ -56,11 +56,11 @@ watchEffect(() => {
 });
 
 function updateSchema(value: any) {
-  pageSchema.value = value;
+  pageSchema.value = markRaw(value || {});
 }
 
 function rebuild() {
-  pageSchema.value = cloneDeep(pageSchema.value)
+  updateSchema(cloneDeep(pageSchema.value))
 }
 
 const debug = useAdapter().useDebug()

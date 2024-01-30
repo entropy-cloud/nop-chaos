@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { type Recordable, type AnyFunction } from '@/hooks/types';
+  import { type Recordable, type AnyFunction } from '@vben/types';
   import { type PropType, computed, watch, ref, onMounted, unref, useAttrs } from 'vue';
   import { Tree, TreeProps } from 'ant-design-vue';
   import { isArray, isFunction } from '@/utils/is';

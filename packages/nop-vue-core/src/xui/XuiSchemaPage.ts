@@ -1,4 +1,4 @@
-import { defineComponent, watchEffect, ref, markRaw, defineProps, h } from 'vue'
+import { defineComponent, watchEffect, ref,  h } from 'vue'
 import { getSchemaProcessorType, useAdapter, RegisterPage, SchemaComponentProps } from '@nop-chaos/nop-core'
 
 import XuiLoading from './XuiLoading.vue'
@@ -17,7 +17,7 @@ export default defineComponent(
         useAdapter().notify("error", t("nop.err.unknown-schema-type"));
         throw new Error("nop.err.unknown-schema-type")
       }
-      vdomRef.value = await schemaType.renderSchema(props)
+      vdomRef.value = await schemaType.renderPageSchema(props)
     })
 
     return () => {

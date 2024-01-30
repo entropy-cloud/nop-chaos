@@ -2,7 +2,7 @@ import { MenuModeEnum } from '@/enums/menuEnum';
 import type { Menu as MenuType } from '@/router/types';
 import type { MenuState, Key } from './types';
 import { computed, Ref, toRaw, unref } from 'vue';
-import { useTimeoutFn } from '@/hooks';
+import { useTimeoutFn } from '@vben/hooks';
 import { uniq } from 'lodash-es';
 import { useMenuSetting } from '@/hooks/setting/useMenuSetting';
 import { getAllParentPath } from '@/router/helper/menuHelper';

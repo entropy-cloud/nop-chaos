@@ -1,6 +1,5 @@
 import { PageEnum } from '/@/enums/pageEnum';
 import { ajaxRequest, useAdapter } from '@nop-chaos/sdk';
-import { URL_HASH_TAB } from '/@/utils';
 
 /**
  * @description: Get user menu based on id
@@ -47,7 +46,7 @@ function transformMenu(resources: any) {
         icon: r.icon,
         url: r.url,
         title: r.displayName,
-        pageComponent: r.component == 'AMIS'
+        pageComponent: r.component == 'AMIS' || r.component == 'XUI'
       },
       children
     }
@@ -57,7 +56,7 @@ function transformMenu(resources: any) {
         // 外部打开
         menu.meta.internalOrExternal = true
         menu.path = menu.meta.url
-        menu.path = menu.path.replace('#', URL_HASH_TAB);
+       // menu.path = menu.path.replace('#', URL_HASH_TAB);
       } else {
         // 内部打开
         menu.meta.frameSrc = menu.meta.url

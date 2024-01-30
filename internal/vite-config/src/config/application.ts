@@ -30,7 +30,7 @@ function defineApplicationConfig(defineOptions: DefineOptions = {}) {
       root,
     );
 
-    const proxyList = JSON.parse(VITE_PROXY || []) || []
+    const proxyList = JSON.parse(VITE_PROXY || "[]") || []
 
     const defineData = await createDefineData(root);
     const plugins = await createPlugins({

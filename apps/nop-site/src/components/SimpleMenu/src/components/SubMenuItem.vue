@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { type TimeoutHandle, type Recordable } from '@/hooks/types';
+  import { type TimeoutHandle, type Recordable } from '@vben/types';
   import type { CSSProperties, PropType } from 'vue';
   import type { SubMenuProvider } from './types';
   import {

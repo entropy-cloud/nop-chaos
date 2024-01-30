@@ -22,13 +22,12 @@
 </style>
 
 <script setup lang="ts">
-import {defineProps} from 'vue';
 import { ElDialog } from 'element-plus';
 import XuiPageEditor  from './XuiPageEditor';
 import {EditorComponentProps} from '@nop-chaos/nop-core'
 
 const props = defineProps<{
-    modelValue: string
+    modelValue: boolean
 } |EditorComponentProps>()
 
 const emit = defineEmits(["update:modelValue", "exit"])

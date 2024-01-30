@@ -7,5 +7,6 @@ packages:
   - 'shells/*'  
   - 'examples/*'  
   - 'apps/*'
+  - 'apps/nop-site/packages/*'
   # exclude packages that are inside test directories
   - '!**/test/**'

@@ -1,11 +1,11 @@
 import { type Menu } from '@/router/types';
-import { type AnyFunction } from './types';
+import { type AnyFunction } from '@vben/types';
 import { ref, onBeforeMount, unref, Ref, nextTick } from 'vue';
 import { getMenus } from '@/router/menus';
 import { cloneDeep } from 'lodash-es';
 import { filter, forEach } from '@/utils/helper/treeHelper';
 import { useGo } from '@/hooks/web/usePage';
-import { useScrollTo } from '@/hooks/useScrollTo';
+import { useScrollTo } from '@vben/hooks';
 import { onKeyStroke, useDebounceFn } from '@vueuse/core';
 import { useI18n } from '@/hooks/web/useI18n';
 

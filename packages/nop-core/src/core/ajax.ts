@@ -256,10 +256,9 @@ function prepareHeaders(config: AxiosRequestConfig, opts: ExtOptions) {
 		//config.headers[ConfigEnum.Sign] = signMd5Utils.getSign(config.url, config.params);
 		//--update-end--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
 		//--update-begin--author:liusq---date:20211105---for: for:将多租户id，添加在请求接口 Header
-		if (!tenantid) {
-			tenantid = '0';
+		if (tenantid) {
+			config.headers[HEADER_TENANT_ID] = tenantid;
 		}
-		config.headers[HEADER_TENANT_ID] = tenantid;
 		//--update-begin--author:liusq---date:20220325---for: 增加vue3标记
 		config.headers[HEADER_VERSION] = globalVersion;
 		//--update-end--author:liusq---date:20220325---for:增加vue3标记

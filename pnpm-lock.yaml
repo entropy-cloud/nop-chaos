@@ -355,8 +355,8 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1(vue@3.4.15)
       '@fortawesome/fontawesome-free':
-        specifier: ^6.1.1
-        version: 6.1.1
+        specifier: ^6.5.1
+        version: 6.5.1
       '@iconify/iconify':
         specifier: ^3.1.1
         version: 3.1.1
@@ -372,6 +372,9 @@ importers:
       '@nop-chaos/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
+      '@vben/hooks':
+        specifier: workspace:*
+        version: link:packages/hooks
       '@vue/runtime-core':
         specifier: ^3.3.11
         version: 3.4.15
@@ -613,6 +616,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^6.5.0
         version: 6.5.0(eslint@8.56.0)(typescript@5.3.3)
+      '@vben/types':
+        specifier: workspace:*
+        version: link:packages/types
       '@vitejs/plugin-react':
         specifier: ^3.1.0
         version: 3.1.0(vite@5.0.8)
@@ -691,6 +697,24 @@ importers:
       vue-tsc:
         specifier: ^1.8.25
         version: 1.8.27(typescript@5.3.3)
+
+  apps/nop-site/packages/hooks:
+    dependencies:
+      '@vueuse/core':
+        specifier: ^10.7.1
+        version: 10.7.1(vue@3.3.4)
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      vue:
+        specifier: 3.3.4
+        version: 3.3.4
+    devDependencies:
+      '@vben/types':
+        specifier: workspace:*
+        version: link:../types
+
+  apps/nop-site/packages/types: {}
 
   examples/workflow-editor-example:
     dependencies:
@@ -5206,6 +5230,12 @@ packages:
     requiresBuild: true
     dev: false
 
+  /@fortawesome/fontawesome-free@6.5.1:
+    resolution: {integrity: sha512-CNy5vSwN3fsUStPRLX7fUYojyuzoEMSXPl7zSLJ8TgtRfjv24LOnOWKT2zYwaHZCJGkdyRnTmstR0P+Ah503Gw==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dev: false
+
   /@humanwhocodes/config-array@0.11.14:
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
@@ -9144,6 +9174,18 @@ packages:
       vue-component-type-helpers: 1.8.27
     dev: true
 
+  /@vueuse/core@10.7.1(vue@3.3.4):
+    resolution: {integrity: sha512-74mWHlaesJSWGp1ihg76vAnfVq9NTv1YT0SYhAQ6zwFNdBkkP+CKKJmVOEHcdSnLXCXYiL5e7MaewblfiYLP7g==}
+    dependencies:
+      '@types/web-bluetooth': 0.0.20
+      '@vueuse/metadata': 10.7.1
+      '@vueuse/shared': 10.7.1(vue@3.3.4)
+      vue-demi: 0.14.6(vue@3.3.4)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
   /@vueuse/core@10.7.1(vue@3.4.15):
     resolution: {integrity: sha512-74mWHlaesJSWGp1ihg76vAnfVq9NTv1YT0SYhAQ6zwFNdBkkP+CKKJmVOEHcdSnLXCXYiL5e7MaewblfiYLP7g==}
     dependencies:
@@ -9180,6 +9222,15 @@ packages:
     resolution: {integrity: sha512-vz5hbAM4qA0lDKmcr2y3pPdU+2EVw/yzfRsBdu+6+USGa4PxqSQRYIUC9/NcT06y+ZgaTsyURw2I9qOFaaXHAg==}
     dependencies:
       vue-demi: 0.14.6(vue@3.4.15)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
+  /@vueuse/shared@10.7.1(vue@3.3.4):
+    resolution: {integrity: sha512-v0jbRR31LSgRY/C5i5X279A/WQjD6/JsMzGa+eqt658oJ75IvQXAeONmwvEMrvJQKnRElq/frzBR7fhmWY5uLw==}
+    dependencies:
+      vue-demi: 0.14.6(vue@3.3.4)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -24943,6 +24994,21 @@ packages:
     dependencies:
       cropperjs: 1.6.1
       vue: 3.4.15(typescript@5.3.3)
+    dev: false
+
+  /vue-demi@0.14.6(vue@3.3.4):
+    resolution: {integrity: sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.3.4
     dev: false
 
   /vue-demi@0.14.6(vue@3.4.15):

@@ -9,20 +9,6 @@ import { XuiPage } from '@nop-chaos/sdk';
 // test
 // http:ip:port/main-out
 export const mainOutRoutes: AppRouteModule[] = [
-  {
-    path: '/amis/:path(.*\.page\.yaml)',
-    name: 'default-page',
-    component: XuiPage,
-    meta: {
-      title: 'Page',
-      hideMenu: true,
-      hideBreadcrumb: true,
-    },
-
-    props: (route) => {
-      return { path: '/' + route.params.path }
-    }
-  },
 
   {
     path: '/pages/',

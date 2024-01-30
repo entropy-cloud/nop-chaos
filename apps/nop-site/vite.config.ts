@@ -56,7 +56,7 @@ export default defineApplicationConfig({
             //      return "vendor";
             //    }
             if (id.includes('/nop-site/src/') && !id.includes('/.pnpm/')) {
-              console.log('nop-site,id=:' + id);
+              //console.log('nop-site,id=:' + id);
               return 'nop-site';
             }
             //console.log("app,id="+id);

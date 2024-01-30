@@ -20,7 +20,7 @@ export type EditorComponentProps = {
 }
 
 export type SchemaProcessorType = {
-    renderSchema(props: SchemaComponentProps): Promise<VDomType> | VDomType,
+    renderPageSchema(props: SchemaComponentProps): Promise<VDomType> | VDomType,
     renderEditor(props: EditorComponentProps, onExit: () => void): Promise<VDomType> | VDomType,
 
     transformSchemaIn?(schema: any): any

@@ -32,6 +32,7 @@
     "react-dom": "^18.2.0",
     "veaury": "^2.3.12",
     "lodash-es": "^4.17.12",
+    "@vben/hooks": "workspace:*",
 
     "@ant-design/colors": "^7.0.0",
     "@ant-design/icons-vue": "^7.0.1",
@@ -100,6 +101,7 @@
     "@nop-chaos/stylelint-config": "workspace:*",
     "@nop-chaos/ts-config": "workspace:*",
     "@nop-chaos/vite-config": "workspace:*",
+    "@vben/types": "workspace:*",
     
     "@babel/plugin-syntax-decorators": "^7.23.3",
     "@babel/plugin-proposal-class-properties": "^7.4.4",

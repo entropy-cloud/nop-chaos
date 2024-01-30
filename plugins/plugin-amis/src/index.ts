@@ -8,7 +8,7 @@ import AmisVueComponent from './AmisVueComponent'
 import { registerAdapter, registerModule, registerSchemaProcessorType } from "@nop-chaos/sdk"
 import { alert, confirm, toast, ToastLevel, ToastConf, dataMapping } from 'amis'
 
-import { createElement } from 'react'
+import { h } from 'vue'
 import type { SchemaProcessorType } from "@nop-chaos/sdk"
 
 registerAdapter({
@@ -26,12 +26,12 @@ registerAdapter({
 })
 
 const AmisSchemaType: SchemaProcessorType = {
-    renderSchema(props: SchemaComponentProps) {
-        return createElement(AmisSchemaPage, props)
+    renderPageSchema(props: SchemaComponentProps) {
+        return h(AmisSchemaPage, {...props})
     },
 
     renderEditor(props: EditorComponentProps, onExit: () => void) {
-        return createElement(AmisPageEditor, { ...props, "onExit": onExit })
+        return h(AmisPageEditor, { ...props, "onExit": onExit })
     }
 }
 
