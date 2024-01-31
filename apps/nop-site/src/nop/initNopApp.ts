@@ -35,7 +35,6 @@ import projectSetting from '/@/settings/projectSetting';
 import {Store} from 'pinia'
 
 const currentLocale = useLocale().getLocale
-const i18n = useI18n()
 
 const {getPage} = useAdapter()
 
@@ -50,7 +49,7 @@ function initAdapter(app: App) {
 
         useI18n() {
             return {
-                t: i18n.t
+                t: useI18n().t
             }
         },
 

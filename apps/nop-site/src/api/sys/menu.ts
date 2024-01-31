@@ -38,8 +38,8 @@ function transformMenu(resources: any) : AppRouteRecordRaw[]|undefined{
       //id: r.id,
       name: getRouteName(r.routePath),
       path: r.routePath,
-      //component: r.component,
-      //redirect: children && children.length ? children[0].path : undefined,
+      component: r.component == 'AMIS' ? 'XUI' : r.component,
+      redirect: children && children.length ? children[0].path : undefined,
       //route: r.routePath ? "1" : "0",
       meta: {
         ...r.meta,
@@ -96,11 +96,11 @@ function fixHomePath(menus: any) {
       path: PageEnum.BASE_HOME,
       component: "layouts/default/index",
       redirect: path,
-      hidden: true,
       name: "dashboard-analysis",
       id: "9502685863ab87f0ad1134142788a385",
       meta: {
-        affix: false
+        affix: false,
+        hideMenu: true,
       }
     })
   }

@@ -1,7 +1,7 @@
 <template>
   <RouterView>
     <template #default="{ Component, route }">
-      <transition
+      <!-- <transition
         :name="
           getTransitionName({
             route,
@@ -13,12 +13,12 @@
         "
         mode="out-in"
         appear
-      >
+      > -->
         <keep-alive v-if="openCache" :include="getCaches">
           <component :is="Component" :key="route.fullPath" />
         </keep-alive>
         <component v-else :is="Component" :key="route.fullPath" />
-      </transition>
+      <!-- </transition> -->
     </template>
   </RouterView>
   <FrameLayout v-if="getCanEmbedIFramePage" />
