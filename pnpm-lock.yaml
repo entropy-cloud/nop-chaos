@@ -7,13 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@vitejs/plugin-react-swc':
-        specifier: ^3.0.0
-        version: 3.0.0(vite@5.0.10)
-      vite:
-        specifier: ^5.0.10
-        version: 5.0.10(@types/node@18.11.13)(less@4.2.0)(sass@1.69.7)
     devDependencies:
       '@changesets/cli':
         specifier: ^2.26.0
@@ -28,10 +21,10 @@ importers:
         specifier: ^18.11.13
         version: 18.11.13
       '@types/react':
-        specifier: ^18.2.22
+        specifier: ^18.2.0
         version: 18.2.22
       '@types/react-dom':
-        specifier: ^18.2.7
+        specifier: ^18.2.0
         version: 18.2.7
       '@types/react-router-dom':
         specifier: ^5.3.3
@@ -63,6 +56,9 @@ importers:
       unbuild:
         specifier: ^2.0.0
         version: 2.0.0(typescript@5.3.3)
+      vite:
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@18.11.13)(less@4.2.0)(sass@1.69.7)
       vite-plugin-mock:
         specifier: ^2.9.6
         version: 2.9.6(mockjs@1.1.0)(rollup@2.79.1)(vite@5.0.10)
@@ -375,12 +371,6 @@ importers:
       '@vben/hooks':
         specifier: workspace:*
         version: link:packages/hooks
-      '@vue/runtime-core':
-        specifier: ^3.3.11
-        version: 3.4.15
-      '@vue/shared':
-        specifier: ^3.3.11
-        version: 3.4.15
       '@vueuse/core':
         specifier: ^10.7.1
         version: 10.7.1(vue@3.4.15)
@@ -403,8 +393,8 @@ importers:
         specifier: ^3.6.4
         version: 3.6.4(@types/react@18.2.22)(amis-core@3.6.4)(amis-formula@3.6.4)(react-dom@18.2.0)(react@18.2.0)
       ant-design-vue:
-        specifier: ^4.0.8
-        version: 4.0.8(vue@3.4.15)
+        specifier: ^4.1.2
+        version: 4.1.2(vue@3.4.15)
       axios:
         specifier: ^1.6.4
         version: 1.6.6
@@ -715,6 +705,28 @@ importers:
         version: link:../types
 
   apps/nop-site/packages/types: {}
+
+  examples/ant-design-vue-example:
+    dependencies:
+      ant-design-vue:
+        specifier: ^4.1.2
+        version: 4.1.2(vue@3.4.15)
+      vue:
+        specifier: ^3.3.11
+        version: 3.4.15(typescript@5.3.3)
+    devDependencies:
+      '@vitejs/plugin-vue':
+        specifier: ^4.5.2
+        version: 4.5.2(vite@5.0.10)(vue@3.4.15)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@18.11.13)(less@4.2.0)(sass@1.69.7)
+      vue-tsc:
+        specifier: ^1.8.27
+        version: 1.8.27(typescript@5.3.3)
 
   examples/workflow-editor-example:
     dependencies:
@@ -6825,133 +6837,6 @@ packages:
       - supports-color
     dev: false
 
-  /@swc/core-darwin-arm64@1.3.104:
-    resolution: {integrity: sha512-rCnVj8x3kn6s914Adddu+zROHUn6mUEMkNKUckofs3W9OthNlZXJA3C5bS2MMTRFXCWamJ0Zmh6INFpz+f4Tfg==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@swc/core-darwin-x64@1.3.104:
-    resolution: {integrity: sha512-LBCWGTYkn1UjyxrmcLS3vZgtCDVhwxsQMV7jz5duc7Gas8SRWh6ZYqvUkjlXMDX1yx0uvzHrkaRw445+zDRj7Q==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@swc/core-linux-arm-gnueabihf@1.3.104:
-    resolution: {integrity: sha512-iFbsWcx0TKHWnFBNCuUstYqRtfkyBx7FKv5To1Hx14EMuvvoCD/qUoJEiNfDQN5n/xU9g5xq4RdbjEWCFLhAbA==}
-    engines: {node: '>=10'}
-    cpu: [arm]
-    os: [linux]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@swc/core-linux-arm64-gnu@1.3.104:
-    resolution: {integrity: sha512-1BIIp+nUPrRHHaJ35YJqrwXPwYSITp5robqqjyTwoKGw2kq0x+A964kpWul6v0d7A9Ial8fyH4m13eSWBodD2A==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [linux]
-    libc: [glibc]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@swc/core-linux-arm64-musl@1.3.104:
-    resolution: {integrity: sha512-IyDNkzpKwvLqmRwTW+s8f8OsOSSj1N6juZKbvNHpZRfWZkz3T70q3vJlDBWQwy8z8cm7ckd7YUT3eKcSBPPowg==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [linux]
-    libc: [musl]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@swc/core-linux-x64-gnu@1.3.104:
-    resolution: {integrity: sha512-MfX/wiRdTjE5uXHTDnaX69xI4UBfxIhcxbVlMj//N+7AX/G2pl2UFityfVMU2HpM12BRckrCxVI8F/Zy3DZkYQ==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [linux]
-    libc: [glibc]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@swc/core-linux-x64-musl@1.3.104:
-    resolution: {integrity: sha512-5yeILaxA31gGEmquErO8yxlq1xu0XVt+fz5mbbKXKZMRRILxYxNzAGb5mzV41r0oHz6Vhv4AXX/WMCmeWl+HkQ==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [linux]
-    libc: [musl]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@swc/core-win32-arm64-msvc@1.3.104:
-    resolution: {integrity: sha512-rwcImsYnWDWGmeESG0XdGGOql5s3cG5wA8C4hHHKdH76zamPfDKKQFBsjmoNi0f1IsxaI9AJPeOmD4bAhT1ZoQ==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@swc/core-win32-ia32-msvc@1.3.104:
-    resolution: {integrity: sha512-ICDA+CJLYC7NkePnrbh/MvXwDQfy3rZSFgrVdrqRosv9DKHdFjYDnA9++7ozjrIdFdBrFW2NR7pyUcidlwhNzA==}
-    engines: {node: '>=10'}
-    cpu: [ia32]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@swc/core-win32-x64-msvc@1.3.104:
-    resolution: {integrity: sha512-fZJ1Ju62U4lMZVU+nHxLkFNcu0hG5Y0Yj/5zjrlbuX5N8J5eDndWAFsVnQhxRTZqKhZB53pvWRQs5FItSDqgXg==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@swc/core@1.3.104:
-    resolution: {integrity: sha512-9LWH/qzR/Pmyco+XwPiPfz59T1sryI7o5dmqb593MfCkaX5Fzl9KhwQTI47i21/bXYuCdfa9ySZuVkzXMirYxA==}
-    engines: {node: '>=10'}
-    requiresBuild: true
-    peerDependencies:
-      '@swc/helpers': ^0.5.0
-    peerDependenciesMeta:
-      '@swc/helpers':
-        optional: true
-    dependencies:
-      '@swc/counter': 0.1.2
-      '@swc/types': 0.1.5
-    optionalDependencies:
-      '@swc/core-darwin-arm64': 1.3.104
-      '@swc/core-darwin-x64': 1.3.104
-      '@swc/core-linux-arm-gnueabihf': 1.3.104
-      '@swc/core-linux-arm64-gnu': 1.3.104
-      '@swc/core-linux-arm64-musl': 1.3.104
-      '@swc/core-linux-x64-gnu': 1.3.104
-      '@swc/core-linux-x64-musl': 1.3.104
-      '@swc/core-win32-arm64-msvc': 1.3.104
-      '@swc/core-win32-ia32-msvc': 1.3.104
-      '@swc/core-win32-x64-msvc': 1.3.104
-    dev: false
-
-  /@swc/counter@0.1.2:
-    resolution: {integrity: sha512-9F4ys4C74eSTEUNndnER3VJ15oru2NumfQxS8geE+f3eB5xvfxpWyqE5XlVnxb/R14uoXi6SLbBwwiDSkv+XEw==}
-    dev: false
-
-  /@swc/types@0.1.5:
-    resolution: {integrity: sha512-myfUej5naTBWnqOCc/MdVOLVjXUXtIA+NpDrDBKJtLLg2shUjBu3cZmB/85RyitKc55+lUUyl7oRfLOvkr2hsw==}
-    dev: false
-
   /@sxzz/popperjs-es@2.11.7:
     resolution: {integrity: sha512-Ccy0NlLkzr0Ex2FKvh2X+OyERHXJ88XJ1MXtsI9y9fGexlaXaVTPzBCRBwIxFkORuOb+uBqeu+RqnpgYTEZRUQ==}
     dev: false
@@ -8774,17 +8659,6 @@ packages:
       - rollup
     dev: true
 
-  /@vitejs/plugin-react-swc@3.0.0(vite@5.0.10):
-    resolution: {integrity: sha512-vYlodz/mjYRbxMGbHzDgR8aPR+z8n7K/enWkyBGH096xrL2DIPCuTvQVRYPTXGyy6wO7OFiMxZ3r4nKQD1sH0A==}
-    peerDependencies:
-      vite: ^4.0.0
-    dependencies:
-      '@swc/core': 1.3.104
-      vite: 5.0.10(@types/node@18.11.13)(less@4.2.0)(sass@1.69.7)
-    transitivePeerDependencies:
-      - '@swc/helpers'
-    dev: false
-
   /@vitejs/plugin-react@3.0.0(vite@5.0.8):
     resolution: {integrity: sha512-1mvyPc0xYW5G8CHQvJIJXLoMjl5Ct3q2g5Y2s6Ccfgwm45y48LBvsla7az+GkkAtYikWQ4Lxqcsq5RHLcZgtNQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -10057,6 +9931,38 @@ packages:
       vue: 3.4.15(typescript@5.3.3)
       vue-types: 3.0.2(vue@3.4.15)
       warning: 4.0.3
+    dev: true
+
+  /ant-design-vue@4.1.2(vue@3.4.15):
+    resolution: {integrity: sha512-ynFkDJLlHgumeK6Hr1UZ7PvQNZ1uBcri/pmejBdS3kRqHeA5VRsxneYDwa8YxA+uYB5YfT2jpYsSHsiMiCjRGg==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      vue: '>=3.2.0'
+    dependencies:
+      '@ant-design/colors': 6.0.0
+      '@ant-design/icons-vue': 7.0.1(vue@3.4.15)
+      '@babel/runtime': 7.23.8
+      '@ctrl/tinycolor': 3.6.1
+      '@emotion/hash': 0.9.1
+      '@emotion/unitless': 0.8.1
+      '@simonwep/pickr': 1.8.2
+      array-tree-filter: 2.1.0
+      async-validator: 4.2.5
+      csstype: 3.1.3
+      dayjs: 1.11.10
+      dom-align: 1.12.4
+      dom-scroll-into-view: 2.0.1
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      resize-observer-polyfill: 1.5.1
+      scroll-into-view-if-needed: 2.2.31
+      shallow-equal: 1.2.1
+      stylis: 4.3.1
+      throttle-debounce: 5.0.0
+      vue: 3.4.15(typescript@5.3.3)
+      vue-types: 3.0.2(vue@3.4.15)
+      warning: 4.0.3
+    dev: false
 
   /antd@5.5.0(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-/9ZJPsTDUmh+n+A+T0mGJQfbzHB7elpI0hBlUYq6Pshld65VHwaodgVBe33KXKmM9MdmHj+V8fPg1SB8S4LoGA==}

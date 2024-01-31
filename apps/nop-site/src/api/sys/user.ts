@@ -101,8 +101,17 @@ export function getUserInfo() {
     return mockUser
   }
 
+   /**
+    *  userId: string | number;
+  username: string;
+  realName: string;
+  avatar: string;
+  desc?: string;
+  homePath?: string;
+  roles: RoleInfo[];
+    */
   return ajaxRequest({
-    url: '@query:LoginApi__getLoginUserInfo/username:userName,realname:nickName',
+    url: '@query:LoginApi__getLoginUserInfo/username:userName,realName:nickName,avatar,homePath,roles:roleInfos{value:roleId,roleName}',
     data: {
       accessToken: getToken()
     }

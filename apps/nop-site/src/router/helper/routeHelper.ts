@@ -6,6 +6,8 @@ import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
 
+import {XuiPage} from '@nop-chaos/sdk'
+
 export type LayoutMapKey = 'LAYOUT';
 const IFRAME = () => import('@/views/sys/iframe/FrameBlank.vue');
 
@@ -14,6 +16,7 @@ const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>();
 LayoutMap.set('LAYOUT', LAYOUT);
 LayoutMap.set('IFRAME', IFRAME);
 
+LayoutMap.set("XUI", XuiPage)
 let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
 // Dynamic introduction
@@ -24,6 +27,13 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
     if (!item.component && item.meta?.frameSrc) {
       item.component = 'IFRAME';
     }
+    // // update-begin--author:canonical---date:20221003---for:增加Amis适配
+    if(item.component == 'XUI'){
+      item.props = {
+        path: item.meta.url
+      }
+    }
+    // update-end--author:canonical---date:20221003---for:增加Amis适配
     const { component, name } = item;
     const { children } = item;
     if (component) {

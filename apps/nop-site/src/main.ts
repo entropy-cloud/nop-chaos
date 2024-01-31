@@ -6,6 +6,7 @@ import 'virtual:svg-icons-register';
 import { createApp } from 'vue';
 
 import { registerGlobComp } from '@/components/registerGlobComp';
+import { setupGlobDirectives } from '@/directives';
 import { setupI18n } from '@/locales/setupI18n';
 import { setupErrorHandle } from '@/logics/error-handle';
 import { initAppConfigStore } from '@/logics/initAppConfig';
@@ -50,7 +51,7 @@ async function bootstrap() {
 
   // Register global directive
   // 注册全局指令
- // setupGlobDirectives(app);
+  setupGlobDirectives(app);
 
   // Configure global error handling
   // 配置全局错误处理

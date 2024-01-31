@@ -18,12 +18,12 @@
           v-if="getShowDoc"
         />
         <Menu.Divider v-if="getShowDoc" />
-        <MenuItem
+        <!-- <MenuItem
           v-if="getShowApi"
           key="api"
           :text="t('layout.header.dropdownChangeApi')"
           icon="ant-design:swap-outlined"
-        />
+        /> -->
         <MenuItem
           v-if="getUseLockPage"
           key="lock"
@@ -39,7 +39,7 @@
     </template>
   </Dropdown>
   <LockAction @register="register" />
-  <ChangeApi @register="registerApi" />
+  <!-- <ChangeApi @register="registerApi" /> -->
 </template>
 <script lang="ts" setup>
   import { Dropdown, Menu } from 'ant-design-vue';
@@ -60,7 +60,7 @@
 
   const MenuItem = createAsyncComponent(() => import('./DropMenuItem.vue'));
   const LockAction = createAsyncComponent(() => import('../lock/LockModal.vue'));
-  const ChangeApi = createAsyncComponent(() => import('../ChangeApi/index.vue'));
+  // const ChangeApi = createAsyncComponent(() => import('../ChangeApi/index.vue'));
 
   defineOptions({ name: 'UserDropdown' });
 
@@ -70,7 +70,7 @@
 
   const { prefixCls } = useDesign('header-user-dropdown');
   const { t } = useI18n();
-  const { getShowDoc, getUseLockPage, getShowApi } = useHeaderSetting();
+  const { getShowDoc, getUseLockPage } = useHeaderSetting();
   const userStore = useUserStore();
 
   const getUserInfo = computed(() => {

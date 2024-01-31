@@ -15,6 +15,8 @@ import { MULTIPLE_TABS_KEY } from '@/enums/cacheEnum';
 import projectSetting from '@/settings/projectSetting';
 import { useUserStore } from '@/store/modules/user';
 
+import {clearLocalCache} from '@nop-chaos/sdk'
+
 export interface MultipleTabState {
   cacheTabList: Set<string>;
   tabList: RouteLocationNormalized[];
@@ -85,6 +87,8 @@ export const useMultipleTabStore = defineStore({
       const { currentRoute } = router;
       const route = unref(currentRoute);
       const name = route.name;
+
+      clearLocalCache()
 
       const findTab = this.getCachedTabList.find((item) => item === name);
       if (findTab) {

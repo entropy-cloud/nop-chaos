@@ -27,8 +27,6 @@ import { IconPicker, SvgIcon } from '/@/components/Icon'
 import { useLocale } from '/@/locales/useLocale'
 import { useI18n } from '/@/hooks/web/useI18n'
 import { router } from '/@/router'
-import { store } from '/@/store'
-import { useUserStore } from '/@/store/modules/user'
 import { intersection } from 'lodash-es';
 import type { RoleEnum } from '/@/enums/roleEnum';
 import { getToken } from '/@/utils/auth';
@@ -71,7 +69,7 @@ function initAdapter(app: App) {
          */
         useStore(name:string):Store {
             if(name == 'app-user')
-                return useUserStore(store)
+                return useUserStoreWithOut()
             throw new Error("invalid-store:"+name)
         },
 
@@ -93,11 +91,11 @@ function initAdapter(app: App) {
         },
 
         setAuthToken(token?: string) {
-            useUserStore().setToken(token)
+            useUserStoreWithOut().setToken(token)
         },
 
         isUserInRole(role: string): boolean {
-            const userStore = useUserStore()
+            const userStore = useUserStoreWithOut()
             let roles = role.split(',')
             if (roles.length == 1) {
                 return userStore.getRoleList?.includes(role as RoleEnum);

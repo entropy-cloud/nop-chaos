@@ -1,30 +1,25 @@
-FROM nginx
-MAINTAINER jeecgos@163.com
-VOLUME /tmp
-ENV LANG en_US.UTF-8
-RUN echo "server {  \
-                      listen       80; \
-                      location   /jeecgboot/ { \
-                      proxy_pass              http://jeecg-boot-system:8080/jeecg-boot/; \
-                      proxy_redirect          off; \
-                      proxy_set_header        Host jeecg-boot-system; \
-                      proxy_set_header        X-Real-IP \$remote_addr; \
-                      proxy_set_header        X-Forwarded-For \$proxy_add_x_forwarded_for; \
-                  } \
-                  #解决Router(mode: 'history')模式下，刷新路由地址不能找到页面的问题 \
-                  location / { \
-                     root   /var/www/html/; \
-                      index  index.html index.htm; \
-                      if (!-e \$request_filename) { \
-                          rewrite ^(.*)\$ /index.html?s=\$1 last; \
-                          break; \
-                      } \
-                  } \
-                  access_log  /var/log/nginx/access.log ; \
-              } " > /etc/nginx/conf.d/default.conf \
-    &&  mkdir  -p  /var/www \
-    &&  mkdir -p /var/www/html
-
-ADD dist/ /var/www/html/
+# node 构建
+FROM node:16-alpine as build-stage
+# 署名
+MAINTAINER Adoin 'adoin@qq.com'
+WORKDIR /app
+COPY . ./
+# 设置 node 阿里镜像
+RUN npm config set registry https://registry.npmmirror.com
+# 设置--max-old-space-size
+ENV NODE_OPTIONS=--max-old-space-size=16384
+# 设置阿里镜像、pnpm、依赖、编译
+RUN npm install pnpm -g && \
+    pnpm install --frozen-lockfile && \
+    pnpm build:docker
+# node部分结束
+RUN echo "🎉 编 🎉 译 🎉 成 🎉 功 🎉"
+# nginx 部署
+FROM nginx:1.23.3-alpine as production-stage
+COPY --from=build-stage /app/dist /usr/share/nginx/html/dist
+COPY --from=build-stage /app/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
-EXPOSE 443
+## 将/usr/share/nginx/html/dist/assets/index.js 和/usr/share/nginx/html/dist/_app.config.js中的"$vg_base_url"替换为环境变量中的VG_BASE_URL,$vg_sub_domain 替换成VG_SUB_DOMAIN，$vg_default_user替换成VG_DEFAULT_USER，$vg_default_password替换成VG_DEFAULT_PASSWORD 而后启动nginx
+CMD sed -i "s|__vg_base_url|$VG_BASE_URL|g" /usr/share/nginx/html/dist/assets/entry/index-*.js /usr/share/nginx/html/dist/_app.config.js && \
+    nginx -g 'daemon off;'
+RUN echo "🎉 架 🎉 设 🎉 成 🎉 功 🎉"

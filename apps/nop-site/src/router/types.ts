@@ -33,6 +33,8 @@ export interface Menu {
 
   path: string;
 
+  component?:string
+
   // path contains param, auto assignment.
   paramPath?: string;
 

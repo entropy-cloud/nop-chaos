@@ -1,3 +1,4 @@
+import { AppRouteRecordRaw, Menu } from '@/router/types';
 import { PageEnum } from '/@/enums/pageEnum';
 import { ajaxRequest, useAdapter } from '@nop-chaos/sdk';
 
@@ -8,6 +9,7 @@ import { ajaxRequest, useAdapter } from '@nop-chaos/sdk';
 export const getMenuList = () => {
   if (import.meta.env.VITE_USE_MOCK) {
     // mock模式下总是开启调试功能
+    const {setDebug} = useAdapter().useDebug()
     setDebug(true)
     return import("../../../public/mock/get-menu-result.json").then(d => d.default.menu)
   }
@@ -26,25 +28,26 @@ export const getMenuList = () => {
   })
 };
 
-function transformMenu(resources: any) {
+function transformMenu(resources: any) : AppRouteRecordRaw[]|undefined{
   if (!resources)
     return
 
   return resources.map(r => {
     let children = transformMenu(r.children)
-    let menu = {
-      id: r.id,
+    let menu: AppRouteRecordRaw = {
+      //id: r.id,
       name: getRouteName(r.routePath),
       path: r.routePath,
-      hidden: r.hidden,
-      component: r.component,
-      redirect: children && children.length ? children[0].path : undefined,
-      route: r.routePath ? "1" : "0",
+      //component: r.component,
+      //redirect: children && children.length ? children[0].path : undefined,
+      //route: r.routePath ? "1" : "0",
       meta: {
         ...r.meta,
-        keepAlive: r.keepAlive,
+        ignoreKeepAlive: !r.keepAlive,
         icon: r.icon,
         url: r.url,
+        hideMenu: r.hidden,
+        orderNo: r.orderNo,
         title: r.displayName,
         pageComponent: r.component == 'AMIS' || r.component == 'XUI'
       },
@@ -55,15 +58,15 @@ function transformMenu(resources: any) {
       if (r.target == 'external') {
         // 外部打开
         menu.meta.internalOrExternal = true
-        menu.path = menu.meta.url
+        menu.meta.frameSrc = menu.meta.url as string
        // menu.path = menu.path.replace('#', URL_HASH_TAB);
       } else {
         // 内部打开
-        menu.meta.frameSrc = menu.meta.url
+        menu.meta.frameSrc = menu.meta.url as string
       }
     } else if (!menu.component && menu.meta.url) {
       // 没有指定组件且指定了url，则作为iframe打开
-      menu.meta.frameSrc = menu.meta.url
+      menu.meta.frameSrc = menu.meta.url as string
     }
     return menu
   })

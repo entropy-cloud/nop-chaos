@@ -34,10 +34,10 @@
     <!-- action  -->
     <div :class="`${prefixCls}-action`">
       <AppSearch v-if="getShowSearch" :class="`${prefixCls}-action__item `" />
-
+<!--
       <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
 
-      <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
+      <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" /> -->
 
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
 
@@ -72,7 +72,7 @@
 
   import LayoutMenu from '../menu/index.vue';
   import LayoutTrigger from '../trigger/index.vue';
-  import { ErrorAction, FullScreen, LayoutBreadcrumb, Notify, UserDropDown } from './components';
+  import { FullScreen, LayoutBreadcrumb,  UserDropDown } from './components';
 
   const SettingDrawer = createAsyncComponent(() => import('@/layouts/default/setting/index.vue'), {
     loading: true,
@@ -89,14 +89,13 @@
     getSplit,
     getIsMixMode,
     getMenuWidth,
-    getIsMixSidebar,
+    getIsMixSidebar
   } = useMenuSetting();
-  const { getUseErrorHandle, getShowSettingButton, getSettingButtonPosition } = useRootSetting();
+  const { getShowSettingButton, getSettingButtonPosition } = useRootSetting();
 
   const {
     getHeaderTheme,
     getShowFullScreen,
-    getShowNotice,
     getShowContent,
     getShowBread,
     getShowHeaderLogo,
