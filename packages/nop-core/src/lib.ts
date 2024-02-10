@@ -13,3 +13,5 @@ export * from './scope'
 export * from './schema-type'
 
 export * from './renderer/types'
+
+export * from './locale'

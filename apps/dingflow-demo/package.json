@@ -34,6 +34,8 @@
     "web-vitals": "^3.3.0"
   },
   "devDependencies": {
+    "@nop-chaos/ts-config":"workspace:*",
+    "@nop-chaos/vite-config":"workspace:*",
     "@types/styled-components": "^5.1.26",
     "@types/uuid": "^9.0.2",
     "@types/mockjs": "^1.0.7",
