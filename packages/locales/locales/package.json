@@ -17,7 +17,6 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@nop-chaos/shared": "workspace:*",
     "@nop-chaos/schema": "workspace:*",
     "lodash": "^4.17.21"
   },

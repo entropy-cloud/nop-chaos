@@ -1,4 +1,4 @@
-import { isArray, isPlainObject, isString,isBoolean,isNumber } from "../shared/is-type"
+import { isArray, isPlainObject, isString,isBoolean,isNumber } from "@nop-chaos/nop-shared"
 import { AxiosRequestConfig } from 'axios'
 import { FetcherRequest } from "./types"
 import type { OrderFieldBean, QueryBean, TreeBean } from "./types"

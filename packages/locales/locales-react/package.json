@@ -31,7 +31,6 @@
     "react-router-dom": "^6.8.1"
   },
   "dependencies": {
-    "@nop-chaos/shared": "workspace:*",
     "@nop-chaos/locales": "workspace:*",
     "lodash": "^4.17.21",
     "redux": "^4.2.1",

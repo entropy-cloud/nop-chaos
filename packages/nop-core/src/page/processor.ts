@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { isObject, isArray,isString,isPromise } from "../shared/is-type"
+import { isObject, isArray,isString,isPromise } from "@nop-chaos/nop-shared"
 
 /**
  * 如果返回undefined，表示该节点需要被删除

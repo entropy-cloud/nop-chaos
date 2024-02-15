@@ -1,4 +1,4 @@
-import { createAsyncCache } from '../shared'
+import { createAsyncCache } from '@nop-chaos/nop-shared'
 import { deleteDynamicModules } from '../core'
 import { useAdapter } from '../adapter'
 

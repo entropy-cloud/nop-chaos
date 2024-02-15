@@ -983,9 +983,6 @@ importers:
       '@nop-chaos/schema':
         specifier: workspace:*
         version: link:../../schema
-      '@nop-chaos/shared':
-        specifier: workspace:*
-        version: link:../../shared
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1005,9 +1002,6 @@ importers:
       '@nop-chaos/locales':
         specifier: workspace:*
         version: link:../locales
-      '@nop-chaos/shared':
-        specifier: workspace:*
-        version: link:../../shared
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1045,6 +1039,9 @@ importers:
 
   packages/nop-core:
     dependencies:
+      '@nop-chaos/nop-shared':
+        specifier: workspace:*
+        version: link:../nop-shared
       axios:
         specifier: ^1.6.6
         version: 1.6.6
@@ -1179,6 +1176,9 @@ importers:
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
+      zustand:
+        specifier: ^4.5.0
+        version: 4.5.0(@types/react@18.2.22)(react@18.2.0)
     devDependencies:
       '@nop-chaos/ts-config':
         specifier: workspace:*
@@ -1268,6 +1268,55 @@ importers:
       rimraf:
         specifier: ^3.0.2
         version: 3.0.2
+
+  packages/nop-shared:
+    dependencies:
+      lodash-es:
+        specifier: ^4.17.12
+        version: 4.17.21
+      lru-cache:
+        specifier: ^10.0.1
+        version: 10.1.0
+      path-to-regexp:
+        specifier: ^6.2.1
+        version: 6.2.1
+      qs:
+        specifier: ^6.9.11
+        version: 6.11.2
+      tslib:
+        specifier: ^2.6.2
+        version: 2.6.2
+      uuid:
+        specifier: ^9.0.0
+        version: 9.0.0
+    devDependencies:
+      '@nop-chaos/ts-config':
+        specifier: workspace:*
+        version: link:../../internal/ts-config
+      '@nop-chaos/vite-config':
+        specifier: workspace:*
+        version: link:../../internal/vite-config
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
+      '@types/qs':
+        specifier: ^6.9.11
+        version: 6.9.11
+      '@types/uuid':
+        specifier: ^9.0.0
+        version: 9.0.2
+      typescript:
+        specifier: ^5.2.2
+        version: 5.3.3
+      vite:
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@18.11.13)(less@4.2.0)(sass@1.69.7)
+      vite-plugin-dts:
+        specifier: ^3.7.2
+        version: 3.7.2(@types/node@18.11.13)(rollup@2.79.1)(typescript@5.3.3)(vite@5.0.10)
+      vue-tsc:
+        specifier: ^1.8.25
+        version: 1.8.27(typescript@5.3.3)
 
   packages/nop-vue-core:
     dependencies:
@@ -1473,31 +1522,6 @@ importers:
         specifier: ^1.8.25
         version: 1.8.27(typescript@5.3.3)
 
-  packages/shared:
-    dependencies:
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
-      nanoid:
-        specifier: 4.0.2
-        version: 4.0.2
-    devDependencies:
-      '@nop-chaos/eslint-config-react':
-        specifier: workspace:*
-        version: link:../../internal/eslint-config-react
-      '@nop-chaos/ts-config':
-        specifier: workspace:*
-        version: link:../../internal/ts-config
-      '@nop-chaos/vite-config':
-        specifier: workspace:*
-        version: link:../../internal/vite-config
-      '@types/lodash':
-        specifier: ^4.14.191
-        version: 4.14.191
-      '@types/node':
-        specifier: '*'
-        version: 18.11.13
-
   plugins/plugin-amis:
     dependencies:
       '@nop-chaos/sdk':
@@ -1573,69 +1597,33 @@ importers:
       '@ant-design/icons':
         specifier: ^5.1.4
         version: 5.1.4(react-dom@18.2.0)(react@18.2.0)
-      '@nop-chaos/locales':
+      '@nop-chaos/nop-core':
         specifier: workspace:*
-        version: link:../../packages/locales/locales
-      '@reduxjs/toolkit':
-        specifier: ^1.9.5
-        version: 1.9.5(react@18.2.0)
-      '@types/jest':
-        specifier: ^27.5.2
-        version: 27.5.2
-      '@types/node':
-        specifier: ^16.18.39
-        version: 16.18.39
-      '@types/react':
-        specifier: ^18.2.0
-        version: 18.2.22
-      '@types/react-dom':
-        specifier: ^18.2.0
-        version: 18.2.7
+        version: link:../../packages/nop-core
+      '@nop-chaos/nop-shared':
+        specifier: workspace:*
+        version: link:../../packages/nop-shared
       antd:
         specifier: ^5.3.3
         version: 5.5.0(react-dom@18.2.0)(react@18.2.0)
-      axios:
-        specifier: ^1.4.0
-        version: 1.6.6
       classnames:
         specifier: ^2.3.2
         version: 2.5.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      mockjs:
-        specifier: ^1.1.0
-        version: 1.1.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      react-router-dom:
-        specifier: ^6.9.0
-        version: 6.20.1(react-dom@18.2.0)(react@18.2.0)
-      react-scripts:
-        specifier: ^5.0.1
-        version: 5.0.1(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.23.4)(eslint@8.56.0)(react@18.2.0)(typescript@4.9.5)
-      redux:
-        specifier: ^4.2.1
-        version: 4.2.1
       styled-components:
         specifier: ^6.0.5
         version: 6.0.5(react-dom@18.2.0)(react@18.2.0)
-      typescript:
-        specifier: ^4.9.5
-        version: 4.9.5
-      uuid:
-        specifier: ^9.0.0
-        version: 9.0.0
-      vite-tsconfig-paths:
-        specifier: ^4.0.7
-        version: 4.0.7(typescript@4.9.5)(vite@5.0.10)
-      web-vitals:
-        specifier: ^3.3.0
-        version: 3.3.0
+      zustand:
+        specifier: ^4.5.0
+        version: 4.5.0(@types/react@18.2.22)(react@18.2.0)
     devDependencies:
       '@nop-chaos/eslint-config-react':
         specifier: workspace:*
@@ -1643,12 +1631,21 @@ importers:
       '@nop-chaos/ts-config':
         specifier: workspace:*
         version: link:../../internal/ts-config
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.2.22
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.2.7
       '@types/styled-components':
         specifier: ^5.1.26
         version: 5.1.26
       '@types/uuid':
         specifier: ^9.0.2
         version: 9.0.2
+      typescript:
+        specifier: ^5.2.2
+        version: 5.3.3
 
 packages:
 
@@ -1771,7 +1768,7 @@ packages:
       '@ant-design/colors': 7.0.2
       '@ant-design/icons-svg': 4.3.1
       '@babel/runtime': 7.23.8
-      classnames: 2.5.1
+      classnames: 2.3.2
       rc-util: 5.38.1(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -6432,24 +6429,6 @@ packages:
     dependencies:
       immer: 9.0.21
       react: 17.0.2
-      redux: 4.2.1
-      redux-thunk: 2.4.2(redux@4.2.1)
-      reselect: 4.1.8
-    dev: false
-
-  /@reduxjs/toolkit@1.9.5(react@18.2.0):
-    resolution: {integrity: sha512-Rt97jHmfTeaxL4swLRNPD/zV4OxTes4la07Xc4hetpUW/vc75t5m1ANyxG6ymnEQ2FsLQsoMlYB2vV1sO3m8tQ==}
-    peerDependencies:
-      react: ^16.9.0 || ^17.0.0 || ^18
-      react-redux: ^7.2.1 || ^8.0.2
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-redux:
-        optional: true
-    dependencies:
-      immer: 9.0.21
-      react: 18.2.0
       redux: 4.2.1
       redux-thunk: 2.4.2(redux@4.2.1)
       reselect: 4.1.8
@@ -18288,12 +18267,6 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  /nanoid@4.0.2:
-    resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
-    engines: {node: ^14 || ^16 || >=18}
-    hasBin: true
-    dev: false
-
   /nanomatch@1.2.13:
     resolution: {integrity: sha512-fpoe2T0RbHwBTBUOftAfBPaDEi06ufaUai0mE6Yn1kacc3SnTErfb/h+X94VXzI64rKFHYImXSvdwGGCmwOqCA==}
     engines: {node: '>=0.10.0'}
@@ -22000,104 +21973,6 @@ packages:
       - webpack-plugin-serve
     dev: false
 
-  /react-scripts@5.0.1(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.23.4)(eslint@8.56.0)(react@18.2.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-8VAmEm/ZAwQzJ+GOMLbBsTdDKOpuZh7RPs0UymvBR2vRk4iZWCskjbFnxqjrzoIvlNNRZ3QJFx6/qDSi6zSnaQ==}
-    engines: {node: '>=14.0.0'}
-    hasBin: true
-    peerDependencies:
-      eslint: '*'
-      react: '>= 16'
-      typescript: ^3.2.1 || ^4
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@babel/core': 7.23.7
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.11(react-refresh@0.11.0)(webpack-dev-server@4.15.1)(webpack@5.89.0)
-      '@svgr/webpack': 5.5.0
-      babel-jest: 27.5.1(@babel/core@7.23.7)
-      babel-loader: 8.3.0(@babel/core@7.23.7)(webpack@5.89.0)
-      babel-plugin-named-asset-import: 0.3.8(@babel/core@7.23.7)
-      babel-preset-react-app: 10.0.1
-      bfj: 7.1.0
-      browserslist: 4.22.2
-      camelcase: 6.3.0
-      case-sensitive-paths-webpack-plugin: 2.4.0
-      css-loader: 6.9.1(webpack@5.89.0)
-      css-minimizer-webpack-plugin: 3.4.1(webpack@5.89.0)
-      dotenv: 10.0.0
-      dotenv-expand: 5.1.0
-      eslint: 8.56.0
-      eslint-config-react-app: 7.0.1(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.23.4)(eslint@8.56.0)(jest@27.5.1)(typescript@4.9.5)
-      eslint-webpack-plugin: 3.2.0(eslint@8.56.0)(webpack@5.89.0)
-      file-loader: 6.2.0(webpack@5.89.0)
-      fs-extra: 10.1.0
-      html-webpack-plugin: 5.6.0(webpack@5.89.0)
-      identity-obj-proxy: 3.0.0
-      jest: 27.5.1(ts-node@10.9.1)
-      jest-resolve: 27.5.1
-      jest-watch-typeahead: 1.1.0(jest@27.5.1)
-      mini-css-extract-plugin: 2.7.7(webpack@5.89.0)
-      postcss: 8.4.33
-      postcss-flexbugs-fixes: 5.0.2(postcss@8.4.33)
-      postcss-loader: 6.2.1(postcss@8.4.33)(webpack@5.89.0)
-      postcss-normalize: 10.0.1(browserslist@4.22.2)(postcss@8.4.33)
-      postcss-preset-env: 7.8.3(postcss@8.4.33)
-      prompts: 2.4.2
-      react: 18.2.0
-      react-app-polyfill: 3.0.0
-      react-dev-utils: 12.0.1(eslint@8.56.0)(typescript@4.9.5)(webpack@5.89.0)
-      react-refresh: 0.11.0
-      resolve: 1.22.8
-      resolve-url-loader: 4.0.0
-      sass-loader: 12.6.0(webpack@5.89.0)
-      semver: 7.5.4
-      source-map-loader: 3.0.2(webpack@5.89.0)
-      style-loader: 3.3.4(webpack@5.89.0)
-      tailwindcss: 3.4.1
-      terser-webpack-plugin: 5.3.10(webpack@5.89.0)
-      typescript: 4.9.5
-      webpack: 5.89.0
-      webpack-dev-server: 4.15.1(webpack@5.89.0)
-      webpack-manifest-plugin: 4.1.1(webpack@5.89.0)
-      workbox-webpack-plugin: 6.6.0(webpack@5.89.0)
-    optionalDependencies:
-      fsevents: 2.3.3
-    transitivePeerDependencies:
-      - '@babel/plugin-syntax-flow'
-      - '@babel/plugin-transform-react-jsx'
-      - '@parcel/css'
-      - '@rspack/core'
-      - '@swc/core'
-      - '@types/babel__core'
-      - '@types/webpack'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - eslint-import-resolver-typescript
-      - eslint-import-resolver-webpack
-      - fibers
-      - node-notifier
-      - node-sass
-      - rework
-      - rework-visit
-      - sass
-      - sass-embedded
-      - sockjs-client
-      - supports-color
-      - ts-node
-      - type-fest
-      - uglify-js
-      - utf-8-validate
-      - vue-template-compiler
-      - webpack-cli
-      - webpack-hot-middleware
-      - webpack-plugin-serve
-    dev: false
-
   /react-textarea-autosize@8.3.3(@types/react@18.2.22)(react@18.2.0):
     resolution: {integrity: sha512-2XlHXK2TDxS6vbQaoPbMOfQ8GK7+irc2fVK6QFIcC8GOnH3zI/v481n+j1L0WaPVvKxwesnY93fEfH++sus2rQ==}
     engines: {node: '>=10'}
@@ -25060,6 +24935,14 @@ packages:
       use-isomorphic-layout-effect: 1.1.2(@types/react@18.2.22)(react@18.2.0)
     dev: false
 
+  /use-sync-external-store@1.2.0(react@18.2.0):
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /use@3.1.1:
     resolution: {integrity: sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==}
     engines: {node: '>=0.10.0'}
@@ -26713,4 +26596,24 @@ packages:
     resolution: {integrity: sha512-0VxCNJ7AGOMCWeHVyTrGzUgrK4asT4ml9PEkeGirAkKNYXYzoPJCLvmyfdoOXcjTHPs10OZVMfD1Rwg16AZyYw==}
     dependencies:
       tslib: 2.3.0
+    dev: false
+
+  /zustand@4.5.0(@types/react@18.2.22)(react@18.2.0):
+    resolution: {integrity: sha512-zlVFqS5TQ21nwijjhJlx4f9iGrXSL0o/+Dpy4txAP22miJ8Ti6c1Ol1RLNN98BMib83lmDH/2KmLwaNXpjrO1A==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      '@types/react': '>=16.8'
+      immer: '>=9.0.6'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.22
+      react: 18.2.0
+      use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false

@@ -16,7 +16,7 @@ export interface GraphDesignerSchema extends SchemaType {
 
     mainEditor: SchemaType,
 
-    toolbar?: SchemaCollectionType,
+    toolbar?: SchemaType,
 
     subEditors: {
         [groupName: string]: {

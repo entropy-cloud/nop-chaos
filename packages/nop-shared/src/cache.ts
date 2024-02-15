@@ -1,5 +1,4 @@
 import { LRUCache } from 'lru-cache';
-import type { Options } from 'lru-cache';
 import { cloneDeep } from 'lodash-es';
 
 export type AsyncCacheLoader<T> = (key: string) => Promise<T>;
@@ -10,7 +9,7 @@ export type AsyncCache<T> = {
   clear(): void;
 };
 
-export type AsyncCacheOptions<T> = Options<string, T>;
+export type AsyncCacheOptions<T> = LRUCache.Options<string,any,any>;
 
 export function createAsyncCache<T>(
   options: AsyncCacheOptions<any>

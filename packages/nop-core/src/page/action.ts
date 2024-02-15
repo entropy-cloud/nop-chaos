@@ -16,9 +16,8 @@
  * limitations under the License.
  */
 
-import { isArray, isPlainObject, isPromise, isString } from "../shared/is-type";
+import { isArray, isPlainObject, isPromise, isString,absolutePath } from "@nop-chaos/nop-shared";
 import { BasePage, importModule } from "../core";
-import { absolutePath } from "../shared";
 import { processXuiDirective, processXuiValue } from "./processor";
 
 import { useAdapter } from "../adapter";
