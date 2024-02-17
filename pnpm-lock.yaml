@@ -1600,6 +1600,9 @@ importers:
       '@nop-chaos/nop-core':
         specifier: workspace:*
         version: link:../../packages/nop-core
+      '@nop-chaos/nop-react-core':
+        specifier: workspace:*
+        version: link:../../packages/nop-react-core
       '@nop-chaos/nop-shared':
         specifier: workspace:*
         version: link:../../packages/nop-shared

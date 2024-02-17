@@ -3,6 +3,8 @@ export type UndoManager<T> = {
 
   getCurrentState(): T | null;
 
+  reset():void
+
   beginBatch(): void;
   endBatch(): void;
 
@@ -30,6 +32,14 @@ export function createUndoManager<T>(
 
   const undoStack: T[] = [];
   const redoStack: T[] = [];
+
+  const reset = ()=>{
+    currentState = null;
+    pendingState = null;
+    batchOperation = false;
+    undoStack.length = 0;
+    redoStack.length = 0;
+  }
 
   const saveState = (state: T) => {
     pendingState = state;
@@ -62,7 +72,7 @@ export function createUndoManager<T>(
       undoStack.push(currentState); // 将当前状态加入undo堆栈
       if(undoStack.length > maxHistory)
         undoStack.shift()
-    
+
       //console.log('Redo:', nextState);
     }
   };
@@ -102,6 +112,7 @@ export function createUndoManager<T>(
   return {
     saveState,
     getCurrentState,
+    reset,
     beginBatch,
     endBatch,
     redo,

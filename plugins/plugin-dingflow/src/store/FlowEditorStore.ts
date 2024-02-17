@@ -20,6 +20,13 @@ type SnapshotType = {
 
 const initSchema: FlowEditorSchema = {
   type: 'static',
+  zoom: {
+    initialValue:1,
+    min: 0.1,
+    max: 3,
+    step: 0.1
+  },
+
   mainEditor: {
     type: 'static'
   },
@@ -31,7 +38,13 @@ const initData: DingFlow = {
   wfVersion: 1
 };
 
-export function createFlowEditorStore(): StoreApi<FlowEditorStoreType> {
+export function createFlowEditorStore(
+  flowEditorSchema: FlowEditorSchema,
+  flowData: DingFlow
+): StoreApi<FlowEditorStoreType> {
+  if (!flowEditorSchema) flowEditorSchema = initSchema;
+  if (!flowData) flowData = initData;
+
   const undoManager = createUndoManager<SnapshotType>();
 
   return createStore<FlowEditorStoreType>((set, get) => {
@@ -195,8 +208,8 @@ export function createFlowEditorStore(): StoreApi<FlowEditorStoreType> {
     }
 
     return {
-      flowEditorSchema: initSchema,
-      flowData: initData,
+      flowEditorSchema,
+      flowData,
       canUndo: undoManager.canUndo,
       canRedo: undoManager.canRedo,
       undo,
@@ -210,8 +223,35 @@ export function createFlowEditorStore(): StoreApi<FlowEditorStoreType> {
       cloneCondition,
       moveConditionLeft,
       moveConditionRight,
+      setFlowEditorSchema(flowEditorSchema) {
+        set({ flowEditorSchema });
+      },
+      setFlowData(flowData) {
+        set({ flowData });
+      },
       clear() {
         set({ flowData: initData });
+      },
+      setFlowDataLoader(loader) {
+        set({ flowDataLoader: loader });
+      },
+      setFlowDataSaver(saver) {
+        set({ flowDataSaver: saver });
+      },
+
+      async loadFlowData() {
+        const loader = get().flowDataLoader;
+        if (!loader) return;
+        const flowData = await loader();
+        set({ flowData });
+        undoManager.reset()
+      },
+
+      async saveFlowData(){
+        const saver = get().flowDataSaver
+        if(!saver)
+            return
+        return saver(get().flowData)
       }
     };
   });

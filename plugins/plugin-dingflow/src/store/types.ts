@@ -61,6 +61,13 @@ export type FlowEditorSchema = {
 
   toolbar?: SchemaType;
 
+  zoom: {
+    initialValue: number;
+    min: number;
+    max: number;
+    step: number;
+  };
+
   mainEditor: SchemaType;
 
   subEditors: {
@@ -76,42 +83,56 @@ export type FlowEditorSchema = {
 };
 
 export type FlowEditorStoreType = {
-    flowEditorSchema: FlowEditorSchema;
-    flowData: DingFlow;
-  
-    selectedId?: string; // 当前选中的节点id
-  
-    canRedo(): boolean;
-    canUndo(): boolean;
-    redo(): void;
-    undo(): void;
-  
-    getNode(nodeId: string): DingFlowNode | undefined;
-  
-    selectNode(nodeId?: string): void;
-  
-    removeNode(nodeId: string): void;
-  
-    changeNode(node: DingFlowNode): void;
-  
-    addChild(parent: DingFlowNode, child: DingFlowNode): void;
-  
-    addCondition(parent: DingFlowRouteNode, condition: DingFlowBranchNode): void;
-  
-    cloneCondition(
-      parent: DingFlowRouteNode,
-      condition: DingFlowBranchNode
-    ): void;
-  
-    moveConditionLeft(
-      parent: DingFlowRouteNode,
-      condition: DingFlowBranchNode
-    ): void;
-  
-    moveConditionRight(
-      parent: DingFlowRouteNode,
-      condition: DingFlowBranchNode
-    ): void;
-  
-    clear(): void;
-  };
+  flowEditorSchema: FlowEditorSchema;
+  flowData: DingFlow;
+
+  selectedId?: string; // 当前选中的节点id
+  flowDataLoader: () => Promise<DingFlow>;
+  flowDataSaver: (data: DingFlow) => Promise<any>;
+
+  setFlowDataLoader(loader: () => Promise<DingFlow>): void;
+
+  setFlowDataSaver(saver: (data: DingFlow) => Promise<any>): void;
+
+  canRedo(): boolean;
+  canUndo(): boolean;
+  redo(): void;
+  undo(): void;
+
+  setFlowEditorSchema(flowEditorSchema: FlowEditorSchema): void;
+
+  setFlowData(flowData: DingFlow): void;
+
+  getNode(nodeId: string): DingFlowNode | undefined;
+
+  selectNode(nodeId?: string): void;
+
+  removeNode(nodeId: string): void;
+
+  changeNode(node: DingFlowNode): void;
+
+  addChild(parent: DingFlowNode, child: DingFlowNode): void;
+
+  addCondition(parent: DingFlowRouteNode, condition: DingFlowBranchNode): void;
+
+  cloneCondition(
+    parent: DingFlowRouteNode,
+    condition: DingFlowBranchNode
+  ): void;
+
+  moveConditionLeft(
+    parent: DingFlowRouteNode,
+    condition: DingFlowBranchNode
+  ): void;
+
+  moveConditionRight(
+    parent: DingFlowRouteNode,
+    condition: DingFlowBranchNode
+  ): void;
+
+  clear(): void;
+
+  loadFlowData(): Promise<any>;
+
+  saveFlowData(): Promise<any>;
+};
