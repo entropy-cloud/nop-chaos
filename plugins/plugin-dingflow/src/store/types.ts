@@ -82,30 +82,43 @@ export type FlowEditorSchema = {
   saveApi?: ApiObject;
 };
 
+export type FlowSchema = {
+  nodes: Record<string, SchemaType>;
+};
+
 export type FlowEditorStoreType = {
   flowEditorSchema: FlowEditorSchema;
   flowData: DingFlow;
+  flowSchema: FlowSchema,
+
+  errors: Record<string, string>;
 
   selectedId?: string; // 当前选中的节点id
-  flowDataLoader: () => Promise<DingFlow>;
-  flowDataSaver: (data: DingFlow) => Promise<any>;
+  flowDataLoader?: () => Promise<DingFlow>;
+  flowDataSaver?: (data: DingFlow) => Promise<any>;
 
   setFlowDataLoader(loader: () => Promise<DingFlow>): void;
 
   setFlowDataSaver(saver: (data: DingFlow) => Promise<any>): void;
+
+  setFlowEditorSchema(flowEditorSchema: FlowEditorSchema): void;
+
+  setFlowSchema(flowSchema: FlowSchema): void
+
+  setFlowData(flowData: DingFlow): void;
+
+  setError(nodeId:string, error:string|null): void
 
   canRedo(): boolean;
   canUndo(): boolean;
   redo(): void;
   undo(): void;
 
-  setFlowEditorSchema(flowEditorSchema: FlowEditorSchema): void;
-
-  setFlowData(flowData: DingFlow): void;
-
   getNode(nodeId: string): DingFlowNode | undefined;
 
   selectNode(nodeId?: string): void;
+
+  setError(nodeId: string, error: string | null): void;
 
   removeNode(nodeId: string): void;
 

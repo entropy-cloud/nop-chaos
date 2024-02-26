@@ -1,22 +1,13 @@
-import {
-  CSSProperties,
-  useCallback,
-  useRef,
-  useState,
-  useEffect,
-  useMemo
-} from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { styled } from 'styled-components';
 import { StartNode } from '../nodes/StartNode';
 import { ZoomBar } from './ZoomBar';
 import { SettingsPanel } from './SettingsPanel';
 import { OperationBar } from './OperationBar';
-import { FlowEditorSchema } from '../store/types';
-import { createFlowEditorStore } from '../store';
+
 import { canvasColor } from '../utils/theme-utils';
-import { useRenderContext } from '@nop-chaos/nop-react-core';
-import { useStore } from 'zustand';
+import { useFlowEditorStoreWith } from '../store';
 
 const CanvasContainer = styled.div`
   flex: 1;
@@ -40,6 +31,7 @@ const CanvasInner = styled.div`
   flex: 1;
   transform-origin: 0px 0px;
 `;
+
 function toDecimal(x: number) {
   const f = Math.round(x * 10) / 10;
   return f;
@@ -52,62 +44,23 @@ export interface IPosition {
   scrollTop: number;
 }
 
-export type FlowEditorProps = {
-  schema: FlowEditorSchema;
-  value: any;
-  onChange: (value: any) => void;
-  data: any;
-  className?: string;
-  style?: CSSProperties;
+export type FlowEditorCanvasProps = {};
+
+const DEFAULT_ZOOM_CONFIG = {
+  initialValue: 1,
+  min: 0.1,
+  max: 3,
+  step: 0.1
 };
 
-export function FlowEditorCanvas(props: FlowEditorProps) {
-  const { initApi, saveApi } = props.schema;
-  const data = props.data;
-
-  const renderContext = useRenderContext()!;
-
-  const [store] = useState(() => {
-    const store = createFlowEditorStore(props.schema, props.value);
-    if (initApi) {
-      store.getState().setFlowDataLoader(() => {
-        return Promise.resolve(
-          renderContext.executor(initApi, data, { props, store })
-        );
-      });
-    }
-
-    if (saveApi) {
-      store.getState().setFlowDataSaver(flowData => {
-        return Promise.resolve(
-          renderContext.executor(saveApi, { data: flowData }, { props, store })
-        );
-      });
-    }
-    return store;
-  });
-
-  const loadFlowData = useStore(store, state => state.loadFlowData);
-
-  // 只有初始化时执行一次
-  useEffect(() => {
-    loadFlowData();
-  }, []);
-
+export function FlowEditorCanvas(props: FlowEditorCanvasProps) {
   const [zoom, setZoom] = useState(1);
   const [scrolled, setScrolled] = useState(false);
   const [mousePressedPoint, setMousePressedPoint] = useState<IPosition>();
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  const zoomConfig = useMemo(
-    () =>
-      props.schema.zoom || {
-        initialValue: 1,
-        min: 0.1,
-        max: 3,
-        step: 0.1
-      },
-    [props.schema.zoom]
+  const zoomConfig = useFlowEditorStoreWith(
+    state => state.flowEditorSchema.zoom || DEFAULT_ZOOM_CONFIG
   );
 
   const handleZoomIn = useCallback(() => {

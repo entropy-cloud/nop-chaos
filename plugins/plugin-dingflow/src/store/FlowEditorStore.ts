@@ -7,7 +7,8 @@ import {
   DingFlowNode,
   DingFlowRouteNode,
   FlowEditorSchema,
-  FlowEditorStoreType
+  FlowEditorStoreType,
+  FlowSchema
 } from './types';
 
 import { recursiveProcess, recursiveReducer } from './processor';
@@ -16,12 +17,13 @@ import { createUndoManager, createUuid } from '@nop-chaos/nop-shared';
 
 type SnapshotType = {
   flowData: DingFlow;
+  errors: Record<string, string>;
 };
 
 const initSchema: FlowEditorSchema = {
   type: 'static',
   zoom: {
-    initialValue:1,
+    initialValue: 1,
     min: 0.1,
     max: 3,
     step: 0.1
@@ -40,7 +42,8 @@ const initData: DingFlow = {
 
 export function createFlowEditorStore(
   flowEditorSchema: FlowEditorSchema,
-  flowData: DingFlow
+  flowData: DingFlow,
+  flowSchema: FlowSchema
 ): StoreApi<FlowEditorStoreType> {
   if (!flowEditorSchema) flowEditorSchema = initSchema;
   if (!flowData) flowData = initData;
@@ -51,7 +54,7 @@ export function createFlowEditorStore(
     const t = useTranslate('flowEditor');
 
     const { undo, redo } = undoManager.bindStore(value =>
-      set({ flowData: value.flowData })
+      set({ flowData: value.flowData, errors: value.errors })
     );
 
     function getNode(nodeId: string): DingFlowNode | undefined {
@@ -77,8 +80,28 @@ export function createFlowEditorStore(
       const flowData = get().flowData;
       if (startNode !== flowData.startNode) {
         set({ flowData: { ...flowData, startNode } });
-        undoManager.saveState({ flowData: get().flowData });
+        const state = get();
+        undoManager.saveState({
+          flowData: state.flowData,
+          errors: state.errors
+        });
       }
+    }
+
+    function setError(nodeId: string, error: string | null) {
+      const state = get();
+      const errors = { ...state.errors };
+      if (error) {
+        errors[nodeId] = error;
+      } else {
+        delete errors[nodeId];
+      }
+      set({ errors });
+
+      undoManager.saveState({
+        flowData: state.flowData,
+        errors
+      });
     }
 
     function removeNode(id: string) {
@@ -210,6 +233,8 @@ export function createFlowEditorStore(
     return {
       flowEditorSchema,
       flowData,
+      flowSchema,
+      errors: {},
       canUndo: undoManager.canUndo,
       canRedo: undoManager.canRedo,
       undo,
@@ -223,11 +248,15 @@ export function createFlowEditorStore(
       cloneCondition,
       moveConditionLeft,
       moveConditionRight,
+      setError,
       setFlowEditorSchema(flowEditorSchema) {
         set({ flowEditorSchema });
       },
       setFlowData(flowData) {
         set({ flowData });
+      },
+      setFlowSchema(flowSchema) {
+        set({ flowSchema });
       },
       clear() {
         set({ flowData: initData });
@@ -244,14 +273,13 @@ export function createFlowEditorStore(
         if (!loader) return;
         const flowData = await loader();
         set({ flowData });
-        undoManager.reset()
+        undoManager.reset();
       },
 
-      async saveFlowData(){
-        const saver = get().flowDataSaver
-        if(!saver)
-            return
-        return saver(get().flowData)
+      async saveFlowData() {
+        const saver = get().flowDataSaver;
+        if (!saver) return;
+        return saver(get().flowData);
       }
     };
   });
