@@ -205,7 +205,7 @@ function findAction(fnName: string, fnStack: FnScope[], stackIndex: number, page
  * 将函数的JSON序列化结果固化为指定值
  */
 function wrapFunc(fn: Function, text: string) {
-  const ret = (...args) => fn(...args)
+  const ret = (...args:any) => fn(...args)
   ret.toJSON = () => text
   return ret
 }

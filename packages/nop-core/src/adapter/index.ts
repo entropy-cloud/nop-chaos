@@ -115,6 +115,10 @@ const adapter = {
         throw new Error("not-impl")
     },
 
+    resolveReactComponent(name:string):any{
+        throw new Error("not-impl")
+    },
+
     processRequest(request: any) {
         return request
     },

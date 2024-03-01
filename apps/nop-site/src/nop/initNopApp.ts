@@ -1,5 +1,5 @@
 // 调试器使用了element的组件
-import 'element-plus/dist/index.css'
+import 'element-plus/dist/index.css';
 
 // Amis内置的调试器需要这里的css
 import 'amis/lib/helper.css';
@@ -12,149 +12,160 @@ import 'amis/lib/themes/cxd.css';
 import 'amis-ui/lib/locale/en-US';
 import 'amis-ui/lib/locale/zh-CN';
 
-import '@nop-chaos/sdk/dist/style.css'
+import '@nop-chaos/sdk/dist/style.css';
 
-import {useDebug} from '@nop-chaos/sdk'
+import { useDebug } from '@nop-chaos/sdk';
 
 import type { App } from 'vue';
 
-import { clearLocalCache, importModule, registerAdapter, registerModule, XuiPage,useAdapter,ajaxRequest } from '@nop-chaos/sdk';
+import {
+  clearLocalCache,
+  importModule,
+  registerAdapter,
+  registerModule,
+  XuiPage,
+  useAdapter,
+  ajaxRequest
+} from '@nop-chaos/sdk';
 import { useUserStoreWithOut } from '../store/modules/user';
 import { isArray } from '../utils/is';
 
-import { IconPicker, SvgIcon } from '/@/components/Icon'
+import { IconPicker, SvgIcon } from '/@/components/Icon';
 
-import { useLocale } from '/@/locales/useLocale'
-import { useI18n } from '/@/hooks/web/useI18n'
-import { router } from '/@/router'
+import { useLocale } from '/@/locales/useLocale';
+import { useI18n } from '/@/hooks/web/useI18n';
+import { router } from '/@/router';
 import { intersection } from 'lodash-es';
 import type { RoleEnum } from '/@/enums/roleEnum';
 import { getToken } from '/@/utils/auth';
 import { SessionTimeoutProcessingEnum } from '/@/enums/appEnum';
 import projectSetting from '/@/settings/projectSetting';
-import {Store} from 'pinia'
+import { Store } from 'pinia';
 
-const currentLocale = useLocale().getLocale
+import { install as install_amis } from '@nop-chaos/plugin-amis';
 
-const {getPage} = useAdapter()
+const currentLocale = useLocale().getLocale;
+
+const { getPage } = useAdapter();
 
 function initAdapter(app: App) {
-    registerAdapter({
-        /**
-         * 返回当前的locale
-         */
-        useLocale(): string {
-            return currentLocale.value
-        },
+  registerAdapter({
+    /**
+     * 返回当前的locale
+     */
+    useLocale(): string {
+      return currentLocale.value;
+    },
 
-        useI18n() {
-            return {
-                t: useI18n().t
-            }
-        },
+    useI18n() {
+      return {
+        t: useI18n().t
+      };
+    },
 
-        useDebug(){
-            return useDebug
-        },
+    useDebug() {
+      return useDebug;
+    },
 
-        getPage(path:string){
-             if (import.meta.env.VITE_USE_MOCK)
-                return ajaxRequest({ method: 'get', url: `/mock${path}`, config: { rawResponse: true } })
-            return getPage(path)
-        },
+    getPage(path: string) {
+      if (import.meta.env.VITE_USE_MOCK)
+        return ajaxRequest({ method: 'get', url: `/mock${path}`, config: { rawResponse: true } });
+      return getPage(path);
+    },
 
-        /**
-         * 返回当前的全局store
-         */
-        useStore(name:string):Store {
-            if(name == 'app-user')
-                return useUserStoreWithOut()
-            throw new Error("invalid-store:"+name)
-        },
+    /**
+     * 返回当前的全局store
+     */
+    useStore(name: string): Store {
+      if (name == 'app-user') return useUserStoreWithOut();
+      throw new Error('invalid-store:' + name);
+    },
 
-        useRouter() {
-            return router
-        },
+    useRouter() {
+      return router;
+    },
 
-        useSettings() {
-            return {
-                apiUrl: ''
-            }
-        },
+    useSettings() {
+      return {
+        apiUrl: ''
+      };
+    },
 
-        /**
-         * 返回当前的认证token
-         */
-        useAuthToken(): string {
-            return getToken()
-        },
+    /**
+     * 返回当前的认证token
+     */
+    useAuthToken(): string {
+      return getToken();
+    },
 
-        setAuthToken(token?: string) {
-            useUserStoreWithOut().setToken(token)
-        },
+    setAuthToken(token?: string) {
+      useUserStoreWithOut().setToken(token);
+    },
 
-        isUserInRole(role: string): boolean {
-            const userStore = useUserStoreWithOut()
-            let roles = role.split(',')
-            if (roles.length == 1) {
-                return userStore.getRoleList?.includes(role as RoleEnum);
-            }
-            return (intersection(roles, userStore.getRoleList) as RoleEnum[]).length > 0;
-        },
+    isUserInRole(role: string): boolean {
+      const userStore = useUserStoreWithOut();
+      let roles = role.split(',');
+      if (roles.length == 1) {
+        return userStore.getRoleList?.includes(role as RoleEnum);
+      }
+      return (intersection(roles, userStore.getRoleList) as RoleEnum[]).length > 0;
+    },
 
-        useTenantId(): string {
-            return "" //getTenantId()
-        },
+    useTenantId(): string {
+      return ''; //getTenantId()
+    },
 
-        useAppId(): string {
-            return "nop-chaos"
-        },
+    useAppId(): string {
+      return 'nop-chaos';
+    },
 
-        /**
-         * 自动退出时执行的回调
-         */
-        logout(): void {
-            const userStore = useUserStoreWithOut();
-            userStore.setToken(undefined);
-            if (projectSetting.sessionTimeoutProcessing === SessionTimeoutProcessingEnum.PAGE_COVERAGE) {
-                userStore.setSessionTimeout(true);
-            } else {
-                userStore.logout(true);
-            }
-        },
+    /**
+     * 自动退出时执行的回调
+     */
+    logout(): void {
+      const userStore = useUserStoreWithOut();
+      userStore.setToken(undefined);
+      if (projectSetting.sessionTimeoutProcessing === SessionTimeoutProcessingEnum.PAGE_COVERAGE) {
+        userStore.setSessionTimeout(true);
+      } else {
+        userStore.logout(true);
+      }
+    },
 
-        /**
-         * 根据组件名加载Vue组件
-         */
-        resolveVueComponent(name: string): any {
-            return app.component(name)
-        }
-    })
+    /**
+     * 根据组件名加载Vue组件
+     */
+    resolveVueComponent(name: string): any {
+      return app.component(name);
+    }
+  });
 }
 
 export async function initNopApp(app: App) {
-    initAdapter(app)
+  install_amis();
 
-    app.component("XuiPage", XuiPage)
-    app.component("XUI", XuiPage)
-    app.component("AMIS", XuiPage)
-    app.component("icon-picker", IconPicker)
-    app.component("icon", SvgIcon)
+  initAdapter(app);
 
-    useUserStoreWithOut().$subscribe((mutation) => {
-        // 登录信息变化的时候清空页面缓存和字典缓存
-        if (mutation.events && mutation.events) {
-            if (isArray(mutation.events)) {
-                for (const event of mutation.events) {
-                    if (event.key == 'userInfo') {
-                        clearLocalCache()
-                    }
-                }
-            } else if (mutation.events.key == 'userInfo') {
-                clearLocalCache()
-            }
+  app.component('XuiPage', XuiPage);
+  app.component('XUI', XuiPage);
+  app.component('AMIS', XuiPage);
+  app.component('icon-picker', IconPicker);
+  app.component('icon', SvgIcon);
+
+  useUserStoreWithOut().$subscribe(mutation => {
+    // 登录信息变化的时候清空页面缓存和字典缓存
+    if (mutation.events && mutation.events) {
+      if (isArray(mutation.events)) {
+        for (const event of mutation.events) {
+          if (event.key == 'userInfo') {
+            clearLocalCache();
+          }
         }
-    })
+      } else if (mutation.events.key == 'userInfo') {
+        clearLocalCache();
+      }
+    }
+  });
 
-    await importModule('./nop/app-starter.js')
+  await importModule('./nop/app-starter.js');
 }

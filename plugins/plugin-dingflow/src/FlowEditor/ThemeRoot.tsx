@@ -3,7 +3,7 @@ import { memo, useMemo } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { IThemeToken } from '../theme';
 
-export const ThemeConfig = memo(
+export const ThemeRoot = memo(
   (props: {
     themeMode?: 'dark' | 'light';
     themeToken?: IThemeToken;

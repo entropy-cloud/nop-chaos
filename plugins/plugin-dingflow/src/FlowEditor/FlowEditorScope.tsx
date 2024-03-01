@@ -7,26 +7,27 @@ import { useRenderContext } from '@nop-chaos/nop-react-core';
 import { useStore } from 'zustand';
 
 import { FlowEditorSchema, FlowSchema } from '../store/types';
+import { SchemaType } from '@nop-chaos/nop-core';
+
 export type FlowEditorProps = {
   flowEditorSchema: FlowEditorSchema;
-  flowSchema: FlowSchema,
+  flowSchema: FlowSchema;
 
   value: any;
   onChange: (value: any) => void;
   data: any;
 
   children?: ReactNode;
+
+  body: SchemaType;
+
+  [name:string]: any
 };
 
 export const FlowEditorScope = (props: FlowEditorProps) => {
-  const {
-    children,
-    flowEditorSchema,
-    flowSchema,
-    value
-  } = props;
+  const { children, flowEditorSchema, flowSchema, value, body } = props;
 
-  const {saveApi, initApi} = flowEditorSchema
+  const { saveApi, initApi } = flowEditorSchema;
   const data = props.data;
 
   const renderContext = useRenderContext()!;
@@ -58,5 +59,10 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
     loadFlowData();
   }, []);
 
-  return <StoreApiKey.Provider value={store}>{children}</StoreApiKey.Provider>;
+  return (
+    <StoreApiKey.Provider value={store}>
+      {children}
+      {body && renderContext.render('body', body, {}, { props, store })}
+    </StoreApiKey.Provider>
+  );
 };

@@ -1,20 +1,7 @@
-import { ConfigProvider, theme } from "antd";
-import { memo } from "react"
+import { memo } from 'react';
+import { FlowEditorScope, FlowEditorProps } from './FlowEditorScope';
 
-export const ConfigRoot = memo((
-  props: {
-    themeMode?: 'dark' | 'light',
-    children?: React.ReactNode,
-  }
-) => {
-  const { themeMode, children } = props;
-  return (<ConfigProvider
-    theme={{
-      algorithm: themeMode === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm
-    }}
-  >
-    {
-      children
-    }
-  </ConfigProvider>)
-})
+export const FlowEditor = memo((props: FlowEditorProps) => {
+  const { children, ...rest } = props;
+  return <FlowEditorScope {...rest}>{children}</FlowEditorScope>;
+});
