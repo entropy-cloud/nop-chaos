@@ -13,6 +13,9 @@ export const isFn = isType<(...args: any[]) => any>([
   'AsyncFunction',
   'GeneratorFunction'
 ]);
+
+export const isFunction = isFn
+
 export const isWindow = isType<Window>('Window');
 export const isHTMLElement = (obj: any): obj is HTMLElement => {
   return obj?.['nodeName'] || obj?.['tagName'];

@@ -13,3 +13,5 @@ export * from './schema-type'
 export * from './renderer'
 
 export * from './locale'
+
+export * from './store'

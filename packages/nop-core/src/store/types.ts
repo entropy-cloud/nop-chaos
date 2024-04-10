@@ -26,11 +26,9 @@ export interface StoreApi<T> {
 }
 
 export type StdStoreInitOptions = {
-  inheritAll?: boolean;
+  initState?: { [name: string]: any };
 
-  inheritMapping?: {
-    [name: string]: string;
-  };
+  stateCreator?: (get:any,set:any) => any
 
   /**
    * 封装从父store或者外部环境获取变量值，同步获取
@@ -42,9 +40,9 @@ export type StdStoreInitOptions = {
   /**
    * 指定state中的哪些key对应的值需要保存到远程。如果指定为&&，则保存整个state
    */
-  saveKeys?: string;
+  saveKeys?: string[];
 
-  saveData?(data:any): Promise<any>;
+  saveData?(data: any): Promise<any>;
 };
 
 export type StdStoreState = {
@@ -68,3 +66,10 @@ export type StdStoreState = {
    */
   triggerSave(): Promise<void>;
 };
+
+export type StdStoreApi = StoreApi<StdStoreState>
+
+export type StdStoreCreator = (
+  get: () => any,
+  set: (name: string, value: any) => void
+) => StdStoreState;
