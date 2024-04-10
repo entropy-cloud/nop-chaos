@@ -5,5 +5,5 @@ export type Plugin = {
 
   uninstall(): void;
 
-  renderInApp(): VDomType 
+  renderInMainPage?: () => VDomType 
 };

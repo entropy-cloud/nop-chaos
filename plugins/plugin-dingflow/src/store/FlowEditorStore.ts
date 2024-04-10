@@ -1,6 +1,6 @@
 import { StoreApi, createStore } from 'zustand';
 
-import { useTranslate } from '@nop-chaos/nop-core';
+import { useTranslate, importModule } from '@nop-chaos/nop-core';
 import {
   DingFlow,
   DingFlowBranchNode,
@@ -8,7 +8,7 @@ import {
   DingFlowRouteNode,
   FlowEditorSchema,
   FlowEditorStoreType,
-  FlowSchema
+  FlowEditorMaterial
 } from './types';
 
 import { recursiveProcess, recursiveReducer } from './processor';
@@ -40,10 +40,19 @@ const initData: DingFlow = {
   wfVersion: 1
 };
 
+const initMaterial: FlowEditorMaterial = {
+  nodes: {}
+};
+
+async function loadMaterialLib(path: string): Promise<FlowEditorMaterial> {
+  const lib = await importModule(path);
+  return lib.defaults || lib;
+}
+
 export function createFlowEditorStore(
   flowEditorSchema: FlowEditorSchema,
   flowData: DingFlow,
-  flowSchema: FlowSchema
+  materialLib: string
 ): StoreApi<FlowEditorStoreType> {
   if (!flowEditorSchema) flowEditorSchema = initSchema;
   if (!flowData) flowData = initData;
@@ -52,6 +61,10 @@ export function createFlowEditorStore(
 
   return createStore<FlowEditorStoreType>((set, get) => {
     const t = useTranslate('flowEditor');
+
+    loadMaterialLib(materialLib).then(lib => {
+      set({ flowEditorMaterial: lib });
+    });
 
     const { undo, redo } = undoManager.bindStore(value =>
       set({ flowData: value.flowData, errors: value.errors })
@@ -233,7 +246,7 @@ export function createFlowEditorStore(
     return {
       flowEditorSchema,
       flowData,
-      flowSchema,
+      flowEditorMaterial: initMaterial,
       errors: {},
       canUndo: undoManager.canUndo,
       canRedo: undoManager.canRedo,
@@ -254,9 +267,6 @@ export function createFlowEditorStore(
       },
       setFlowData(flowData) {
         set({ flowData });
-      },
-      setFlowSchema(flowSchema) {
-        set({ flowSchema });
       },
       clear() {
         set({ flowData: initData });

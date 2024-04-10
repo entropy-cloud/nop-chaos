@@ -6,12 +6,12 @@ import { createFlowEditorStore } from '../store';
 import { useRenderContext } from '@nop-chaos/nop-react-core';
 import { useStore } from 'zustand';
 
-import { FlowEditorSchema, FlowSchema } from '../store/types';
-import { SchemaType } from '@nop-chaos/nop-core';
+import { FlowEditorSchema } from '../store/types';
+import { ApiObject, SchemaType } from '@nop-chaos/nop-core';
 
 export type FlowEditorProps = {
   flowEditorSchema: FlowEditorSchema;
-  flowSchema: FlowSchema;
+  materialLib: string;
 
   value: any;
   onChange: (value: any) => void;
@@ -21,23 +21,36 @@ export type FlowEditorProps = {
 
   body: SchemaType;
 
-  [name:string]: any
+  /**
+   * 初始化数据 API
+   */
+  initApi?: ApiObject;
+
+  saveApi?: ApiObject;
+
+  [name: string]: any;
 };
 
 export const FlowEditorScope = (props: FlowEditorProps) => {
-  const { children, flowEditorSchema, flowSchema, value, body } = props;
-
-  const { saveApi, initApi } = flowEditorSchema;
+  const {
+    children,
+    flowEditorSchema,
+    materialLib,
+    value,
+    body,
+    initApi,
+    saveApi
+  } = props;
   const data = props.data;
 
   const renderContext = useRenderContext()!;
 
   const [store] = useState(() => {
-    const store = createFlowEditorStore(flowEditorSchema, value, flowSchema);
+    const store = createFlowEditorStore(flowEditorSchema, value, materialLib);
     if (initApi) {
       store.getState().setFlowDataLoader(() => {
         return Promise.resolve(
-          renderContext.executor(initApi, data, { props, store })
+          renderContext.invokeApi(initApi, data, { props, store })
         );
       });
     }
@@ -45,7 +58,7 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
     if (saveApi) {
       store.getState().setFlowDataSaver(flowData => {
         return Promise.resolve(
-          renderContext.executor(saveApi, { data: flowData }, { props, store })
+          renderContext.invokeApi(saveApi, { data: flowData }, { props, store })
         );
       });
     }

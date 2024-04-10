@@ -24,3 +24,47 @@ export interface StoreApi<T> {
    */
   destroy: () => void;
 }
+
+export type StdStoreInitOptions = {
+  inheritAll?: boolean;
+
+  inheritMapping?: {
+    [name: string]: string;
+  };
+
+  /**
+   * 封装从父store或者外部环境获取变量值，同步获取
+   */
+  getDefaultValue?(name: string): any;
+
+  loadData?(): Promise<any>;
+
+  /**
+   * 指定state中的哪些key对应的值需要保存到远程。如果指定为&&，则保存整个state
+   */
+  saveKeys?: string;
+
+  saveData?(data:any): Promise<any>;
+};
+
+export type StdStoreState = {
+  [name: string]: any;
+
+  getValue(name: string): any;
+  setValue(name: string, value: any): void;
+
+  /**
+   * 将状态变量重置回初始化的值
+   */
+  reset(): void;
+
+  /**
+   * 异步加载数据到store中，每次调用都会重新加载数据
+   */
+  triggerLoad(): Promise<void>;
+
+  /**
+   * 将store中的数据保存到远程
+   */
+  triggerSave(): Promise<void>;
+};

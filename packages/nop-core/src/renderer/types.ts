@@ -9,6 +9,11 @@ export type SchemaType = {
   [propName: string]: any;
 };
 
+/**
+ * Vue或者React的函数式组件
+ */
+export type VComponentType = any;
+
 export type SchemaCollectionType = SchemaType | Array<SchemaType>;
 
 export type VDomType = any;
@@ -32,7 +37,7 @@ export type RenderContext = {
    */
   render: (
     name: string,
-    schema: SchemaType,
+    schema: SchemaCollectionType,
     options: OptionsType,
     ctx: RenderComponentCtx
   ) => VDomType;
@@ -40,7 +45,7 @@ export type RenderContext = {
   /**
    * 动态执行ajax调用，
    */
-  executor: (
+  invokeApi: (
     api: ApiObject,
     data: any,
     ctx: RenderComponentCtx

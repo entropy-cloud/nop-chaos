@@ -1,4 +1,7 @@
-import { SchemaType, ApiObject } from '@nop-chaos/nop-core';
+import {
+  SchemaType,
+  VComponentType
+} from '@nop-chaos/nop-core';
 
 export type DingFlowNodeKind =
   //开始节点
@@ -73,23 +76,16 @@ export type FlowEditorSchema = {
   subEditors: {
     [groupName: string]: SchemaType;
   };
-
-  /**
-   * 初始化数据 API
-   */
-  initApi?: ApiObject;
-
-  saveApi?: ApiObject;
 };
 
-export type FlowSchema = {
-  nodes: Record<string, SchemaType>;
+export type FlowEditorMaterial = {
+  nodes: Record<string, VComponentType>;
 };
 
 export type FlowEditorStoreType = {
   flowEditorSchema: FlowEditorSchema;
   flowData: DingFlow;
-  flowSchema: FlowSchema,
+  flowEditorMaterial: FlowEditorMaterial;
 
   errors: Record<string, string>;
 
@@ -103,11 +99,9 @@ export type FlowEditorStoreType = {
 
   setFlowEditorSchema(flowEditorSchema: FlowEditorSchema): void;
 
-  setFlowSchema(flowSchema: FlowSchema): void
-
   setFlowData(flowData: DingFlow): void;
 
-  setError(nodeId:string, error:string|null): void
+  setError(nodeId: string, error: string | null): void;
 
   canRedo(): boolean;
   canUndo(): boolean;
