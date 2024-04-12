@@ -22,7 +22,6 @@
     "@nop-chaos/nop-vue-core": "workspace:*",
     "@nop-chaos/nop-react-core": "workspace:*",
     "@nop-chaos/nop-vue-react": "workspace:*",
-    "@nop-chaos/nop-graph-designer": "workspace:*",
     "axios": "^1.6.6",
     "lodash-es": "^4.17.12",
     "lru-cache": "^10.0.1",

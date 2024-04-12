@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "set VITE_CJS_TRACE=true & vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {

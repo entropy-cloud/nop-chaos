@@ -32,6 +32,7 @@
   "devDependencies": {
     "@nop-chaos/eslint-config-react": "workspace:*",
     "@nop-chaos/ts-config": "workspace:*",
+    "@nop-chaos/vite-config": "workspace:*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@types/styled-components": "^5.1.26",

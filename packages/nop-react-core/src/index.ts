@@ -10,12 +10,12 @@ export * from './component-scope'
 export * from './store-scope'
 export * from './nop-scope'
 
-export const RenderContextKey = createContext<RenderContext | null>(null);
+export const ReactRenderContextKey = createContext<RenderContext | null>(null);
 
 registerModule('react', React);
 registerModule('react-dom', ReactDom);
 registerModule('zustand', zustand);
 
-export function useRenderContext() {
-  return React.useContext(RenderContextKey);
+export function useReactRenderContext() {
+  return React.useContext(ReactRenderContextKey);
 }

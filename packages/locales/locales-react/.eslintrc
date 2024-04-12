@@ -1,4 +1,0 @@
-{
-  "root": true,
-  "extends": ["@nop-chaos/eslint-config-custom"]
-}

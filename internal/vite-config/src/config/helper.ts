@@ -58,6 +58,6 @@ export function mergeConfigEx(defaults: Record<string, any>, overrides: Record<s
         throw new Error(`Cannot merge config in form of callback`);
     }
     const config = mergeConfigRecursively(defaults, overrides, isRoot ? '' : '.');
-    //console.log("merged-vite-config:", JSON.stringify(config,null,"  "))
+   // console.log("merged-vite-config:", JSON.stringify(config,null,"  "))
     return config
 }

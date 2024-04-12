@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "description": "nop-chaos",
+  "type":"module",
   "scripts": {
     "bootstrap": "pnpm install",
     "preinstall": "npx only-allow pnpm",

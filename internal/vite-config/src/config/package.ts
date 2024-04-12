@@ -24,6 +24,11 @@ function definePackageConfig(defineOptions: DefineOptions = {}) {
           formats: ['es'],
           fileName: () => 'index.mjs',
         },
+        minify:false,
+          terserOptions: {
+            compress: false, // 禁用压缩
+            mangle: false, // 禁用混淆
+          },
         rollupOptions: {
           external: [...Object.keys(dependencies), ...Object.keys(peerDependencies),
             'vue',
