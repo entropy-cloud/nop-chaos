@@ -43,7 +43,7 @@ export class XuiPageEditorButton extends React.Component<XuiPageEditorButtonProp
 
     rollbackPageSource: () => Promise<any>
 
-    constructor(props) {
+    constructor(props:XuiPageEditorButtonProps) {
         super(props)
         this.state = {
             dialogVisible: false
@@ -77,7 +77,7 @@ export class XuiPageEditorButton extends React.Component<XuiPageEditorButtonProp
         }
     }
 
-    render() {
+    override render() {
         const props = this.props;
         const actionSchema: Schema = {
             ...props,

@@ -8,6 +8,8 @@ import AmisVueComponent from './AmisVueComponent';
 import {
   registerAdapter,
   registerModule,
+  SchemaComponentProps,
+  EditorComponentProps,
   registerSchemaProcessorType
 } from '@nop-chaos/sdk';
 import {

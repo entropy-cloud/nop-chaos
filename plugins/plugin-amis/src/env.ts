@@ -31,9 +31,9 @@ export function createEnv(page: PageObject): RenderOptions {
     session: page.id,
     affixOffsetTop: 0,
 
-    fetcher(options: FetcherRequest): Promise<FetcherResult> {
+    fetcher:(options)=>{
       providePage(page)
-      options._page = page
+      (options as any)._page = page
       return ajaxFetch(options) as any
     },
 
