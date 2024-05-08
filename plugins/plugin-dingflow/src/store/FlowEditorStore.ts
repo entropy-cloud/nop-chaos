@@ -1,6 +1,6 @@
 import { StoreApi, createStore } from 'zustand';
 
-import { useTranslate, importModule } from '@nop-chaos/nop-core';
+import { useTranslate, importModule } from '@nop-chaos/sdk';
 import {
   DingFlow,
   DingFlowBranchNode,
@@ -13,7 +13,7 @@ import {
 
 import { recursiveProcess, recursiveReducer } from './processor';
 
-import { createUndoManager, createUuid } from '@nop-chaos/nop-shared';
+import { createUndoManager, createUuid } from '@nop-chaos/sdk';
 
 type SnapshotType = {
   flowData: DingFlow;

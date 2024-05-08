@@ -1,13 +1,13 @@
-import { StoreApiKey } from '@nop-chaos/nop-react-core';
+import { StoreApiKey } from '@nop-chaos/sdk';
 
 import { useState, useEffect, ReactNode } from 'react';
 
 import { createFlowEditorStore } from '../store';
-import { useRenderContext } from '@nop-chaos/nop-react-core';
+import { useRenderContext } from '@nop-chaos/sdk';
 import { useStore } from 'zustand';
 
 import { FlowEditorSchema } from '../store/types';
-import { ApiObject, SchemaType } from '@nop-chaos/nop-core';
+import { ApiObject, SchemaType } from '@nop-chaos/sdk';
 
 export type FlowEditorProps = {
   flowEditorSchema: FlowEditorSchema;

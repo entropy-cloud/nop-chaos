@@ -1,7 +1,7 @@
 import {
   registerRendererComponent,
   unregisterRendererComponent
-} from '@nop-chaos/nop-core';
+} from '@nop-chaos/sdk';
 import { FlowEditor, FlowEditorCanvas } from './FlowEditor';
 
 export * from './store';

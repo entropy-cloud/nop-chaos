@@ -2,6 +2,8 @@ import AmisSchemaPage from './AmisSchemaPage';
 import AmisPageEditor from './AmisPageEditor.vue';
 import AmisToast from './AmisToast.vue';
 
+import './nop-page-scope.tsx'
+
 import { XuiPageEditorButton } from './XuiPageEditorButton';
 
 import AmisVueComponent from './AmisVueComponent';

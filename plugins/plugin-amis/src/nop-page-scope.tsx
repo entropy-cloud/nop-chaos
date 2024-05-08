@@ -40,6 +40,8 @@ class PageScopeComponent extends React.Component<RendererProps, any> {
     if (action.actionType?.startsWith('store:')) {
       const handlerName = action.actionType.substring('store:'.length);
       const handler = store.getState().getValue(handlerName);
+      if(!handler)
+        throw new Error("nop.err.unknown-store-handler:"+handlerName)
       return handler?.(action.mergeData);
     }
     return this.props.onAction?.(e, action, ctx, throwErrors, delegate);

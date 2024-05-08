@@ -1195,15 +1195,9 @@ importers:
       '@ant-design/icons':
         specifier: ^5.1.4
         version: 5.1.4(react-dom@18.2.0)(react@18.2.0)
-      '@nop-chaos/nop-core':
+      '@nop-chaos/sdk':
         specifier: workspace:*
-        version: link:../../packages/nop-core
-      '@nop-chaos/nop-react-core':
-        specifier: workspace:*
-        version: link:../../packages/nop-react-core
-      '@nop-chaos/nop-shared':
-        specifier: workspace:*
-        version: link:../../packages/nop-shared
+        version: link:../../packages/sdk
       antd:
         specifier: ^5.3.3
         version: 5.5.0(react-dom@18.2.0)(react@18.2.0)
@@ -1250,6 +1244,9 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.3.3
+      vite:
+        specifier: ^5.0.10
+        version: 5.0.10(@types/node@18.11.13)(less@4.2.0)(sass@1.69.7)
 
 packages:
 

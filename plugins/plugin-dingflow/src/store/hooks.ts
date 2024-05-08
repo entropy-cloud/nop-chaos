@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { FlowEditorStoreType } from './types';
 import { StoreApi, useStore } from 'zustand';
 
-import { StoreApiKey } from '@nop-chaos/nop-react-core';
+import { StoreApiKey } from '@nop-chaos/sdk';
 
 export function useFlowEditorStore(): StoreApi<FlowEditorStoreType> {
   return useContext(StoreApiKey)!;
