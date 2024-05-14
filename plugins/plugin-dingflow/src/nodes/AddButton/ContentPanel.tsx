@@ -15,10 +15,10 @@ export const ContentPanel = memo(
     const getNode = useFlowEditorStoreWith(state => state.getNode);
     const node = getNode(nodeId)!;
     
-    const editorStore = useEditorEngine();
+    //const editorStore = useEditorEngine();
     return (
       <Container className="add-node-content">
-        {editorStore?.materials
+        {/* {editorStore?.materials
           ?.filter(material => !material.hidden)
           .map((material, index) => {
             return (
@@ -29,7 +29,7 @@ export const ContentPanel = memo(
                 onClick={() => onClickMaterial(node)}
               />
             );
-          })}
+          })} */}
       </Container>
     );
   }

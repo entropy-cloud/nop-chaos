@@ -1,5 +1,5 @@
-import { useRenderContext } from '@nop-chaos/nop-react-core';
-import { DingFlowNode, useFlowEditorStoreWith } from '../store';
+import { useReactRenderContext } from '@nop-chaos/sdk';
+import { DingFlowNode, useFlowEditorStoreWith, useFlowEditorStore } from '../store';
 import { styled } from 'styled-components';
 
 import { lineColor, canvasColor, nodeColor } from '../utils/theme-utils';
@@ -109,9 +109,10 @@ type NodeContentProps = {
 };
 
 export function NodeRenderer(props: NodeContentProps) {
-  const { render } = useRenderContext()!;
-  const flowSchema = useFlowEditorStoreWith(state => state.flowSchema);
-  const schema = flowSchema.nodes[props.node.nodeType];
+  const { render } = useReactRenderContext()!;
+  const flowSchema = useFlowEditorStoreWith(state => state.flowEditorSchema);
+  const schema = flowSchema.subEditors[props.node.nodeType];
+  const store = useFlowEditorStore()
 
-  return <>{render('node', schema, { node: props.node }, props)}</>;
+  return <>{render('node', schema, { node: props.node }, {store,props})}</>;
 }

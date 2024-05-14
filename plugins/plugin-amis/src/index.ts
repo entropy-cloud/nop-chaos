@@ -24,6 +24,7 @@ import {
 } from 'amis';
 
 import { h } from 'vue';
+import { transformSchemaFromStdAmis, transformSchemaToStdAmis} from './amis-json-transform'
 import type { SchemaProcessorType } from '@nop-chaos/sdk';
 
 const AmisSchemaType: SchemaProcessorType = {
@@ -33,7 +34,10 @@ const AmisSchemaType: SchemaProcessorType = {
 
   renderEditor(props: EditorComponentProps, onExit: () => void) {
     return h(AmisPageEditor, { ...props, onExit: onExit });
-  }
+  },
+
+  transformSchemaIn: transformSchemaToStdAmis,
+  transformSchemaOut: transformSchemaFromStdAmis
 };
 
 export function install() {

@@ -10,6 +10,8 @@
     "postinstall": "turbo run stub",
 
     "build": "turbo run build",
+    "build:sdk": "turbo build --filter=@nop-chaos/sdk",
+    "build:plugin-dingflow": "turbo build --filter=@nop-chaos/plugin-dingflow",
     "dev": "turbo run dev --parallel",
     "nop-dingflow": "turbo run dev --filter=dingflow-demo",
     "lint": "turbo run lint",

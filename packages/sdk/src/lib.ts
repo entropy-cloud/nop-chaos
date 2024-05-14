@@ -1,3 +1,5 @@
+export * from '@nop-chaos/nop-shared'
+
 export * from '@nop-chaos/nop-core'
 
 export * from '@nop-chaos/nop-vue-core'

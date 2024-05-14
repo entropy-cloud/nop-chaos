@@ -1034,6 +1034,9 @@ importers:
       '@nop-chaos/nop-react-core':
         specifier: workspace:*
         version: link:../nop-react-core
+      '@nop-chaos/nop-shared':
+        specifier: workspace:*
+        version: link:../nop-shared
       '@nop-chaos/nop-vue-core':
         specifier: workspace:*
         version: link:../nop-vue-core

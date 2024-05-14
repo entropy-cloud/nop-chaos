@@ -1,18 +1,13 @@
 import { memo, useCallback } from "react"
-import { IWorkFlowNode } from "../interfaces"
 import { RightOutlined } from "@ant-design/icons"
 import { AddButton } from "./AddButton"
 import { ChildNode } from "./ChildNode"
 import { styled } from "styled-components"
-import { canvasColor } from "../utils/canvasColor"
-import { lineColor } from "../utils/lineColor"
-import { nodeColor } from "../utils/nodeColor"
-import { useTranslate } from "../react-locales"
-import { useEditorEngine } from "../hooks"
-import { NodeTitle } from "./NodeTitle"
-import { useNodeMaterial } from "../hooks/useNodeMaterial"
-import { useMaterialUI } from "../hooks/useMaterialUI"
+import { lineColor,nodeColor,canvasColor } from "../utils/theme-utils"
 import { ErrorTip } from "./ErrorTip"
+import { DingFlowNode, useFlowEditorStoreWith } from "../store"
+import  { useTranslate} from '@nop-chaos/sdk'
+import { NodeTitle } from "./NodeTitle"
 
 export const NodeWrap = styled.div`
   display: flex;
@@ -114,18 +109,18 @@ export const NodeContent = styled.div`
 `
 export const NormalNode = memo((
   props: {
-    node: IWorkFlowNode
+    node: DingFlowNode
   }
 ) => {
   const { node } = props
   const t = useTranslate()
-  const material = useNodeMaterial(node)
-  const materialUi = useMaterialUI(node)
-  const store = useEditorEngine();
+  const material = {} //useNodeMaterial(node)
+  const materialUi:any = {} // useMaterialUI(node)
+  const selectNode = useFlowEditorStoreWith(state=> state.selectNode)
 
   const handleClick = useCallback(() => {
-    store?.selectNode(node?.id)
-  }, [node?.id, store])
+    selectNode(node?.id)
+  }, [node?.id])
 
   return (
     <NodeWrap className="node-wrap">

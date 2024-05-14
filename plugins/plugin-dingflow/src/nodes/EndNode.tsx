@@ -1,4 +1,4 @@
-import { useTranslate } from "@nop-chaos/nop-core"
+import { useTranslate } from "@nop-chaos/sdk"
 import { memo } from "react"
 import { styled } from "styled-components"
 

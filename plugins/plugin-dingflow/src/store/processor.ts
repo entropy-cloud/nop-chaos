@@ -1,4 +1,4 @@
-import { arrayEquals } from '@nop-chaos/nop-shared';
+import { arrayEquals } from '@nop-chaos/sdk';
 import { DingFlowBranchNode, DingFlowNode, DingFlowRouteNode } from './types';
 
 export type NodeProcessor = (node: DingFlowNode) => boolean;

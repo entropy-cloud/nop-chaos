@@ -1,7 +1,7 @@
 import {
   SchemaType,
   VComponentType
-} from '@nop-chaos/nop-core';
+} from '@nop-chaos/sdk';
 
 export type DingFlowNodeKind =
   //开始节点

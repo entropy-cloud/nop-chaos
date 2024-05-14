@@ -2,10 +2,9 @@ import { useCallback } from "react"
 import { CloseOutlined } from "@ant-design/icons"
 import { styled } from "styled-components"
 import { Button, Tooltip } from "antd"
-import { useEditorEngine } from "../../hooks"
 import { copyIcon } from "../../icons"
-import { useTranslate } from "../../react-locales"
-import { IRouteNode, IBranchNode } from "../../interfaces"
+import { useTranslate } from "@nop-chaos/sdk"
+import { DingFlowRouteNode,DingFlowBranchNode, useFlowEditorStoreWith } from "../../store"
 
 const Container = styled.div`
   position: absolute;
@@ -18,21 +17,21 @@ const Container = styled.div`
 
 export const ConditionButtons = ((
   props: {
-    parent: IRouteNode,
-    node: IBranchNode
+    parent: DingFlowRouteNode,
+    node: DingFlowBranchNode,
   }
 ) => {
   const { parent, node } = props
-  const store = useEditorEngine()
   const t = useTranslate()
+  const [removeNode,cloneCondition] = useFlowEditorStoreWith(state=> [state.removeNode,state.cloneCondition])
 
   const handleClose = useCallback(() => {
-    node.id && store?.removeCondition(parent, node.id)
-  }, [node.id, parent, store])
+    node.id && removeNode(node.id)
+  }, [node.id, parent])
 
   const handleClone = useCallback(() => {
-    store?.cloneCondition(parent, node)
-  }, [node, parent, store])
+    cloneCondition(parent, node)
+  }, [node, parent])
 
   return (
     <Container className="mini-bar">

@@ -18,6 +18,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@nop-chaos/nop-shared": "workspace:*",
     "@nop-chaos/nop-core": "workspace:*",
     "@nop-chaos/nop-vue-core": "workspace:*",
     "@nop-chaos/nop-react-core": "workspace:*",

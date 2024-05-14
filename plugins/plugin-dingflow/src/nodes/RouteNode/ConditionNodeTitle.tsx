@@ -1,11 +1,10 @@
 import { memo, useCallback, useEffect, useState } from "react"
-import { IBranchNode, IRouteNode } from "../../interfaces"
 import { styled } from "styled-components"
 import { ConditionButtons } from "./ConditionButtons"
 import { ConditionPriority } from "./ConditionPriority"
-import { useTranslate } from "../../react-locales"
-import { useEditorEngine } from "../../hooks"
 import { Input, TitleResponse } from "../NodeTitle"
+import { DingFlowBranchNode, DingFlowRouteNode, useFlowEditorStoreWith } from "../../store"
+import { useTranslate } from "@nop-chaos/sdk"
 
 const TitleWrapper = styled.div`
   position: relative;
@@ -28,8 +27,8 @@ export const TitleText = styled.div`
 
 export const ConditionNodeTitle = memo((
   props: {
-    node: IBranchNode,
-    parent: IRouteNode,
+    node: DingFlowBranchNode,
+    parent: DingFlowRouteNode,
     index: number,
   }
 ) => {
@@ -44,11 +43,11 @@ export const ConditionNodeTitle = memo((
 
 
   const t = useTranslate()
-  const editorStore = useEditorEngine()
+  const [changeNode] = useFlowEditorStoreWith(state=>[state.changeNode])
 
   const changeName = useCallback(() => {
-    editorStore?.changeCondition(parent, { ...node, name: inputValue })
-  }, [editorStore, inputValue, node, parent])
+      changeNode({ ...node, name: inputValue })
+  }, [inputValue, node, parent])
 
   const handleNameClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()

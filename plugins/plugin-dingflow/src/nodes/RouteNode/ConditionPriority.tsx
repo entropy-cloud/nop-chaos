@@ -1,4 +1,4 @@
-import { useTranslate } from '@nop-chaos/nop-core';
+import { useTranslate } from '@nop-chaos/sdk';
 import { styled } from 'styled-components';
 
 const Container = styled.div`

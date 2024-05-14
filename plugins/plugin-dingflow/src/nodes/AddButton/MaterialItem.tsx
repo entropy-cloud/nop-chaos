@@ -1,14 +1,17 @@
-import { memo, useCallback } from "react"
-import { INodeMaterial } from "../../interfaces/material"
-import { useTranslate } from "../../react-locales"
-import { styled } from "styled-components"
-import { useEditorEngine } from "../../hooks"
-import { createUuid } from "../../utils/create-uuid"
+import { memo, useCallback } from 'react';
+// import { INodeMaterial } from "../../interfaces/material"
+// import { useTranslate } from "../../react-locales"
+import { styled } from 'styled-components';
+import { MaterialMeta } from '../types';
+import { useTranslate, createUuid } from '@nop-chaos/sdk';
+import { useFlowEditorStore, useFlowEditorStoreWith } from '../../store';
+
+import  {cloneDeep} from 'lodash-es'
 
 const MaterialSchell = styled.div`
   width: 50%;
   padding: 4px 8px;
-`
+`;
 
 const MItem = styled.div`
   padding: 0px 8px;
@@ -17,10 +20,11 @@ const MItem = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  &:hover{
-    box-shadow: 1px 2px 8px 2px rgba(0, 0, 0, ${props => props.theme.mode === "light" ? "0.08" : "0.2"});
+  &:hover {
+    box-shadow: 1px 2px 8px 2px
+      rgba(0, 0, 0, ${props => (props.theme.mode === 'light' ? '0.08' : '0.2')});
   }
-`
+`;
 
 const MaterialIcon = styled.div`
   display: flex;
@@ -33,42 +37,41 @@ const MaterialIcon = styled.div`
   align-items: center;
   font-size: 24px;
   color: #ff943e;
-`
-export const MaterialItem = memo((
-  props: {
-    nodeId: string,
-    material: INodeMaterial,
-    onClick?: () => void
-  }
-) => {
-  const { nodeId, material, onClick } = props
-  const t = useTranslate();
-  const editorStore = useEditorEngine()
+`;
+export const MaterialItem = memo(
+  (props: { nodeId: string; material: MaterialMeta; onClick?: () => void }) => {
+    const { nodeId, material, onClick } = props;
+    const t = useTranslate();
+    const [getNode,addChild,selectNode] = 
+      useFlowEditorStoreWith(state=>[state.getNode, state.addChild, state.selectNode])
 
-  const handleClick = useCallback(() => {
-    const newId = createUuid()
-    const newName = t(material.label)
-    if (material.defaultConfig) {
+    const handleClick = useCallback(() => {
+      const newId = createUuid();
+      const newName = t(material.label);
+      const node = getNode(nodeId)!
+
       //复制一份配置数据，保证immutable
-      editorStore?.addNode(nodeId, { ...JSON.parse(JSON.stringify(material.defaultConfig)), id: newId, name: newName })
-    } else if (material.createDefault) {
-      editorStore?.addNode(nodeId, { ...material.createDefault({ t }), name: newName })
-    } else {
-      console.error("Material no defutConfig or createDefault")
-    }
+      addChild(node, {
+        nodeType: 'simple',
+        nodeKind: 'normal',
+        ...cloneDeep(material.defaultConfig),
+        id: newId,
+        name: newName
+      });
 
-    editorStore?.selectNode(newId);
-    onClick?.()
-  }, [editorStore, material, nodeId, onClick, t])
+      selectNode(newId);
+      onClick?.();
+    }, [nodeId, onClick]);
 
-  return (
-    <MaterialSchell>
-      <MItem onClick={handleClick}>
-        <MaterialIcon style={{ color: material.color }}>
-          {material.icon}
-        </MaterialIcon>
-        {t(material.label)}
-      </MItem>
-    </MaterialSchell>
-  )
-})
+    return (
+      <MaterialSchell>
+        <MItem onClick={handleClick}>
+          <MaterialIcon style={{ color: material.color }}>
+            {material.icon}
+          </MaterialIcon>
+          {t(material.label)}
+        </MItem>
+      </MaterialSchell>
+    );
+  }
+);

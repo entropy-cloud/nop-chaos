@@ -20,7 +20,7 @@ export const CloseButton = (props: { nodeId: string }) => {
 
   const handleClose = useCallback(() => {
     removeNode(nodeId);
-  }, [nodeId, removeNode]);
+  }, [nodeId]);
 
   return (
     <CloseStyledButton

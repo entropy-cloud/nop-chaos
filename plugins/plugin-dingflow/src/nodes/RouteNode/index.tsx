@@ -1,11 +1,11 @@
 import { memo } from "react"
-import { IRouteNode } from "../../interfaces"
 import { styled } from "styled-components"
 import { AddBranchButton } from "./AddBranchButton"
 import { AddButton } from "../AddButton"
-import { lineColor } from "../../utils/lineColor"
+import { lineColor } from "../../utils/theme-utils"
 import { ChildNode } from "../ChildNode"
 import { BranchNode } from "./BranchNode"
+import { DingFlowRouteNode } from "../../store"
 
 const RouteWrap = styled.div`
   display: inline-flex;
@@ -41,7 +41,7 @@ const RouteBox = styled.div`
 
 export const RouteNode = memo((
   props: {
-    node: IRouteNode
+    node: DingFlowRouteNode
   }
 ) => {
   const { node } = props
