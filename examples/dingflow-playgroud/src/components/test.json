@@ -1,0 +1,30 @@
+{
+  "type": "page",
+  "title": "欢迎",
+  "body": [
+    {
+      "type": "button",
+      "label": "点击我",
+      "actionType": "toast",
+      "toast": {
+        "items": [
+          {
+            "type": "info",
+            "title": "提示",
+            "body": "按钮被点击了"
+          }
+        ]
+      }
+    },
+    {
+      "type": "button",
+      "label": "点击2",
+      "actionType": "dialog",
+      "dialog": {
+        "type": "info",
+        "title": "提示",
+        "body": "按钮被点击了"
+      }
+    }
+  ]
+}

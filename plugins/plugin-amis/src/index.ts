@@ -46,7 +46,7 @@ export function install() {
     alert,
     confirm,
     notify(type: ToastLevel, msg: any, conf?: ToastConf): void {
-      if (msg.startsWith('_')) return;
+      if (msg instanceof String && msg.startsWith('_')) return;
       conf = { closeButton: true, ...conf };
       toast[type]
         ? toast[type](msg, conf)

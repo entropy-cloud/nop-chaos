@@ -4,9 +4,9 @@ import { RegisterPage } from "./page"
 
 export type SchemaComponentProps = {
     schema: any,
-    data: any,
-    registerPage: RegisterPage,
-    actions: Record<string, Function>
+    data?: any,
+    registerPage?: RegisterPage,
+    actions?: Record<string, Function>
 }
 
 export type EditorComponentProps = {

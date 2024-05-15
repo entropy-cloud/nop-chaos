@@ -13,14 +13,15 @@
     "@nop-chaos/plugin-amis": "workspace:*",
     "@nop-chaos/plugin-dingflow": "workspace:*",
     "vue": "^3.4.21",
-    "amis": "^6.3.0",
-    "amis-core": "^6.3.0",
-    "amis-formula": "^6.3.0",
-    "amis-ui": "^6.3.0",
+    "amis": "^6.4.1",
+    "amis-core": "^6.4.1",
+    "amis-formula": "^6.4.1",
+    "amis-ui": "^6.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "veaury": "^2.3.12",
-    "lodash-es": "^4.17.12"
+    "lodash-es": "^4.17.12",
+    "@fortawesome/fontawesome-free": "^6.5.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
