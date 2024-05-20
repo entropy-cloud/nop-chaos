@@ -12,8 +12,12 @@ import {
   registerModule,
   SchemaComponentProps,
   EditorComponentProps,
-  registerSchemaProcessorType
+  registerSchemaProcessorType,
+  addRenderComponentEventListener
 } from '@nop-chaos/sdk';
+
+import type { Plugin} from '@nop-chaos/sdk'
+
 import {
   alert,
   confirm,
@@ -25,7 +29,8 @@ import {
 
 import { h } from 'vue';
 import { transformSchemaFromStdAmis, transformSchemaToStdAmis} from './amis-json-transform'
-import type { SchemaProcessorType } from '@nop-chaos/sdk';
+import type { RenderComponentConfig, SchemaProcessorType } from '@nop-chaos/sdk';
+import { defineAmisComponent } from './define-amis-component';
 
 const AmisSchemaType: SchemaProcessorType = {
   renderPageSchema(props: SchemaComponentProps) {
@@ -40,12 +45,15 @@ const AmisSchemaType: SchemaProcessorType = {
   transformSchemaOut: transformSchemaFromStdAmis
 };
 
-export function install() {
+let cleanup:any = null;
+
+function install() {
   registerAdapter({
     dataMapping,
     alert,
     confirm,
     notify(type: ToastLevel, msg: any, conf?: ToastConf): void {
+      // AMSI 6之后msg不再是string类型，而是传入了VDOM节点
       if (msg instanceof String && msg.startsWith('_')) return;
       conf = { closeButton: true, ...conf };
       toast[type]
@@ -57,6 +65,37 @@ export function install() {
 
   registerSchemaProcessorType('amis', AmisSchemaType);
   registerSchemaProcessorType('default', AmisSchemaType);
+
+  cleanup  = addRenderComponentEventListener((config:RenderComponentConfig)=>{
+      if(config.amis){
+        // 注册react控件且标记为amis支持，应该增加一个AMIS包装对象
+        defineAmisComponent({
+          type: config.name,
+          autoVar: config.autoVar,
+          isolateScope: config.isolateScope,
+          isFormItem: config.isFormItem,
+          reactComponent: config.reactComponent,
+          component:null
+        })
+      }
+  })
+}
+
+function uninstall(){
+  if(cleanup)
+    cleanup();
+}
+
+export function loadPlugin(): Plugin{
+  return {
+    name: "plugin-amis",
+    install,
+    uninstall,
+
+    vueRenderInMainPage(){
+      return h(AmisToast,{theme:'cxd'})
+    }
+  }
 }
 
 export {

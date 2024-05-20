@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {AmisToast} from '@nop-chaos/plugin-amis';
+import {XuiPluginRenderer} from '@nop-chaos/sdk';
 import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
   <div>DEMO</div>
-  <AmisToast theme="cxd"/>
+  <XuiPluginRenderer/>
   <HelloWorld msg="Vite + Vue" />
 </template>
 

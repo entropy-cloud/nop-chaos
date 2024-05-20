@@ -8,10 +8,13 @@ import XuiLoading from './XuiLoading.vue'
 
 import XuiPageEditorDialog from './XuiPageEditorDialog.vue'
 
+import XuiPluginRenderer from './XuiPluginRenderer'
+
 export {
     XuiPage,
     XuiPageEditor,
     XuiSchemaPage,
     XuiLoading,
-    XuiPageEditorDialog
+    XuiPageEditorDialog,
+    XuiPluginRenderer
 }

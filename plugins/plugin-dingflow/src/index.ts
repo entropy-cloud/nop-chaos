@@ -1,17 +1,17 @@
 import {
-  registerRendererComponent,
-  unregisterRendererComponent
+  registerRenderComponent,
+  unregisterRenderComponent
 } from '@nop-chaos/sdk';
 import { FlowEditor, FlowEditorCanvas } from './FlowEditor';
 
 export * from './store';
 
 export function install() {
-  registerRendererComponent('react', 'NopFlowEditor', FlowEditor);
-  registerRendererComponent('react', 'NopFlowEditorCanvas', FlowEditorCanvas);
+  registerRenderComponent({name: 'nop-flow-editor', amis:true, reactComponent: FlowEditor});
+  registerRenderComponent({name: 'nop-flow-editor-canvas', amis:true, reactComponent: FlowEditorCanvas});
 }
 
 export function uninstall() {
-  unregisterRendererComponent('react', 'NopFlowEditor');
-  unregisterRendererComponent('react', 'NopFlowEditorCanvas');
+  unregisterRenderComponent('nop-flow-editor');
+  unregisterRenderComponent('nop-flow-editor-canvas');
 }

@@ -1,9 +1,9 @@
-import { StoreApiKey } from '@nop-chaos/sdk';
+import { ReactStoreApiKey } from '@nop-chaos/sdk';
 
 import { useState, useEffect, ReactNode } from 'react';
 
 import { createFlowEditorStore } from '../store';
-import { useRenderContext } from '@nop-chaos/sdk';
+import { useReactRenderContext } from '@nop-chaos/sdk';
 import { useStore } from 'zustand';
 
 import { FlowEditorSchema } from '../store/types';
@@ -43,7 +43,7 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
   } = props;
   const data = props.data;
 
-  const renderContext = useRenderContext()!;
+  const renderContext = useReactRenderContext()!;
 
   const [store] = useState(() => {
     const store = createFlowEditorStore(flowEditorSchema, value, materialLib);
@@ -73,9 +73,9 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
   }, []);
 
   return (
-    <StoreApiKey.Provider value={store}>
+    <ReactStoreApiKey.Provider value={store}>
       {children}
       {body && renderContext.render('body', body, {}, { props, store })}
-    </StoreApiKey.Provider>
+    </ReactStoreApiKey.Provider>
   );
 };

@@ -15,3 +15,5 @@ export * from './renderer'
 export * from './locale'
 
 export * from './store'
+
+export * from './plugin'

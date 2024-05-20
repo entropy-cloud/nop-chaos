@@ -15,7 +15,7 @@ import {
   RendererProps
 } from 'amis-core';
 
-import { getRendererComponent } from '@nop-chaos/sdk';
+import { getRenderComponent } from '@nop-chaos/sdk';
 import { applyPureVueInReact } from 'veaury';
 
 export interface VueControlProps extends FormControlProps {
@@ -31,7 +31,7 @@ export default class VueControl extends React.Component<
   constructor(props: VueControlProps) {
     super(props);
     this.vueComponent = applyPureVueInReact(
-      getRendererComponent('vue', props.componentName)
+      getRenderComponent('vue', props.componentName)
     );
   }
 

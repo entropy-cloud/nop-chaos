@@ -25,10 +25,11 @@ import {
   registerModule,
   XuiPage,
   useAdapter,
-  ajaxRequest
+  ajaxRequest,
+  usePluginSystem
 } from '@nop-chaos/sdk';
 
-import { install as install_amis } from '@nop-chaos/plugin-amis'
+import { loadPlugin } from '@nop-chaos/plugin-amis'
 
 const { getPage } = useAdapter();
 
@@ -94,11 +95,14 @@ function initAdapter(app: App) {
 }
 
 export async function initNopApp(app: App) {
-  install_amis();
+   const pluginSystem = usePluginSystem()
+   pluginSystem.registerPlugin(loadPlugin())
 
   initAdapter(app);
 
   app.component('XuiPage', XuiPage);
   app.component('XUI', XuiPage);
   app.component('AMIS', XuiPage);
+
+  pluginSystem.start()
 }

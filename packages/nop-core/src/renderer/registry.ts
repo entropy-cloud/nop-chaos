@@ -1,51 +1,48 @@
 import { useAdapter } from '../adapter';
 
-type ComponentKind = 'vue' | 'react';
+import { createEventBus } from '../eventbus';
 
-type ComponentFactory = {
-  vueFactory: any;
-  reactFactory: any;
+const componentEventBus = createEventBus(true)
+
+export type RenderComponentConfig = {
+  name: string,
+  isolateScope?: boolean,
+  autoVar?:boolean,
+  isFormItem?: boolean,
+  vueComponent?: any;
+  reactComponent?: any;
+  // 其他扩展属性
+  [name:string]: any;
 };
 
-const g_componentFactorys = new Map<string, ComponentFactory>();
+const g_componentConfigs = new Map<string, RenderComponentConfig>();
 
-export function registerRendererComponent(
-  kind: ComponentKind,
-  name: string,
-  factory: any
+export function registerRenderComponent(
+  config: RenderComponentConfig
 ) {
-  let componentFactory = g_componentFactorys.get(name);
-  if (componentFactory == null) {
-    componentFactory = {
-      vueFactory: undefined,
-      reactFactory: undefined
-    };
-    g_componentFactorys.set(name, componentFactory);
-  }
+    g_componentConfigs.set(config.name, config);
+    componentEventBus.onEvent("register",config)
+}
 
+export function unregisterRenderComponent(name: string) {
+  const config = g_componentConfigs.get(name);
+  if (config == null) return;
+  g_componentConfigs.delete(name)
+  componentEventBus.onEvent("unregister",config)
+}
+
+type ComponentKind = 'vue' | 'react'
+
+export function getRenderComponent(kind: ComponentKind, name: string) {
+  const factory = g_componentConfigs.get(name);
   if (kind == 'vue') {
-    factory.vueFactory = factory;
+    return factory?.vueComponent || useAdapter().resolveVueComponent(name);
   } else {
-    factory.reactFactory = factory;
+    return factory?.reactComponent || useAdapter().resolveReactComponent(name);
   }
 }
 
-export function unregisterRendererComponent(kind: ComponentKind, name: string) {
-  const factory = g_componentFactorys.get(name);
-  if (factory == null) return;
-  if (kind == 'vue') {
-    factory.vueFactory = undefined;
-  } else {
-    factory.reactFactory = undefined;
-  }
-}
 
-export function getRendererComponent(kind: ComponentKind, name: string) {
-  const factory = g_componentFactorys.get(name);
-  if (!factory) return;
-  if (kind == 'vue') {
-    return factory.vueFactory || useAdapter().resolveVueComponent(name);
-  } else {
-    return factory.reactFactory || useAdapter().resolveReactComponent(name);
-  }
+export function addRegisterComponentEventListener(listener:(name:string, config:RenderComponentConfig)){
+  return componentEventBus.addListener(listener)
 }
