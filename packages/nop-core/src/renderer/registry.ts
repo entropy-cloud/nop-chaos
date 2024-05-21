@@ -43,6 +43,6 @@ export function getRenderComponent(kind: ComponentKind, name: string) {
 }
 
 
-export function addRegisterComponentEventListener(listener:(name:string, config:RenderComponentConfig)){
+export function addRenderComponentEventListener(listener:(name:string, config:RenderComponentConfig)=>void){
   return componentEventBus.addListener(listener)
 }

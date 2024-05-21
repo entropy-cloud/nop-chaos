@@ -8,9 +8,9 @@ import { transformPageJson, bindActions } from './page';
 
 //import { useAdapter, ajaxRequest, ajaxFetch, usePage, useScoped, useScopedStore } from './index'
 
-import * as NopCore from './lib'
+// import * as NopCore from './lib'
 
-registerModule("@nop-chaos/nop-core", NopCore)
+// registerModule("@nop-chaos/nop-core", NopCore)
 
 registerAdapter({
     fetchDict(dictName: string, options: FetcherRequest) {

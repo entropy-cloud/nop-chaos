@@ -66,8 +66,8 @@ function install() {
   registerSchemaProcessorType('amis', AmisSchemaType);
   registerSchemaProcessorType('default', AmisSchemaType);
 
-  cleanup  = addRenderComponentEventListener((config:RenderComponentConfig)=>{
-      if(config.amis){
+  cleanup  = addRenderComponentEventListener((name:string, config:RenderComponentConfig)=>{
+      if(name == 'register' && config.amis){
         // 注册react控件且标记为amis支持，应该增加一个AMIS包装对象
         defineAmisComponent({
           type: config.name,
