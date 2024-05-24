@@ -1,3 +1,4 @@
+import { VDomType } from '../renderer';
 import { Plugin, PluginSystem} from './types'
 
 function createPluginSystem(): PluginSystem{
@@ -42,7 +43,7 @@ function createPluginSystem(): PluginSystem{
   function vueRenderInMainPage(){
     const ret: VDomType[] = []
     for(const plugin of plugins){
-      const dom = plugin.vueRenderInMainPage()
+      const dom = plugin.vueRenderInMainPage?.()
       if(dom)
         ret.push(dom)
     }
@@ -52,7 +53,7 @@ function createPluginSystem(): PluginSystem{
   function reactRenderInMainPage(){
     const ret: VDomType[] = []
     for(const plugin of plugins){
-      const dom = plugin.reactRenderInMainPage()
+      const dom = plugin.reactRenderInMainPage?.()
       if(dom)
         ret.push(dom)
     }

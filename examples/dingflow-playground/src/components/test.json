@@ -3,6 +3,21 @@
   "title": "欢迎",
   "body": [
     {
+      "type":"nop-flow-editor-scope",
+      "flowEditorSchema": {
+          "mainEditor": {
+            "type": "input-text",
+            "label": "Main"
+          },
+          "subEditors":{
+            
+          }
+      },
+      "body":{
+        "type": "nop-flow-editor-canvas"
+      }
+    },
+    {
       "type": "button",
       "label": "点击我",
       "actionType": "toast",

@@ -1,13 +1,12 @@
 import { ReactStoreApiKey } from '@nop-chaos/sdk';
 
-import { useState, useEffect, ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
-import { createFlowEditorStore } from '../store';
 import { useReactRenderContext } from '@nop-chaos/sdk';
-import { useStore } from 'zustand';
+import { createFlowEditorStore } from '../store';
 
-import { FlowEditorSchema } from '../store/types';
 import { ApiObject, SchemaType } from '@nop-chaos/sdk';
+import { FlowEditorSchema } from '../store/types';
 
 export type FlowEditorProps = {
   flowEditorSchema: FlowEditorSchema;
@@ -62,15 +61,9 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
         );
       });
     }
+    store.getState().loadFlowData()
     return store;
   });
-
-  const loadFlowData = useStore(store, state => state.loadFlowData);
-
-  // 只有初始化时执行一次
-  useEffect(() => {
-    loadFlowData();
-  }, []);
 
   return (
     <ReactStoreApiKey.Provider value={store}>

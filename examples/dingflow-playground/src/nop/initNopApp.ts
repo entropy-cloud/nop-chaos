@@ -29,7 +29,8 @@ import {
   usePluginSystem
 } from '@nop-chaos/sdk';
 
-import { loadPlugin } from '@nop-chaos/plugin-amis'
+import { loadPlugin as loadAmis } from '@nop-chaos/plugin-amis'
+import { loadPlugin as loadDingFlow } from '@nop-chaos/plugin-dingflow'
 
 const { getPage } = useAdapter();
 
@@ -95,10 +96,12 @@ function initAdapter(app: App) {
 }
 
 export async function initNopApp(app: App) {
-   const pluginSystem = usePluginSystem()
-   pluginSystem.registerPlugin(loadPlugin())
+   initAdapter(app);
 
-  initAdapter(app);
+   const pluginSystem = usePluginSystem()
+   pluginSystem.registerPlugin(loadAmis())
+   pluginSystem.registerPlugin(loadDingflow())
+
 
   app.component('XuiPage', XuiPage);
   app.component('XUI', XuiPage);

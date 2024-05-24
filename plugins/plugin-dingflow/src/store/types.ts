@@ -1,6 +1,7 @@
 import {
   SchemaType,
-  VComponentType
+  VComponentType,
+  StdStoreState
 } from '@nop-chaos/sdk';
 
 export type DingFlowNodeKind =
@@ -60,7 +61,7 @@ export interface DingFlow {
 }
 
 export type FlowEditorSchema = {
-  type: string;
+  //type: string;
 
   toolbar?: SchemaType;
 
@@ -82,7 +83,7 @@ export type FlowEditorMaterial = {
   nodes: Record<string, VComponentType>;
 };
 
-export type FlowEditorStoreType = {
+export type FlowEditorStoreType = StdStoreState & {
   flowEditorSchema: FlowEditorSchema;
   flowData: DingFlow;
   flowEditorMaterial: FlowEditorMaterial;

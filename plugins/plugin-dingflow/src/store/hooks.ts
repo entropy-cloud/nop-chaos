@@ -1,19 +1,16 @@
-import { useContext } from 'react';
-
 import { FlowEditorStoreType } from './types';
-import { StoreApi, useStore } from 'zustand';
 
-import { ReactStoreApiKey } from '@nop-chaos/sdk';
+import { StdStoreApi, useReactStdStore, useReactStdStoreWith } from '@nop-chaos/sdk';
 
-export function useFlowEditorStore(): StoreApi<FlowEditorStoreType> {
-  return useContext(ReactStoreApiKey)!  as unknown as StoreApi<FlowEditorStoreType>;
+export function useFlowEditorStore(): StdStoreApi<FlowEditorStoreType> {
+  return useReactStdStore()  as unknown as StdStoreApi<FlowEditorStoreType>;
 }
 
 export function useFlowEditorStoreWith<T>(
   selector: (state: FlowEditorStoreType) => T
 ) {
   const store = useFlowEditorStore();
-  return useStore(store, selector);
+  return useReactStdStoreWith(store, selector);
 }
 
 export function useError(nodeId: string) {

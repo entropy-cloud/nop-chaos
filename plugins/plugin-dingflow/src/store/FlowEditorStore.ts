@@ -1,6 +1,10 @@
-import { StoreApi, createStore } from 'zustand';
+import { StoreApi } from 'zustand';
 
-import { useTranslate, importModule } from '@nop-chaos/sdk';
+import {
+  useTranslate,
+  importModule,
+  createReactStdStore
+} from '@nop-chaos/sdk';
 import {
   DingFlow,
   DingFlowBranchNode,
@@ -59,7 +63,7 @@ export function createFlowEditorStore(
 
   const undoManager = createUndoManager<SnapshotType>();
 
-  return createStore<FlowEditorStoreType>((set, get) => {
+  const stateCreator = (set: any, get: any) => {
     const t = useTranslate('flowEditor');
 
     loadMaterialLib(materialLib).then(lib => {
@@ -262,19 +266,19 @@ export function createFlowEditorStore(
       moveConditionLeft,
       moveConditionRight,
       setError,
-      setFlowEditorSchema(flowEditorSchema) {
+      setFlowEditorSchema(flowEditorSchema: FlowEditorSchema) {
         set({ flowEditorSchema });
       },
-      setFlowData(flowData) {
+      setFlowData(flowData: any) {
         set({ flowData });
       },
       clear() {
         set({ flowData: initData });
       },
-      setFlowDataLoader(loader) {
+      setFlowDataLoader(loader: any) {
         set({ flowDataLoader: loader });
       },
-      setFlowDataSaver(saver) {
+      setFlowDataSaver(saver: any) {
         set({ flowDataSaver: saver });
       },
 
@@ -292,5 +296,9 @@ export function createFlowEditorStore(
         return saver(get().flowData);
       }
     };
+  };
+
+  return createReactStdStore({
+    stateCreator
   });
 }

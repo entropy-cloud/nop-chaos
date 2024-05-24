@@ -67,7 +67,7 @@ export type StdStoreState = {
   triggerSave(): Promise<void>;
 };
 
-export type StdStoreApi = StoreApi<StdStoreState>
+export type StdStoreApi<T=StdStoreState> = StoreApi<T>
 
 export type StdStoreCreator = (
   get: () => any,
