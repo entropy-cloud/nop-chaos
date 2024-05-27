@@ -63,7 +63,7 @@ export function createFlowEditorStore(
 
   const undoManager = createUndoManager<SnapshotType>();
 
-  const stateCreator = (set: any, get: any) => {
+  const stateCreator = (set: any,get:any) => {
     const t = useTranslate('flowEditor');
 
     loadMaterialLib(materialLib).then(lib => {

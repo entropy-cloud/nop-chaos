@@ -100,7 +100,7 @@ export async function initNopApp(app: App) {
 
    const pluginSystem = usePluginSystem()
    pluginSystem.registerPlugin(loadAmis())
-   pluginSystem.registerPlugin(loadDingflow())
+   pluginSystem.registerPlugin(loadDingFlow())
 
 
   app.component('XuiPage', XuiPage);

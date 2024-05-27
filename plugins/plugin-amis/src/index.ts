@@ -34,7 +34,8 @@ import { defineAmisComponent } from './define-amis-component';
 
 const AmisSchemaType: SchemaProcessorType = {
   renderPageSchema(props: SchemaComponentProps) {
-    return h(AmisSchemaPage, { ...props });
+    const schema = transformSchemaToStdAmis(props.schema)
+    return h(AmisSchemaPage, { ...props,schema });
   },
 
   renderEditor(props: EditorComponentProps, onExit: () => void) {

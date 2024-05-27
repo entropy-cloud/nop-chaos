@@ -1,23 +1,8 @@
 {
   "type": "page",
-  "title": "欢迎",
+  "title": "欢迎AAA",
   "body": [
-    {
-      "type":"nop-flow-editor-scope",
-      "flowEditorSchema": {
-          "mainEditor": {
-            "type": "input-text",
-            "label": "Main"
-          },
-          "subEditors":{
-            
-          }
-      },
-      "body":{
-        "type": "nop-flow-editor-canvas"
-      }
-    },
-    {
+     {
       "type": "button",
       "label": "点击我",
       "actionType": "toast",
@@ -39,6 +24,22 @@
         "type": "info",
         "title": "提示",
         "body": "按钮被点击了"
+      }
+    },
+    {
+      "type":"nop-flow-editor",
+      "materialLib": "flow.lib.js",
+      "flowEditorSchema": {
+          "mainEditor": {
+            "type": "input-text",
+            "label": "Main"
+          },
+          "subEditors":{
+            
+          }
+      },
+      "body":{
+        "type": "nop-flow-editor-canvas"
       }
     }
   ]

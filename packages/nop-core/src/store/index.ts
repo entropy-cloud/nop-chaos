@@ -13,7 +13,7 @@ export function buildStdStoreCreator(options: StdStoreInitOptions) {
   return (set: any, get: any) => {
     const initState = {
       ...options.initState,
-      ...options.stateCreator?.(get, set)
+      ...options.stateCreator?.(set, get)
     };
 
     function getValue(name: string) {

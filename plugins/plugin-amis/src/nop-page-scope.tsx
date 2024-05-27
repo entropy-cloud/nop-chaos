@@ -99,7 +99,7 @@ class PageScopeComponent extends React.Component<RendererProps, any> {
           invokeApi: this.amisInvokeApi
         }}
       >
-        {props.children}
+        {props.body && props.render("body",props.body,props)}
       </ReactRenderContextKey.Provider>
     );
   }

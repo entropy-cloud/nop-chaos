@@ -111,8 +111,8 @@ type NodeContentProps = {
 export function NodeRenderer(props: NodeContentProps) {
   const { render } = useReactRenderContext()!;
   const flowSchema = useFlowEditorStoreWith(state => state.flowEditorSchema);
-  const schema = flowSchema.subEditors[props.node.nodeType];
+  const schema = flowSchema.subEditors[props.node?.nodeType];
   const store = useFlowEditorStore()
 
-  return <>{render('node', schema, { node: props.node }, {store,props})}</>;
+  return <>{props.node && render('node', schema, { node: props.node }, {store,props})}</>;
 }

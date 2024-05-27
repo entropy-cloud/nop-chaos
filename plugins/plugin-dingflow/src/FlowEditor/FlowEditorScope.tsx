@@ -40,6 +40,7 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
     initApi,
     saveApi
   } = props;
+  console.debug("render-flow-editor-scope")
   const data = props.data;
 
   const renderContext = useReactRenderContext()!;
@@ -67,7 +68,7 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
 
   return (
     <ReactStoreApiKey.Provider value={store}>
-      {children}
+      {!body && children}
       {body && renderContext.render('body', body, {}, { props, store })}
     </ReactStoreApiKey.Provider>
   );
