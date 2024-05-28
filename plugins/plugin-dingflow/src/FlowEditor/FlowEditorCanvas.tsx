@@ -139,10 +139,10 @@ export function FlowEditorCanvas(props: FlowEditorCanvasProps) {
           }}
           draggable={false}
         >
-          {/* <StartNode /> */}
+          <StartNode />
         </CanvasInner>
       </Canvas>
-      {/* <OperationBar float={scrolled} />
+      <OperationBar float={scrolled} />
       <ZoomBar
         float={scrolled}
         zoom={zoom}
@@ -151,7 +151,7 @@ export function FlowEditorCanvas(props: FlowEditorCanvasProps) {
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
       />
-      <SettingsPanel /> */}
+      <SettingsPanel />
     </CanvasContainer>
   );
 }

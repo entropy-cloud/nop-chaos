@@ -92,6 +92,10 @@ class PageScopeComponent extends React.Component<RendererProps, any> {
   override render() {
     const props = this.props;
 
+    const subProps = {
+      onAction: props.onAction
+    }
+
     return (
       <ReactRenderContextKey.Provider
         value={{
@@ -99,7 +103,7 @@ class PageScopeComponent extends React.Component<RendererProps, any> {
           invokeApi: this.amisInvokeApi
         }}
       >
-        {props.body && props.render("body",props.body,props)}
+        {props.body && props.render("body",props.body,subProps)}
       </ReactRenderContextKey.Provider>
     );
   }
