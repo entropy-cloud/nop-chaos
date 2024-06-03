@@ -8,7 +8,7 @@ import { useFlowEditorStore, useFlowEditorStoreWith } from '../../store';
 
 import  {cloneDeep} from 'lodash-es'
 
-const MaterialSchell = styled.div`
+const MaterialShell = styled.div`
   width: 50%;
   padding: 4px 8px;
 `;
@@ -64,14 +64,14 @@ export const MaterialItem = memo(
     }, [nodeId, onClick]);
 
     return (
-      <MaterialSchell>
+      <MaterialShell>
         <MItem onClick={handleClick}>
           <MaterialIcon style={{ color: material.color }}>
             {material.icon}
           </MaterialIcon>
           {t(material.label)}
         </MItem>
-      </MaterialSchell>
+      </MaterialShell>
     );
   }
 );

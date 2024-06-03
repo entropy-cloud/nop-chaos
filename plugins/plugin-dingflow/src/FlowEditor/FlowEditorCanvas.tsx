@@ -15,7 +15,7 @@ const CanvasContainer = styled.div`
   flex-flow: column;
   background-color: ${canvasColor};
   position: relative;
-  height: 0;
+  overflow:auto;
 `;
 
 const Canvas = styled.div`

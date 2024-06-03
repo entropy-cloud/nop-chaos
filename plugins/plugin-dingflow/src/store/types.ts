@@ -79,14 +79,10 @@ export type FlowEditorSchema = {
   };
 };
 
-export type FlowEditorMaterial = {
-  nodes: Record<string, VComponentType>;
-};
-
 export type FlowEditorStoreType = StdStoreState & {
   flowEditorSchema: FlowEditorSchema;
   flowData: DingFlow;
-  flowEditorMaterial: FlowEditorMaterial;
+  flowEditorComponents: Record<string,VComponentType>;
 
   errors: Record<string, string>;
 

@@ -4,7 +4,6 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <div>DEMO</div>
   <XuiPluginRenderer/>
   <HelloWorld msg="Vite + Vue" />
 </template>

@@ -7,6 +7,7 @@ import {
 import { FlowEditor, FlowEditorCanvas } from './FlowEditor';
 
 export * from './store';
+export * from './theme'
 
 export function install() {
   registerRenderComponent({name: 'nop-flow-editor', amis:true, reactComponent: FlowEditor});

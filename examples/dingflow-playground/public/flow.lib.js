@@ -4,8 +4,12 @@ System.register([], (function (exports) {
     return {
         setters: [],
         execute: (function () {
-
+            
            
         })
     };
 }));
+
+function startNode(h,props){
+    
+}

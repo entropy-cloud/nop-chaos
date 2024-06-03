@@ -11,13 +11,12 @@ import {
   DingFlowNode,
   DingFlowRouteNode,
   FlowEditorSchema,
-  FlowEditorStoreType,
-  FlowEditorMaterial
+  FlowEditorStoreType
 } from './types';
 
 import { recursiveProcess, recursiveReducer } from './processor';
 
-import { createUndoManager, createUuid } from '@nop-chaos/sdk';
+import { createUndoManager, createUuid, VComponentType } from '@nop-chaos/sdk';
 
 type SnapshotType = {
   flowData: DingFlow;
@@ -44,11 +43,10 @@ const initData: DingFlow = {
   wfVersion: 1
 };
 
-const initMaterial: FlowEditorMaterial = {
-  nodes: {}
+const initMaterial:Record<string,VComponentType> = {
 };
 
-async function loadMaterialLib(path: string): Promise<FlowEditorMaterial> {
+async function loadMaterialLib(path: string): Promise<any> {
   const lib = await importModule(path);
   return lib.defaults || lib;
 }
@@ -67,7 +65,7 @@ export function createFlowEditorStore(
     const t = useTranslate('flowEditor');
 
     loadMaterialLib(materialLib).then(lib => {
-      set({ flowEditorMaterial: lib });
+      set({ flowEditorComponents: lib });
     });
 
     const { undo, redo } = undoManager.bindStore(value =>

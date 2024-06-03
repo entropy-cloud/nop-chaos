@@ -32,10 +32,10 @@ export type FlowEditorProps = {
 
 export const FlowEditorScope = (props: FlowEditorProps) => {
   const {
-    children,
     flowEditorSchema,
     materialLib,
     value,
+    header,
     body,
     initApi,
     saveApi
@@ -68,8 +68,8 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
 
   return (
     <ReactStoreApiKey.Provider value={store}>
-      {!body && children}
-      {body && renderContext.render('body', body, {}, { props, store })}
+        {header && renderContext.render('header',header,{},{props,store})}
+        {body && renderContext.render('body', body, {}, { props, store })}
     </ReactStoreApiKey.Provider>
   );
 };
