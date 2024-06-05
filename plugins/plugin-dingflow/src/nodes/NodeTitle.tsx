@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { CloseButton } from "./CloseButton";
-import { DingFlowNode, useFlowEditorStoreWith } from "../store";
+import { DingFlowNode, MaterialMeta, useFlowEditorStoreWith } from "../store";
 
-export const NodeTitleSchell = styled.div`
+export const NodeTitleShell = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -42,7 +42,7 @@ export const NodeTitleText = styled.div`
   }
 `
 
-export const Input = styled.input`
+export const NodeTitleInput = styled.input`
   flex: 1;
   height: 18px;
   padding-left: 4px;
@@ -57,15 +57,18 @@ export const Input = styled.input`
   color: ${props => props.theme?.token?.colorText};
 `
 
+
 export const NodeTitle = memo((props: {
   node: DingFlowNode,
-  material?: any,
+  material?: MaterialMeta,
+  editable?: boolean,
+  closable?: boolean,
 }) => {
-  const { node, material } = props;
-  const [editting, setEditting] = useState(false)
+  const { node, material,editable,closable } = props;
+  const [editing, setEditing] = useState(false)
   const [inputValue, setInputValue] = useState(node.name)
 
-  const [changeNode] = useFlowEditorStoreWith(state=>[state.changeNode])
+  const changeNode = useFlowEditorStoreWith(state=>state.changeNode)
 
   useEffect(() => {
     setInputValue(node.name)
@@ -77,7 +80,7 @@ export const NodeTitle = memo((props: {
 
   const handleNameClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
-    setEditting(true)
+    setEditing(true)
   }, [])
 
   const handleInputClick = useCallback((e: React.MouseEvent) => {
@@ -86,7 +89,7 @@ export const NodeTitle = memo((props: {
 
   const handleBlur = useCallback(() => {
     changeName()
-    setEditting(false)
+    setEditing(false)
   }, [changeName])
 
   const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -99,20 +102,20 @@ export const NodeTitle = memo((props: {
     setInputValue(e.target.value)
   }, [])
 
-  return <NodeTitleSchell className="node-title" style={{ backgroundColor: material?.color, color: "#fff" }}>
+  return <NodeTitleShell className="node-title" style={{ backgroundColor: material?.color, color: "#fff" }}>
     <NodeIcon>
       {material?.icon}
     </NodeIcon>
-    {!editting &&
+    {!editing &&
       <>
-        <TitleResponse onClick={handleNameClick}>
-          <NodeTitleText className="text" >{node.name}</NodeTitleText>
+        <TitleResponse onClick={editable ? handleNameClick: undefined}>
+          <NodeTitleText className="text" >{node.displayName || node.name}</NodeTitleText>
         </TitleResponse>
-        <CloseButton nodeId={node.id} />
+        {closable && <CloseButton nodeId={node.id} />}
       </>
     }
     {
-      editting && <Input
+      editing && <NodeTitleInput
         autoFocus
         value={inputValue}
         onClick={handleInputClick}
@@ -121,5 +124,5 @@ export const NodeTitle = memo((props: {
         onChange={handleChange}
       />
     }
-  </NodeTitleSchell>
+  </NodeTitleShell>
 })

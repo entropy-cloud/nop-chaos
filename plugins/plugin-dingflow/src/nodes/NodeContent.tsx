@@ -1,8 +1,8 @@
-import { useReactRenderContext } from '@nop-chaos/sdk';
-import { DingFlowNode, useFlowEditorStoreWith, useFlowEditorStore } from '../store';
+import { DingFlowNode, useFlowEditorStoreWith } from '../store';
 import { styled } from 'styled-components';
 
 import { lineColor, canvasColor, nodeColor } from '../utils/theme-utils';
+import { useTranslate } from '@nop-chaos/sdk';
 
 export const NodeWrap = styled.div`
   display: flex;
@@ -109,10 +109,12 @@ type NodeContentProps = {
 };
 
 export function NodeRenderer(props: NodeContentProps) {
-  const { render } = useReactRenderContext()!;
-  const flowSchema = useFlowEditorStoreWith(state => state.flowEditorSchema);
-  const schema = flowSchema.subEditors[props.node?.nodeType];
-  const store = useFlowEditorStore()
+  const {node} = props
+  const t = useTranslate()
+  const material = useFlowEditorStoreWith(state=> state.flowEditorSchema.materialMetas?.[node.nodeType])
+  const components = useFlowEditorStoreWith(state => state.flowEditorComponents);
+  const component = components?.[props.node?.nodeType];
 
-  return <>{props.node && render('node', schema, { node: props.node }, {store,props})}</>;
+
+  return <>{component?.({node,t,material})}</>;
 }

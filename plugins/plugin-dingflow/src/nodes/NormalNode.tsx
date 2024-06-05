@@ -1,13 +1,11 @@
 import { memo, useCallback } from "react"
-import { RightOutlined } from "@ant-design/icons"
+import { styled } from "styled-components"
+import { DingFlowNode, useFlowEditorStoreWith } from "../store"
+import { canvasColor, lineColor, nodeColor } from "../utils/theme-utils"
 import { AddButton } from "./AddButton"
 import { ChildNode } from "./ChildNode"
-import { styled } from "styled-components"
-import { lineColor,nodeColor,canvasColor } from "../utils/theme-utils"
 import { ErrorTip } from "./ErrorTip"
-import { DingFlowNode, useFlowEditorStoreWith } from "../store"
-import  { useTranslate} from '@nop-chaos/sdk'
-import { NodeTitle } from "./NodeTitle"
+import { NodeRenderer } from "./NodeContent"
 
 export const NodeWrap = styled.div`
   display: flex;
@@ -113,9 +111,6 @@ export const NormalNode = memo((
   }
 ) => {
   const { node } = props
-  const t = useTranslate()
-  const material = {} //useNodeMaterial(node)
-  const materialUi:any = {} // useMaterialUI(node)
   const selectNode = useFlowEditorStoreWith(state=> state.selectNode)
 
   const handleClick = useCallback(() => {
@@ -125,11 +120,7 @@ export const NormalNode = memo((
   return (
     <NodeWrap className="node-wrap">
       <NodeWrapBox className="node-wrap-box" onClick={handleClick}>
-        <NodeTitle node={node} material={material} />
-        <NodeContent className="content">
-          {materialUi?.viewContent && materialUi?.viewContent(node, { t })}
-          <RightOutlined className="arrow" />
-        </NodeContent>
+        <NodeRenderer node={node} />
         <ErrorTip nodeId={node.id} />
       </NodeWrapBox>
       {node?.id && <AddButton nodeId={node?.id} />}

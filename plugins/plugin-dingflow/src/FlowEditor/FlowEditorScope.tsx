@@ -12,7 +12,7 @@ export type FlowEditorProps = {
   flowEditorSchema: FlowEditorSchema;
   materialLib: string;
 
-  value: any;
+  flowData: any;
   onChange: (value: any) => void;
   data: any;
 
@@ -34,7 +34,7 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
   const {
     flowEditorSchema,
     materialLib,
-    value,
+    flowData,
     header,
     body,
     initApi,
@@ -46,7 +46,7 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
   const renderContext = useReactRenderContext()!;
 
   const [store] = useState(() => {
-    const store = createFlowEditorStore(flowEditorSchema, value, materialLib);
+    const store = createFlowEditorStore(flowEditorSchema, flowData, materialLib);
     if (initApi) {
       store.getState().setFlowDataLoader(() => {
         return Promise.resolve(

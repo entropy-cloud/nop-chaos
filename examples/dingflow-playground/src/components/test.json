@@ -40,6 +40,12 @@
           },
           "subEditors":{
             
+          },
+          "materialMetas":{
+            "start": {
+              "label": "发起人",
+              "color": "rgb(87, 106, 149)"
+            }
           }
       },
       "flowData":{

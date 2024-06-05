@@ -1,10 +1,14 @@
 <script setup lang="ts">
 
-import { XuiSchemaPage } from '@nop-chaos/sdk';
+import { XuiSchemaPage ,registerModule} from '@nop-chaos/sdk';
 
 import schema from './test.json'
 
+import flowLib from './FlowEditorMaterial'
+
 defineProps<{ msg: string }>()
+
+registerModule("/public/flow.lib.js", flowLib)
 
 </script>
 

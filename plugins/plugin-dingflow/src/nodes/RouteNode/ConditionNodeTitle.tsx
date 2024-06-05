@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useState } from "react"
 import { styled } from "styled-components"
 import { ConditionButtons } from "./ConditionButtons"
 import { ConditionPriority } from "./ConditionPriority"
-import { Input, TitleResponse } from "../NodeTitle"
+import { NodeTitleInput, TitleResponse } from "../NodeTitle"
 import { DingFlowBranchNode, DingFlowRouteNode, useFlowEditorStoreWith } from "../../store"
 import { useTranslate } from "@nop-chaos/sdk"
 
@@ -86,7 +86,7 @@ export const ConditionNodeTitle = memo((
         </>
       }
       {
-        editting && <Input
+        editting && <NodeTitleInput
           autoFocus
           value={inputValue}
           onClick={handleInputClick}
