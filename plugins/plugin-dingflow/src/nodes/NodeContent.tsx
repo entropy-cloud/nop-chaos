@@ -1,4 +1,4 @@
-import { DingFlowNode, useFlowEditorStoreWith } from '../store';
+import { DingFlowNode, useFlowEditorStore, useFlowEditorStoreWith } from '../store';
 import { styled } from 'styled-components';
 
 import { lineColor, canvasColor, nodeColor } from '../utils/theme-utils';
@@ -111,10 +111,12 @@ type NodeContentProps = {
 export function NodeRenderer(props: NodeContentProps) {
   const {node} = props
   const t = useTranslate()
-  const material = useFlowEditorStoreWith(state=> state.flowEditorSchema.materialMetas?.[node.nodeType])
+  const material = useFlowEditorStoreWith(state=> state.flowEditorSchema.nodeMetas?.[node.nodeType])
   const components = useFlowEditorStoreWith(state => state.flowEditorComponents);
   const component = components?.[props.node?.nodeType];
+  const store = useFlowEditorStore()
+  const editable = useFlowEditorStoreWith(state => state.editable)
 
 
-  return <>{component?.({node,t,material})}</>;
+  return <>{component?.({node,t,material,store,editable})}</>;
 }

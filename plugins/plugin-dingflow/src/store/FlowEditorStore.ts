@@ -35,7 +35,7 @@ const initSchema: FlowEditorSchema = {
   mainEditor: {
     type: 'static'
   },
-  subEditors: {}
+  editForms: {}
 };
 
 const initData: DingFlow = {
@@ -246,6 +246,7 @@ export function createFlowEditorStore(
     }
 
     return {
+      editing: false,
       flowEditorSchema,
       flowData,
       flowEditorMaterial: initMaterial,
@@ -278,6 +279,10 @@ export function createFlowEditorStore(
       },
       setFlowDataSaver(saver: any) {
         set({ flowDataSaver: saver });
+      },
+
+      setEditing(editing:boolean){
+        set({editing})
       },
 
       async loadFlowData() {

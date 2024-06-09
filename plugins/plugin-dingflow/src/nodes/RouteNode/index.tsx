@@ -5,7 +5,7 @@ import { AddButton } from "../AddButton"
 import { lineColor } from "../../utils/theme-utils"
 import { ChildNode } from "../ChildNode"
 import { BranchNode } from "./BranchNode"
-import { DingFlowRouteNode } from "../../store"
+import { DingFlowRouteNode, useFlowEditorStoreWith } from "../../store"
 
 const RouteWrap = styled.div`
   display: inline-flex;
@@ -45,11 +45,12 @@ export const RouteNode = memo((
   }
 ) => {
   const { node } = props
+  const editable = useFlowEditorStoreWith(state=>state.editable)
   return (
     <RouteWrap className="route-wrap" draggable={false}>
       <RouteBoxWrap className="route-box-wrap" draggable={false}>
         <RouteBox className="route-box" draggable={false}>
-          <AddBranchButton node={node} />
+          <AddBranchButton node={node} editable={editable} />
           {
             node.conditionNodeList?.map((child, index) => {
               return (

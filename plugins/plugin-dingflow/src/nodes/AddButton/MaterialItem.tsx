@@ -7,6 +7,7 @@ import { useTranslate, createUuid } from '@nop-chaos/sdk';
 import { useFlowEditorStore, useFlowEditorStoreWith } from '../../store';
 
 import  {cloneDeep} from 'lodash-es'
+import { NamedIcon } from '../../icons';
 
 const MaterialShell = styled.div`
   width: 50%;
@@ -67,7 +68,7 @@ export const MaterialItem = memo(
       <MaterialShell>
         <MItem onClick={handleClick}>
           <MaterialIcon style={{ color: material.color }}>
-            {material.icon}
+            <NamedIcon name={material.icon} />
           </MaterialIcon>
           {t(material.label)}
         </MItem>

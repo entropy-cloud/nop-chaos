@@ -3,6 +3,7 @@ import {
   StdStoreState,
   VComponentType
 } from '@nop-chaos/sdk';
+import internal from 'stream';
 
 export type DingFlowNodeKind =
   //开始节点
@@ -60,11 +61,43 @@ export interface DingFlow {
   startNode?: DingFlowNode;
 }
 
-export type MaterialMeta = {
+export type DingFlowNodeMeta = {
+  name:string,
+  kind: DingFlowNodeKind,
+  propsForm?: string,
+  base?:string,
+  shape?: string,
+  minWidth?: number,
+  maxWidth?: number,
+  maxHeight?: number,
+  minHeight?: number,
   label: string,
   icon: string,
   color: string,
+  info: string,
+  width?: number,
+  height?: number,
+  draggble?: boolean,
+  resizable?: boolean,
+  deletable?: boolean,
+  addable?: boolean,
+  textPosition?: string,
+  textDraggable?:boolean,
+  minOccurs?: number,
+  maxOccurs?: number,
+  allowParents?: string[],
+  layout?: string,
+  allowChildren?: string[],
   defaultConfig: Record<string,any>
+}
+
+export type DingFlowEdgeMeta = {
+  name: string,
+  kind: string,
+  label: string,
+  icon: string
+  allowTargets: string[]
+  propsForm?:string
 }
 
 
@@ -80,14 +113,14 @@ export type FlowEditorSchema = {
     step: number;
   };
 
-  materialMetas: Record<string,MaterialMeta>
+  nodeMetas: Record<string,DingFlowNodeMeta>
+  edgeMetas: Record<string, DingFlowEdgeMeta>
 
-  mainEditor: SchemaType;
-
-  subEditors: Record<string,SchemaType>
+  editForms: Record<string,SchemaType>
 };
 
 export type FlowEditorStoreType = StdStoreState & {
+  editable: boolean, 
   flowEditorSchema: FlowEditorSchema;
   flowData: DingFlow;
   flowEditorComponents: Record<string,VComponentType>;

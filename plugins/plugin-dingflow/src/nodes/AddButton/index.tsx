@@ -3,6 +3,7 @@ import { Popover } from "antd"
 import { memo, useCallback, useState } from "react"
 import { styled } from "styled-components"
 import { ContentPanel } from "./ContentPanel"
+import { useFlowEditorStoreWith } from "../../store"
 
 const AddButtonBox = styled.div`
       width: 240px;
@@ -76,6 +77,7 @@ export const AddButton = memo((
 ) => {
   const { nodeId } = props
   const [open, setOpen] = useState(false)
+  const editable = useFlowEditorStoreWith(state=>state.editable)
 
   const handleOpenChange = useCallback((status: boolean) => {
     setOpen(status)
@@ -88,7 +90,10 @@ export const AddButton = memo((
   return (
     <AddButtonBox className="add-node-button-box">
       <ButtonShell>
-        <Popover
+        {!editable && <div className="btn">
+            <PlusOutlined />
+          </div> }
+        {editable && <Popover
           placement="rightTop"
           content={<ContentPanel nodeId={nodeId} onClickMaterial={handleMaterialClick} />}
           trigger="click"
@@ -98,7 +103,7 @@ export const AddButton = memo((
           <div className="btn">
             <PlusOutlined />
           </div>
-        </Popover>
+        </Popover>}
       </ButtonShell>
     </AddButtonBox>
   )

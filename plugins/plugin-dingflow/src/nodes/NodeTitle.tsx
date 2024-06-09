@@ -1,7 +1,8 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { CloseButton } from "./CloseButton";
-import { DingFlowNode, MaterialMeta, useFlowEditorStoreWith } from "../store";
+import { DingFlowNode, DingFlowNodeMeta, useFlowEditorStoreWith } from "../store";
+import { NamedIcon } from "../icons";
 
 export const NodeTitleShell = styled.div`
   position: relative;
@@ -60,7 +61,7 @@ export const NodeTitleInput = styled.input`
 
 export const NodeTitle = memo((props: {
   node: DingFlowNode,
-  material?: MaterialMeta,
+  material?: DingFlowNodeMeta,
   editable?: boolean,
   closable?: boolean,
 }) => {
@@ -104,7 +105,7 @@ export const NodeTitle = memo((props: {
 
   return <NodeTitleShell className="node-title" style={{ backgroundColor: material?.color, color: "#fff" }}>
     <NodeIcon>
-      {material?.icon}
+      <NamedIcon name={material?.icon} />
     </NodeIcon>
     {!editing &&
       <>

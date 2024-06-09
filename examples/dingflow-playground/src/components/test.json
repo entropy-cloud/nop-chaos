@@ -2,7 +2,7 @@
   "type": "page",
   "title": "欢迎AAA",
   "bodyClassName": "flex overflow-auto",
-  "toolbar":[
+  "toolbar": [
     {
       "type": "button",
       "label": "点击我",
@@ -29,26 +29,89 @@
     }
   ],
   "body": [
-     
     {
-      "type":"nop-flow-editor",
+      "type": "nop-flow-editor",
       "materialLib": "/public/flow.lib.js",
+      "editable": false,
       "flowEditorSchema": {
-          "mainEditor": {
+        "editForms": {
+          "mainProps": {
             "type": "input-text",
             "label": "Main"
-          },
-          "subEditors":{
-            
-          },
-          "materialMetas":{
-            "start": {
-              "label": "发起人",
-              "color": "rgb(87, 106, 149)"
-            }
           }
+        },
+        "nodeMetas": {
+          "start": {
+            "label": "发起人",
+            "color": "rgb(87, 106, 149)",
+            "info": "allMember"
+          },
+          "approver": {
+            "color": "#ff943e",
+            "label": "approver",
+            "icon": "seal",
+            "info": "pleaseChooseApprover",
+            "deletable":true,
+            "addable": true,
+            "defaultConfig": {}
+          },
+          "notifier": {
+            "color": "#4ca3fb",
+            "label": "notifier",
+            "icon": "notifier",
+            "info": "pleaseChooseNotifier",
+            "deletable":true,
+            "addable": true,
+            "defaultConfig": {}
+          },
+          "audit": {
+            "color": "#fb602d",
+            "label": "dealer",
+            "icon": "deal",
+            "info": "pleaseChooseDealer",
+            "deletable":true,
+            "addable": true,
+            "defaultConfig": {}
+          },
+          "route": {
+            "color": "#15bc83",
+            "label": "routeNode",
+            "icon": "route",
+            "nodeKind": "route",
+            "deletable":true,
+            "addable": true,
+            "defaultConfig": {
+              "conditionNodeList": [
+                {
+                  "id": "@uuid",
+                  "nodeType": "condition",
+                  "name": "Condition1"
+                },
+                {
+                  "id": "@uuid",
+                  "nodeType": "condition",
+                  "name": "Condition2"
+                }
+              ]
+            }
+          },
+
+          "condition": {
+            "label": "condition",
+            "color": "",
+            "info": "pleaseSetCondition",
+            "deletable":true,
+            "addable": true,
+            "defaultConfig": {}
+          }
+        },
+        "edgeMetas": {
+          "default": {
+            "allowTargets": ["approver","notifier","audit","route"]
+          }
+        }
       },
-      "flowData":{
+      "flowData": {
         "startNode": {
           "id": "start",
           "nodeType": "start",
@@ -59,6 +122,7 @@
             "childNode": {
               "id": "bc96c847-9dbf-4d01-876c-94cb5c234379",
               "nodeType": "route",
+              "nodeKind": "route",
               "conditionNodeList": [
                 {
                   "id": "f65e1ddf-220d-496d-8de3-16fdd56d2219",
@@ -91,7 +155,7 @@
           }
         }
       },
-      "body":{
+      "body": {
         "type": "nop-flow-editor-canvas"
       }
     }

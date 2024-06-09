@@ -171,8 +171,9 @@ export const BranchNode = memo(
     node: DingFlowBranchNode;
     index: number;
     length: number;
+    editable? : boolean;
   }) => {
-    const { parent, node, index, length } = props;
+    const { parent, node, index, length,editable } = props;
     const t  = useTranslate();
     const [moveConditionLeft, moveConditionRight, selectNode] =
       useFlowEditorStoreWith(state => [
@@ -212,7 +213,7 @@ export const BranchNode = memo(
               draggable={false}
               onClick={handleClick}
             >
-              {index !== 0 && (
+              {index !== 0 && editable &&  (
                 <SortHandler
                   className="sort-handler left"
                   onClick={hanldeMoveLeft}
@@ -225,7 +226,7 @@ export const BranchNode = memo(
                 {materialUi?.viewContent &&
                   materialUi?.viewContent(node, { t })}
               </NodeContent>
-              {index !== length - 1 && (
+              {index !== length - 1 && editable && (
                 <SortHandler
                   className="sort-handler right"
                   onClick={handleMoveRight}

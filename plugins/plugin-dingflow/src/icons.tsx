@@ -39,3 +39,29 @@ export const routeIcon = <span role="img" className="anticon">
 </span>
 
 
+const g_icons : Record<string, typeof routeIcon> = {}
+
+export function registerIcon(name:string, icon: typeof routeIcon){
+  g_icons[name] = routeIcon;
+}
+
+export function registerIcons(icons: {[name:string]:typeof routeIcon}){
+  for(let name in icons){
+    registerIcon(name,icons[name])
+  }
+}
+
+export function NamedIcon(props: {name?:string}){
+  const icon = g_icons[props.name || 'default'];
+  return icon || routeIcon
+}
+
+registerIcons({
+  "redo": redoIcon,
+  "undo": undoIcon,
+  "copy": copyIcon,
+  "seal": sealIcon,
+  "notifier": notifierIcon,
+  "deal": dealIcon,
+  "route": routeIcon,
+})

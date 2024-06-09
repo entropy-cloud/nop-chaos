@@ -9,6 +9,7 @@ import { ApiObject, SchemaType } from '@nop-chaos/sdk';
 import { FlowEditorSchema } from '../store/types';
 
 export type FlowEditorProps = {
+  editing: boolean,
   flowEditorSchema: FlowEditorSchema;
   materialLib: string;
 
@@ -32,6 +33,7 @@ export type FlowEditorProps = {
 
 export const FlowEditorScope = (props: FlowEditorProps) => {
   const {
+    editing,
     flowEditorSchema,
     materialLib,
     flowData,
@@ -47,6 +49,7 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
 
   const [store] = useState(() => {
     const store = createFlowEditorStore(flowEditorSchema, flowData, materialLib);
+    store.getState().setEditing(editing)
     if (initApi) {
       store.getState().setFlowDataLoader(() => {
         return Promise.resolve(

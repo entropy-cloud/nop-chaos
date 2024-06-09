@@ -46,8 +46,8 @@ const AddBranch = styled.button`
   }
 `;
 
-export const AddBranchButton = memo((props: { node: DingFlowRouteNode }) => {
-  const { node } = props;
+export const AddBranchButton = memo((props: { node: DingFlowRouteNode,editable?:boolean }) => {
+  const { node,editable } = props;
   const t = useTranslate();
   const [addCondition, getNode, selectNode] = useFlowEditorStoreWith(state => [
     state.addCondition,
@@ -67,5 +67,5 @@ export const AddBranchButton = memo((props: { node: DingFlowRouteNode }) => {
     selectNode(newId);
   }, [node]);
 
-  return <AddBranch onClick={handleClick}>{t('addCondition')}</AddBranch>;
+  return <AddBranch onClick={handleClick}>{editable ? t('addCondition'): t('conditions')}</AddBranch>;
 });

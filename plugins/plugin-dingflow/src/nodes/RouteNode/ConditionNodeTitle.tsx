@@ -30,10 +30,11 @@ export const ConditionNodeTitle = memo((
     node: DingFlowBranchNode,
     parent: DingFlowRouteNode,
     index: number,
+    editable?: boolean
   }
 ) => {
-  const { node, parent, index } = props
-  const [editting, setEditting] = useState(false)
+  const { node, parent, index,editable } = props
+  const [editing, setEditing] = useState(false)
   const [inputValue, setInputValue] = useState(node.name)
 
 
@@ -51,7 +52,7 @@ export const ConditionNodeTitle = memo((
 
   const handleNameClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
-    setEditting(true)
+    setEditing(true)
   }, [])
 
   const handleInputClick = useCallback((e: React.MouseEvent) => {
@@ -60,7 +61,7 @@ export const ConditionNodeTitle = memo((
 
   const handleBlur = useCallback(() => {
     changeName()
-    setEditting(false)
+    setEditing(false)
   }, [changeName])
 
   const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -76,17 +77,17 @@ export const ConditionNodeTitle = memo((
   return (
     <TitleWrapper>
       {
-        !editting && <>
-          <TitleResponse onClick={handleNameClick}>
+        !editing && <>
+          <TitleResponse onClick={editable ? handleNameClick: undefined}>
             <TitleText>
               {node.name || t("condition")}
             </TitleText>
           </TitleResponse>
-          <ConditionButtons parent={parent} node={node} />
+          {editable && <ConditionButtons parent={parent} node={node} />}
         </>
       }
       {
-        editting && <NodeTitleInput
+        editing && <NodeTitleInput
           autoFocus
           value={inputValue}
           onClick={handleInputClick}
@@ -95,7 +96,7 @@ export const ConditionNodeTitle = memo((
           onChange={handleChange}
         />
       }
-      {!editting && <ConditionPriority index={index} />}
+      {!editing && <ConditionPriority index={index} />}
     </TitleWrapper>
   )
 })

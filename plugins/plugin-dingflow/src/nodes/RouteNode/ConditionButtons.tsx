@@ -19,6 +19,7 @@ export const ConditionButtons = ((
   props: {
     parent: DingFlowRouteNode,
     node: DingFlowBranchNode,
+    editable?:boolean
   }
 ) => {
   const { parent, node } = props

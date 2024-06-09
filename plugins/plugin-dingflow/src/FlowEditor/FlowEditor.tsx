@@ -1,5 +1,7 @@
 import { memo } from 'react';
 import { FlowEditorScope, FlowEditorProps } from './FlowEditorScope';
+import {ConfigRoot} from './ConfigRoot'
+import {ThemeRoot} from './ThemeRoot'
 
 import { styled } from 'styled-components';
 
@@ -10,7 +12,13 @@ const EditorContainer = styled.div`
 `;
 
 export const FlowEditor = memo((props: FlowEditorProps) => {
-  return <EditorContainer>
-  <FlowEditorScope {...props}/>
-  </EditorContainer>
+  return (
+    <EditorContainer>
+      <ConfigRoot>
+        <ThemeRoot>
+        <FlowEditorScope {...props} />
+        </ThemeRoot>
+      </ConfigRoot>
+    </EditorContainer>
+  );
 });

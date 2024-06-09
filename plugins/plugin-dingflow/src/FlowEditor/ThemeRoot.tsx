@@ -15,7 +15,7 @@ export const ThemeRoot = memo(
       useMemo(() => {
         return {
           token: themeToken || token,
-          mode: themeMode
+          mode: themeMode || 'light'
         };
       }, [themeMode, themeToken, token]);
 
