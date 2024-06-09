@@ -11,6 +11,7 @@ import {
   DingFlowBranchNode,
   useFlowEditorStoreWith
 } from '../../store';
+import { NodeRenderer } from '../NodeContent';
 
 const ColBox = styled.div`
   display: inline-flex;
@@ -174,15 +175,12 @@ export const BranchNode = memo(
     editable? : boolean;
   }) => {
     const { parent, node, index, length,editable } = props;
-    const t  = useTranslate();
     const [moveConditionLeft, moveConditionRight, selectNode] =
       useFlowEditorStoreWith(state => [
         state.moveConditionLeft,
         state.moveConditionRight,
         state.selectNode
       ]);
-
-    const materialUi: any = {};
 
     const handleClick = useCallback(() => {
       selectNode(node?.id);
@@ -221,11 +219,7 @@ export const BranchNode = memo(
                   &lt;
                 </SortHandler>
               )}
-              <ConditionNodeTitle node={node} parent={parent} index={index} />
-              <NodeContent className="content">
-                {materialUi?.viewContent &&
-                  materialUi?.viewContent(node, { t })}
-              </NodeContent>
+              <NodeRenderer node={node} parent={parent} index={index} />
               {index !== length - 1 && editable && (
                 <SortHandler
                   className="sort-handler right"

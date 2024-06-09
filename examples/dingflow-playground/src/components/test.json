@@ -32,7 +32,7 @@
     {
       "type": "nop-flow-editor",
       "materialLib": "/public/flow.lib.js",
-      "editable": false,
+      "editable": true,
       "flowEditorSchema": {
         "editForms": {
           "mainProps": {

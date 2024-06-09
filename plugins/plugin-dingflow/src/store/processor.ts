@@ -18,20 +18,21 @@ export function recursiveProcess(node: DingFlowNode, processor: NodeProcessor) {
   return false;
 }
 
-export type NodeReducer = (node: DingFlowNode) => DingFlowNode | undefined;
+export type NodeReducer = (node: DingFlowNode, parent?: DingFlowNode) => DingFlowNode | undefined;
 
 export function recursiveReducer(
   node: DingFlowNode,
-  reducer: NodeReducer
+  reducer: NodeReducer,
+  parent?: DingFlowNode
 ): DingFlowNode | undefined {
-  const processed = reducer(node);
+  const processed = reducer(node,parent);
   if (processed !== node) return processed;
 
   let newNode: DingFlowNode | undefined;
   let useNew: boolean = false;
 
   if (node.childNode) {
-    const child = reducer(node.childNode);
+    const child = recursiveReducer(node.childNode,reducer,parent);
     if (child !== node.childNode) {
       newNode = { ...node };
       newNode.childNode = child;
@@ -42,10 +43,16 @@ export function recursiveReducer(
   if (node.nodeKind === 'route') {
     const routeNode = node as DingFlowRouteNode;
     const list = routeNode.conditionNodeList
-      .map(child => reducer(child))
+      .map(child => recursiveReducer(child,reducer,parent))
       .filter(child => child != null) as DingFlowBranchNode[];
 
-    if (!arrayEquals(list, routeNode.conditionNodeList)) {
+    if(list.length == 0){
+        if(parent){
+          parent.childNode = routeNode.childNode
+        }else{
+          return node.childNode
+        }
+    }else if (!arrayEquals(list, routeNode.conditionNodeList)) {
       if (!useNew) {
         newNode = { ...routeNode };
         useNew = true;

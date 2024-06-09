@@ -54,7 +54,8 @@ export const RouteNode = memo((
           {
             node.conditionNodeList?.map((child, index) => {
               return (
-                <BranchNode key={child.id} parent={node} node={child} index={index} length={node.conditionNodeList?.length || 0} />
+                <BranchNode key={child.id} parent={node} node={child} index={index}
+                 length={node.conditionNodeList?.length || 0} editable={editable}/>
               )
             })
           }

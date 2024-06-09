@@ -33,7 +33,7 @@ export type FlowEditorProps = {
 
 export const FlowEditorScope = (props: FlowEditorProps) => {
   const {
-    editing,
+    editable,
     flowEditorSchema,
     materialLib,
     flowData,
@@ -48,8 +48,7 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
   const renderContext = useReactRenderContext()!;
 
   const [store] = useState(() => {
-    const store = createFlowEditorStore(flowEditorSchema, flowData, materialLib);
-    store.getState().setEditing(editing)
+    const store = createFlowEditorStore(flowEditorSchema, flowData, materialLib,editable)
     if (initApi) {
       store.getState().setFlowDataLoader(() => {
         return Promise.resolve(

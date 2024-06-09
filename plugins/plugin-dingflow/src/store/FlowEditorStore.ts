@@ -54,12 +54,14 @@ async function loadMaterialLib(path: string): Promise<any> {
 export function createFlowEditorStore(
   flowEditorSchema: FlowEditorSchema,
   flowData: DingFlow,
-  materialLib: string
+  materialLib: string,
+  editable: boolean
 ): StoreApi<FlowEditorStoreType> {
   if (!flowEditorSchema) flowEditorSchema = initSchema;
   if (!flowData) flowData = initData;
 
   const undoManager = createUndoManager<SnapshotType>();
+  undoManager.reset({flowData,errors:{}})
 
   const stateCreator = (set: any,get:any) => {
     const t = useTranslate('flowEditor');
@@ -124,21 +126,9 @@ export function createFlowEditorStore(
       if (!startNode) return;
 
       const reducedNode = recursiveReducer(startNode, node => {
-        if (node.childNode) {
-          if (node.childNode.id === id) {
-            return { ...node, childNode: node.childNode.childNode };
-          }
-        } else if (node.nodeKind === 'route') {
-          const routeNode = node as DingFlowRouteNode;
-          if (!routeNode.conditionNodeList.some(cond => cond.id === id))
-            return node;
-
-          let newConditions = routeNode.conditionNodeList.filter(
-            cond => cond.id !== id
-          );
-          return { ...node, conditionNodeList: newConditions };
-        }
-
+        if(node.id === id)
+          return null
+        
         return node;
       });
 
@@ -246,7 +236,7 @@ export function createFlowEditorStore(
     }
 
     return {
-      editing: false,
+      editable: editable,
       flowEditorSchema,
       flowData,
       flowEditorMaterial: initMaterial,
@@ -290,7 +280,7 @@ export function createFlowEditorStore(
         if (!loader) return;
         const flowData = await loader();
         set({ flowData });
-        undoManager.reset();
+        undoManager.reset({flowData,errors:{}});
       },
 
       async saveFlowData() {

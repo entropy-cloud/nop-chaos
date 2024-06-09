@@ -42,7 +42,7 @@ export const routeIcon = <span role="img" className="anticon">
 const g_icons : Record<string, typeof routeIcon> = {}
 
 export function registerIcon(name:string, icon: typeof routeIcon){
-  g_icons[name] = routeIcon;
+  g_icons[name] = icon;
 }
 
 export function registerIcons(icons: {[name:string]:typeof routeIcon}){
