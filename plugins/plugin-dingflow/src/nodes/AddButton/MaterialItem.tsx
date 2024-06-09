@@ -3,10 +3,10 @@ import { memo, useCallback } from 'react';
 // import { useTranslate } from "../../react-locales"
 import { styled } from 'styled-components';
 import { MaterialMeta } from '../types';
-import { useTranslate, createUuid } from '@nop-chaos/sdk';
+import { useTranslate, createUuid, isPlainObject } from '@nop-chaos/sdk';
 import { useFlowEditorStore, useFlowEditorStoreWith } from '../../store';
 
-import  {cloneDeep} from 'lodash-es'
+import { cloneDeep } from 'lodash-es';
 import { NamedIcon } from '../../icons';
 
 const MaterialShell = styled.div`
@@ -43,13 +43,16 @@ export const MaterialItem = memo(
   (props: { nodeId: string; material: MaterialMeta; onClick?: () => void }) => {
     const { nodeId, material, onClick } = props;
     const t = useTranslate();
-    const [getNode,addChild,selectNode] = 
-      useFlowEditorStoreWith(state=>[state.getNode, state.addChild, state.selectNode])
+    const [getNode, addChild, selectNode] = useFlowEditorStoreWith(state => [
+      state.getNode,
+      state.addChild,
+      state.selectNode
+    ]);
 
     const handleClick = useCallback(() => {
       const newId = createUuid();
       const newName = t(material.label);
-      const node = getNode(nodeId)!
+      const node = getNode(nodeId)!;
 
       //复制一份配置数据，保证immutable
       addChild(node, {
@@ -77,21 +80,23 @@ export const MaterialItem = memo(
   }
 );
 
-function cloneConfig(config:any):any{
-  if(!config)
-    return
+function cloneConfig(config: any): any {
+  if (!config) return;
 
-  if(config == '@uuid'){
-    return createUuid()
+  if (config == '@uuid') {
+    return createUuid();
   }
 
-  if(Array.isArray(config)){
-    return config.map(cloneConfig)
+  if (Array.isArray(config)) {
+    return config.map(cloneConfig);
+  } else if (isPlainObject(config)) {
+    const map = config as any
+    const ret: any = {};
+    for (const key in config) {
+      ret[key] = cloneConfig(map[key]);
+    }
+    return ret;
+  } else {
+    return config;
   }
-
-  const ret:any = {}
-  for(const key in config){
-    ret[key] = cloneConfig(config[key])
-  }
-  return ret
 }
