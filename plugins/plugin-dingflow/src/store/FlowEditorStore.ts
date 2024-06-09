@@ -127,7 +127,7 @@ export function createFlowEditorStore(
 
       const reducedNode = recursiveReducer(startNode, node => {
         if(node.id === id)
-          return null
+          return node.childNode
         
         return node;
       });

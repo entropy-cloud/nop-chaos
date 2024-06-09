@@ -44,9 +44,13 @@
           "start": {
             "label": "发起人",
             "color": "rgb(87, 106, 149)",
-            "info": "allMember"
+            "info": "allMember",
+            "nodeType": "start",
+            "nodeKind": "start"
           },
           "approver": {
+            "nodeType": "approver",
+            "nodeKind": "normal",
             "color": "#ff943e",
             "label": "approver",
             "icon": "seal",
@@ -56,6 +60,8 @@
             "defaultConfig": {}
           },
           "notifier": {
+            "nodeType": "notifier",
+            "nodeKind": "normal",
             "color": "#4ca3fb",
             "label": "notifier",
             "icon": "notifier",
@@ -65,6 +71,8 @@
             "defaultConfig": {}
           },
           "audit": {
+            "nodeType": "audit",
+            "nodeKind": "normal",
             "color": "#fb602d",
             "label": "dealer",
             "icon": "deal",
@@ -74,10 +82,11 @@
             "defaultConfig": {}
           },
           "route": {
+            "nodeType": "route",
+            "nodeKind": "route",
             "color": "#15bc83",
             "label": "routeNode",
             "icon": "route",
-            "nodeKind": "route",
             "deletable":true,
             "addable": true,
             "defaultConfig": {
@@ -85,11 +94,13 @@
                 {
                   "id": "@uuid",
                   "nodeType": "condition",
+                  "nodeKind": "condition",
                   "name": "Condition1"
                 },
                 {
                   "id": "@uuid",
                   "nodeType": "condition",
+                  "nodeKind": "condition",
                   "name": "Condition2"
                 }
               ]
@@ -97,6 +108,8 @@
           },
 
           "condition": {
+            "nodeType": "condition",
+            "nodeKind": "condition",
             "label": "condition",
             "color": "",
             "info": "pleaseSetCondition",

@@ -53,9 +53,9 @@ export const MaterialItem = memo(
 
       //复制一份配置数据，保证immutable
       addChild(node, {
-        nodeType: 'simple',
-        nodeKind: 'normal',
-        ...cloneDeep(material.defaultConfig),
+        nodeType: material.nodeType || 'simple',
+        nodeKind: material.nodeKind || 'normal',
+        ...cloneConfig(material.defaultConfig),
         id: newId,
         name: newName
       });
@@ -76,3 +76,22 @@ export const MaterialItem = memo(
     );
   }
 );
+
+function cloneConfig(config:any):any{
+  if(!config)
+    return
+
+  if(config == '@uuid'){
+    return createUuid()
+  }
+
+  if(Array.isArray(config)){
+    return config.map(cloneConfig)
+  }
+
+  const ret:any = {}
+  for(const key in config){
+    ret[key] = cloneConfig(config[key])
+  }
+  return ret
+}
