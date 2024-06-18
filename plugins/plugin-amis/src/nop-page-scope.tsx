@@ -30,19 +30,27 @@ class PageScopeComponent extends React.Component<RendererProps, any> {
   }
 
   handleAmisAction(
-    store: StdStoreApi,
+    renderCtx: RenderComponentCtx,
     e: React.UIEvent<any> | void,
     action: ActionObject,
     ctx: object,
     throwErrors: boolean = false,
     delegate?: IScopedContext
   ) {
-    if (action.actionType?.startsWith('store:')) {
-      const handlerName = action.actionType.substring('store:'.length);
+    const store = renderCtx.store as StdStoreApi;
+    const actionType = action.actionType?.toString()
+    if (actionType?.startsWith('store:')) {
+      const handlerName = actionType.substring('store:'.length);
       const handler = store.getState().getValue(handlerName);
       if(!handler)
         throw new Error("nop.err.unknown-store-handler:"+handlerName)
       return handler?.(action.mergeData);
+    }
+    if(renderCtx.onOk && actionType == 'action:ok'){
+      return renderCtx.onOk(ctx)
+    }
+    if(renderCtx.onCancel && actionType == 'action:cancel'){
+      return renderCtx.onCancel()
     }
     return this.props.onAction?.(e, action, ctx, throwErrors, delegate);
   }
@@ -63,7 +71,7 @@ class PageScopeComponent extends React.Component<RendererProps, any> {
         delegate?: IScopedContext
       ) => {
         this.handleAmisAction(
-          renderCtx.store as StdStoreApi,
+          renderCtx,
           e,
           action,
           ctx,

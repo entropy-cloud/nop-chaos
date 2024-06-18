@@ -495,7 +495,7 @@ function argQuery(data: any, arg: ArgumentDefinition, options: FetcherRequest) {
         let min = undefined;
         let max = undefined;
 
-        if (op.startsWith('between') && value != null) {
+        if (op.startsWith('between') || op.endsWith("Between") && value != null) {
           let ary = toArray(value);
           min = ary[0];
           max = ary[1];

@@ -75,23 +75,23 @@ importers:
         specifier: ^6.1.1
         version: 6.1.1
       amis:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-ui@6.4.1)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-ui@6.5.0)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
       amis-core:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
       amis-editor:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(amis-theme-editor-helper@2.0.26)(amis-ui@6.4.1)(amis@6.4.1)(i18n-runtime@1.0.5)(mobx@4.15.7)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(amis-theme-editor-helper@2.0.26)(amis-ui@6.5.0)(amis@6.5.0)(i18n-runtime@1.0.5)(mobx@4.15.7)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
       amis-editor-core:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(amis-theme-editor-helper@2.0.26)(amis-ui@6.4.1)(amis@6.4.1)(i18n-runtime@1.0.5)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(amis-theme-editor-helper@2.0.26)(amis-ui@6.5.0)(amis@6.5.0)(i18n-runtime@1.0.5)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
       amis-formula:
-        specifier: ^6.4.1
-        version: 6.4.1
+        specifier: ^6.5.0
+        version: 6.5.0
       amis-ui:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(react-dom@18.2.0)(react@18.2.0)
       amis-widget:
         specifier: ^3.2.2
         version: 3.2.2
@@ -211,17 +211,17 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4
       amis:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-ui@6.4.1)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-ui@6.5.0)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
       amis-core:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
       amis-formula:
-        specifier: ^6.4.1
-        version: 6.4.1
+        specifier: ^6.5.0
+        version: 6.5.0
       amis-ui:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(react-dom@18.2.0)(react@18.2.0)
       ant-design-vue:
         specifier: ^4.1.2
         version: 4.1.2(vue@3.4.27)
@@ -554,17 +554,17 @@ importers:
         specifier: workspace:*
         version: link:../../packages/sdk
       amis:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-ui@6.4.1)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-ui@6.5.0)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
       amis-core:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
       amis-formula:
-        specifier: ^6.4.1
-        version: 6.4.1
+        specifier: ^6.5.0
+        version: 6.5.0
       amis-ui:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(react-dom@18.2.0)(react@18.2.0)
       antd:
         specifier: ^5.3.3
         version: 5.5.0(react-dom@18.2.0)(react@18.2.0)
@@ -1212,17 +1212,17 @@ importers:
         specifier: workspace:*
         version: link:../../packages/sdk
       amis:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-ui@6.4.1)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-ui@6.5.0)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
       amis-core:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
       amis-formula:
-        specifier: ^6.4.1
-        version: 6.4.1
+        specifier: ^6.5.0
+        version: 6.5.0
       amis-ui:
-        specifier: ^6.4.1
-        version: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.5.0
+        version: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(react-dom@18.2.0)(react@18.2.0)
       copy-to-clipboard:
         specifier: ^3.3.2
         version: 3.3.3
@@ -8342,15 +8342,16 @@ packages:
       require-from-string: 2.0.2
       uri-js: 4.4.1
 
-  /amis-core@6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-qHdy/8FIzktICO3JZLlPw8b0tgGeucWzFLpk1cbCnKsIXBf5QARLlShISso5MA4u6o4DMT8l0p7eLVbamfQadw==}
+  /amis-core@6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-9WZeCSWbaMB2k1yghqEF2fYnKZ0UsK5IZUmE0VF4L6TqQqIrYypvnX/xtlAVrmSvxWlKqI4SDCpeyweduKOX+A==}
     peerDependencies:
       amis-formula: '*'
       react: '>=16.8.6'
       react-dom: '>=16.8.6'
       react-is: '>=16.8.6'
     dependencies:
-      amis-formula: 6.4.1
+      '@rc-component/mini-decimal': 1.1.0
+      amis-formula: 6.5.0
       classnames: 2.3.2
       file-saver: 2.0.5
       hoist-non-react-statics: 3.3.2
@@ -8376,8 +8377,8 @@ packages:
       - react-native
     dev: false
 
-  /amis-editor-core@6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(amis-theme-editor-helper@2.0.26)(amis-ui@6.4.1)(amis@6.4.1)(i18n-runtime@1.0.5)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-zWUtclzldgscMdrl10s0qyGyoCsIEllg0SGGE34SqF/BNgNaTKYszYYXvFqjJ0IblA28ntoKPoHZilcp5iTOow==}
+  /amis-editor-core@6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(amis-theme-editor-helper@2.0.26)(amis-ui@6.5.0)(amis@6.5.0)(i18n-runtime@1.0.5)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-yOjn4b+5vARGBDxX02o8rUgW57G2Oe3Egy+jWAkxf1BLQYMXY7cgxdFsrXb1BS0lbSUte7OL2bfe7aoKfalkmQ==}
     peerDependencies:
       amis: '*'
       amis-core: '*'
@@ -8388,14 +8389,14 @@ packages:
       react: '>=16.8.6'
       react-dom: '>=16.8.6'
     dependencies:
-      amis: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-ui@6.4.1)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
-      amis-core: 6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
-      amis-formula: 6.4.1
-      amis-theme-editor-helper: 2.0.26(amis-core@6.4.1)(amis-ui@6.4.1)(amis@6.4.1)(i18n-runtime@1.0.5)(react-dom@18.2.0)(react@18.2.0)
-      amis-ui: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(react-dom@18.2.0)(react@18.2.0)
+      amis: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-ui@6.5.0)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
+      amis-core: 6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+      amis-formula: 6.5.0
+      amis-theme-editor-helper: 2.0.26(amis-core@6.5.0)(amis-ui@6.5.0)(amis@6.5.0)(i18n-runtime@1.0.5)(react-dom@18.2.0)(react@18.2.0)
+      amis-ui: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(react-dom@18.2.0)(react@18.2.0)
       axios: 0.21.1
       deep-diff: 1.0.2
-      i18n-runtime: 1.0.5(amis-core@6.4.1)
+      i18n-runtime: 1.0.5(amis-core@6.5.0)
       json-ast-comments: 1.1.1
       lodash: 4.17.21
       mobx: 4.15.7
@@ -8414,8 +8415,8 @@ packages:
       - react-native
     dev: false
 
-  /amis-editor@6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(amis-theme-editor-helper@2.0.26)(amis-ui@6.4.1)(amis@6.4.1)(i18n-runtime@1.0.5)(mobx@4.15.7)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-yVkDT7vGp3K83sXmX+8xBU45nGqkmU3eBKIPfR8fUITcSdOo1S2MXLUl16pc69VE7fVc2WPjiajhBv0UOYPP3w==}
+  /amis-editor@6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(amis-theme-editor-helper@2.0.26)(amis-ui@6.5.0)(amis@6.5.0)(i18n-runtime@1.0.5)(mobx@4.15.7)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-jAJrau4/9Ksfycgmi2VIAZVKFdNRny9E3h2vkxjB8//bVklms4c9RSxWPX0ZPlShFjw6EuCnVIQvgejo7+jjdg==}
     peerDependencies:
       amis: '*'
       amis-core: '*'
@@ -8427,14 +8428,14 @@ packages:
       react-dom: '>=16.8.6'
     dependencies:
       '@webcomponents/webcomponentsjs': 2.8.0
-      amis: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-ui@6.4.1)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
-      amis-core: 6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
-      amis-editor-core: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(amis-theme-editor-helper@2.0.26)(amis-ui@6.4.1)(amis@6.4.1)(i18n-runtime@1.0.5)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
-      amis-formula: 6.4.1
+      amis: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-ui@6.5.0)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
+      amis-core: 6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+      amis-editor-core: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(amis-theme-editor-helper@2.0.26)(amis-ui@6.5.0)(amis@6.5.0)(i18n-runtime@1.0.5)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+      amis-formula: 6.5.0
       amis-postcss: 1.0.0
-      amis-theme-editor-helper: 2.0.26(amis-core@6.4.1)(amis-ui@6.4.1)(amis@6.4.1)(i18n-runtime@1.0.5)(react-dom@18.2.0)(react@18.2.0)
-      amis-ui: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(react-dom@18.2.0)(react@18.2.0)
-      i18n-runtime: 1.0.5(amis-core@6.4.1)
+      amis-theme-editor-helper: 2.0.26(amis-core@6.5.0)(amis-ui@6.5.0)(amis@6.5.0)(i18n-runtime@1.0.5)(react-dom@18.2.0)(react@18.2.0)
+      amis-ui: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(react-dom@18.2.0)(react@18.2.0)
+      i18n-runtime: 1.0.5(amis-core@6.5.0)
       lodash: 4.17.21
       mobx-state-tree: 3.17.3(mobx@4.15.7)
       react: 18.2.0
@@ -8448,8 +8449,8 @@ packages:
       - react-native
     dev: false
 
-  /amis-formula@6.4.1:
-    resolution: {integrity: sha512-PVShgctEqAADmCmApD29+7aIFwgKvD+kx3u+6/dfw16NFNPfx4BaMZBrRm/Ub+bF1s3pNL+D8vE4nV1J8HIJEg==}
+  /amis-formula@6.5.0:
+    resolution: {integrity: sha512-u5rXbzokkhX13NGNtf5CBxGbnO9dYogzYAtXkMLr+/rf832OyVotohD1lyoPLVNGHm2m/HoJCau/Uk/B/riXKg==}
     dependencies:
       lodash: 4.17.21
       moment: 2.30.1
@@ -8460,7 +8461,7 @@ packages:
     resolution: {integrity: sha512-OeKbbTvsaIcOq2SZ1VV1GyshhF2fFbFXXc8IQ3ZTIu0uTtJBGFVYZ6sJ40nOznWeptEdfYpVdB/JEtBlXlSWag==}
     dev: false
 
-  /amis-theme-editor-helper@2.0.26(amis-core@6.4.1)(amis-ui@6.4.1)(amis@6.4.1)(i18n-runtime@1.0.5)(react-dom@18.2.0)(react@18.2.0):
+  /amis-theme-editor-helper@2.0.26(amis-core@6.5.0)(amis-ui@6.5.0)(amis@6.5.0)(i18n-runtime@1.0.5)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-bSuUCQmnr50VHeKbstpXu0KaN5lD2mOBJEd1KExtN7JD6i2C0okevk7GieMmOpBKLenGzWnSkrDX0TY4CfZjIA==}
     peerDependencies:
       amis: '*'
@@ -8470,16 +8471,16 @@ packages:
       react: '>=16.8.6'
       react-dom: '>=16.8.6'
     dependencies:
-      amis: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-ui@6.4.1)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
-      amis-core: 6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
-      amis-ui: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(react-dom@18.2.0)(react@18.2.0)
-      i18n-runtime: 1.0.5(amis-core@6.4.1)
+      amis: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-ui@6.5.0)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0)
+      amis-core: 6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+      amis-ui: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(react-dom@18.2.0)(react@18.2.0)
+      i18n-runtime: 1.0.5(amis-core@6.5.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /amis-ui@6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-YTymUt9o+W366XIx/FUrwhLZo31BCJZG0XWZj5gcV2+lFRW/ZF4SRjBLvsuYayT5I1/DvZ4vjh/3BjiQgovUDA==}
+  /amis-ui@6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-mma9rO5K7Oe963Up5Q2lyt37GoM8kuoCeykdGnX1Jf5V4hEHGf6zPbWXAipuHFnJlz6zEP3/o4C7r7C91t+2kg==}
     peerDependencies:
       amis-core: '*'
       amis-formula: '*'
@@ -8487,8 +8488,8 @@ packages:
       react-dom: '>=16.8.6'
     dependencies:
       '@rc-component/mini-decimal': 1.1.0
-      amis-core: 6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
-      amis-formula: 6.4.1
+      amis-core: 6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+      amis-formula: 6.5.0
       classnames: 2.3.2
       codemirror: 5.65.16
       downshift: 6.1.12(react@18.2.0)
@@ -8506,6 +8507,7 @@ packages:
       mobx-state-tree: 3.17.3(mobx@4.15.7)
       moment: 2.30.1
       monaco-editor: 0.30.1
+      pdfjs-dist: 4.3.136
       prop-types: 15.8.1
       rc-input-number: 7.4.2(react-dom@18.2.0)(react@18.2.0)
       rc-menu: 9.12.4(react-dom@18.2.0)(react@18.2.0)
@@ -8518,10 +8520,11 @@ packages:
       react-intersection-observer: 9.5.2(react@18.2.0)
       react-json-view: 1.21.3(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
       react-overlays: 5.1.1(react-dom@18.2.0)(react@18.2.0)
-      react-pdf: 7.7.1(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
+      react-pdf: 9.0.0(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
       react-textarea-autosize: 8.3.3(@types/react@18.2.22)(react@18.2.0)
       react-transition-group: 4.4.2(react-dom@18.2.0)(react@18.2.0)
       react-visibility-sensor: 5.1.1(react-dom@18.2.0)(react@18.2.0)
+      smooth-signature: 1.0.15
       sortablejs: 1.15.0
       tinymce: 6.8.2
       tslib: 2.6.2
@@ -8544,8 +8547,8 @@ packages:
       - debug
     dev: false
 
-  /amis@6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-ui@6.4.1)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-Fp95P1hoEmdqHurszck9j2DHpYT5aRoIz9hN2qXHCNPWKhXbMRykDmnIRfSxaJsExxRFAIkf0jBgmUjLQxNljQ==}
+  /amis@6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-ui@6.5.0)(office-viewer@0.2.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-JeJDBFdCY8MPFgOQCmxjzaQhOfwJjEW5lMeOayHnM6q4Gfr3LpKhdI1qQkpqoAOws2HpTO3nbCE40W+1OkLodQ==}
     peerDependencies:
       amis-core: '*'
       amis-ui: '*'
@@ -8553,8 +8556,8 @@ packages:
       react: '>=16.8.6'
       react-dom: '>=16.8.6'
     dependencies:
-      amis-core: 6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
-      amis-ui: 6.4.1(@types/react@18.2.22)(amis-core@6.4.1)(amis-formula@6.4.1)(react-dom@18.2.0)(react@18.2.0)
+      amis-core: 6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+      amis-ui: 6.5.0(@types/react@18.2.22)(amis-core@6.5.0)(amis-formula@6.5.0)(react-dom@18.2.0)(react@18.2.0)
       attr-accept: 2.2.2
       blueimp-canvastoblob: 2.1.0
       classnames: 2.3.2
@@ -8840,6 +8843,7 @@ packages:
   /are-we-there-yet@2.0.0:
     resolution: {integrity: sha512-Ci/qENmwHnsYo9xKIcUJN5LeDKdJ6R1Z1j9V/J5wyq8nh/mYPEpIKJbBZXtZjG04HiK7zV/p6Vs9952MrMeUIw==}
     engines: {node: '>=10'}
+    deprecated: This package is no longer supported.
     requiresBuild: true
     dependencies:
       delegates: 1.0.0
@@ -12301,6 +12305,7 @@ packages:
   /fstream@1.0.12:
     resolution: {integrity: sha512-WvJ193OHa0GHPEL+AycEJgxvBEwyfRkN1vhjca23OaPVMCaLCXTd5qAu82AjTcgP1UJmytkOKb63Ypde7raDIg==}
     engines: {node: '>=0.6'}
+    deprecated: This package is no longer supported.
     dependencies:
       graceful-fs: 4.2.11
       inherits: 2.0.4
@@ -12332,6 +12337,7 @@ packages:
   /gauge@3.0.2:
     resolution: {integrity: sha512-+5J6MS/5XksCuXq++uFRsnUd7Ovu1XenbeuIuNRJxYWjgQbPuFhT14lAvsWfqfAmnwluf1OwMjz39HjfLPci0Q==}
     engines: {node: '>=10'}
+    deprecated: This package is no longer supported.
     requiresBuild: true
     dependencies:
       aproba: 2.0.0
@@ -12857,12 +12863,12 @@ packages:
     hasBin: true
     dev: true
 
-  /i18n-runtime@1.0.5(amis-core@6.4.1):
+  /i18n-runtime@1.0.5(amis-core@6.5.0):
     resolution: {integrity: sha512-Hwd5iHNFcL32XrEQxfCnDqACha/gXcM6zf+fUufz/0eYY0gHdwZqDMo6eCiRaOF83DSV7jRlgjimpA7e+AXqSA==}
     peerDependencies:
       amis-core: '*'
     dependencies:
-      amis-core: 6.4.1(@types/react@18.2.22)(amis-formula@6.4.1)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+      amis-core: 6.5.0(@types/react@18.2.22)(amis-formula@6.5.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
     dev: false
 
   /iconv-lite@0.4.24:
@@ -12936,6 +12942,7 @@ packages:
 
   /inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
@@ -15276,10 +15283,10 @@ packages:
       is-plain-obj: 1.1.0
     dev: true
 
-  /merge-refs@1.2.2(@types/react@18.2.22):
-    resolution: {integrity: sha512-RwcT7GsQR3KbuLw1rRuodq4Nt547BKEBkliZ0qqsrpyNne9bGTFtsFIsIpx82huWhcl3kOlOlH4H0xkPk/DqVw==}
+  /merge-refs@1.3.0(@types/react@18.2.22):
+    resolution: {integrity: sha512-nqXPXbso+1dcKDpPCXvwZyJILz+vSLqGGOnDrYHQYE+B8n9JTCekVLC65AfCpR4ggVyA/45Y0iR9LDyS2iI+zA==}
     peerDependencies:
-      '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0
+      '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -15791,6 +15798,7 @@ packages:
 
   /npmlog@5.0.1:
     resolution: {integrity: sha512-AqZtDUWOMKs1G/8lwylVjrdYgqA4d9nu8hc+0gzRxlDb1I10+FHBGMXs6aiQHFdCUUlqH99MUMuLfzWDNDtfxw==}
+    deprecated: This package is no longer supported.
     requiresBuild: true
     dependencies:
       are-we-there-yet: 2.0.0
@@ -16195,9 +16203,9 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
-  /path2d-polyfill@2.0.1:
-    resolution: {integrity: sha512-ad/3bsalbbWhmBo0D6FZ4RNMwsLsPpL6gnvhuSaU5Vm7b06Kr5ubSltQQ0T7YKsiJQO+g22zJ4dJKNTXIyOXtA==}
-    engines: {node: '>=8'}
+  /path2d@0.2.0:
+    resolution: {integrity: sha512-KdPAykQX6kmLSOO6Jpu2KNcCED7CKjmaBNGGNuctOsG0hgYO1OdYQaan6cYXJiG0WmXOwZZPILPBimu5QAIw3A==}
+    engines: {node: '>=6'}
     requiresBuild: true
     dev: false
     optional: true
@@ -16214,12 +16222,12 @@ packages:
     resolution: {integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==}
     dev: true
 
-  /pdfjs-dist@3.11.174:
-    resolution: {integrity: sha512-TdTZPf1trZ8/UFu5Cx/GXB7GZM30LT+wWUNfsi6Bq8ePLnb+woNKtDymI2mxZYBpMbonNFqKmiz684DIfnd8dA==}
+  /pdfjs-dist@4.3.136:
+    resolution: {integrity: sha512-gzfnt1qc4yA+U46golPGYtU4WM2ssqP2MvFjKga8GEKOrEnzRPrA/9jogLLPYHiA3sGBPJ+p7BdAq+ytmw3jEg==}
     engines: {node: '>=18'}
     optionalDependencies:
       canvas: 2.11.2
-      path2d-polyfill: 2.0.1
+      path2d: 0.2.0
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -17650,12 +17658,12 @@ packages:
       warning: 4.0.3
     dev: false
 
-  /react-pdf@7.7.1(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-cbbf/PuRtGcPPw+HLhMI1f6NSka8OJgg+j/yPWTe95Owf0fK6gmVY7OXpTxMeh92O3T3K3EzfE0ML0eXPGwR5g==}
+  /react-pdf@9.0.0(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-J+pza8R2p9oNEOJOHIQJI4o5rFK7ji7bBl2IvsHvz1OOyphvuzVDo5tOJwWAFAbxYauCH3Kt8jOvcMJUOpxYZQ==}
     peerDependencies:
-      '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -17665,9 +17673,8 @@ packages:
       dequal: 2.0.3
       make-cancellable-promise: 1.3.2
       make-event-props: 1.6.2
-      merge-refs: 1.2.2(@types/react@18.2.22)
-      pdfjs-dist: 3.11.174
-      prop-types: 15.8.1
+      merge-refs: 1.3.0(@types/react@18.2.22)
+      pdfjs-dist: 4.3.136
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       tiny-invariant: 1.3.3
@@ -18023,6 +18030,7 @@ packages:
 
   /rimraf@2.7.1:
     resolution: {integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
     dependencies:
       glob: 7.2.3
@@ -18496,6 +18504,10 @@ packages:
       wcwidth: 1.0.1
       yargs: 15.4.1
     dev: true
+
+  /smooth-signature@1.0.15:
+    resolution: {integrity: sha512-YmoDJxUHo22ITgavyw1LEld8kpACzNS3uZuXey6D73rSSWq5S3oAAt3wJ7K60s9CdmUhrPG1myHE0i/N9LI31Q==}
+    dev: false
 
   /snake-case@3.0.4:
     resolution: {integrity: sha512-LAOh4z89bGQvl9pFfNF8V146i7o7/CqFPbqzYgP+yYzDIDeS9HaNFtXABamRW+AQzEVODcvE79ljJ+8a9YSdMg==}
@@ -19387,6 +19399,7 @@ packages:
 
   /tr46@0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+    requiresBuild: true
 
   /tr46@2.1.0:
     resolution: {integrity: sha512-15Ih7phfcdP5YxqiB+iDtLoaTz4Nd35+IiAv0kQ5FNKHzXgdWqPoTIqEDDJmXceQt4JZk6lVPT8lnDlPpGDppw==}
@@ -20937,6 +20950,7 @@ packages:
 
   /webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+    requiresBuild: true
 
   /webidl-conversions@5.0.0:
     resolution: {integrity: sha512-VlZwKPCkYKxQgeSbH5EyngOmRp7Ww7I9rQLERETtf5ofd9pGeswWiOtogpEO850jziPRarreGxn5QIiTqpb2wA==}
@@ -20989,6 +21003,7 @@ packages:
 
   /whatwg-url@5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
+    requiresBuild: true
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1

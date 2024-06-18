@@ -35,9 +35,50 @@
       "editable": true,
       "flowEditorSchema": {
         "editForms": {
-          "mainProps": {
-            "type": "input-text",
-            "label": "Main"
+          "start": {
+            "type": "form",
+            "name": "start",
+            "id": "propsForm",
+            "panelClassName": "nop-full",
+            "preventEnterSubmit":true,
+            "body": [
+              {
+                  "type": "input-text",
+                  "name": "a",
+                  "required":true
+              },
+              {
+                "type": "input-text",
+                "label": "Main",
+                "name": "name"
+              }
+            ],
+            "actions":[
+              {
+                "type":"action",
+                "actionType": "action:cancel",
+                "label": "Cancel"
+              },
+              {
+                "type": "action",
+                "label": "Submit",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "validate",
+                        "componentId": "propsForm",
+                        "outputVar": "form_validate_result"
+                      },
+                      {
+                        "actionType": "custom",
+                        "script": "debugger;doAction({actionType: 'action:ok', args: event.data.form_validate_result })"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
           }
         },
         "nodeMetas": {
@@ -55,7 +96,7 @@
             "label": "approver",
             "icon": "seal",
             "info": "pleaseChooseApprover",
-            "deletable":true,
+            "deletable": true,
             "addable": true,
             "defaultConfig": {}
           },
@@ -66,7 +107,7 @@
             "label": "notifier",
             "icon": "notifier",
             "info": "pleaseChooseNotifier",
-            "deletable":true,
+            "deletable": true,
             "addable": true,
             "defaultConfig": {}
           },
@@ -77,7 +118,7 @@
             "label": "dealer",
             "icon": "deal",
             "info": "pleaseChooseDealer",
-            "deletable":true,
+            "deletable": true,
             "addable": true,
             "defaultConfig": {}
           },
@@ -87,7 +128,7 @@
             "color": "#15bc83",
             "label": "routeNode",
             "icon": "route",
-            "deletable":true,
+            "deletable": true,
             "addable": true,
             "defaultConfig": {
               "conditionNodeList": [
@@ -113,20 +154,21 @@
             "label": "condition",
             "color": "",
             "info": "pleaseSetCondition",
-            "deletable":true,
+            "deletable": true,
             "addable": true,
             "defaultConfig": {}
           }
         },
         "edgeMetas": {
           "default": {
-            "allowTargets": ["approver","notifier","audit","route"]
+            "allowTargets": ["approver", "notifier", "audit", "route"]
           }
         }
       },
       "flowData": {
         "startNode": {
           "id": "start",
+          "name": "StartNode",
           "nodeType": "start",
           "childNode": {
             "nodeType": "approver",

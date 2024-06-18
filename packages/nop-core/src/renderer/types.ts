@@ -29,6 +29,8 @@ export type EventCleanup = () => void;
 export type RenderComponentCtx = {
   props: Record<string, any>;
   store: any;
+  onOk?: (data:any)=>any
+  onCancel?:()=>void
 };
 
 export type RenderContext = {

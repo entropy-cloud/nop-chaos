@@ -4,24 +4,32 @@ import { memo, useCallback } from "react"
 import { NodeTitle } from "./NodeTitle"
 import { Footer } from "./Footer"
 import { styled } from "styled-components"
-import { useFlowEditorStoreWith } from "../../store"
+import { useFlowEditorStore, useFlowEditorStoreWith } from "../../store"
+import { useReactRenderContext } from "@nop-chaos/sdk"
 
 
 const Content = styled.div`
   display: flex;
   flex-flow: column;
+  width:100%;
+  height:100%;
 `
-export const SettingsPanel = memo(() => {
+export const SettingsPanel = memo((props:any) => {
   const selectedId = useFlowEditorStoreWith(state=> state.selectedId)
   const selectNode = useFlowEditorStoreWith(state=> state.selectNode)
 
-  const selectedNode = useFlowEditorStoreWith(state=> state.getNode(state.selectedId))
+  const selectedNode = useFlowEditorStoreWith(state=> state.selectedId? state.getNode(state.selectedId):undefined)
 
-  const handelClose = useCallback(() => {
+  const renderContext = useReactRenderContext()
+  const schema = useFlowEditorStoreWith(state=> selectedNode && state.flowEditorSchema.editForms?.[selectedNode.nodeType])
+
+  const store = useFlowEditorStore()
+
+  const onCancel = useCallback(() => {
     selectNode(undefined)
   }, [selectNode])
 
-  const handleConfirm = useCallback(() => {
+  const onOk = useCallback(() => {
     selectNode(undefined)
   }, [selectNode])
 
@@ -48,20 +56,15 @@ export const SettingsPanel = memo(() => {
           size="small"
           type="text"
           icon={<CloseOutlined />}
-          onClick={handelClose}
+          onClick={onCancel}
         />
       }
-      footer={
-        <Footer
-          onConfirm={handleConfirm}
-          onCancel={handelClose}
-        />
-      }
-      onClose={handelClose}
+      onClose={onCancel}
       open={!!selectedId}
+      bodyStyle={{padding:0}}
     >
       <Content className="settings-panel-content">
-       
+       {schema && renderContext?.render('propsForm',schema,{data:selectedNode},{props,store,onOk,onCancel})}
       </Content>
     </Drawer>
   )

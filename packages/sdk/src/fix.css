@@ -29,3 +29,20 @@ body.is-modalOpened .ant-popover{
 .cxd-TreeControl.h-full > .cxd-Tree {
     max-height: none;
 }
+
+.cxd-Panel.nop-full{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.cxd-Panel.nop-full > .cxd-Panel-heading{
+    display:none
+}
+
+
+.cxd-Panel.nop-full > .cxd-Panel-body{
+    flex: 1;
+}
