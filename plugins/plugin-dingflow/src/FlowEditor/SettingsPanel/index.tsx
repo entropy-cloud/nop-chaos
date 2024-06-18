@@ -2,10 +2,10 @@ import { CloseOutlined } from "@ant-design/icons"
 import { Button, Drawer } from "antd"
 import { memo, useCallback } from "react"
 import { NodeTitle } from "./NodeTitle"
-import { Footer } from "./Footer"
 import { styled } from "styled-components"
 import { useFlowEditorStore, useFlowEditorStoreWith } from "../../store"
 import { useReactRenderContext } from "@nop-chaos/sdk"
+import { cloneDeep } from "lodash-es"
 
 
 const Content = styled.div`
@@ -29,9 +29,15 @@ export const SettingsPanel = memo((props:any) => {
     selectNode(undefined)
   }, [selectNode])
 
-  const onOk = useCallback(() => {
-    selectNode(undefined)
-  }, [selectNode])
+  const onOk = useCallback((data:any) => {
+    if(selectedNode && data.data){
+      store.getState().changeNode(cloneDeep(data.data))
+    }
+    
+    //延迟更新，否则mobx报错
+    setTimeout(()=> selectNode(undefined),10)
+
+  }, [selectNode,selectedNode])
 
   const handleNameChange = useCallback((name?: string) => {
 

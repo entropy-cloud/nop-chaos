@@ -1,6 +1,8 @@
 import { VDomType } from '../renderer';
 import { Plugin, PluginSystem} from './types'
 
+export * from './types'
+
 function createPluginSystem(): PluginSystem{
   const plugins: Plugin[] = []
   let started = false;

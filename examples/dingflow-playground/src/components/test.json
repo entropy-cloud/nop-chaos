@@ -71,8 +71,10 @@
                         "outputVar": "form_validate_result"
                       },
                       {
-                        "actionType": "custom",
-                        "script": "debugger;doAction({actionType: 'action:ok', args: event.data.form_validate_result })"
+                        "actionType": "action:invoke",
+                        "actionName": "action:ok",
+                        "expression": "!event.data.form_validate_result.error",
+                        "args": { "data": "${event.data.form_validate_result.payload}"}
                       }
                     ]
                   }

@@ -16,6 +16,8 @@ import {
   addRenderComponentEventListener
 } from '@nop-chaos/sdk';
 
+import './register-action'
+
 import type { Plugin} from '@nop-chaos/sdk'
 
 import {
