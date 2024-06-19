@@ -1,5 +1,5 @@
 import { importModule } from '@nop-chaos/nop-core';
-import { ReactNode, createContext, createElement, useState } from 'react';
+import { Fragment, ReactComponentElement, ReactNode, createContext, createElement, useContext, useState } from 'react';
 
 export function createReactNode(component: any, props?: any): React.ReactNode {
   // 使用React.createElement来创建ReactNode
@@ -17,44 +17,48 @@ export const ReactComponentScopeKey = createContext<ComponentScope>({});
 
 type ComponentScopeComponentProps = {
   components: ComponentScope;
+  inheritParentComponents?:boolean;
   children?: ReactNode;
 };
+
+export function useReactComponentScope(){
+  return useContext(ReactComponentScopeKey)
+}
 
 export function ReactComponentScopeComponent(
   props: ComponentScopeComponentProps
 ) {
+  const componentScope = useContext(ReactComponentScopeKey)
+
   return createElement(
     ReactComponentScopeKey.Provider,
-    { value: props.components },
+    { value: props.inheritParentComponents ? {...componentScope,...props.components} : props.components },
     [props.children]
   );
 }
 
 export type ReactDynamicComponentScopeComponentProps = {
   componentLib: string;
+  inheritParentComponents?: boolean
   children?: ReactNode;
 };
 
 export function ReactDynamicComponentScopeComponent(
   props: ReactDynamicComponentScopeComponentProps
 ) {
-  const { componentLib, children } = props;
+  const { componentLib, inheritParentComponents, children } = props;
 
   const [components, setComponents] = useState<ComponentScope>();
 
+  const componentScope = useContext(ReactComponentScopeKey)
+
   importModule(componentLib).then((mod: any) => {
-    setComponents(mod);
+    setComponents(mod.components || mod.defaults || mod);
   });
 
-  if (components) {
-    return createElement(
-      ReactComponentScopeComponent,
-      {
-        components
-      },
-      children
-    );
-  } else {
-    return children;
-  }
+  if(!components)
+    return createElement(Fragment)
+
+  return createElement(ReactComponentScopeComponent,
+       {components, inheritParentComponents}, children)
 }

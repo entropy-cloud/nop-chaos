@@ -3,7 +3,6 @@ import {
   StdStoreState,
   VComponentType
 } from '@nop-chaos/sdk';
-import internal from 'stream';
 
 export type DingFlowNodeKind =
   //开始节点

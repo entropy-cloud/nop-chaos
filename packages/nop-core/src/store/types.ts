@@ -26,6 +26,8 @@ export interface StoreApi<T> {
 }
 
 export type StdStoreInitOptions = {
+  globalStoreName?: string,
+
   initState?: { [name: string]: any };
 
   stateCreator?: (get:any,set:any) => any

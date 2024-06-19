@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 
 import { lineColor, canvasColor, nodeColor } from '../utils/theme-utils';
 import { useTranslate } from '@nop-chaos/sdk';
+import { useReactComponentScope } from '../../../../packages/nop-react-core/src';
 
 export const NodeWrap = styled.div`
   display: flex;
@@ -114,7 +115,7 @@ export function NodeRenderer(props: NodeContentProps) {
   const {node,parent,index} = props
   const t = useTranslate()
   const material = useFlowEditorStoreWith(state=> state.flowEditorSchema.nodeMetas?.[node.nodeType])
-  const components = useFlowEditorStoreWith(state => state.flowEditorComponents);
+  const components = useReactComponentScope()
   const component = components?.[props.node?.nodeType];
   const store = useFlowEditorStore()
   const editable = useFlowEditorStoreWith(state => state.editable)

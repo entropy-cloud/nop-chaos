@@ -5,17 +5,18 @@ import { ReactNode, useState } from 'react';
 import { useReactRenderContext } from '@nop-chaos/sdk';
 import { createFlowEditorStore } from '../store';
 
-import { ApiObject, SchemaType } from '@nop-chaos/sdk';
+import { ApiObject, SchemaType, VComponentType } from '@nop-chaos/sdk';
 import { FlowEditorSchema } from '../store/types';
 
-export type FlowEditorProps = {
+export type FlowEditorScopeProps = {
   editing: boolean,
   flowEditorSchema: FlowEditorSchema;
-  materialLib: string;
 
   flowData: any;
   onChange: (value: any) => void;
   data: any;
+
+  initStateCreator?: (set:any,get:any)=>any,
 
   children?: ReactNode;
 
@@ -31,11 +32,11 @@ export type FlowEditorProps = {
   [name: string]: any;
 };
 
-export const FlowEditorScope = (props: FlowEditorProps) => {
+export const FlowEditorScope = (props: FlowEditorScopeProps) => {
   const {
     editable,
     flowEditorSchema,
-    materialLib,
+    initStateCreator,
     flowData,
     header,
     body,
@@ -48,7 +49,8 @@ export const FlowEditorScope = (props: FlowEditorProps) => {
   const renderContext = useReactRenderContext()!;
 
   const [store] = useState(() => {
-    const store = createFlowEditorStore(flowEditorSchema, flowData, materialLib,editable)
+    const store = createFlowEditorStore(flowEditorSchema, 
+       flowData, editable,initStateCreator)
     if (initApi) {
       store.getState().setFlowDataLoader(() => {
         return Promise.resolve(

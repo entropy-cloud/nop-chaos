@@ -24,7 +24,7 @@ import {
       const props = renderer.props;
       let data = action.args?.data;
       
-      data = cloneDeep(data||{})
+     // data = cloneDeep(data||{})
 
       const actionData = {
         actionType: action.actionName,

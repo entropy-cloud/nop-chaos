@@ -31,7 +31,7 @@
   "body": [
     {
       "type": "nop-flow-editor",
-      "materialLib": "/public/flow.lib.js",
+      "componentLib": "/public/flow.lib.js",
       "editable": true,
       "flowEditorSchema": {
         "editForms": {

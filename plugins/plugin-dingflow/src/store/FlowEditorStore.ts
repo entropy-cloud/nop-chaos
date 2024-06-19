@@ -2,7 +2,6 @@ import { StoreApi } from 'zustand';
 
 import {
   useTranslate,
-  importModule,
   createReactStdStore
 } from '@nop-chaos/sdk';
 import {
@@ -43,19 +42,11 @@ const initData: DingFlow = {
   wfVersion: 1
 };
 
-const initMaterial:Record<string,VComponentType> = {
-};
-
-async function loadMaterialLib(path: string): Promise<any> {
-  const lib = await importModule(path);
-  return lib.defaults || lib;
-}
-
 export function createFlowEditorStore(
   flowEditorSchema: FlowEditorSchema,
   flowData: DingFlow,
-  materialLib: string,
-  editable: boolean
+  editable: boolean,
+  initStateCreator?: (set:any,get:any)=>any,
 ): StoreApi<FlowEditorStoreType> {
   if (!flowEditorSchema) flowEditorSchema = initSchema;
   if (!flowData) flowData = initData;
@@ -64,11 +55,7 @@ export function createFlowEditorStore(
   undoManager.reset({flowData,errors:{}})
 
   const stateCreator = (set: any,get:any) => {
-    const t = useTranslate('flowEditor');
-
-    loadMaterialLib(materialLib).then(lib => {
-      set({ flowEditorComponents: lib });
-    });
+    const t = useTranslate();
 
     const { undo, redo } = undoManager.bindStore(value =>
       set({ flowData: value.flowData, errors: value.errors })
@@ -170,7 +157,7 @@ export function createFlowEditorStore(
       condition: DingFlowBranchNode
     ) {
       const newCondition = JSON.parse(JSON.stringify(condition));
-      newCondition.name = newCondition.name + t('ofCopy');
+      newCondition.name = newCondition.name + t('flowEditor.ofCopy');
       //重写Id
       resetId(newCondition);
       const index = node.conditionNodeList.indexOf(condition);
@@ -239,7 +226,6 @@ export function createFlowEditorStore(
       editable: editable,
       flowEditorSchema,
       flowData,
-      flowEditorMaterial: initMaterial,
       errors: {},
       canUndo: undoManager.canUndo,
       canRedo: undoManager.canRedo,
@@ -255,6 +241,10 @@ export function createFlowEditorStore(
       moveConditionLeft,
       moveConditionRight,
       setError,
+      getComponent(name:string){
+        return get().flowEditorComponents[name]
+      },
+
       setFlowEditorSchema(flowEditorSchema: FlowEditorSchema) {
         set({ flowEditorSchema });
       },
@@ -287,7 +277,8 @@ export function createFlowEditorStore(
         const saver = get().flowDataSaver;
         if (!saver) return;
         return saver(get().flowData);
-      }
+      },
+      ...initStateCreator?.(set,get)
     };
   };
 

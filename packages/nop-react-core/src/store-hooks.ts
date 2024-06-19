@@ -8,11 +8,22 @@ import {
   StdStoreState,
   buildStdStoreCreator
 } from '@nop-chaos/nop-core';
+import { getGlobalStore } from '@nop-chaos/nop-core/src/store';
 
 export function createReactStdStore<T extends StdStoreState>(
   options: StdStoreInitOptions
-) {
-  return create<T>(buildStdStoreCreator(options));
+): StdStoreApi<T> {
+  if(options.globalStoreName){
+    const storeName = options.getGlobalStoreName
+    let store = getGlobalStore(storeName)
+    if(!store)
+      return store
+    store = create<T>(buildStdStoreCreator(options))
+    registerGlobalStore(storeName, store)
+    return store
+  }else{
+    return create<T>(buildStdStoreCreator(options));
+  }
 }
 
 const rootStore = create<StdStoreState>((set, get) => {

@@ -15,7 +15,7 @@ type ScopeProps = ReactDynamicComponentScopeComponentProps &
   ReactDynamicStoreScopeComponentProps;
 
 export function ReactNopScopeComponent(props: ScopeProps) {
-  const { componentLib, storeLib, children } = props;
+  const { componentLib, storeLib, inheritParentComponents, inheritParentStore, children } = props;
   if (!componentLib && !storeLib) return children;
   const f = compose(
     componentLib ? ReactDynamicComponentScopeComponent : undefined,

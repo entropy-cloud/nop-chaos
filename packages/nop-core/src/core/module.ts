@@ -11,6 +11,9 @@ const System  = (typeof self !== 'undefined' ? self : global).System
  * @returns 
  */
 export function importModule(path: string) {
+    if(!path)
+        return Promise.resolve()
+    
     if(path.endsWith(".lib.js") && path.startsWith("/") 
         && !path.startsWith("/p/") && !path.startsWith("/public/")){
         path = "/p/SystemJsProvider__getJs" + path   

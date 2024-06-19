@@ -8,7 +8,7 @@ import flowLib from './FlowEditorMaterial'
 
 defineProps<{ msg: string }>()
 
-registerModule("/public/flow.lib.js", flowLib)
+registerModule("/public/flow.lib.js", {defaults: flowLib})
 
 </script>
 

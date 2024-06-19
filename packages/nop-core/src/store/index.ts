@@ -1,8 +1,26 @@
 export * from './types';
 
-import { StdStoreInitOptions } from './types';
+import { StdStoreInitOptions,StdStoreApi } from './types';
 
 import { isFunction } from '@nop-chaos/nop-shared';
+
+const g_stores: Map<string,StdStoreApi> = new Map()
+
+export function clearGlobalStores(){
+  return g_stores.clear()
+}
+
+export function getGlobalStore(name:string){
+  return g_stores.get(name)
+}
+
+export function deleteGlobalstore(name:string){
+  g_stores.delete(name)
+}
+
+export function registerGlobalStore(name: string, store: StdStoreApi){
+  g_stores.set(name,store)
+}
 
 /**
  * 创建用于zustand状态管理库的构造函数。nop-core模块不依赖react，所以没有直接依赖zustand库
@@ -70,6 +88,7 @@ export function buildStdStoreCreator(options: StdStoreInitOptions) {
       reset,
       triggerLoad,
       triggerSave,
+      globalStoreName: options.globalStoreName,
       ...initState
     };
   };
