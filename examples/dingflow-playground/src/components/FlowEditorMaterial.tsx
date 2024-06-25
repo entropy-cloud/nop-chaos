@@ -1,6 +1,3 @@
-import { styled } from 'styled-components';
-import { RightOutlined } from '@ant-design/icons';
-
 import {
   DingFlowNode,
   DingFlowNodeMeta,
@@ -9,11 +6,11 @@ import {
   ContentPlaceholder,
   NodeTitle,
   FlowEditorStoreType,
-  DingFlowRouteNode
+  DingFlowRouteNode,
+  ConditionNodeTitle
 } from '@nop-chaos/plugin-dingflow';
 
 import React from 'react';
-import { ConditionNodeTitle } from '@nop-chaos/plugin-dingflow/src/nodes/RouteNode/ConditionNodeTitle';
 
 type NodeProps = {
   node: DingFlowNode;
@@ -36,7 +33,7 @@ function StartNodeContent(props: NodeProps) {
       </NodeTitleShell>
       <NodeContent className="content">
         <ContentPlaceholder text={t(material.info)} />
-        <RightOutlined className="arrow" />
+        <i className="fas fa-angle-right arrow"></i>
       </NodeContent>
     </>
   );
@@ -54,7 +51,8 @@ function NormalNodeContent(props: NodeProps) {
       />
       <NodeContent className="content">
         <ContentPlaceholder text={t(material.info)} />
-        <RightOutlined className="arrow" />
+        {/* <RightOutlined className="arrow" /> */}
+        <i className="fas fa-angle-right arrow"></i>
       </NodeContent>
     </>
   );

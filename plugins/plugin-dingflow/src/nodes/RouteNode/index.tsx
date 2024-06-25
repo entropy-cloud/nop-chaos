@@ -7,6 +7,8 @@ import { ChildNode } from "../ChildNode"
 import { BranchNode } from "./BranchNode"
 import { DingFlowRouteNode, useFlowEditorStoreWith } from "../../store"
 
+export * from './ConditionNodeTitle'
+
 const RouteWrap = styled.div`
   display: inline-flex;
 `
