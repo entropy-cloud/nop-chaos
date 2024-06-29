@@ -19,7 +19,7 @@
 -->
 <template>
   <xui-debugger v-if="debug" :path="path" :schema="pageSchema" @update:schema="updateSchema" @rebuild="rebuild" />
-  <XuiSchemaPage :schema="pageSchema" :registerPage="registerPage" :action="actions" />
+  <XuiSchemaPage :schema="pageSchema" :registerPage="registerPage" :action="actions" :data="data"/>
 </template>
 
 <script lang="ts">
@@ -83,7 +83,8 @@ export default defineComponent({
       rebuild,
       registerPage,
       debug,
-      actions
+      actions,
+      data: props.data
     };
   },
 });
