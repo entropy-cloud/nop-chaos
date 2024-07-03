@@ -12,7 +12,7 @@ const System  = (typeof self !== 'undefined' ? self : global).System
  */
 export function importModule(path: string) {
     if(path.endsWith(".lib.js") && path.startsWith("/") && !path.startsWith("/p/")){
-        path = "/p/SystemJsProvider__getJs" + path   
+        path = "/p/SystemJsProvider__getJs?path=" + encodeURIComponent(path)   
     }
     let url = System.resolve(path)
     return System.import(/*@vite-ignore*/url)

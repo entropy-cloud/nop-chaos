@@ -71,7 +71,7 @@ export async function bindActions(pageUrl: string, json: any, page: BasePage) {
   // 等待所有脚本库加载完毕
   await Promise.all(promises)
 
-  let stackIndex = 0;
+  let stackIndex = -1;
 
   function process(json: any) {
     if(!isPlainObject(json))
@@ -161,7 +161,7 @@ function fetchModules(pageUrl: string, modulePaths: any, promises: Promise<any>[
   for (const moduleName in modulePaths) {
     const path = absolutePath(modulePaths[moduleName], pageUrl)
     const promise = importModule(path).then((mod: any) => {
-      fnScope[moduleName] = mod
+      fnScope.libs[moduleName] = mod
     })
     promises.push(promise)
   }
@@ -195,7 +195,7 @@ function findAction(fnName: string, fnStack: FnScope[], stackIndex: number, page
     if (fnScope.standalone)
       break
 
-    const lib = fnScope.libs[libName]
+    const lib = fnScope.libs[libName] as any
     if (lib && lib[methodName]) {
       return lib[methodName]
     }
