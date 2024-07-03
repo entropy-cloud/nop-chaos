@@ -108,7 +108,7 @@ export async function bindActions(pageUrl: string, json: any, page: BasePage) {
         return v
     if (['query','mutation','graphql','dict','page'].includes(type)) {
       return type + "://" +path
-    } else if (v == 'action') {
+    } else if (type == 'action') {
       const fnName = path.split('-')[0]
       const action = findAction(fnName, fnStack, stackIndex, page)
       for(let i=0;i<1000;i++){
