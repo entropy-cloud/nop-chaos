@@ -486,7 +486,7 @@ async function bindActions(pageUrl, json, page) {
     return obj;
   });
   await Promise.all(promises);
-  let stackIndex = 0;
+  let stackIndex = -1;
   function process2(json2) {
     if (!isPlainObject(json2))
       return;
@@ -518,7 +518,7 @@ async function bindActions(pageUrl, json, page) {
       return v;
     if (["query", "mutation", "graphql", "dict", "page"].includes(type4)) {
       return type4 + "://" + path;
-    } else if (v == "action") {
+    } else if (type4 == "action") {
       const fnName = path.split("-")[0];
       const action = findAction(fnName, fnStack, stackIndex, page);
       for (let i = 0; i < 1e3; i++) {
@@ -566,7 +566,7 @@ function fetchModules(pageUrl, modulePaths, promises, fnScope) {
   for (const moduleName in modulePaths) {
     const path = absolutePath(modulePaths[moduleName], pageUrl);
     const promise = importModule(path).then((mod) => {
-      fnScope[moduleName] = mod;
+      fnScope.libs[moduleName] = mod;
     });
     promises.push(promise);
   }
@@ -1436,7 +1436,7 @@ function useDebug() {
 const System = (typeof self !== "undefined" ? self : global).System;
 function importModule(path) {
   if (path.endsWith(".lib.js") && path.startsWith("/") && !path.startsWith("/p/")) {
-    path = "/p/SystemJsProvider__getJs" + path;
+    path = "/p/SystemJsProvider__getJs?path=" + encodeURIComponent(path);
   }
   let url2 = System.resolve(path);
   return System.import(
@@ -24261,7 +24261,8 @@ const _sfc_main = defineComponent({
       rebuild,
       registerPage,
       debug: debug2,
-      actions
+      actions,
+      data: props.data
     };
   }
 });
@@ -24279,8 +24280,9 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     createVNode(_component_XuiSchemaPage, {
       schema: _ctx.pageSchema,
       registerPage: _ctx.registerPage,
-      action: _ctx.actions
-    }, null, 8, ["schema", "registerPage", "action"])
+      action: _ctx.actions,
+      data: _ctx.data
+    }, null, 8, ["schema", "registerPage", "action", "data"])
   ], 64);
 }
 const XuiPage = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);

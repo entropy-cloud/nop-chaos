@@ -713,7 +713,8 @@ const _sfc_main = defineComponent({
       rebuild,
       registerPage,
       debug,
-      actions
+      actions,
+      data: props.data
     };
   }
 });
@@ -731,8 +732,9 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     createVNode(_component_XuiSchemaPage, {
       schema: _ctx.pageSchema,
       registerPage: _ctx.registerPage,
-      action: _ctx.actions
-    }, null, 8, ["schema", "registerPage", "action"])
+      action: _ctx.actions,
+      data: _ctx.data
+    }, null, 8, ["schema", "registerPage", "action", "data"])
   ], 64);
 }
 const XuiPage = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);

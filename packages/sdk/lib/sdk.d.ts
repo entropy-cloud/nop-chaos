@@ -833,6 +833,7 @@ export declare const XuiPage: DefineComponent<{
     actions: {
         [x: string]: Function;
     };
+    data: Record<string, any> | undefined;
 }, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, VNodeProps & AllowedComponentProps & ComponentCustomProps, Readonly<ExtractPropTypes<{
     path: {
         type: StringConstructor;
