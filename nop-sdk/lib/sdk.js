@@ -409,7 +409,7 @@ function _processXuiDirective(json, typeProp, processor, futures) {
     for (let i = 0, n = json.length; i < n; i++) {
       let child = _processXuiDirective(json[i], typeProp, processor, futures);
       if (child === void 0) {
-        delete json[i];
+        json.splice(i, 1);
         i--;
         n--;
       } else if (child != json[i]) {
@@ -420,7 +420,7 @@ function _processXuiDirective(json, typeProp, processor, futures) {
             if (idx < 0)
               return;
             if (ret == void 0) {
-              delete json[idx];
+              json.splice(idx, 1);
             } else {
               json[idx] = ret;
             }
