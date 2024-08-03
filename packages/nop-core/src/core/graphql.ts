@@ -377,6 +377,11 @@ const operationRegistry: Record<string, OperationDefinition> = {
         name: 'ids',
         type: '[String]',
         builder: argStringList
+      },
+      {
+        name: 'ignoreUnknown',
+        type: 'Boolean',
+        builder: argBoolean
       }
     ]
   },
@@ -406,7 +411,49 @@ const operationRegistry: Record<string, OperationDefinition> = {
         builder: argStringList
       }
     ]
-  }
+  },
+
+  batchUpdate: {
+    // operation: 'mutation',
+    arguments: [
+      {
+        name: 'ids',
+        type: '[String]',
+        builder: argStringList
+      },
+      {
+        name: 'data',
+        type: '[Map]',
+        builder: argMapList
+      },
+      {
+        name: 'ignoreUnknown',
+        type: 'Boolean',
+        builder: argBoolean
+      }
+    ]
+  },
+
+  exportByQuery: {
+    //  operation: 'query',
+    arguments: [
+      {
+        name: 'query',
+        type: 'QueryBeanInput',
+        builder: argQuery
+      },
+      {
+        name: "exportFormat",
+        type: 'String',
+        builder: argString
+      },
+      {
+        name: "exportAll",
+        type: 'Boolean',
+        builder: argBoolean
+      }
+    ]
+  },
 };
 
 const defaultArgBuilders: Record<string, any> = {

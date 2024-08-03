@@ -92,7 +92,7 @@ function _processXuiDirective(
     for (let i = 0, n = json.length; i < n; i++) {
       let child = _processXuiDirective(json[i], typeProp, processor,futures);
       if (child === undefined) {
-        delete json[i];
+        json.splice(i,1);
         i--;
         n--;
       } else if (child != json[i]) {
@@ -105,7 +105,7 @@ function _processXuiDirective(
             if(idx < 0)
               return
             if (ret == undefined) {
-              delete json[idx]
+              json.splice(idx,1)
             } else {
               json[idx] = ret
             }
