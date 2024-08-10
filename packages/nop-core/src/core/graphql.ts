@@ -525,7 +525,13 @@ function argQuery(data: any, arg: ArgumentDefinition, options: FetcherRequest) {
     };
     for (let k in data) {
       if (k.startsWith('filter_')) {
-        let [name, op] = k.substring('filter_'.length).split('__');
+        let name = k.substring('filter_'.length)
+        let op = 'eq'
+        let pos = name.lastIndexOf('__')
+        if(pos > 0){
+          op = name.substring(pos+2)
+          name = name.substring(0,pos)
+        }
         op = op || 'eq';
         let value = data[k];
 
