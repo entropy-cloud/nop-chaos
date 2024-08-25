@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
-    "amis": "^6.5.0",
-    "amis-core": "^6.5.0",
-    "amis-formula": "^6.5.0",
-    "amis-ui": "^6.5.0",
-    "amis-editor": "^6.5.0",
-    "amis-editor-core": "^6.5.0",
+    "amis": "^6.7.0",
+    "amis-core": "^6.7.0",
+    "amis-formula": "^6.7.0",
+    "amis-ui": "^6.7.0",
+    "amis-editor": "^6.7.0",
+    "amis-editor-core": "^6.7.0",
     "amis-widget": "^3.2.2",
     "bootstrap": "3.4.1",
     "copy-to-clipboard": "^3.2.0",
@@ -42,9 +42,11 @@
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^3.0.0",
     "vite-plugin-compression":"^0.5.1",
-    "typescript": "^5.2.2",
-    "vite": "^5.0.8",
-    "vue-tsc": "^1.8.25",
+
+    "@vitejs/plugin-vue": "^5.1.2",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1",
+    "vue-tsc": "^2.0.29",
     "vite-plugin-dts": "^3.7.2"
   },
   "eslintConfig": {

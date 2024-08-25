@@ -20,18 +20,12 @@
   "dependencies": {
     "@nop-chaos/nop-core": "workspace:*",
     "element-plus": "^2.5.3",
-    "vue": "^3.4.21",
+    "vue": "^3.4.37",
     "lodash-es": "^4.17.12",
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "@nop-chaos/vite-config": "workspace:*",
-    "@nop-chaos/ts-config": "workspace:*",
-    
-    "@vitejs/plugin-vue": "^5.0.4",
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0",
-    "vue-tsc": "^2.0.6",
-    "vite-plugin-dts": "^3.7.2"
+    "@nop-chaos/ts-config": "workspace:*"
   }
 }

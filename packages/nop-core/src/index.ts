@@ -1,9 +1,9 @@
 export * from './lib'
 
-import { registerModule } from "./core";
+//import { registerModule } from "./core";
 import { registerAdapter, useAdapter } from './adapter'
 import { PageApis } from './api'
-import { FetcherRequest, fetcherOk } from './core'
+import { FetcherRequest, fetcherOk ,ajaxRequest} from './core'
 import { transformPageJson, bindActions } from './page';
 
 //import { useAdapter, ajaxRequest, ajaxFetch, usePage, useScoped, useScopedStore } from './index'
@@ -29,7 +29,7 @@ registerAdapter({
 
     getPage(pageUrl: string) {
         if (pageUrl.startsWith("/p/")) {
-            return NopCore.ajaxRequest({
+            return ajaxRequest({
                 url: pageUrl
             })
         }

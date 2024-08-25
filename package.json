@@ -13,7 +13,7 @@
     "build:sdk": "turbo build --filter=@nop-chaos/sdk",
     "build:plugin-dingflow": "turbo build --filter=@nop-chaos/plugin-dingflow",
     "build:plugin-amis": "turbo build --filter=@nop-chaos/plugin-amis",
-    "dev": "turbo run dev --parallel",
+    "dev": "turbo run dev --filter=@nop-chaos/nop-site",
     "nop-dingflow": "turbo run dev --filter=dingflow-demo",
     "lint": "turbo run lint",
     "test": "vitest",
@@ -51,11 +51,12 @@
     "cross-env": "^7.0.3",
     "rimraf": "^5.0.5",
     "turbo": "^1.11.3",
-    "typescript": "^5.2.2",
     "unbuild": "^2.0.0",
-    "vite": "^5.2.0",
-    "vite-plugin-mock": "^2.9.6",
-    "vue-tsc": "^2.0.6"
+    "@vitejs/plugin-vue": "^5.1.2",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1",
+    "vue-tsc": "^2.0.29",
+    "vite-plugin-dts": "^3.7.2"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "eslint --ext .js,.jsx,.ts,.tsx --fix --max-warnings=0",

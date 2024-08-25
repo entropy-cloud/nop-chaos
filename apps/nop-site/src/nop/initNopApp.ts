@@ -42,7 +42,8 @@ import { SessionTimeoutProcessingEnum } from '/@/enums/appEnum';
 import projectSetting from '/@/settings/projectSetting';
 import { Store } from 'pinia';
 
-import { install as install_amis } from '@nop-chaos/plugin-amis';
+import { loadPlugin as loadAmis } from '@nop-chaos/plugin-amis';
+import { loadPlugin as loadDingFlow } from '@nop-chaos/plugin-dingflow'
 
 const currentLocale = useLocale().getLocale;
 
@@ -142,9 +143,12 @@ function initAdapter(app: App) {
 }
 
 export async function initNopApp(app: App) {
-  install_amis();
-
   initAdapter(app);
+
+  const pluginSystem = usePluginSystem()
+  pluginSystem.registerPlugin(loadAmis())
+  pluginSystem.registerPlugin(loadDingFlow())
+
 
   app.component('XuiPage', XuiPage);
   app.component('XUI', XuiPage);
