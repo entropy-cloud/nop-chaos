@@ -81,15 +81,7 @@ function _processXuiDirective(
     return json;
   }
 
-  if (isObject(json)) {
-    // 转换组件
-    let type = json[typeProp];
-    if (type) {
-      return processor(type, json, processProps);
-    }
-
-    processProps(json);
-  } else if (isArray(json)) {
+  if (isArray(json)) {
     for (let i = 0, n = json.length; i < n; i++) {
       let child = _processXuiDirective(json[i], typeProp, processor,futures);
       if (child === undefined) {
@@ -114,6 +106,14 @@ function _processXuiDirective(
         }
       }
     }
+  }else if (isObject(json)) {
+    // 转换组件
+    let type = json[typeProp];
+    if (type) {
+      return processor(type, json, processProps);
+    }
+
+    processProps(json);
   }
   return json;
 }
@@ -149,9 +149,7 @@ export function processXuiValue(json: any, processor: XuiValueProcessor) {
     return json;
   }
 
-  if (isObject(json)) {
-    processProps(json);
-  } else if (isArray(json)) {
+  if (isArray(json)) {
     for (let i = 0, n = json.length; i < n; i++) {
       let child = json[i];
       if (isString(child)) {
@@ -167,6 +165,8 @@ export function processXuiValue(json: any, processor: XuiValueProcessor) {
         processXuiValue(child,processor)
       }
     }
+  }else  if (isObject(json)) {
+    processProps(json);
   }
   return json;
 }
