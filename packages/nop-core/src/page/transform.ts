@@ -27,11 +27,12 @@ export async function transformPageJson(pageUrl: string, json: any) {
   return json;
 }
 
-function filterByAuth(roles: string, json: any) {
+function filterByAuth(roles: string, json: any,  processProps: (json: any) => any) {
   const { isUserInRole } = useAdapter()
 
   if (!isUserInRole(roles)) return;
-  return json;
+  
+  return processProps(json);
 }
 
 /*
