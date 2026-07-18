@@ -69,7 +69,7 @@ export function ajaxRequest(options: FetcherRequest): Promise<any> {
 				}
 			}
 		}
-		if (d.data?.status != 0)
+		if (d.data?.status != null && d.data?.status != 0)
 			throw new Error(d.data?.msg || 'ajax-fail:\ncode=' + d.data?.code + ',status=' + d.data?.status);
 		return d.data!.data
 	})
